@@ -1,0 +1,102 @@
+﻿@{
+    ViewBag.Title = "Edge Dashboard";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@using System
+@using System.Linq
+@using DirigoEdgeCore.Utils
+@model  DirigoEdge.Areas.Admin.Models.ViewModels.DashBoardViewModel
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h3><i class="fa fa-home"></i>Dashboard</h3>
+    </div>
+</div>
+
+<div class="row">
+    @if (UserRoleUtilities.UserHasPermission("Can Edit Users"))
+    {
+        <div class="col-lg-4 col-sm-6 col-xs-12">
+            <div class="panel dashboard-panel">
+                <h3>Latest Users <a href="/admin/users/manageusers/" class="pull-right"><i class="fa fa-users"></i></a></h3>
+                <ul>
+                    @if (Model.Users.Any())
+                    {
+                        foreach (var u in Model.Users)
+                        {
+                            <li><a class="clearfix" href="/admin/users/manageusers/@u.Username">@u.Username <span class="pull-right">@Convert.ToDateTime(u.LastLoginDate).ToShortDateString()</span></a></li>
+                        }
+                    }
+                    else
+                    {
+                        <li><a class="clearfix" href="/admin/users/manageusers/">Manage users</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+    @if (UserRoleUtilities.UserHasPermission("Can Edit Pages"))
+    {
+        <div class="col-lg-4 col-sm-6 col-xs-12">
+            <div class="panel dashboard-panel">
+                <h3>Latest Pages <a href="/admin/pages/managecontent/" class="pull-right"><i class="fa fa-file-text-o"></i></a></h3>
+                <ul>
+                    @if (Model.Pages.Any())
+                    {
+                        foreach (var u in Model.Pages)
+                        {
+                            <li><a class="clearfix" href="/admin/pages/editcontent/@u.ContentPageId">@u.Title <span class="pull-right">@Convert.ToDateTime(u.PublishDate).ToShortDateString()</span></a></li>
+                        }
+                    }
+                    else
+                    {
+                        <li><a class="clearfix" href="/admin/pages/managecontent/">Manage pages</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+    @if (UserRoleUtilities.UserHasPermission("Can Edit Modules"))
+    {
+        <div class="col-lg-4 col-sm-6 col-xs-12">
+            <div class="panel dashboard-panel">
+                <h3>Latest Modules <a href="/admin/modules/managemodules/" class="pull-right"><i class="fa fa-file-text-o"></i></a></h3>
+                <ul>
+                    @if (Model.Modules.Any())
+                    {
+                        foreach (var u in Model.Modules)
+                        {
+                            <li><a class="clearfix" href="/admin/modules/editmodule/@u.ContentModuleId">@u.ModuleName <span class="pull-right">@Convert.ToDateTime(u.CreateDate).ToShortDateString()</span></a></li>
+                        }
+                    }
+                    else
+                    {
+                        <li><a class="clearfix" href="/admin/modules/managemodules/">Manage modules</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+    @if (UserRoleUtilities.UserHasPermission("Can Edit Blogs"))
+    {
+        <div class="col-lg-4 col-sm-6 col-xs-12">
+            <div class="panel dashboard-panel">
+                <h3>Latest Blogs <a href="/admin/blog/manageblogs/" class="pull-right"><i class="fa fa-pencil"></i></a></h3>
+                <ul>
+                    @if (Model.Blogs.Any())
+                    {
+                        foreach (var u in Model.Blogs)
+                        {
+                            <li><a class="clearfix" href="/admin/blog/editblog/@u.BlogId">@u.Title <span class="pull-right">@u.Date.ToShortDateString()</span></a></li>
+                        }
+                    }
+                    else
+                    {
+                        <li><a class="clearfix" href="/admin/blog/manageblogs/">Manage blogs</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+</div>

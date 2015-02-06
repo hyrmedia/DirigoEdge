@@ -1,0 +1,196 @@
+﻿@using DirigoEdgeCore.Models.ViewModels
+@using DirigoEdgeCore.Utils
+@model BlogSingleHomeViewModel
+@{
+    ViewBag.Title = Model.TheBlog.Title;
+    ViewBag.MetaDesc = Model.TheBlog.MetaDescription;
+    ViewBag.OGType = Model.TheBlog.OGType ?? "article";
+    ViewBag.OGTitle = Model.TheBlog.OGTitle ?? Model.TheBlog.Title;
+    ViewBag.OGImage = Model.TheBlog.OGImage ?? Model.TheBlog.OGImage;
+}
+
+<div class="singleBlogModule module">
+    
+    <div class="breadcrumbsContainer row">
+        <div class="col-lg-12">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="/">Home</a>
+                </li>
+                <li>
+                    <a href="/blog/">Blog</a>
+                </li>
+                <li>
+                    <a href="/blog/@ContentUtils.GetFormattedUrl(Model.TheBlog.MainCategory)/">
+                        @Model.TheBlog.MainCategory
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/blog/@ContentUtils.GetFormattedUrl(Model.TheBlog.MainCategory)/@Model.TheBlog.PermaLink">@Model.TheBlog.Title</a>
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        @*Give admins a quick way to edit blog*@
+        @{
+            if (UserUtils.UserIsAdmin())
+            {
+                <a href="/admin/blog/editblog/@Model.TheBlog.BlogId" class="adminEdit" target="_blank">Edit</a>    
+            }
+        }
+        
+        @*Content Rail*@
+        <div class="col-lg-9">
+            <article>
+                @* Blog Author *@
+                @{
+                    var user = "Anonymous";
+                    var authorUrl = "#";
+                    if (Model.TheBlogUser != null)
+                    {
+                        user = Model.TheBlogUser.Username;
+                        authorUrl = Model.TheBlog.BlogAuthorUrl ?? "#";
+                    }
+                }
+                <h3><a href="/blog/@Model.TheBlog.PermaLink">@Model.TheBlog.Title</a></h3>
+                <h6>Written by <a href="@authorUrl">@user</a> on @Model.TheBlog.Date.ToLongDateString()</h6>
+                
+                @{
+                    if (!String.IsNullOrEmpty(Model.TheBlog.ImageUrl))
+                    {
+                        <p>
+                            <img class="img-responsive" src="@Model.TheBlog.ImageUrl" alt="@Model.TheBlog.Title" />    
+                        </p>                        
+                    }
+             
+                }
+                <div class="row">
+                    <div class="userBlogContent col-lg-12">
+                        @Html.Raw(Model.TheBlog.ShortDesc)
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="userBlogContent col-lg-12">
+                        @Html.Raw(Model.TheBlog.HtmlContent)
+                    </div>
+                </div>
+            </article>
+            
+            @{
+                // Category Display
+                if (!String.IsNullOrEmpty(Model.TheBlog.MainCategory))
+                {
+                    <div class="categories">
+                        @{
+                            string catLink = Model.TheBlog.MainCategory.ToLower();
+                        }
+                        <p>Category : <a href="/blog/@ContentUtils.GetFormattedUrl(catLink)/">@Model.TheBlog.MainCategory</a></p>
+                    </div>
+                }
+            }
+            
+            @{
+                // Tag listing
+                if (Model.Tags.Count > 0)
+                {
+                    <div class="tags">
+                        Tags : 
+                
+                        @{
+                            foreach (var tag in Model.Tags)
+                            {
+                                string tagFormatted = tag.Trim();
+                                <a rel="tag" href="/blog/tags/@tagFormatted.ToLower()/">@tagFormatted</a>
+                             
+                                if (tag != Model.Tags.LastOrDefault())
+                                {
+                                    <span>, </span>
+                                }
+                            }
+                        }
+                    </div>
+                }
+            }
+            
+            <hr/>
+            
+            @* Related Posts *@
+            @Html.Partial("~/Views/Shared/Partials/RelatedPostsPartial.cshtml", Model.RelatedPosts)
+
+            <hr/>
+            
+            @*== Facebook Like Button ==*@
+            @{
+                if (Model.ShowFacebookLikeButton)
+                {
+                    string absUrl = Model.BlogAbsoluteUrl;   
+                    <div class="fbLikeContainer">
+                        <iframe src="http://www.facebook.com/plugins/like.php?href=@absUrl" scrolling="no" frameborder="0" style="border: none; width: 450px; height: 80px"></iframe>
+                    </div>
+                }
+            }
+            
+            @*== Disqus Comments ==*@
+            @{
+                if (Model.UseDisqusComments)
+                {
+                    <div class="disqusComments comments">
+                        <div id="disqus_thread"></div>
+                        <script type="text/javascript">
+                            var disqus_shortname = '@Model.DisqusShortName'; // required
+
+                            /* * * DON'T EDIT BELOW THIS LINE * * */
+                            (function () {
+                                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                            })();
+                        </script>
+                        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+                    </div>
+                }
+            }
+
+            @*== Facebook Comments ==*@
+            @{
+                if (Model.ShowFacebookComments)
+                {
+                    <div class="fb-comments" data-href="@Model.BlogAbsoluteUrl" data-width="470" data-num-posts="10"></div>                    
+                }
+            }
+            
+        </div>
+        
+        @*Right Rail*@
+        <div class="col-lg-3 blogPanels">
+            
+            @* Blog Author *@
+            @Html.Partial("~/Views/Shared/Partials/BlogAuthorPartial.cshtml", Model.BlogAuthorModel)
+            
+            @* Categories *@
+            @Html.Partial("~/Views/Shared/Partials/CategoriesListingPartial.cshtml", new BlogsCategoriesViewModel(Model.TheBlog.MainCategory))
+            
+            @* Latest Blogs / Popular *@
+            @Html.Partial("~/Views/Shared/Partials/PopularBlogsPartial.cshtml", new BlogPopularViewModel())
+            
+            @* Archive *@
+            @Html.Partial("~/Views/Shared/Partials/BlogArchivePartial.cshtml", new BlogArchiveViewModel())
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Meta {
+    @{
+        if (!String.IsNullOrEmpty(Model.TheBlog.Canonical))
+        {
+            <link rel="canonical" href="@Model.TheBlog.Canonical" />        
+        }
+    }
+}

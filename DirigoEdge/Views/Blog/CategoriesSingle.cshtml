@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "Category";
+}
+@using DirigoEdgeCore.Models.ViewModels
+@using DirigoEdgeCore.Utils
+@model CategorySingleViewModel
+
+
+<div class="module blogCatListing">
+    
+    <div class="breadcrumbsContainer row">
+        <div class="col-lg-12">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="/">Home</a>
+                </li>
+                <li>
+                    <a href="/blog/">Blog</a>
+                </li>
+                <li class="active">
+                    <a href="/blog/@ContentUtils.GetFormattedUrl(Model.TheCategory.CategoryName)/">
+                        @Model.TheCategory.CategoryName
+                    </a>
+                </li>
+            </ol>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-12">
+            <h2 class="title sansserif light">@Model.TheCategory.CategoryName</h2>
+        </div>
+    </div>
+    
+    
+    <div class="row">
+        
+        <div class="col-lg-9 blogListing">
+        
+            @{
+                if (Model.BlogsByCat.Count < 1)
+                {
+                    <p>There are no blogs in this category.</p>
+                }
+                else
+                {
+                    // Renders the blog article tags
+                    @Html.Partial("/Views/Shared/Partials/BlogArticlePartial.cshtml", Model.BlogsByCat);
+
+                    if (Model.AllBlogsInCategory.Count() > Model.MaxBlogCount)
+                    {
+                        <a id="LoadMoreBlogs" href="javascript:;"
+                            class="secondary loadMore btn btn-primary"
+                            data-skip="@Model.SkipBlogs"
+                            data-take="@Model.MaxBlogCount"
+                            data-category="@Model.TheCategory.CategoryName">Load More</a>
+                    }
+                }
+            }
+
+        </div>
+
+        <div class="col-lg-3 categoryBlogListModule">
+        
+            @* Categories *@
+            @Html.Partial("~/Views/Shared/Partials/CategoriesListingPartial.cshtml", new BlogsCategoriesViewModel(Model.TheCategory.CategoryName))
+        
+            @* Latest Blogs / Popular *@
+            @Html.Partial("~/Views/Shared/Partials/PopularBlogsPartial.cshtml", new BlogPopularViewModel())
+        
+            @* Archive *@
+            @Html.Partial("~/Views/Shared/Partials/BlogArchivePartial.cshtml", new BlogArchiveViewModel())
+
+        </div>
+
+    </div>
+
+</div>

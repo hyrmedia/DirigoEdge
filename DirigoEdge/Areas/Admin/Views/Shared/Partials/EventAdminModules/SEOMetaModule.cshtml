@@ -1,0 +1,22 @@
+﻿@model DirigoEdge.Areas.Admin.Models.ViewModels.EditEventViewModel
+
+<h4>SEO / Meta</h4>
+
+<div class="content">
+    <p class="lead">Set your event's meta information</p>
+
+    <label class="" data-toggle="tooltip" data-placement="top" title="Commonly used by search engines to display preview snippets for a given page.">Meta Description</label>
+    <input class=" form-control" id="MetaDescription" type="text" placeholder="" autocomplete=off value="@Model.ThisEvent.MetaDescription">
+
+    <label class="" data-toggle="tooltip" data-placement="top" title="Open Graph : The title of your object as it should appear within the graph, e.g., 'The Rock'.">OG Title</label>
+    <input class=" form-control" id="OGTitle" type="text" placeholder="" autocomplete=off value="@Model.ThisEvent.OGTitle">
+
+    <label class="" data-toggle="tooltip" data-placement="top" title="Open Graph : An image URL which should represent your object within the graph.">OGImage</label>
+    <input class=" form-control" id="OGImage" type="text" placeholder="" autocomplete=off value="@Model.ThisEvent.OGImage">
+
+    <label class="" data-toggle="tooltip" data-placement="top" title="Open Graph : The type of your object, e.g., 'video.movie'. Depending on the type you specify, other properties may also be required.">OGType</label>
+    <input class=" form-control" id="OGType" type="text" placeholder="" autocomplete=off value="@Model.ThisEvent.OGType">
+
+    <label class="" data-toggle="tooltip" data-placement="top" title="Open Graph : The canonical URL of your object that will be used as its permanent ID in the graph, e.g., 'http://www.imdb.com/title/tt0117500/'">OGUrl</label>
+    <input class=" form-control" id="OGUrl" type="text" placeholder="" autocomplete=off value="@Model.ThisEvent.OGUrl">
+</div>

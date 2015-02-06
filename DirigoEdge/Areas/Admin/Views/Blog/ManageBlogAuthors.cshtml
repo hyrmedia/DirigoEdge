@@ -1,0 +1,149 @@
+﻿@{
+	ViewBag.Title = "Manage Authors";
+	Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@model DirigoEdge.Areas.Admin.Models.ViewModels.ManageBlogAuthorsViewModel
+
+<div class="row manageAuthors">
+
+    <div class="col-lg-12">
+
+        <div class="contain">
+            <h2 class="left"><i class="fa fa-users"></i> Manage Blog Authors @Html.Partial("Partials/BookmarkButtonPartial")</h2>
+            <h2><a id="NewAuthor" class="pull-right btn btn-primary newContentButton" data-toggle="modal" data-target="#NewAuthorModal">New Author +</a></h2>
+        </div>
+        <div id="ManageAuthorTableContainer">
+            <table id="ManageAuthorTable" class="twelve manageUsersTable manageTable">
+                <thead>
+                    <tr>
+                        <th class="hidden-xs">Thumbnail</th>
+                        <th>User Name</th>
+                        <th class="hidden-xs">User Image Location</th>
+                        <th>Is Active</th>
+                        <th class="actions">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+					    foreach (var user in Model.Users)
+					    {
+						    string active = user.IsActive ? "True" : "False";
+                            <tr>
+                                <td class="imageLocation hidden-xs">
+                                    <img width="80" src="@user.UserImageLocation" /></td>
+                                <td class="displayName">@user.DisplayName</td>
+                                <td class="hidden-xs"><a class="" data-toggle="tooltip" href="javascript:void(0);" title="<img src='@user.UserImageLocation' alt='Image Not Found'>">@user.UserImageLocation</a></td>
+                                <td class="isActive">@active</td>
+                                <td>
+                                    <a class="editUser btn btn-primary btn-sm" href="javascript:void(0);" data-id="@user.UserId">Edit</a>
+                                    <a class="deleteUser btn btn-danger btn-sm" href="javascript:void(0);" data-id="@user.UserId">Delete</a>
+                                </td>
+                            </tr>
+					    }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+@section Modals {
+    <div id="NewAuthorModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h2>Create New Author :</h2>
+                    <p class="hide lead">Create a new Username</p>
+                </div>
+                <div class="modal-body">
+                    <div class="content container-fluid">
+                        <form class="custom">
+                            <label class="form-group">User Name</label>
+                            <input class="form-control form-group" id="NewUserName" type="text" placeholder="User Name" autocomplete="off" />
+
+                            <label class="form-group">Image Location</label>
+                            <input class="form-control form-group" id="NewUserImage" type="text" autocomplete="off" />
+
+                            <label class="form-group" for="IsActiveBox">
+                                <input class="" type="checkbox" id="IsActiveBox" checked="checked" autocomplete="off"> Is Active
+                            </label>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a id="CreateAuthorButton" class="btn btn-primary pull-right">Create</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="ModifyAuthorModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h2>Modify Author.</h2>
+                    <p class="hide lead">Modify a blog user.</p>
+                </div>
+                <div class="modal-body">
+                    <div class="content container-fluid">
+                        <form class="custom">
+                            <label class="form-group">User Name</label>
+                            <input class="form-control form-group" type="text" id="ModUserName" autocomplete="off" />
+
+                            <label class="form-group">Image Location</label>
+                            <input class="form-control form-group" type="text" id="ModUserImageLocation" autocomplete="off" />
+
+                            <label for="ModUserIsActiveBox">
+                                <input class="" type="checkbox" id="ModUserIsActiveBox" autocomplete="off">
+                                 Is Active
+                            </label>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a id="ModifyAuthorButton" class="btn btn-primary pull-right">Update</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="DeleteAuthorModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h2>Delete Author.</h2>
+                    <p class="lead">Do you want to <em>permanently</em> delete <span id="DelUserName"></span>?</p>
+                </div>
+                <div class="modal-body">
+                    <div class="content container-fluid">
+                        <p>Note : User Uploaded Images will need to be manually removed from the file system.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a id="DeleteAuthorButton" class="btn btn-danger pull-right confirmModalButton">Delete</a>
+                    <a id="CancelDeleteButton" class="btn btn-default pull-right" data-dismiss="modal">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @{
+        <script src="/Areas/Admin/Scripts/jquery/plugins/datatables/js/jquery.dataTables.min.js"></script>
+    }
+}

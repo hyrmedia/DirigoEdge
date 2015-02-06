@@ -1,0 +1,468 @@
+﻿@using System.Web
+@using System.Web.Security
+@using DirigoEdgeCore.PluginFramework
+@using DirigoEdgeCore.Utils
+@using ImageResizer.Util
+@using SquishIt.Framework
+
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html class="ie ie6 no-js" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7 no-js" lang="en"> <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" ><![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8 no-js" lang="en"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9 no-js" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<!--[if lt IE 9]>
+	<script src="@Url.Content("~/Scripts/html5.js")"></script>
+	<![endif]-->
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    @* ** Keeps viewport scale at 1 - this disables zooming / scaling on mobile phones **
+		   ** Uncomment the line below if you are creating a responsive or mobile site **  *@
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    @* ** Basic Meta Information ** *@
+    <meta name="description" content="Dirigo Edge Admin Area">
+    <meta name="distribution" content="global" />
+    <meta name="robots" content="all" />
+
+    @Html.DoAction("Admin_Head")
+
+    @* ** FavIcon ** *@
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <title>@ViewBag.Title</title>
+
+    @{
+        string style = SquishIt.Framework.Bundle.Css()
+                .Add("~/Areas/Admin/Scripts/bootstrap/css/bootstrap.css")
+                .Add("~/Areas/Admin/Content/themes/base/css/base.css")
+                .Add("~/Areas/Admin/Content/themes/base/css/common.css")
+                .Add("~/Areas/Admin/Content/themes/base/css/print.css")
+                .Add("~/Areas/Admin/Content/themes/base/css/msftStyles.css") // Styles for membership framework validation errors, etc.
+                .Add("~/Areas/Admin/Scripts/jqueryui/css/smoothness/jquery-ui-1.9.2.custom.css")
+                .Add("~/Areas/Admin/Content/themes/base/admin.css")
+                .Add("~/Areas/Admin/Content/themes/base/file-browser.css")
+                .Add("~/Areas/Admin/Content/themes/base/CSS/navBuilder.css")
+                .Add("~/Areas/Admin/Content/themes/base/mediaQueries.css")
+                .Add("~/Areas/Admin/Scripts/jquery/plugins/datatables/css/jquery.dataTables.css")
+                .ForceDebug()
+                .Render("~/CSS/admin_#.css");
+    }
+    @Html.Raw(style)
+
+    @RenderSection("Styles", false)
+    @Html.DoAction("Admin_Styles")
+
+    @* test plugin *@
+    @Html.DoAction("the_plugin_styles")
+
+    @* Modernizr stays in <head> *@
+    <script src="@Url.Content("~/Areas/Admin/Scripts/modernizr-2.6.2.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/moment.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/moment-timezone.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/tzdetect.js")" type="text/javascript"></script>
+
+</head>
+
+<body class="off-canvas">
+    <!--[if lt IE 7]>
+		<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+	<![endif]-->
+
+    <div class="contents">
+
+        <nav class="navbar navbar-inverse">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#admin-navbar">
+                    <span class="sr-only">Toggle user navigation</span>
+                    <i class="fa fa-cog"></i>
+                </button>
+                <a class="navbar-brand" href="@Url.Action("Index", "Admin")">
+                    <img src="/content/logo.png" alt="Edge Admin Logo" />
+                </a>
+            </div>
+
+            <section class="collapse navbar-collapse" id="admin-navbar">
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        @{
+                            MembershipUser u = Membership.GetUser(HttpContext.Current.User.Identity.Name);
+                            string username = u == null ? "Anonymous" : u.UserName;
+                        }
+                        <a class="username dropdown-toggle" data-toggle="dropdown" href="#">
+                            <span class="userIcon"></span>@username <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="/admin/">Admin</a>
+                            </li>
+                            <li>
+                                <a href="/" target="_blank">View Site</a>
+                            </li>
+                            <li>
+                                <a href="/account/manage">Change Password</a>
+                            </li>
+                            <li>
+                                <a href="/account/logoff">Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="header-bookmarks dropdown">
+                        @{
+                            var bookmarkCount = new BookmarkUtil().GetBookmarkCount();
+                            var bookmarks = new BookmarkUtil().GetAllBookmarks();
+                        }
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-bookmark"></i>
+                            Bookmarks <small>(@bookmarkCount)</small>
+                            @if (bookmarks.Any())
+                            {
+                                <span class="caret"></span>
+                            }
+                        </a>
+                        @if (bookmarks.Any())
+                        {
+                            <ul class="dropdown-menu" role="menu">
+                                @foreach (var bookmark in bookmarks.Take(10))
+                                {
+                                    <li>
+                                        <a href="@bookmark.Url">@bookmark.Title</a>
+                                    </li>
+                                }
+                                <li>
+                                    <a href="/admin/bookmark/">View All</a>
+                                </li>
+                            </ul>
+                        }
+                    </li>
+                </ul>
+            </section>
+        </nav>
+        @*</div>
+        </div>*@
+
+        <div class="outer-wrapper">
+            <section id="Main" role="main">
+                @RenderBody()
+            </section>
+
+            <section role="complementary" id="sidebar">
+                <!-- New Nav Structure -->
+                <ul class="nav nav-stacked" role="tablist">
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-navicon"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Admin")">
+                            <i class="fa fa-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    @if (UserRoleUtilities.UserHasPermission("Can Manage Media"))
+                    {
+                        <li>
+                            <a href="@Url.Action("ManageMedia", "Media")">
+                                <i class="fa fa-picture-o"></i>
+                                <span>Media</span>
+                            </a>
+                        </li>
+                    }
+
+                    @if (UserRoleUtilities.UserHasPermission("Can Edit Blogs") || UserRoleUtilities.UserHasPermission("Can Edit Blog Categories") || UserRoleUtilities.UserHasPermission("Can Edit Blog Authors"))
+                    {
+                        <li>
+                            <a data-toggle="collapse" data-target="#blogDropdown" class="collapsed" href="#">
+                                <i class="fa fa-pencil"></i>
+                                <span>Blog</span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul id="blogDropdown" class="collapse nav nav-stacked">
+                                @{
+                                    if (UserRoleUtilities.UserHasPermission("Can Edit Blogs"))
+                                    {
+                                        <li>
+                                            <a href="@Url.Action("ManageBlogs", "Blog")">
+                                                <span>Manage Posts</span>
+                                            </a>
+                                        </li>
+                                    }
+
+                                    if (UserRoleUtilities.UserHasPermission("Can Edit Blog Categories"))
+                                    {
+                                        <li>
+                                            <a href="@Url.Action("ManageCategories", "Blog")">
+                                                <span>Categories</span>
+                                            </a>
+                                        </li>
+                                    }
+
+                                    if (UserRoleUtilities.UserHasPermission("Can Edit Blog Authors"))
+                                    {
+                                        <li>
+                                            <a href="@Url.Action("ManageBlogAuthors", "Blog")"><span>Authors</span></a>
+                                        </li>
+                                    }
+                                    
+                                    @Html.DoAction("admin_blog_menu_end")                                    
+                                }
+                            </ul>
+                        </li>
+                    }
+
+                    @if (UserRoleUtilities.UserHasPermission("Can Edit Navigation"))
+                    {
+                        <li class="separated">
+                            <a href="@Url.Action("ManageNavigation", "Navigation")">
+                                <i class="fa fa-compass"></i>
+                                <span>Navigation</span>
+                            </a>
+                        </li>
+                    }
+
+                    @if (UserRoleUtilities.UserHasPermission("Can Edit Pages") || UserRoleUtilities.UserHasPermission("Can Edit Modules"))
+                    {
+                        <li>
+                            <a data-toggle="collapse" data-target="#contentDropdown" class="collapsed" href="#">
+                                <i class="fa fa-file-text-o"></i>
+                                <span>Content</span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul id="contentDropdown" class="collapse nav nav-stacked">
+                                @if (UserRoleUtilities.UserHasPermission("Can Edit Pages"))
+                                {
+                                    <li>
+                                        <a href="@Url.Action("ManageContent", "Pages")">
+                                            <span>Pages</span>
+                                        </a>
+                                    </li>
+                                }
+
+                                @if (UserRoleUtilities.UserHasPermission("Can Edit Modules"))
+                                {
+                                    <li>
+                                        <a href="@Url.Action("ManageModules", "Modules")">
+                                            <span>Modules</span>
+                                        </a>
+                                    </li>
+                                }
+
+                                @if (UserRoleUtilities.UserHasPermission("Can Edit Schemas"))
+                                {
+                                    <li>
+                                        <a href="@Url.Action("ManageSchemas", "Schemas")">
+                                            <span>Schemas</span>
+                                        </a>
+                                    </li>
+                                }
+                                    
+                                @Html.DoAction("admin_content_menu_end")
+                            </ul>
+                        </li>
+                    }
+
+                    @if (new SiteSettingsUtils().EventsEnabled() && UserRoleUtilities.UserHasPermission("Can Edit Events"))
+                    {
+                        <li>
+                            <a data-toggle="collapse" data-target="#eventsDropdown" class="collapsed" href="#">
+                                <i class="fa fa-calendar"></i>
+                                <span>Events</span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul id="eventsDropdown" class="collapse nav nav-stacked">
+                                <li>
+                                    <a href="@Url.Action("ManageEvents", "Events")">
+                                        <span>Manage Events</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("ManageEventCategories", "EventCategory")">
+                                        <span>Categories</span>
+                                    </a>
+                                </li>
+
+                                @Html.DoAction("admin_events_menu_end")
+                            </ul>
+                        </li>
+                    }
+
+                    @if (UserRoleUtilities.UserHasPermission("Can Edit Users"))
+                    {
+                        <li>
+                            <a data-toggle="collapse" data-target="#usersDropdown" class="collapsed" href="#">
+                                <i class="fa fa-users"></i>
+                                <span>Users</span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul id="usersDropdown" class="collapse nav nav-stacked">
+                                <li>
+                                    <a href="@Url.Action("ManageUsers", "Users")">
+                                        <span>Users</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("ManageUserRoles", "Roles")">
+                                        <span>Roles</span>
+                                    </a>
+                                </li>
+
+                                @Html.DoAction("admin_users_menu_end")
+                            </ul>
+                        </li>
+                    }
+
+                    @if (UserRoleUtilities.UserHasPermission("Can Edit Settings"))
+                    {
+                        <li>
+                            <a data-toggle="collapse" data-target="#settingsDropdown" class="collapsed" href="#">
+                                <i class="fa fa-wrench"></i>
+                                <span>Settings</span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul id="settingsDropdown" class="collapse nav nav-stacked">
+                                <li>
+                                    <a href="@Url.Action("SiteSettings", "Settings")">
+                                        <span>Site Settings</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("BlogSettings", "Settings")">
+                                        <span>Blog Settings</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("FeatureSettings", "Settings")">
+                                        <span>Enable Features</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Redirects", "Redirect")">
+                                        <span>Manage Redirects</span>
+                                    </a>
+                                </li>
+                                @Html.DoAction("admin_settings_menu_end")
+                            </ul>
+                        </li>
+                    }
+
+                    @Html.DoAction("the_plugin_menu")
+                </ul>
+            </section>
+        </div>
+
+    </div>
+
+    @RenderSection("Modals", false)
+
+    <div id="DeleteFolderModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h2>Confirm Delete.</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="content container-fluid">
+                        <p class="lead">Are you sure you want to delete this folder?</p>
+                        <p>It will be <em>permanently</em> deleted.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a id="ConfirmFolderDelete" class="pull-right btn btn-danger mobileMarginBottom confirmButton">Delete</a>
+                    <a class="pull-right btn btn-default " onclick="$('#DeleteFolderModal').modal('hide');">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="AddFolderModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h2>Add New Folder.</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="content container-fluid">
+                        <label for="folder-name">Folder name.</label>
+                        <input class=" form-control" type="text" id="folder-name" placeholder="e.g. Events" tabindex="1" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a id="ConfirmFolderAdd" class="pull-right btn btn-primary mobileMarginBottom confirmButton">Add Folder</a>
+                    <a class="pull-right btn btn-default" onclick="$('#AddFolderModal').modal('hide');">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/Scripts/jquery/jquery-1.11.1.min.js"><\/script>')</script>
+    @{ 
+        string scripts = SquishIt.Framework.Bundle.JavaScript()
+
+            .Add("~/Areas/Admin/scripts/jquery/plugins/jquery.validate.js")
+
+            .Add("~/Areas/Admin/scripts/common.js")
+
+            // Bootstrap Resources. Use only what you need
+            .Add("~/Areas/Admin/scripts/bootstrap/js/bootstrap.js")
+
+            // Auto Grow input box for blogs and pages
+            .Add("~/Areas/Admin/Scripts/jquery/plugins/jquery.autogrowinput.js")
+
+            // Notification system for admin actions
+            .Add("~/Areas/Admin/scripts/jquery/plugins/jquery.noty.js")
+            .Add("~/Areas/Admin/scripts/jquery/plugins/jquery.noty.layout.js")
+            .Add("~/Areas/Admin/scripts/jquery/plugins/jquery.noty.theme.js")
+
+            // jQueryUI - mainly used for calendar and tweening
+            .Add("~/Areas/Admin/scripts/jqueryui/js/jquery-ui-1.9.2.custom.js")
+
+            // Admin Area Specific JS
+            .Add("~/Areas/Admin/Scripts/sidebar.js")
+            .Add("~/Areas/Admin/Scripts/blogAdmin.js")
+            .Add("~/Areas/Admin/Scripts/blogAuthorsAdmin.js")
+            .Add("~/Areas/Admin/Scripts/eventAdmin.js")
+            .Add("~/Areas/Admin/Scripts/userAdmin.js")
+            .Add("~/Areas/Admin/Scripts/roleAdmin.js")
+            .Add("~/Areas/Admin/Scripts/contentAdmin.js")
+            .Add("~/Areas/Admin/Scripts/categoriesAdmin.js")
+            .Add("~/Areas/Admin/Scripts/mediaAdmin.js")
+            .Add("~/Areas/Admin/Scripts/eventCategoriesAdmin.js")
+            .Add("~/Areas/Admin/Scripts/mediaAdmin.js")
+            .Add("~/Areas/Admin/Scripts/bookmarkAdmin.js")
+            .Add("~/Areas/Admin/Scripts/adminSave.js")
+            .Add("~/Areas/Admin/Scripts/filebrowser.js")
+
+            //.ForceRelease() // Force Minification. Uncomment to minify
+        .Render("~/scripts/admin_#.js");
+    }
+   
+    @Html.Raw(scripts)
+
+    @RenderSection("Scripts", false)
+
+    @Html.DoAction("admin_scripts")
+
+    @* test plugin *@
+    @Html.DoAction("the_plugin_scripts")
+</body>
+</html>

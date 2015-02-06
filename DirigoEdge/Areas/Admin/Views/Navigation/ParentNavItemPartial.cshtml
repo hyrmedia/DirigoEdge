@@ -1,0 +1,76 @@
+﻿@using DirigoEdge.Areas.Admin.Models.ViewModels
+@using DirigoEdgeCore.Data.Entities
+@model ParentNavViewContainer
+
+ @RenderParentNavItem(Model.NavItem)
+
+@helper RenderParentNavItem(NavigationItem parentItem)
+{
+    <li>
+        <div class="handle">
+            <a href="#" data-id="@parentItem.NavigationItemId">
+                @Html.Raw(parentItem.Name)
+                <i class="fa fa-plus pull-right AddSubNavItem" data-toggle="tooltip" title='Add new subnav item'></i>
+            </a>
+
+            <div class="editor">
+                @Html.Partial("Partials/EditNavFieldPartial", new NavContainer() { NavItem = parentItem, OptionList = Model.NavViewModel.PageIdNameCollection })
+                
+                @*<label for="promos">Promo:</label>
+                <select class="promo-select" id="promos">
+
+                    @foreach (var module in Model.NavViewModel.PromoModules)
+                    {
+                        var selected = module.ModuleName == parentItem.Promo ? "selected" : String.Empty;
+                        <option @selected>@module.ModuleName</option>
+                    }
+                </select>*@
+            </div>
+
+        </div>
+
+        @if (parentItem.HasChildren)
+        {
+            @ShowTree(parentItem.Children, true)
+        }
+
+    </li>
+}
+
+@helper ShowTree(List<NavigationItem> items, bool showAddNav)
+{
+    // Recursively build out the children / nav tree
+    if (items != null && items.Count > 0)
+    {
+        var showAddButton = "<i class='fa fa-plus pull-right AddSubNavItem' data-toggle='tooltip' title='Add new subnav item'></i>";
+        if (!showAddNav)
+        {
+            showAddButton = "";
+        }
+                                
+        <ol class="subnav">
+            @foreach (var item in items)
+            {
+                <li>
+                    <div class="handle">
+                        <a href="#" data-id="@item.NavigationItemId">
+                            @item.Name
+                            @Html.Raw(showAddButton)
+                        </a>
+                                                
+                        <div class="editor">
+                            @Html.Partial("Partials/EditNavFieldPartial", new NavContainer() { NavItem = item, OptionList = Model.NavViewModel.PageIdNameCollection })
+                        </div>
+                    </div>
+                                                
+                    @{
+                        if (item.HasChildren)
+                        {
+                            @ShowTree(item.Children, false)
+                        }
+                    }
+                </li>
+            }
+        </ol>
+    }
+}

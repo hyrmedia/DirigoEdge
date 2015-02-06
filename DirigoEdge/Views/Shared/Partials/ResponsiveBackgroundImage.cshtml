@@ -1,0 +1,20 @@
+﻿@model DirigoEdgeCore.Models.ImageResizing.ResponsiveBackgroundImageViewModel
+
+<style class="@Model.ClassName">
+    @foreach (var image in Model.Images)
+    {
+        if (image.Width.GetValueOrDefault() == 0)
+        {
+            @Html.Raw("#" + Model.RandomId + " { background-image: url('" + image.Filepath + "'); }\n");
+        }
+        else
+        {
+            var mediaQuery = "@media (max-width: " + image.Width + "px) { #" + Model.RandomId + " { background-image: url('" + image.Filepath + "'); } }\n";
+
+            @Html.Raw(mediaQuery)
+        }
+        
+    }
+</style>
+
+<div id="@Model.RandomId" class="@Model.ClassName" data-bgimage="@Model.Images[0].Filepath"></div>

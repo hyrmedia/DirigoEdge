@@ -1,0 +1,67 @@
+﻿@model DirigoEdgeCore.Models.ViewModels.HeaderPartialViewModel
+
+<header>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#home-nav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="clearfix" href="/">
+                    <img class="navbar-brand" alt="Edge Logo" src="/content/uploaded/images/content/edge_logo_head.png" />
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="home-nav">
+                <ul class="nav navbar-nav navbar-right">
+                    @if (Model.MainNav.Any())
+                    {
+                        foreach (var upperItem in Model.MainNav)
+                        {
+                            string href = upperItem.Href;
+                            string flyoutId = "Flyout_" + upperItem.NavigationItemId;
+                            bool hasChildren = upperItem.HasChildren;
+                            string dropdown = hasChildren ? "dropdown" : "";
+                            string dropdownToggle = hasChildren ? "dropdown-toggle" : "";
+                            string dropdownMenu = hasChildren ? "dropdown-menu" : "";
+                            string target = upperItem.TargetBlank ? "target=_blank" : "";
+                            string caret = hasChildren ? " <span class=caret></span>" : "";
+
+                            <li class="dropdown">
+                                <a class="top-nav-item @dropdownToggle" data-toggle="@dropdown" href="@upperItem.Href" @target>@Html.Raw(upperItem.Name)@Html.Raw(caret)</a>
+
+                                @if (hasChildren)
+                                {
+                                    <ul class="sub-nav @dropdownMenu" id="@flyoutId" role="menu">
+                                        @foreach (var secondChild in upperItem.Children)
+                                        {
+                                            href = secondChild.Href;
+                                            target = secondChild.TargetBlank ? "target=_blank" : "";
+                                            <li>
+                                                <a href="@href" @target>@secondChild.Name</a>
+                                                @if (secondChild.HasChildren)
+                                                {
+                                                    <ul>
+                                                        @foreach (var thirdChild in secondChild.Children)
+                                                        {
+                                                            href = thirdChild.Href;
+                                                            target = thirdChild.TargetBlank ? "target=_blank" : "";
+                                                            <li><a href="@href" @target>@thirdChild.Name</a></li>
+                                                        }
+                                                    </ul>
+                                                }
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+</header>

@@ -1,0 +1,253 @@
+﻿@{
+    ViewBag.Title = Model.Heading;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    bool hasSchema = Model.SchemaId >= 0;
+}
+
+@model DirigoEdge.Areas.Admin.Models.ViewModels.ManageContentViewModel
+
+<div class="manageContent">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h3><i class="fa fa-file-text-o"></i>@Model.Heading @Html.Partial("Partials/BookmarkButtonPartial")</h3>
+
+            @{
+                string newButtonUrl = Url.Action("NewContentPage", "Pages");
+                // If a schema is assigned, pass the variable along
+                if (hasSchema)
+                {
+                    newButtonUrl = Url.Action("NewContentPage", "Pages", new { schemaId = Model.SchemaId, editContentHeading = Model.EditContentHeading });
+                }
+
+                // May not want to show Template Selector
+                string templateSelectorClass = Model.UseTemplateSelector ? "useTemplateSelector" : String.Empty;
+            }
+
+            <a id="NewContentPage" class="btn btn-primary mobileMarginBottom mobileBlockStatic @templateSelectorClass" href="@newButtonUrl">@Model.NewButtonText</a>
+
+            <table class="manageTable twelve bordered manageTable @Model.Sort" data-url="/admin/pages/updatepagesort/" data-list="true" data-saveMessage="Sort Order Updated!">
+                <thead>
+                    <tr>
+                        @{
+                            if (!string.IsNullOrEmpty(Model.Sort))
+                            {
+                            <th class="no-sort">Sort</th>
+                            }
+                        }
+                        <th>Title</th>
+                        <th class="hidden-xs">Created</th>
+                        <th class="hidden-xs">Status</th>
+                        <th class="actions">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int sort = 1;
+                        foreach (var page in Model.Pages)
+                        {
+                            int? val = page.SortOrder;
+                            int sortOrder = val != 0 ? page.SortOrder : sort;
+                            ++sort;
+                            string codeEditUrl;
+                            if (hasSchema)
+                            {
+                                codeEditUrl = Url.Action("EditContent", "Pages", new { id = page.ContentPageId, schema = Model.SchemaId, editContentHeading = Model.EditContentHeading });
+                            }
+                            else
+                            {
+                                codeEditUrl = Url.Action("EditContent", "Pages", new { id = page.ContentPageId });
+                            }
+
+                        <tr class="altered">
+                            @{
+                            if (!string.IsNullOrEmpty(Model.Sort))
+                            {
+                                <td class="sort">
+                                    <span>@sortOrder</span>
+                                    <input type="hidden" class="saveField" value="@sortOrder" data-field="SortOrder"/>
+                                    <input type="hidden" class="saveField" value="@page.ContentPageId" data-field="ContentPageId"/>
+                                </td>
+                            }
+                            }
+                            <td class="title"><a href="@codeEditUrl">@page.Title</a></td>
+                            <td class="hidden-xs">@Convert.ToDateTime(page.CreateDate).ToString("MM/dd/yyyy")</td>
+
+                            @{
+                            string published = Convert.ToBoolean(page.IsActive) ? "Published" : "Draft";
+                            }
+
+                            <td class="hidden-xs">@published</td>
+
+                            <td>
+                                <a class="delete btn btn-danger btn-sm" href="javascript:void(0);" data-id="@page.ContentPageId">Delete</a>
+                                @{
+                            string url = "/" + page.Permalink + "/";
+                                }
+                                <a class="btn btn-info btn-sm" href="@url" target=_blank>Preview</a>
+
+                                @{
+                            // Don't show WYSIWYG for schema editors
+                            if (!hasSchema)
+                            {
+                                    <a class="btn btn-primary btn-sm" href="@Url.Action("EditContentBasic", "Pages", new { id = @page.ContentPageId })">WYSIWYG Edit</a>
+                            }
+                                }
+
+                                <a class="btn btn-primary btn-sm" href="@codeEditUrl">Code Edit { }</a>
+                            </td>
+                        </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Modals {
+
+    <div id="NewPageModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h2>New Page.</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="content container-fluid">
+                        <div class="newPageTemplateListing container-fluid">
+                            <ul>
+                                @foreach (var template in Model.Templates)
+                                {
+                                    <li>
+                                        <a class="active" href="#" data-template-path="@template.TemplatePath" data-view-template="@template.ViewTemplate">
+                                            <img src="@template.ThumbnailPath" />
+                                            <span>@template.Name</span>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+
+                        <hr />
+
+                        <div class="form clearfix">
+                            <div class="col-lg-12 form-group">
+                                <label>Page Title</label>
+                                <input class="form-control input-lg" type="text" placeholder="About Us" id="PageTitle" autocomplete="off" />
+                            </div>
+                            <div class="col-lg-12 form-group">
+                                <label>Permalink</label>
+                                <input class="form-control input-lg" type="text" id="PagePermalink" placeholder="about-us" autocomplete="off" />
+                            </div>
+                            <div class="col-lg-12 form-group">
+                                <label>Parent</label>
+                                <select class="form-control" id="ParentPage" autocomplete="off">
+                                    <option data-id="-2">Root</option>
+                                    @{
+                                        if (Model.NavList.Any())
+                                        {
+                                            foreach (var kvp in Model.NavList)
+                                            {
+                                        <option data-id="@kvp.Key">@Html.Raw(kvp.Value)</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 user-error alert alert-danger hide"></div>
+                </div>
+                <div class="modal-footer">
+                    <a id="ConfirmCreatePageButton" class="pull-right btn btn-primary confirmButton confirmModalButton">Create Page</a>
+                    <a class="pull-right btn btn-default" onclick=" $('#NewPageModal').modal('hide'); ">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="DeleteModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h2>Confirm Delete.</h2>
+                    <p class="lead">Are you sure you want to delete this page?</p>
+                </div>
+                <div class="modal-body">
+                    <div class="content container-fluid">
+                        <p><span id="popTitle"></span>will be <em>permanently</em> deleted.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a id="ConfirmContentDelete" class="pull-right btn btn-primary confirmButton confirmModalButton">Confirm</a>
+                    <a class="pull-right btn btn-default" onclick="$('#DeleteModal').modal('hide');">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section Scripts {
+    @{
+        // Only load if there is a good reason to
+        if (Model.Pages.Count > 0)
+        {
+            <script src="/Areas/Admin/Scripts/jquery/plugins/datatables/js/jquery.dataTables.min.js"></script>
+
+            <script>
+                
+                function fixSort() {
+                    $('.manageTable tbody tr').each(function (idx, val) {
+                        $(this).find('input[data-field="SortOrder"]').val(idx + 1);
+                        $(this).find('.sort span').html(idx + 1);
+                    });
+                }
+
+                $(document).ready(function () {
+
+                    // Sortable listing page
+                    if ($('.sort-listings').length > 0) {
+                        $(".manageTable tbody tr").css({ cursor: 'move' });
+
+                        $(".manageTable tbody").sortable({
+                            stop: function (event, ui) {
+                                // fire off save event after drop is complete
+                                fixSort();
+                                save.saveAdminData($(".manageTable"));
+                            }
+                        });
+
+                        $("table.manageTable").dataTable({
+                            "aLengthMenu": [[200]],
+                            "iDisplayLength": 200,
+                            "aoColumnDefs": [
+                                { "sType": "numeric", "aTargets": [0] },
+                                { "bSortable": false, "aTargets": ["no-sort"] } // No Sorting on actions
+                            ],
+                            "aaSorting": [] //[0, "asc"]
+                        });
+                    } else {
+                        // regular listing page
+                        $("table.manageTable").dataTable({
+                            "iDisplayLength": 25,
+                            "aoColumnDefs": [
+                                { "bSortable": false, "aTargets": ["actions"] } // No Sorting on actions
+                            ],
+                            "aaSorting": [[0, "asc"]] // Sort by Created Date on page load
+                        });
+                    }
+
+                });
+            </script>
+        }
+    }
+}

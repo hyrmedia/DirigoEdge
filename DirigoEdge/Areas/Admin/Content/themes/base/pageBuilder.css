@@ -1,0 +1,427 @@
+﻿/*Preview Settings*/
+.previewing #PageBuilderToolbar,
+.previewing a.addModule,
+.previewing div.adminButtons,
+.previewing .removable {
+	display: none;
+}
+
+.previewing #EditPageButton {
+	display: inline-block;
+	z-index: 9;	
+}
+
+
+/** These values should match  **/
+body.building { padding-top: 45px; }
+#PageBuilderToolbar { height: 45px; }
+
+#PageBuilderToolbar {
+	position: fixed;
+	width: 100%;
+	top: 0;
+	background: url("/Areas/Admin/Content/themes/base/Images/debut_dark.png") repeat scroll 0 0 #444444;
+	z-index: 9;
+}
+
+#PageBuilderToolbar nav.top-bar, .top-barContainer {
+	background: url("/Areas/Admin/Content/themes/base/Images/debut_dark.png") repeat scroll 0 0 #444444;
+	margin: 0;
+}
+
+#EditPageButton, #PreviewPageButton {
+	background: none repeat scroll 0 0 #333333;
+	border-radius: 0 4px 4px 0;
+	color: #FFFFFF;
+	display: none;
+	font-size: 18px;
+	left: 0;
+	opacity: 0.25;
+	padding: 8px;
+	position: fixed;
+	top: 50px;
+	transition: all 300ms ease-in-out 0s;
+	cursor: pointer;
+}
+
+#EditPageButton:hover, 
+#PreviewPageButton:hover {
+	opacity: 1;
+}
+
+body.building #PreviewPageButton {
+	display: block;
+}
+
+#PageSettingsButton, #SavePageButton {
+	color: #EEE;
+	cursor: pointer;
+	font-size: 22px;
+	margin: 0 12px;
+	position: relative;
+	text-shadow: 0 1px 0 #333333;
+	top: 2px;
+}
+#PageSettingsButton:hover, 
+#SavePageButton:hover {
+	color: #fff;
+}
+/*Add Row*/
+#AddRowButton { width: 100%;padding: 12px; }
+.previewing #AddRowButton { display: none; }
+.building #Main #AddRowContainer .columns {
+	min-height: 0;
+	box-shadow: none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	margin: 0;
+}
+
+.building .pageBuilder > .row > .columns {
+	min-height: 140px;
+	box-shadow: 0 0 0 1px #AAEFF7;
+	margin: 20px 0;
+}
+
+.building .pageBuilder > .row > .columns:hover {
+	box-shadow: 0 0 0 1px #5fc8d5;
+}
+
+a.addModule {
+	background: none repeat scroll 0 0 #2BA6CB;
+	bottom: 0;
+	color: #FFFFFF;
+	display: inline-block;
+	font-size: 26px;
+	font-weight: normal;
+	line-height: 22px;
+	opacity: 0.25;
+	padding: 2px 6px;
+	position: absolute;
+	right: 1px;
+	text-align: center;
+	transition: all 300ms ease-in-out 0s;
+	width: auto;
+	z-index: 3;
+}
+
+a.addModule:hover {
+	opacity: 1;
+}
+
+/*Add Module Pane*/
+div.moduleListingContainer a.moduleEntry {
+	background: none repeat scroll 0 0 #EEEEEE;
+	border: 1px solid #CCCCCC;
+	cursor: pointer;
+	display: block;
+	float: left;
+	font-weight: normal;
+	margin: 12px 12px 12px 0;
+	max-width: 220px;
+	min-height: 200px;
+	min-width: 125px;
+	width: 100%;
+}
+
+div.moduleListingContainer a.moduleEntry:hover {
+	border-color: #AAA;
+	box-shadow: 0 0 6px 1px rgba(43, 166, 203, 0.5);
+}
+
+div.moduleListingContainer a.moduleEntry img {
+	width: 100%;
+	
+}
+
+div.moduleListingContainer a.moduleEntry span.title {
+	background: none repeat scroll 0 0 #AAA;
+	border-bottom: 1px solid #999;
+	color: #FFF;
+	display: block;
+	margin-bottom: 8px;
+	padding: 3px 8px;
+	text-shadow: 0 1px 0 #999;
+}
+
+div.moduleListingContainer a.moduleEntry span.description {
+	color: #333;
+	display: block;
+	font-size: 12px;
+	line-height: 14px;
+	margin-top: 7px;
+	padding: 0 8px;
+}
+
+/*Edit Form Modal*/
+
+#EditFormModal {
+	padding-bottom: 80px;
+	max-width: 1024px;
+}
+
+#EditFormModal h2 {
+	font-weight: 300;
+}
+
+#EditFormModal .content {
+	position: relative;
+}
+
+#EditFormModal div.settingsPane {
+	float: left;
+	min-height: 380px;
+}
+
+#EditFormModal div.confirmCancelContainer {
+	bottom: -58px;
+	position: absolute;
+	right: 0;
+}
+
+#EditFormModal div.editorPane {
+	background: none repeat scroll 0 0 #F7F7F7;
+	bottom: 0;
+	float: left;
+	left: 438px;
+	padding: 20px;
+	position: absolute;
+	right: 0px;
+	top: 0;
+	width: auto;
+	overflow: auto;
+	box-shadow: 0 0 4px #AAA;
+}
+
+#FormHtml div.fieldContainer,
+#FormHtml div.fieldContainer label {
+	cursor: move !important;
+}
+
+#fieldSettingsTab div.inspectorPane {
+	display: none;
+}
+
+#fieldSettingsTab div.inspectorPane.active {
+	display: block;
+}
+.addRowListing li {
+	list-style: none outside none;
+	margin: 12px 0;
+	text-align: center;
+	width: 100%;
+}
+
+.addRowListing li a {
+  width: 100%;
+}
+
+/*Sortable Details*/
+.ui-state-highlight {
+	background: #f9f9f9;
+	border: 1px dashed #CCC;
+	height: 1.5em;
+	min-height: 80px;
+	line-height: 1.2em;
+	margin-bottom: 20px;
+}
+div.ui-datepicker .ui-state-highlight {
+	min-height: 26px;
+	margin-bottom: 0;
+}
+
+/*Icons*/
+a.editButton {
+	background: none repeat scroll 0 0 #2BA6CB;
+	cursor: pointer;
+	display: block;
+	opacity: 0.25;
+	padding: 2px 3px;
+	position: absolute;
+	right: 0;
+	text-align: center;
+	top: -24px;
+	transition: all 300ms ease-in-out 0s;
+}
+
+a.editButton:hover {
+	opacity: 1;
+}
+
+a.editButton i {
+	color: #FFF;
+	font-size: 18px;
+}
+
+/*Row Helper*/
+#BuilderContents .row {
+	position: relative;
+}
+
+.rowHelper {
+	background: none repeat scroll 0 0 #ff6c00;
+	color: #FFFFFF;
+	min-height: 140px;
+	position: absolute;
+	right: -22px;
+	width: 22px;
+	top: 20px;
+	font-size: 16px;
+	opacity: 0;
+}
+
+.rowHelper:hover {
+	opacity: 1 !important;
+}
+
+body.building .rowHelper:hover,
+body.building .row:hover .rowHelper {
+	opacity: 0.5;
+}
+.rowMoveIcon {
+	position: absolute;
+	top: 4px;
+	left: 3px;
+	cursor: move;
+}
+.rowDeleteIcon {
+	position: absolute;
+	bottom: 4px;
+	left: 5px;
+	cursor: pointer;
+}
+
+.rowDeleteIcon:hover,
+div.staticModuleEditBar i.remove:hover,
+div.richTextModuleEditBar i.remove:hover {
+	text-shadow: 0 1px 0 #444 ;
+}
+
+/*Static Module Edit Bar*/
+div.staticModuleEditBar,
+div.richTextModuleEditBar {
+	background-color: #5FC8D5;
+	color: #FFFFFF;
+	height: 25px;
+	position: absolute;
+	top: -25px;
+	width: 100%;
+	font-size: 18px;
+	opacity: 0;
+}
+
+div.shortCodeInsert:hover div.staticModuleEditBar,
+div.richTextArea:hover div.richTextModuleEditBar {
+	opacity: 0.75;
+}
+
+div.staticModuleEditBar:hover,
+div.richTextModuleEditBar:hover {
+	opacity: 1 !important;
+}
+body.previewing div.staticModuleEditBar,
+body.previewing div.richTextModuleEditBar {
+	display: none;
+}
+div.staticModuleEditBar span.title,
+div.richTextModuleEditBar span.title {
+	font-size: 14px;
+	margin-left: 8px;
+}
+/* Give room for the shortcode edit bar */
+body.building div.shortCodeInsert {
+	/*padding-top: 25px;*/
+	position: relative;
+}
+
+div.staticModuleEditBar i.remove,
+div.richTextModuleEditBar i.remove {
+	position: absolute;
+	right: 8px;
+	top: 2px;
+	cursor: pointer;
+}
+
+/*Rich Text Module Edit Bar*/
+div.richTextModuleEditBar {
+	background-color: #ff6262;
+}
+body.building div.richTextArea.module {
+	/*padding-top: 20px;*/
+}
+
+
+#PageSettingsMenu {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	overflow: hidden;
+	width: 280px;
+	right: 0;
+	z-index: -1;
+	display: none;
+}
+
+.building #PageSettingsMenu {
+	display: block;
+}
+
+#PageSettingsMenu .content {
+	background: #444;
+	color: #FFFFFF;
+	padding: 20px;
+	position: absolute;
+	right: -100%;
+	top: 45px;
+	bottom: 0;
+	transition: all 300ms ease-in-out 0s;
+	width: 280px;
+}
+
+.showPageSettings #PageSettingsMenu {
+	z-index: 3;
+}
+
+.showPageSettings #PageSettingsMenu .content {
+	right: 0;
+}
+
+.previewing #PageSettingsMenu {
+	display: none;
+}
+
+
+#PageSettingsMenu h3 {
+	font-weight: 300;
+	border-bottom: 1px solid #666;
+	margin-bottom: 20px;
+	padding-bottom: 6px;
+}
+#PageSettingsMenu h3,
+#PageSettingsMenu label {
+	color: #fff;
+}
+
+.settingsContainer {
+	margin-bottom: 20px;
+}
+#CloseSettingsButton {
+	background: none repeat scroll 0 0 #333333;
+	color: #FFFFFF;
+	display: block;
+	font-size: 22px;
+	height: 40px;
+	line-height: 36px;
+	position: absolute;
+	right: -13px;
+	text-align: center;
+	top: -30px;
+	width: 40px;
+	
+}
+#CloseSettingsButton:hover {
+	background: #222;
+}
+.previewing #cke_rt_0 {
+	display: none;
+}

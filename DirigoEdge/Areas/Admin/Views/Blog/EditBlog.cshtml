@@ -1,0 +1,110 @@
+﻿@{
+	ViewBag.Title = "Edit Blog";
+	Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@model DirigoEdge.Areas.Admin.Models.ViewModels.EditBlogViewModel
+@using DirigoEdgeCore.Utils
+
+<div class="editBlog module" data-id="@Model.ThisBlog.BlogId">
+    <div class="row">
+
+        <div id="Sortable1" class="col-lg-8 connectedSortable">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3><i class="fa fa-pencil"></i> Edit Post @Html.Partial("Partials/BookmarkButtonPartial")</h3>
+                    @{
+                        string permaLinkModded = !String.IsNullOrEmpty(@Model.ThisBlog.PermaLink) ? "True" : "False";
+                    }
+                    <div class="blogTitle">
+                        <input id="BlogTitle" class="required form-control" type="text" value="@Model.ThisBlog.Title" autocomplete=off />
+                        <span class="permHint">Permalink: </span>
+                        <span>@Model.SiteUrl</span><span class="category-permalink">@ContentUtils.GetFormattedUrl(Model.ThisBlog.MainCategory)/</span><span id="PermaLinkEnd" data-modified="@permaLinkModded">@ContentUtils.GetFormattedUrl(Model.ThisBlog.PermaLink)</span><input id="PermaLinkEditPane" type="text" class="hide autogrow" /><span>/</span><a id="EditPermaLink" href="javascript:void(0);">edit</a>
+                    </div>
+                   
+                </div>
+            </div>
+
+            <div class="row editArea">
+                <div class="col-lg-12">
+                    <textarea id="CKEDITBLOG" cols="40" rows="20" autocomplete="off">@Model.ThisBlog.HtmlContent</textarea>
+                    <a id="SaveBlog" class="btn btn-primary pull-right">Save</a>
+                    <div id="SaveSpinner" class="standaloneSpinner"></div>
+                </div>
+            </div>
+            
+            @{
+                foreach (var module in Model.AdminModulesColumn1)
+                {
+                    string collapsed = module.IsCollapsed ? "collapsed" : "";
+                    <div id="@module.ModuleName" class="panel sortable @collapsed">
+                        @Html.Partial("Partials/BlogAdminModules/" + module.ModuleName)
+                    </div>
+                }
+            }            
+        </div>
+
+        <div id="Sortable2" class="col-lg-4 connectedSortable">                                    
+            @{
+                foreach (var module in Model.AdminModulesColumn2)
+                {
+                    string collapsed = module.IsCollapsed ? "collapsed" : "";
+                    <div id="@module.ModuleName" class="panel sortable @collapsed">
+                        @Html.Partial("Partials/BlogAdminModules/" + module.ModuleName)
+                    </div>
+                }
+            }
+        </div>
+
+    </div>
+</div>
+
+
+
+@*Set the style for drag and drop behavior*@
+<style>
+     #Sortable1 .ui-state-highlight,
+     #Sortable2 .ui-state-highlight {
+         height: 1.5em; line-height: 1.2em;
+         min-height: 50px;
+         margin: 20px 0;
+     }
+</style>
+
+@section Scripts {
+    <script src="/scripts/ckeditor/ckeditor.js"></script>
+    <script src="/Scripts/jquery/plugins/dropzone/dropzone.js"></script>
+    <link href="/Scripts/jquery/plugins/dropzone/css/dropzone.css" type="text/css" rel="stylesheet">
+    <link href="/Scripts/jquery/plugins/dropzone/css/basic.css" type="text/css" rel="stylesheet">
+    
+    @*Tag Manager*@
+    <script src="/Areas/Admin/Scripts/jquery/plugins/tagit/jquery.tagit.js"></script>
+    <link href="/Areas/Admin/Scripts/jquery/plugins/tagit/jquery.tagit.css" type="text/css" rel="stylesheet">
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            // AutoGrow Input
+            $("input.autogrow").autoGrowInput();
+
+            // Featured Image Upload
+            $('#SetFeaturedImage').fileBrowser({
+                directory: "",
+                isEditor : false
+            },
+            function(object) {
+                if (object.type === 'image' && object.src) {
+
+                    $("#FeaturedImage").val(object.src);
+                }
+            });
+
+    
+        });
+    </script>
+}
+
+@section Modals {
+
+}

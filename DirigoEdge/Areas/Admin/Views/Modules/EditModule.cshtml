@@ -1,0 +1,184 @@
+﻿@{
+    ViewBag.Title = "Edit Module";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@model DirigoEdge.Areas.Admin.Models.ViewModels.EditModuleViewModel
+@Html.Partial("Partials/RevisionDetailPartial")
+
+<div class="editContent" data-id="@Model.TheModule.ContentModuleId">
+    @Html.Partial("Partials/PageEditHeaderPartial")
+    <div class="row visibleOverflow" id="ContentRowContainer">
+        <div id="ContentRow" class="col-lg-9">
+
+            <a id="InsertContentImage" class="btn btn-primary small moduleButton" href="#"><i class="fa fa-picture-o"></i>&nbsp; Insert Image</a>
+
+            @{
+                // If no schema is assigned, show the html tab by default
+                bool hasSchema = Model.TheModule.SchemaId != null && Model.TheModule.SchemaId > 0;
+                string fieldEditorActive = hasSchema ? "active" : "";
+                string htmlEditorActive = !hasSchema ? "active" : "";
+            }
+
+            <ul class="nav nav-tabs">
+                <li class="@fieldEditorActive">
+                    <a href="#EditorTab" data-toggle="tab">Fields</a>
+                </li>
+                <li class="@htmlEditorActive">
+                    <a href="#HtmlTab" data-toggle="tab">HTML</a>
+                </li>
+                <li>
+                    <a href="#CSSTab" data-toggle="tab">CSS</a>
+                </li>
+                <li>
+                    <a href="#JSTab" data-toggle="tab">Javascript</a>
+                </li>
+            </ul>
+
+            <ul class="tab-content">
+
+                @*Schema Editor*@
+                <li class="relative tab-pane editTabArea @fieldEditorActive" id="EditorTab" data-schemaid="@Model.TheModule.SchemaId">
+                    @{
+                        if (Model.TheModule.SchemaId == null || Model.TheModule.SchemaId < 1)
+                        {
+                        <p>No Schema assigned.</p>
+                        }
+                    }
+                </li>
+
+                @*HTML*@
+                <li class="relative tab-pane editTabArea @htmlEditorActive" id="HtmlTab">
+                    <div class="aceEditArea" id="HTMLContent">@Model.TheModule.HTMLUnparsed</div>
+
+                    <div class="tipContainer">Tip: Insert values from the Fields tab via <a href="https://github.com/janl/mustache.js" target="_blank">mustache.js</a>. Example: {{Field Label}} or {{{Field Label}}} for raw/unescaped html.</div>
+                </li>
+
+                @*CSS*@
+                <li class="relative tab-pane editTabArea" id="CSSTab">
+                    <div class="aceEditArea" id="CSSContent">@Model.TheModule.CSSContent</div>
+
+                </li>
+
+                @*Javascript*@
+                <li class="relative tab-pane editTabArea" id="JSTab">
+                    <div class="aceEditArea" id="JSContent">@Model.TheModule.JSContent</div>
+                </li>
+            </ul>
+
+
+            <div class="tipContainer hide-for-touch">
+                Tip: You can press <kbd>Ctrl - S </kbd>to save within the editor.
+            </div>
+
+
+        </div>
+
+        <div class="col-lg-3">
+            
+			<div class="panel container-fluid">
+                <h3>Settings</h3>
+
+                @{
+                    bool isActive = Convert.ToBoolean(Model.TheModule.IsActive);
+                    string formattedDate = isActive ? Convert.ToDateTime(Model.TheModule.CreateDate).ToString("MM/dd/yyyy @ hh:mm") : "(Draft)";
+                    string publishedLabel = isActive ? "Update" : "Publish";
+                    string statLabel = isActive ? "Published" : "Draft";
+                }
+
+                <div class="saveContainer container-fluid">
+                    <a id="SaveModuleDraftButton" class="btn btn-default">Save Draft</a>
+                    <a id="SaveModuleButton" class="btn btn-primary mobileMarginBottom" data-url="modifymodule">@publishedLabel</a>
+                    <div id="SaveSpinner" class="standaloneSpinner"></div>
+                </div>
+
+                <div class="contentStatus container-fluid">
+                    <label>Status : <a id="StatusLabel" href="#">@statLabel</a></label>
+
+                    <div id="DraftStatusContainer">
+
+                        @{
+                            string draftSelected = !isActive ? "selected=selected" : "";
+                            string pubSelected = isActive ? "selected=selected" : "";
+                        }
+
+                        <select class=" form-control" id="DraftStatusSelector" autocomplete="off">
+                            <option value="draft" @draftSelected>Draft</option>
+                            <option value="published" @pubSelected>Published</option>
+                        </select>
+
+                        <a id="CloseDraftStatus" href="#">Close</a>
+
+                    </div>
+
+
+                </div>
+
+                <div class="publishContainer clearfix container-fluid">
+                    Last Published : <span id="PublishedDate"  date="@Model.TheModule.CreateDate" timezone="@Model.TimeZone" format="MM/DD/YYYY &#64; h:mm" class="convertTime">@formattedDate</span>
+                </div>
+
+            </div>
+            <div class="panel container-fluid">
+                <label>Module Name</label>
+                <input class=" form-control" id="ModuleName" type="text" value="@Model.TheModule.ModuleName" autocomplete="off"/>
+            </div>
+
+            <div class="panel container-fluid">
+                <h3>Schema</h3>
+
+                <select class=" form-control" id="SchemaSelector" autocomplete="off">
+
+                    @{
+                        string noneSelected = (Model.TheModule.SchemaId == null || Model.TheModule.SchemaId <= 0) ? "selected=selected" : "";
+                    }
+
+                    <option data-id="-1" @noneSelected>None</option>
+                    @{
+                        foreach (var schema in Model.Schemas)
+                        {
+                            string selected = schema.SchemaId == Model.TheModule.SchemaId ? "selected=selected" : "";
+                        <option @selected data-id="@schema.SchemaId">@schema.DisplayName</option>
+                        }
+                    }
+                </select>
+
+                <div class="panelActions">
+                    <a id="RefreshSchemaLink" href="#">Refresh <i class="fa fa-refresh"></i></a>| <a id="EditSchemaLink" href="/admin/schemas/editschema/@Model.TheModule.SchemaId" target="_blank">Edit Schema <i class="fa fa-external-link"></i></a>
+                </div>
+
+            </div>
+
+            <div class="panel container-fluid reviewRevisions">
+                <h4>History</h4>
+
+                <div id="RevisionsList" type="Module">
+                    @Html.Partial("~/Areas/Admin/Views/Shared/Partials/RevisionsListInnerPartial.cshtml", Model.Revisions)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Modals {
+    <div id="FileBrowserModal" class="modal large">
+        @* Content is loaded via Ajax in CKEditor insertimage plugin *@
+    </div>
+
+    <div id="FileBrowserThumbnailModal" class="modal large">
+        @* Content is loaded via Ajax in CKEditor insertimage plugin *@
+    </div>
+}
+
+@section scripts {
+    <script src="http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+
+    <script src="/Scripts/jquery/plugins/dropzone/dropzone.js"></script>
+    <link href="/Scripts/jquery/plugins/dropzone/css/dropzone.css" type="text/css" rel="stylesheet">
+    <link href="/Scripts/jquery/plugins/dropzone/css/basic.css" type="text/css" rel="stylesheet">
+
+    @*CKEditor and Mustache required for Schema Editor*@
+    <script src="/scripts/ckeditor/ckeditor.js"></script>
+    <script src="/Areas/Admin/Scripts/mustache/mustache.js"></script>
+    <script src="/Areas/Admin/Scripts/fieldEditor.js"></script>
+}

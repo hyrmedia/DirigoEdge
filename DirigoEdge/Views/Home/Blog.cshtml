@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "Blog";
+}
+@using DirigoEdgeCore.Models.ViewModels
+@model BlogHomeViewModel
+
+<div class="breadcrumbsContainer row">
+    <div class="col-lg-12">
+        <ol class="breadcrumb">
+            <li>
+                <a href="/">Home</a>
+            </li>
+            <li class="active">
+                <a href="/blog/">Blog</a>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        @{
+            var blogTitle = @Model.BlogTitle ?? "Blog";
+        }
+        <h2>@blogTitle</h2>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-lg-9 blogListing">
+        @{
+            // Renders the blog article tags
+            @Html.Partial("/Views/Shared/Partials/BlogArticlePartial.cshtml", Model.BlogRoll)
+
+            if (Model.AllBlogs.Count() > Model.MaxBlogCount)
+            {
+                <a id="LoadMoreBlogs" href="javascript:;"
+                   class="secondary loadMore btn btn-primary"
+                   data-skip="@Model.SkipBlogs"
+                   data-take="@Model.MaxBlogCount"
+                   data-category="">Load More</a>
+            }
+            
+        }
+    </div>
+
+    <aside class="col-lg-3 blogPanels">
+        
+        @* Categories *@
+        @Html.Partial("~/Views/Shared/Partials/CategoriesListingPartial.cshtml", Model.BlogCats)
+        
+        @* Latest Blogs / Popular *@
+        @Html.Partial("~/Views/Shared/Partials/PopularBlogsPartial.cshtml", new BlogPopularViewModel())
+        
+        @* Archive *@
+        @Html.Partial("~/Views/Shared/Partials/BlogArchivePartial.cshtml", new BlogArchiveViewModel())
+        
+    </aside>
+
+</div>

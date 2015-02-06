@@ -1,0 +1,54 @@
+﻿/*
+* AjaxLoader
+* For Use with common.showAjaxLoader();
+*/
+div.ajaxContainer {
+    background: #FFF;
+    opacity: 0.5;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2000;
+}
+
+div.ajaxLoader {
+    background: url("images/ajaxLoader.gif") no-repeat scroll 50% 50% #FFF;
+    height: 50px;
+    left: 45%;
+    opacity: 1;
+    position: absolute;
+    top: 50%;
+    width: 50px;
+    z-index: 2001;
+}
+
+div.standaloneSpinner {
+    background: url("images/ajaxLoaderTransparent.gif") no-repeat scroll 50% 50% transparent;
+    height: 50px;
+    width: 50px;
+    z-index: 2001;
+    display:none;
+    float:right;
+    position:relative;
+    top:6px;
+}
+
+div.saveContainer {
+    float: left;
+    clear: both;
+}
+
+div.saveContainer div.standaloneSpinner {
+    top: -2px;
+}
+
+#SaveIndicator {
+    background: url("images/ajaxLoaderTransparent.gif") no-repeat scroll 50% 50% transparent;
+    height: 50px;
+    width: 50px;
+    z-index: 2001;
+    display:none;
+    position:relative;
+	top: -8px;
+	float:right;
+}

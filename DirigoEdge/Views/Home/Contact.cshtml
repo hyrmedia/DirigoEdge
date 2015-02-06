@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "Contact";
+}
+<div class="row">
+
+    <!-- Contact Details -->
+    <div class="col-lg-9">
+
+        <h3>Get in Touch!</h3>
+        <p>We'd love to hear from you. You can either reach out to us as a whole and one of our awesome team members will get back to you, or if you have a specific question reach out to one of our staff. We love getting email all day <em>all day</em>.</p>
+
+        <dl class="contained tabs">
+            <dd class="active"><a href="#contactForm">Contact Our Company</a></dd>
+        </dl>
+
+        <ul class="tabs-content contained">
+            <li id="contactFormTab" class="active">
+                <div class="row">
+                    <form id="ContactForm" action="/home/contactformpost" method="post">
+                        <div class="col-lg-2">
+                            <label class="inline">Your Name</label>
+                        </div>
+
+                        <div class="col-lg-10">
+                            <input name="name" type="text" id="yourName" placeholder="Jane Smith" class="required form-control" />
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label class="inline">Your Email</label>
+                            </div>
+                            <div class="col-lg-10">
+                                <input name="contactEmail" type="text" id="yourEmail" placeholder="jane@smithco.com" class="email required form-control" />
+                            </div>
+
+                            <div class="col-lg-2">
+                                <label class="inline">Subject</label>
+                            </div>
+                            <div class="col-lg-10">
+                                <input name="subject" type="text" id="Subject" class="required form-control" />
+                            </div>
+
+                            <label>Message</label>
+                            <textarea name="message" rows="4"></textarea>
+                        
+                            <div class="QapTcha"></div>
+
+                            <input type="submit" class="radius btn btn-primary form-control" value="Submit" />
+                        </div>
+                    </form>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!-- End Contact Details -->
+
+
+    <!-- Sidebar -->
+    <div class="col-lg-3">
+        <h5>Map</h5>
+        <p>
+            <a href="#">
+                <img src="http://placehold.it/400x280" />
+            </a>
+            <br />
+            <br />
+
+            <a href="#" data-toggle="modal" data-target="#mapModal">View Map</a>
+        </p>
+    </div>
+    <!-- End Sidebar -->
+</div>
+
+@section Scripts {
+    <script src="/Scripts/jqueryui/js/jquery-ui-1.9.2.custom.js"></script>
+    <script src="/Scripts/jquery/plugins/qaptcha/QapTcha.jquery.js"></script>
+    <script src="/Scripts/jquery/plugins/qaptcha/jquery.ui.touch.js"></script>
+    <link href="/Scripts/jquery/plugins/qaptcha/QapTcha.jquery.css" type="text/css" rel="stylesheet">
+
+    <script>
+        $(document).ready(function() {
+            $('.QapTcha').QapTcha({
+                autoSubmit: true,
+                autoRevert: true,
+                PHPfile: '/home/contactverify'
+            });
+
+        });
+
+    </script>
+}

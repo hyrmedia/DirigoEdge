@@ -1,0 +1,89 @@
+﻿@{
+	ViewBag.Title = "Site Settings";
+	Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@model DirigoEdge.Areas.Admin.Models.ViewModels.SiteSettingsViewModel
+
+<div class="siteSettings">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3><i class="fa fa-wrench"></i> Site Settings @Html.Partial("Partials/BookmarkButtonPartial")</h3>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-4 col-xs-6">
+            <label class="right inline">Google Analytics ID</label>
+        </div>
+        <div class="col-lg-8  col-xs-6">
+            <form class="custom">
+                <input type="text" class="eight commentBelow saveField form-control" data-field="GoogleAnalyticsId" autocomplete="off" value="@Model.Settings.GoogleAnalyticsId" />
+                <div class="settingsComment hidden-xs">Your Google Analytics Tracking Id. Ex : UA-XXXXX-X</div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-4 col-xs-6">
+            <label class="right inline">Contact E-Mail</label>
+        </div>
+        <div class="col-lg-8  col-xs-6">
+            <form class="custom">
+                <input type="text" class="eight commentBelow saveField form-control" data-field="ContactEmail" autocomplete="off" value="@Model.Settings.ContactEmail" />
+                <div class="settingsComment hidden-xs">Contact Form and other generic e-mails will be sent here.</div>
+            </form>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4 col-xs-6">
+            <label class="right inline">Search Index</label>
+        </div>
+        <div class="col-lg-8  col-xs-6">
+            <form class="custom">
+                @{
+                    string isChecked = Model.Settings.SearchIndex ? "checked = checked" : "";
+                }
+                <input class="custom saveField" data-field="SearchIndex" type="checkbox" @isChecked/>
+                <div class="settingsComment hidden-xs">Allow search engines to index this site.</div>
+            </form>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4 col-xs-6">
+            <label class="right inline">Default User Role</label>
+        </div>
+        <div class="col-lg-8  col-xs-6">
+            <form class="custom">
+                <select class="saveField form-control" data-field="DefaultUserRole">
+                    
+                    @{
+                        foreach (string role in Model.RolesList)
+                        {
+                            string selected = Model.Settings.DefaultUserRole == role ? "selected='selected'" : "";
+                            <option @selected>@role</option>    
+                        }
+                    }
+                </select>
+                <div class="settingsComment hidden-xs">Default User Role to assign to newly registered users.</div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="contain pull-left">
+                <a class="btn btn-primary mobileMarginBottom savePageButton" data-url="/admin/settings/savesitesettings/">Save</a>
+                <div id="SaveIndicator"></div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+@section Scripts {
+    <script src="/Areas/Admin/Scripts/siteSettings.js"></script>
+}

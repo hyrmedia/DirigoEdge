@@ -1,0 +1,13 @@
+﻿@model DirigoEdgeCore.Models.DirigoBaseModel
+
+@{
+    var title = String.IsNullOrEmpty(Model.BookmarkTitle) ? ViewBag.Title : Model.BookmarkTitle;
+    
+    // Check to see if the user is editing the newest version
+    <label class="bookmark-toggle" title="Bookmark this page">
+        <span class="hidden">
+            <input type="checkbox" data-url="@Request.RawUrl" data-title="@title" data-id="@Model.BookmarkId" id="ToggleBookmark" checked="@Model.IsBookmarked"/>
+        </span>
+        <i class="fa fa-bookmark @(Model.IsBookmarked ? "is-bookmarked" : "")"></i>
+    </label>
+}

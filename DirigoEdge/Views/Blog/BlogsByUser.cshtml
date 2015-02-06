@@ -1,0 +1,76 @@
+﻿@{
+    ViewBag.Title = "Blogs by User ";
+}
+@using DirigoEdgeCore.Models.ViewModels
+@using DirigoEdgeCore.Utils
+@model BlogsByUserViewModel
+
+
+<div class="row module blogByUserListing">
+    
+    @* Breadcrumbs *@
+    <div class="breadcrumbsContainer">
+        <div class="col-lg-12">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="/">Home</a>
+                </li>
+                <li>
+                    <a href="/blog/">Blog</a>
+                </li>
+                @{
+                    var author = !String.IsNullOrEmpty(Model.TheBlogUser.Username) ? Model.TheBlogUser.Username.Replace(" ", ContentGlobals.BLOGDELIMMETER) : "Anonymous";
+                    var available = author == "Anonymous" ? "unavailable" : "current";
+                }
+                <li class="@available">
+                    <a href="/blog/user/@author">
+                        @author.Replace(ContentGlobals.BLOGDELIMMETER, " ")
+                    </a>
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="col-lg-9 blogListing">
+        
+        <h2>Blogs by : @Model.BlogUsername</h2>
+
+        @{
+            if (Model.BlogsByUser.Count < 1)
+            {
+                <p>This user has no blog posts.</p>
+            }
+            else
+            {
+
+                // Renders the blog article tags
+                @Html.Partial("/Views/Shared/Partials/BlogArticlePartial.cshtml", Model.BlogsByUser);
+                
+                if (Model.AllBlogs.Count() > Model.MaxBlogCount)
+                {
+                    <a id="LoadMoreBlogs" href="javascript:;"
+                       class="secondary loadMore btn btn-primary"
+                       data-skip="@Model.SkipBlogs"
+                       data-take="@Model.MaxBlogCount"
+                       data-user="@Model.TheBlogUser.Username"
+                       data-category="">Load More</a>
+                }
+            }
+        }
+    </div>
+
+    <div class="col-lg-3 categoryBlogListModule">
+        @* Blog Author *@
+        @Html.Partial("~/Views/Shared/Partials/BlogAuthorPartial.cshtml", new BlogAuthorViewModel(Model.BlogUsername))
+        
+        @* Categories *@
+        @Html.Partial("~/Views/Shared/Partials/CategoriesListingPartial.cshtml", new BlogsCategoriesViewModel(""))
+        
+        @* Latest Blogs / Popular *@
+        @Html.Partial("~/Views/Shared/Partials/PopularBlogsPartial.cshtml", new BlogPopularViewModel())
+        
+        @* Archive *@
+        @Html.Partial("~/Views/Shared/Partials/BlogArchivePartial.cshtml", new BlogArchiveViewModel())
+    </div>
+
+</div>

@@ -1,0 +1,119 @@
+﻿
+<div id="AdminEditContentModal" class="modal large">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h3>Edit Module - <span class="moduleTitle"></span></h3> 
+            </div>
+            <div class="modal-body">
+                <div class="content container-fluid">
+                    <div id="ModuleContentEditContainer"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="confirmCancelContainer">
+                    <a id="OpenInAdminLink" class="openMidLink left" href="#" target="_blank">Edit in Admin Interface</a>
+                    <a id="ContentEditorLink" class="adminRawEdit onScreen left" target="_blank">Edit in Code Editor</a> <span class="unsavedChanges">(You will lose any unsaved changes.)</span>
+                    <a id="ConfirmAdminContentUpdate" class="pull-right btn btn-primary confirmButton">Save & Update</a>
+                    <a class="pull-right btn btn-default" onclick="$('#AdminEditContentModal').modal('hide');">Cancel</a>
+                </div>  
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Raw editor in modal *@    
+<div id="AdminEditRawContentModal" class="modal large">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h3>Edit Module - <span class="moduleTitle"></span></h3>
+            </div>
+            <div class="modal-body">
+                <div class="content container-fluid">
+                    <div id="ModuleRawContentEditContainer"></div>
+                    <div class="editContent" data-id="">
+
+                        <div class="row visibleOverflow" id="ContentRowContainer">
+                            <div id="ContentRow" class="col-lg-12">
+
+                                <dl class="tabs">
+                                    <dd class="active"><a href="#Html">HTML</a></dd>
+                                    @*Hiding these editors for now for simplicity sake.*@
+                                    @*<dd><a href="#CSS">CSS</a></dd>
+                                    <dd><a href="#JS">Javascript</a></dd>*@
+                                </dl>
+                
+                                <a id="InsertContentImage" href="#" data-toggle="modal" data-target="#InsertImageModal">Insert Image</a>
+
+                                <ul class="tabs-content">
+                                    @*HTML*@
+                                    <li class="active relative editTabArea" id="HtmlTab">
+                                        <div class="aceEditArea" id="HTMLContent"></div>
+                                    </li>
+
+                                    @*CSS*@
+                                    <li class="relative editTabArea" id="CSSTab">
+                                        <div class="aceEditArea" id="CSSContent"></div>
+                                    </li>
+
+                                    @*Javascript*@
+                                    <li class="relative editTabArea" id="JSTab">
+                                        <div class="aceEditArea" id="JSContent"></div>
+                                    </li>
+                                </ul>
+
+                            </div>
+
+                        </div>
+        
+                        <div class="row hide-for-touch">
+                            <div class="col-lg-12 tipContainer">
+                                Tip: You can press <kbd>Ctrl - S </kbd> to save within the editor.
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="confirmCancelContainer">
+                    <a id="WysiwygEditorLink" class="adminEdit onScreen left" target="_blank">Edit in WYSIWYG</a>           
+                    <a id="SaveContentButton" class="pull-right btn btn-primary confirmButton" data-url="modifymodule" data-name="">Save & Update</a>
+                    <div id="SaveSpinner" class="standaloneSpinner"></div>
+                    <a class="pull-right btn btn-default" id="cancelModal">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* add modal for image uploading *@
+<div id="InsertImageModal" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h2>Insert Image.</h2>
+            </div>
+            <div class="modal-body">
+                <div class="content container-fluid">
+                    <form action="/admin/fileUpload" class="" id="modal-dropzone"></form>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>

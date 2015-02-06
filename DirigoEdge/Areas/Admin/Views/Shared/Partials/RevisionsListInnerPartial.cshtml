@@ -1,0 +1,14 @@
+﻿@model List<DirigoEdgeCore.Models.ViewModels.RevisionViewModel>
+<ul>
+    @{
+        foreach (var rev in Model)
+        {
+            string isDraft = (!rev.WasPublished.HasValue || rev.WasPublished.Value) ? "Published" : "(Draft)";
+            string authorName = rev.AuthorName ?? "Anonymous";
+        <li>
+            <a href="javascript:void(0);" data-id="@rev.ContentId"date="@rev.Date" timezone="@rev.TimeZone"  format="MM/DD/YYYY &#64; h:mm" class="convertTime">@rev.Date <span class="status">@isDraft</span></a><span>by @authorName</span>
+        </li>
+        }
+    }
+</ul>
+

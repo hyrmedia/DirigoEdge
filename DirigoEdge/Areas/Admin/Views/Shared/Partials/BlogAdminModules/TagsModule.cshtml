@@ -1,0 +1,15 @@
+﻿@model DirigoEdge.Areas.Admin.Models.ViewModels.EditBlogViewModel
+
+<h4>Tags</h4>
+
+<div class="content">
+    <input class=" form-control" id="BlogTags" type="text" placeholder="tags..." value="@Model.ThisBlog.Tags" />
+    <em>Separate tags with commas</em>
+    <h5>Common Tags</h5>
+    <ul class="commonTags">
+        @foreach (var tag in Model.TagCounts)
+        {
+            <li><a href="" data-tag="@tag.Tag">@tag.Tag (@tag.Count)</a></li>
+        }
+    </ul>
+</div>

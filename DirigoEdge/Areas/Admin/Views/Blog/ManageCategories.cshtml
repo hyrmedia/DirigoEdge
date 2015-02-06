@@ -1,0 +1,123 @@
+﻿@{
+    ViewBag.Title = "Manage Categories";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@model DirigoEdge.Areas.Admin.Models.ViewModels.ManageCategoriesViewModel
+
+<div class="row">
+    <div class="col-lg-12">
+        <h3>Manage Categories @Html.Partial("Partials/BookmarkButtonPartial")</h3>
+        <a id="NewBlogPage" class="btn btn-primary newManageButton mobileBlockStatic mobileMarginBottom" data-toggle="modal" data-target="#AddCategoryModal" href="#">New Category +</a>
+
+        <table class="twelve bordered manageTable" id="CategoriesTable">
+            <thead>
+                <tr>
+                    <th class="hidden-xs">Id</th>
+                    <th>Name</th>
+                    <th>Posts</th>
+                    <th class="actions">Actions</th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                @{
+                    if (Model.BlogCategories.Any())
+                    {
+                        foreach (var cat in Model.BlogCategories)
+                        {
+                            var total = 0;
+                            var catPostItem = Model.Totals.FirstOrDefault(x => x.Category == cat.CategoryName);
+                            if (catPostItem != null)
+                            {
+                                total = catPostItem.TotalPosts;
+                            }
+                            <tr>
+                                <td class="id hidden-xs">@cat.CategoryId</td>
+                                <td class="name">@cat.CategoryName</td>
+                                <td>@total</td>
+                                <td>
+                                    <a class="deleteCategoryButton btn btn-danger btn-sm" href="#" data-id="@cat.CategoryId">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Modals {
+    <div id="AddCategoryModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h2>New Category</h2>
+                    <p class="lead">Create a new blog category.</p>
+                </div>
+                <div class="modal-body">
+                    <div class="content container-fluid">
+                        <label>Category Name : </label>
+                        <input class=" form-control" id="CategoryNameInput" type="text" autocomplete="off"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a id="ConfirmAddCategory" class="pull-right btn btn-primary confirmModalButton tabletBlockStatic">Add</a>
+                    <a class="pull-right btn btn-default" onclick="$('#AddCategoryModal').modal('hide');">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="DeleteCategoryModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h2>Delete Category</h2>
+                    <p class="lead">Are you sure you want to delete this category?</p>
+                    <div class="alert alert-danger">All blog posts with this category will change to the default category!</div>
+                </div>
+                <div class="modal-body">
+                    <div class="content container-fluid">
+                        <p><span id="popTitle"></span>will be <em>permanently</em> deleted.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a id="ConfirmDeleteCategory" class="pull-right btn btn-primary confirmModalButton">Confirm</a>
+                    <a class="pull-right btn btn-default" onclick="$('#DeleteCategoryModal').modal('hide');">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @{
+        // Only load if there is a good reason to
+        if (Model.BlogCategories.Count > 0)
+        {
+            <script src="/Areas/Admin/Scripts/jquery/plugins/datatables/js/jquery.dataTables.min.js"></script>
+
+            <script>
+                $(document).ready(function () {
+                    $("table.manageTable").dataTable({
+                        "iDisplayLength": 25,
+                        "aoColumnDefs": [
+                            { "bSortable": false, "aTargets": ["actions"] } // No Sorting on actions
+                        ],
+                        "aaSorting": [[0, "desc"]] // Sort by id
+                    });
+                });
+            </script>
+        }
+    }
+}

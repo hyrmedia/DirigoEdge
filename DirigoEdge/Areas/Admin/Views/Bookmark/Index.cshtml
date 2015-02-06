@@ -1,0 +1,109 @@
+﻿@model  DirigoEdge.Areas.Admin.Models.ViewModels.BookmarkViewModel
+
+@{
+    ViewBag.Title = "Bookmarks";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row manageBookmarks">
+    <div class="col-md-12">
+
+        <h3>
+            <i class="fa fa-bookmark"></i>
+            Bookmarks
+        </h3>
+
+        <table class="manageTable twelve bordered">
+            <thead>
+                <tr>
+                    <th class="name">Name</th>
+                    <th class="actions">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bookmark in Model.Bookmarks)
+                {
+                    <tr data-bookmark="@bookmark.BookmarkId">
+                        <td class="title">
+                            <a href="@bookmark.Url">@bookmark.Title</a>
+                        </td>
+                        <td>
+                            <button class="btn  btn-primary btn-sm edit-bookmark">Edit</button>
+                            <button class="btn  btn-danger btn-sm delete-bookmark">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+@section Modals {
+
+    <div id="MediaModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h2>Upload Media</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="content container-fluid">
+                        <form action="/admin/fileUpload" class="dropzone" id="my-awesome-dropzone">
+                            @*<input type="hidden" name="category" value="@Model.Category"/>*@
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="DeleteBookmarkModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h2>Confirm Delete.</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="content container-fluid">
+                        <p class="lead">Are you sure you want to delete this file?</p>
+                        <p><strong><span class="file"></span></strong> will be <em>permanently</em> deleted.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a id="ConfirmBookmarkDelete" class="pull-right btn btn-danger confirmDeleteButton confirmModalButton">Delete</a>
+                    <a class="pull-right btn btn-default" onclick="$('#DeleteMediaModal').modal('hide');">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script src="/Areas/Admin/Scripts/jquery/plugins/datatables/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(function () {
+            var oTable = $("table.manageTable").dataTable({
+                "iDisplayLength": 25,
+                "aoColumnDefs": [
+                    {
+                        "bSortable": false,
+                        "aTargets": ["thumbnail", "actions", "location"]
+                    }
+                ],
+                "aaSorting": [[0, "asc"]]
+            });
+        });
+    </script>
+}

@@ -1,0 +1,33 @@
+﻿@model DirigoEdge.Areas.Admin.Models.ViewModels.EditEventViewModel
+
+<h4>Visibility</h4>
+
+<div class="content">
+    <div class="status">
+        <a id="PreviewEventButton" class="btn small btn-info right mobileMarginBottom">Preview</a>
+        @{
+            string Checked = (bool)Model.ThisEvent.IsActive ? "checked = checked" : "";
+            string featured = (bool) Model.ThisEvent.IsFeatured ? "checked = checked" : "";
+        }
+        <form class="custom">
+            <label for="IsActiveCheck">
+                <input class="" type="checkbox" @Checked id="IsActiveCheck"> Is Active</label>
+            <label for="IsActiveCheck">
+                <input class="" type="checkbox" @featured id="IsFeaturedCheck"> Is Featured</label>
+        </form>
+    </div>
+    @{
+        string formattedStartDate = Convert.ToDateTime(Model.ThisEvent.StartDate).ToString("MM/dd/yyyy");
+        string formattedEndDate = Convert.ToDateTime(Model.ThisEvent.EndDate).ToString("MM/dd/yyyy");
+    }
+    <div class="publishContainer">
+        <b>Start Date : </b>
+        <input class=" form-control" id="StartDate" data-field="StartDate" value="@formattedStartDate" type="text" autocomplete=off>
+    </div>
+    <div class="publishContainer">
+        <b>End Date : </b>
+        <input class=" form-control" id="EndDate" data-field="EndDate" value="@formattedEndDate" type="text" autocomplete=off>
+    </div>
+    
+    <p><i>For one day events, enter start date same as end date</i></p>
+</div>

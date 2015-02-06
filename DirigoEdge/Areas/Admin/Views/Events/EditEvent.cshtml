@@ -1,0 +1,114 @@
+﻿@{
+	ViewBag.Title = "Edit Event";
+	Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@model DirigoEdge.Areas.Admin.Models.ViewModels.EditEventViewModel
+@using DirigoEdgeCore.Utils
+
+<div class="editEvent module" data-id="@Model.ThisEvent.EventId">
+    <div class="row">
+
+        <div id="Sortable1" class="col-lg-8">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3>Edit Event</h3>
+                    @{
+                        string permaLinkModded = !String.IsNullOrEmpty(@Model.ThisEvent.PermaLink) ? "True" : "False";
+                    }
+                    <div class="eventTitle">
+                        <input id="EventTitle" class="required form-control" type="text" value="@Model.ThisEvent.Title" autocomplete=off />
+                        <span class="permHint">Permalink: </span>
+                        <span>@Model.SiteUrl</span><span id="PermaLinkEnd" data-modified="@permaLinkModded">@ContentUtils.GetFormattedUrl(Model.ThisEvent.PermaLink)</span>
+                        <input id="PermaLinkEditPane" type="text" class="hide autogrow form-control" /><span>/</span><a id="EditPermaLink" href="javascript:void(0);">edit</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row editArea">
+                <div class="col-lg-12">
+                    <textarea id="CKEDITEVENT" cols="40" rows="20" autocomplete="off">@Model.ThisEvent.HtmlContent</textarea>
+                    <a id="SaveEvent" class="btn btn-primary pull-right">Save</a>
+                    <div id="SaveSpinner" class="standaloneSpinner"></div>
+                </div>
+            </div>
+            
+            @{
+                foreach (var module in Model.EventAdminModulesColumn1)
+                {
+                    string collapsed = module.IsCollapsed ? "collapsed" : "";
+                    <div id="@module.ModuleName" class="panel @collapsed">
+                        @Html.Partial("Partials/EventAdminModules/" + module.ModuleName)
+                    </div>
+                }
+            }            
+        </div>
+
+        <div id="Sortable2" class="col-lg-4">                                    
+            @{
+                foreach (var module in Model.EventAdminModulesColumn2)
+                {
+                    string collapsed = module.IsCollapsed ? "collapsed" : "";
+                    <div id="@module.ModuleName" class="panel container-fluid @collapsed">
+                        @Html.Partial("Partials/EventAdminModules/" + module.ModuleName)
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="/scripts/ckeditor/ckeditor.js"></script>
+    <script src="/Scripts/jquery/plugins/dropzone/dropzone.js"></script>
+    <link href="/Scripts/jquery/plugins/dropzone/css/dropzone.css" type="text/css" rel="stylesheet">
+    <link href="/Scripts/jquery/plugins/dropzone/css/basic.css" type="text/css" rel="stylesheet">
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            
+            // AutoGrow Input
+            $("input.autogrow").autoGrowInput();
+
+            
+            $('#SetFeaturedImage').fileBrowser({
+                directory: "",
+                isEditor: false
+            },
+            function (object) {
+                if (object.type === 'image' && object.src) {
+
+                    $("#FeaturedImage").val(object.src);
+                }
+            });
+		}); 
+    </script>
+}
+
+@section Modals {
+    <div id="FeaturedImageModal" class="modal medium">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h2>Featured Image</h2>
+                    <p class="lead">Set the blog's Featured Image</p>
+                </div>
+                <div class="modal-body">
+                    <div class="content container-fluid">
+                        <p class="lead">Set the blog's Featured Image</p>
+                        <p class="">This will show as the image headline on blog overview pages.
+                            <br />
+                            Images should be 760px × 250px.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+}

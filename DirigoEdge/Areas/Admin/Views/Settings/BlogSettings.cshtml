@@ -1,0 +1,144 @@
+﻿@model DirigoEdge.Areas.Admin.Models.ViewModels.BlogSettingsViewModel
+
+@{
+    ViewBag.Title = "Blog Settings";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";    
+}
+
+<div class="siteSettings">
+    <div class="row form-group">
+        <div class="col-sm-12">
+            <h3>Blog Settings @Html.Partial("Partials/BookmarkButtonPartial")</h3>
+        </div>
+    </div>
+    
+    <div class="row form-group">
+        <div class="col-sm-4">
+            <label class="right inline">Blog Title</label>
+        </div>
+        <div class="col-sm-8">
+            <input type="text" value="@Model.Settings.BlogTitle" class="eight saveField form-control" data-field="BlogTitle" autocomplete="off" />
+        </div>
+    </div>
+
+
+    <div class="row form-group">
+        <div class="col-sm-4">
+            <label class="right inline">Initial Blog Count On Blogroll</label>
+        </div>
+        <div class="col-sm-8">
+            <form class="custom">
+                <input class="one saveField form-control" type="text" value="@Model.Settings.MaxBlogsOnHomepageBeforeLoad" data-field="MaxBlogsOnHomepageBeforeLoad" autocomplete="off" />
+
+                <div class="settingsComment  hidden-xs">The maximum number of blogs to show on the blog page before the "More" button appears.</div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <div class="col-sm-4">
+            <label class="right inline">Months of Archives to Show</label>
+        </div>
+        <div class="col-sm-8">
+            <form class="custom">
+                <input class="one saveField form-control" type="text" value="@Model.Settings.MaxArchives" data-field="MaxArchives" autocomplete="off" />
+            </form>
+        </div>
+    </div>
+
+
+    <div class="row form-group">
+        <div class="col-sm-4">
+            <label class="right inline">Disable Comments Globally</label>
+        </div>
+        <div class="col-sm-8">
+            <form class="custom">
+                @{
+                    string Checked = Model.Settings.DisableAllCommentsGlobal ? "checked = checked" : "";
+                }
+                <input class="custom saveField" @Checked type="checkbox" data-field="DisableAllCommentsGlobal" />
+                
+                <div class="settingsComment  hidden-xs">Blog Comments can be disabled individually - check this option if you never want comments to appear on your blogs.</div>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="row form-group">
+        <div class="col-sm-4">
+            <label class="right inline">Use Disqus Comments</label>
+        </div>
+        <div class="col-sm-8">
+            <form class="custom">
+                @{
+                    string sdcChecked = Model.Settings.ShowDisqusComents ? "checked = checked" : "";
+                }
+                <input class="custom saveField" type="checkbox" @sdcChecked data-field="ShowDisqusComents" />
+                <div class="settingsComment hidden-xs"><a href="https://disqus.com/" target="_blank">What's this?</a> Requires a Disqus Shortname</div>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="row form-group">
+        <div class="col-sm-4">
+            <label class="right inline">Disqus Shortname</label>
+        </div>
+        <div class="col-sm-8">
+            <input type="text" class="eight commentBelow saveField form-control" data-field="DisqusShortName" value="@Model.Settings.DisqusShortName" />
+            <div class="settingsComment hidden-xs">Your unique identifier for disqus. <a href="https://disqus.com/admin/signup/" target="_blank">Get an id for your site</a></div>
+        </div>
+    </div>
+
+
+    <div class="row form-group">
+        <div class="col-sm-4">
+            <label class="right inline">Use Facebook Comments</label>
+        </div>
+        <div class="col-sm-8">
+            <form class="custom">
+                @{
+                    string sfcChecked = Model.Settings.ShowFacebookComments ? "checked = checked" : "";
+                }
+                <input class="custom saveField" type="checkbox" data-field="ShowFacebookComments" @sfcChecked />
+                <div class="settingsComment hidden-xs">Requires a Facebook app id from the link below.</div>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="row hide form-group">
+        <div class="col-sm-4">
+            <label class="right inline">Facebook App Id</label>
+        </div>
+        <div class="col-sm-8">
+            <input type="text" class="eight commentBelow saveField form-control" data-field="FacebookAppId" value="@Model.Settings.FacebookAppId" autocomplete="off"  />
+            <div class="settingsComment hidden-xs">Necessary if you want to utilize facebook comments. <a href="https://disqus.com/admin/signup/" target="_blank">Get an app id for your site</a></div>
+        </div>
+    </div>
+
+
+    <div class="row form-group">
+        <div class="col-sm-4">
+            <label class="right inline">Show Facebook Like Button</label>
+        </div>
+        <div class="col-sm-8">
+            <form class="custom">
+                @{
+                    string sflbChecked = Model.Settings.ShowFacebookLikeButton ? "checked = checked" : "";
+                }
+                <input class="custom saveField" type="checkbox" data-field="ShowFacebookLikeButton" @sflbChecked />
+                <div class="settingsComment  hidden-xs">Does not require a Facebook app id.</div>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="row form-group">
+        <div class="col-sm-2">
+            <a id="SaveBlogInfo" class="btn btn-primary mobileMarginBottom savePageButton" data-url="/admin/settings/saveblogsettings/">Save</a>
+            <div id="SaveIndicator"></div>
+        </div>
+    </div>
+    
+</div>

@@ -1,0 +1,17 @@
+﻿@using DirigoEdgeCore.Data.Context
+@{
+    ViewBag.Title = "Page Not Found";
+
+    string htmlContent = "<h1>404</h1>";
+    using (var context = new DataContext())
+    {
+        var page = context.ContentPages.FirstOrDefault(x => x.Permalink == "404");
+
+        if (page != null)
+        {
+            htmlContent = page.HTMLContentFormatted;
+        }
+    }
+}
+
+@Html.Raw(htmlContent)

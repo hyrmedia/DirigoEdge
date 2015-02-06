@@ -1,0 +1,167 @@
+﻿@{
+	ViewBag.Title = "Edit Slideshow";
+	Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@model DirigoEdge.Areas.Admin.Models.ViewModels.EditSlideShowViewModel
+
+<div class="row">
+    <div class="col-lg-12">
+        <h2>Edit SlideShow</h2>        
+    </div>
+
+    <div class="col-lg-9">
+        <ol id="SlideEditList" data-id="@Model.TheSlideShow.SlideshowModuleId">
+            @{
+                int slideCount = 1;
+                foreach (var slide in Model.TheSlideShow.Slides)
+                {
+                    // *** if you edit this Html, make sure you edit the copy html at the bottom of this page as well
+                    <li class="slideContainer">
+                        
+                        
+                        <div class="container-fluid">
+                            <div class="col-lg-8 imageSetContainer" style="padding-left:0;">
+                                <label>Image Location</label>
+                                <input class="imageLocation form-control" type="text" autocomplete="off" value="@slide.ImageLocation"/>
+                                <a class="revealUpload" href="javascript:void(0);">Upload / Select Image</a>
+                            </div>
+                            
+                            <div class="col-lg-4">
+                                <img class="previewImg" data-toggle="tooltip" data-placement="left" src="@slide.ImageLocation" width="100%" title="<img class='constrained' src='@slide.ImageLocation' />"/>    
+                            </div>
+                        </div>
+                        
+                        <label class="" data-toggle="tooltip" data-placement="top" title="Leave empty if you do not want to show a caption.">Caption</label>
+                        <input class="caption form-control" type="text" autocomplete="off" value="@slide.Caption"/>
+
+                        <label>Actions</label>
+                        <ul class="actionList inline-list">
+                            <li><a class="moveUp" href="javascript:void(0);">Move Up</a></li>
+                            <li><a class="moveDown" href="javascript:void(0);">Move Down</a></li>
+                            <li><a class="delete" href="javascript:void(0);">Delete</a></li>
+                        </ul>
+                    </li>
+
+                    slideCount++;
+                }
+            }
+        </ol>
+        
+        <div class="saveContainer">
+            <a class="btn btn-danger" id="AddSlide">Add Slide +</a>
+            <a class="btn btn-primary" id="SaveSlideShow">Save</a>
+        </div>
+        
+    </div>        
+
+    <div class="col-lg-3">
+        <h3>Settings</h3>
+
+        <label>Name</label>
+        <input class=" form-control" type="text" value="@Model.TheSlideShow.SlideShowName" id="ContentName">
+        
+        <hr/>
+        
+        <label>Animation Speed (in ms)</label>
+        <input class=" form-control" type="text" value="@Model.TheSlideShow.AnimationSpeed" id="AnimationSpeed">
+            
+        <label>Advance Speed (in ms)</label>
+        <input class=" form-control" type="text" value="@Model.TheSlideShow.AdvanceSpeed" id="AdvanceSpeed">
+
+        <label>Animation</label>
+        <select class=" form-control" id="AnimationSelect">
+            @{
+                // I'm sure there is a better way to do this
+                string fadeSelected = Model.TheSlideShow.Animation == "fade" ? "selected = selected" : "";
+                string hSlideSelected = Model.TheSlideShow.Animation == "horizontal-slide" ? "selected = selected" : "";
+                string vSlideSelected = Model.TheSlideShow.Animation == "vertical-slide" ? "selected = selected" : "";
+                string hPushSelected = Model.TheSlideShow.Animation == "horizontal-push" ? "selected = selected" : "";
+            }
+
+            <option @fadeSelected value="fade">Fade</option>
+            <option @hSlideSelected value="horizontal-slide">Horizontal Slide</option>
+            <option @vSlideSelected value="vertical-slide">Vertical Slide</option>
+            <option @hPushSelected value="horizontal-push">Horizontal Push</option>
+        </select>
+        
+        <form class="custom slideActionList">
+            @{
+                string timerChecked = Model.TheSlideShow.UseTimer ? "checked=checked" : "";
+                string pauseOnHoverChecked = Model.TheSlideShow.PauseOnHover ? "checked=checked" : "";
+                string useDirNavChecked = Model.TheSlideShow.UseDirectionalNav ? "checked=checked" : "";
+                string showBullChecked = Model.TheSlideShow.ShowBullets ? "checked=checked" : "";
+            }
+
+            <label for="UseTimer">
+                <input class=" form-control" type="checkbox" id="UseTimer" @timerChecked style="display: none;"><span class="custom checkbox"></span> Use Timer
+            </label>
+
+            <label for="PauseOnHover">
+                <input class=" form-control" type="checkbox" id="PauseOnHover" @pauseOnHoverChecked style="display: none;"><span class="custom checkbox"></span> Pause On Hover
+            </label>
+
+            <label for="UseDirectionalNav">
+                <input class=" form-control" type="checkbox" id="UseDirectionalNav" @useDirNavChecked style="display: none;"><span class="custom checkbox"></span> Use Directional Nav
+            </label>
+
+            <label for="ShowBullets">
+                <input class=" form-control" type="checkbox" id="ShowBullets" @showBullChecked style="display: none;"><span class="custom checkbox"></span> Show Bullets
+            </label>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="/Areas/Admin/Scripts/slideshowEditor.js"></script>
+}
+
+@section Modals {
+    <div id="MediaModal" class="modal large" data-callback="slideEditor.fInsertImage">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h2>Media</h2> 
+                </div>
+                <div class="modal-body">
+                    <div class="content container-fluid">
+                        <div class="col-lg-3">
+                            <dl class="tabs vertical">
+                                <dd class="active"><a href="#simpleContained1">Upload</a></dd>
+                                <dd class="hidden-xs"><a id="BrowseMedia" href="#BrowseMedia">Browse</a></dd>
+                            </dl>
+                        </div>
+                        <div class="col-lg-9">
+                            <ul class="tabs-content">
+                                <li class="active" id="simpleContained1Tab">
+                                    <p class="lead">Upload File</p>
+                                    <input name="media" id="MediaUploader" type="file" />
+                                </li>
+                                <li id="BrowseMediaTab">
+                                    <p class="lead">Browse Uploaded Content</p>
+                                    <div id="MediaListing"></div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+
+
+
+
+

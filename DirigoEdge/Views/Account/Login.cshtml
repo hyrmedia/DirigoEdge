@@ -1,0 +1,38 @@
+﻿@model DirigoEdgeCore.Models.LoginModel
+
+@{
+    ViewBag.Title = "Log in";
+}
+
+
+<div class="row">
+    <div class="col-md-6 col-sm-12">
+        <h2 class="sansserif">Log On</h2>
+        <p>Please enter your user name and password. @Html.ActionLink("Register", "Register") if you don't have an account.</p>
+        @Html.ValidationSummary(true, "Login was unsuccessful. Please correct the errors and try again.")
+
+        @using (Html.BeginForm())
+		{
+            <div class="form-group">
+                @Html.LabelFor(m => m.UserName)
+                <input class="form-control"  data-val="true" data-val-required="The User name field is required." id="UserName" name="UserName" type="text" value="">
+                @Html.ValidationMessageFor(m => m.UserName)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Password)
+                <input class="form-control" data-val="true" data-val-required="The Password field is required." id="Password" name="Password" type="password">
+                @Html.ValidationMessageFor(m => m.Password)
+            </div>
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBoxFor(m => m.RememberMe)
+                    <label for="RememberMe" class="fltLeft" style="display: inline-block; margin-bottom: 20px;">
+                        Remember me
+                    </label>
+                </label>
+            </div>
+
+		    <button type="submit" class="btn btn-default">Log On</button>
+		}
+    </div>
+</div>

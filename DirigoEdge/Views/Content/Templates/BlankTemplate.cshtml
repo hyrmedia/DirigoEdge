@@ -1,0 +1,44 @@
+﻿@model DirigoEdgeCore.Models.ViewModels.ContentViewViewModel
+
+@{
+    ViewBag.MetaDesc = Model.ThePage.MetaDescription;
+    ViewBag.Title = Model.ThePage.Title;
+    ViewBag.OGTitle = Model.ThePage.OGTitle;
+    ViewBag.OGUrl = Model.ThePage.OGUrl;
+    ViewBag.Canonical = Model.ThePage.Canonical;
+    ViewBag.OGImage = Model.ThePage.OGImage;
+}
+
+@section Styles {
+    <style>
+        @{
+           foreach (var styleData in Model.PageData.StylesContents)
+           {
+               @Html.Raw(styleData); 
+           }
+           
+           @Html.Raw(Model.ThePage.CSSContent)
+        }
+    </style>
+}
+
+<div class="contentPage" data-id="@Model.ThePage.ContentPageId">
+    <div class="row">
+        <div class="col-lg-12 userContent">
+            @Html.Raw(Model.ThePage.HTMLContentFormatted)
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script id="UserScripts" class="editor-removable">
+        @{
+           foreach (var scriptData in Model.PageData.ScriptContents)
+           {
+               @Html.Raw(scriptData); 
+           }
+           
+           @Html.Raw(Model.ThePage.JSContent)
+        }
+    </script>
+}

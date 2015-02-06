@@ -1,0 +1,309 @@
+﻿@{
+    ViewBag.Title = "Manage Users";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@model DirigoEdge.Areas.Admin.Models.ViewModels.ManageUsersViewModel
+
+<div class="row manageUsers">
+
+    <div class="col-lg-12">
+
+        <div class="contain">
+            <h3 class="left"><i class="fa fa-users"></i> Manage Users @Html.Partial("Partials/BookmarkButtonPartial")</h3>
+            <h3><a id="NewUser" class="pull-right btn btn-primary newContentButton" data-toggle="modal" data-target="#NewUserModal">New User +</a></h3>
+        </div>
+
+        <div id="ManageUserTableContainer">
+            <table id="ManageUserTable" class="twelve manageUsersTable manageTable">
+                <thead>
+                    <tr>
+                        <th class="hidden-xs">Thumbnail</th>
+                        <th>User Name</th>
+                        <th class="hidden-xs">User Image Location</th>
+                        <th class="hidden-xs">First</th>
+                        <th class="hidden-xs">Last</th>
+                        <th class="hidden-xs">Email</th>
+                        <th class="hidden-xs">Role(s)</th>
+                        <th class="actions" style="min-width: 120px">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (var user in Model.Users)
+                        {
+                            string active = !user.IsLockedOut ? "True" : "False";
+                        <tr>
+                            <td class="imageLocation hidden-xs">
+                                <img width="80" src="@user.UserImageLocation" />
+                            </td>
+                            <td class="displayName">@user.Username</td>
+                            <td class="hidden-xs"><a class="" data-toggle="tooltip" data-placement="top" href="javascript:void(0);" title="<img src='@user.UserImageLocation' alt='Image Not Found'>">@user.UserImageLocation</a></td>
+                            <td class="displayFirstName hidden-xs">@user.FirstName</td>
+                            <td class="displayLastName hidden-xs">@user.LastName</td>
+                            <td class="displayEmail hidden-xs">@user.Email</td>
+                            @{
+                            string roleList = "";
+                            if (user.Roles != null && user.Roles.Count > 0)
+                            {
+                                foreach (var role in user.Roles)
+                                {
+
+                                    string trailingComma = role != user.Roles.Last() ? ", " : "";
+                                    roleList += role.RoleName + trailingComma;
+                                }
+                            }
+                            else
+                            {
+                                roleList = "(No Roles Assigned.)";
+                            }
+                            }
+                            <td class="roles hidden-xs">@roleList</td>
+                            <td>
+                                <a class="editUser btn btn-primary btn-sm" href="javascript:void(0);" data-id="@user.UserId">Edit</a>
+                                @if (user.Username != Membership.GetUser().UserName)
+                                {
+                                    <a class="deleteUser btn btn-danger btn-sm" href="javascript:void(0);" data-id="@user.UserId">Delete</a>
+                                }
+                            </td>
+                        </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+@section Modals {
+    <div id="NewUserModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h2>Create New User :</h2>
+                    <p class="hide lead">Create a new Username</p>
+                </div>
+                <div class="modal-body">
+                    <div class="content container-fluid">
+                        <form class="custom clearfix">
+                            <div class="col-lg-12 form-group">
+                                <label class="col-lg-6 col-xs-12">User Name</label>
+                                <input class="col-lg-6 col-xs-12 form-control"
+                                    id="NewUserName" type="text" placeholder="User Name" autocomplete="off" />
+                            </div>
+                            <div class="col-lg-12 form-group">
+                                <label class="col-lg-6 col-xs-12">Password</label>
+                                <input class="col-lg-6 col-xs-12 form-control"
+                                       id="NewUserPassword" type="password" placeholder="password" autocomplete="off" />
+                            </div>
+                            
+                            <div class="col-lg-12 form-group">
+                                <label class="col-lg-6 col-xs-12">First Name</label>
+                                <input class="col-lg-6 col-xs-12 form-control"
+                                       id="NewUserFirstName" type="text" placeholder="first name" autocomplete="off" />
+                            </div>
+                            <div class="col-lg-12 form-group">
+                                <label class="col-lg-6 col-xs-12">Last Name</label>
+                                <input class="col-lg-6 col-xs-12 form-control"
+                                       id="NewUserLastName" type="text" placeholder="last name" autocomplete="off" />
+                            </div>
+                            <div class="col-lg-12 form-group">
+                                <label class="col-lg-6 col-xs-12">Email</label>
+                                <input class="col-lg-6 col-xs-12 form-control"
+                                       id="NewUserEmail" type="text" placeholder="email" autocomplete="off" />
+                            </div>
+
+                            <div class="col-lg-12 form-group">
+                                <label class="col-lg-12">Image Location</label>
+                                <div class="input-group col-lg-12">
+                                    <input class="form-control"
+                                           id="NewUserImage" type="text" value="@Model.NOUSERIMAGE" autocomplete="off"/>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary user-image-btn new" type="button">Choose</button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 form-group">
+                                <label class="col-lg-12 col-xs-12 hide" for="IsActiveBox">
+                                    <input class="" type="checkbox"
+                                        id="IsActiveBox" checked="checked" autocomplete="off">
+                                    Is Active
+                                </label>
+                            </div>
+
+                            <hr />
+
+                            <div class="roleListing col-lg-12 form-group">
+                                <h4>Assign Roles : </h4>
+                                @{
+                                    foreach (var role in Model.RolesList)
+                                    {
+                                        string inputID = role + "_check";
+                                    <label class="pull-left" for="@inputID">
+                                        <input class="" id="@inputID" type="checkbox" data-role="@role"/>
+                                        @role
+                                    </label>
+                                    }
+                                }
+                            </div>
+                        </form>
+                    </div>
+                    <div class="user-error alert alert-danger hide"></div>
+                </div>
+                <div class="modal-footer">
+                    <a id="CreateUserButton" class="btn btn-primary pull-right">Create</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="ModifyUserModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h2>Modify User :</h2>
+                    <p class="hide lead">Modify a blog user.</p>
+                </div>
+                <div class="modal-body">
+                    <div class="content container-fluid">
+                        <form class="custom clearfix">
+                            <div class="col-lg-12 form-group">
+                                <label class="col-lg-6 col-xs-12">User Name</label>
+                                <input class="col-lg-6 col-xs-12 form-control" type="text"
+                                       id="ModUserName" autocomplete="off" />
+                            </div>
+                            <div class="col-lg-12 form-group">
+                                <label class="col-lg-12 col-xs-12">
+                                    <a href="#"
+                                       id="ChangeUserPassword">Change Password</a></label>
+                            </div>
+                            
+                            <div class="col-lg-12 form-group">
+                                <label class="col-lg-6 col-xs-12">First Name</label>
+                                <input class="col-lg-6 col-xs-12 form-control"
+                                       id="ModUserFirstName" type="text" placeholder="first name" autocomplete="off" />
+                            </div>
+                            <div class="col-lg-12 form-group">
+                                <label class="col-lg-6 col-xs-12">Last Name</label>
+                                <input class="col-lg-6 col-xs-12 form-control"
+                                       id="ModUserLastName" type="text" placeholder="last name" autocomplete="off" />
+                            </div>
+                            <div class="col-lg-12 form-group">
+                                <label class="col-lg-6 col-xs-12">Email</label>
+                                <input class="col-lg-6 col-xs-12 form-control"
+                                       id="ModUserEmail" type="text" placeholder="email" autocomplete="off" />
+                            </div>
+
+                            <div class="col-lg-12 form-group">
+                                <label class="col-lg-12">Image Location</label>
+                                <div class="input-group col-lg-12">
+                                    <input class="form-control" type="text"
+                                       id="ModUserImageLocation" autocomplete="off" />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary user-image-btn mod" type="button">Choose</button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 form-group">
+                                <label class="col-lg-12 col-xs-12 hide" for="ModUserIsActiveBox">
+                                    <input class="" type="checkbox"
+                                           id="ModUserIsActiveBox" autocomplete="off">
+                                    Is Active
+                                </label>
+                            </div>
+
+                            <hr />
+
+                            <div class="roleListing col-lg-12 form-group">
+                                <h4>Assigned Roles : </h4>
+                                @{
+                                    foreach (var role in Model.RolesList)
+                                    {
+                                        string inputID = role + "_check";
+                                        <label class="pull-left" for="@inputID">
+                                            <input class="" id="@inputID" type="checkbox" data-role="@role"/>
+                                            @role
+                                        </label>
+                                    }
+                                }
+                            </div>
+                        </form>
+                    </div>
+                    <div class="user-error alert alert-danger hide"></div>
+                </div>
+                <div class="modal-footer">
+                    <a id="ModifyUserButton" class="btn btn-primary pull-right">Update</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="ChangePasswordModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4>Change password for user : <em id="ChngPasswdUname"></em></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="content container-fluid">
+                        <label class="col-lg-6 col-xs-12 form-group">New Password :</label>
+                        <input class="col-lg-6 col-xs-12 form-control form-group" type="password" id="NewUserChangePassword" autocomplete="off" />
+                        <label class="col-lg-6 col-xs-12 form-group">Repeat New Password :</label>
+                        <input class="col-lg-6 col-xs-12 form-control form-group" type="password" id="RepeatNewUserChangePassword" autocomplete="off" />
+                    </div>
+                    <div class="password-error alert alert-danger hide"></div>
+                </div>
+                <div class="modal-footer">
+                    <a id="ChangeUserPasswordButton" class="btn btn-primary pull-right confirmModalButton">Change Password</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="DeleteUserModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h2>Delete User.</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="content container-fluid">
+                        <p class="lead">Do you want to <em>permanently</em> delete <span id="DelUserName"></span>?</p>
+                        <p>Note : User Uploaded Images will need to be manually removed from the file system.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a id="DeleteUserButton" class="btn btn-danger pull-right confirmModalButton">Delete</a>
+                    <a id="CancelDeleteButton" class="btn btn-default pull-right secondary">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @{
+        <script src="/Areas/Admin/Scripts/jquery/plugins/datatables/js/jquery.dataTables.min.js"></script>
+        <script src="/Scripts/jquery/plugins/dropzone/dropzone.js"></script>
+        <link href="/Scripts/jquery/plugins/dropzone/css/dropzone.css" type="text/css" rel="stylesheet">
+        <link href="/Scripts/jquery/plugins/dropzone/css/basic.css" type="text/css" rel="stylesheet">
+    }
+}

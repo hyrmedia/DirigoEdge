@@ -1,0 +1,183 @@
+﻿@{
+    ViewBag.Title = "Manage Media";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    bool isCategoryPage = !String.IsNullOrEmpty(Model.Category);
+}
+
+@model DirigoEdge.Areas.Admin.Models.ViewModels.ManageMediaViewModel
+
+
+
+<div class="manageMedia">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="clearfix">
+
+                @{
+                    string mediaCategoryTitle = String.IsNullOrEmpty(Model.Category) ? "" : " / " + Model.Category;
+                }
+
+                <h3><i class="fa fa-folder-open"></i><a href="/admin/media/managemedia">Media</a> @mediaCategoryTitle @Html.Partial("Partials/BookmarkButtonPartial")</h3>
+
+                <div class="main-actions clearfix">
+                    @if (isCategoryPage)
+                    {
+                        <label for="toggle-thumbnails">
+                            <input type="checkbox" id="toggle-thumbnails" checked="checked" autocomplete="off" />
+                            Show Thumbnails
+                        </label>
+                        <a class="btn btn-primary newContentButton mobileMarginBottom mobileBlockStatic" href="#" data-toggle="modal" data-target="#MediaModal">Add Media +</a>
+                    
+                   
+                    }
+                    else
+                    {
+                        <a class="btn btn-primary newContentButton mobileMarginBottom mobileBlockStatic" href="#" data-toggle="modal" data-target="#AddFolderModal">Add Folder +</a>
+                    }
+                </div>
+            </div>
+
+            @if (!isCategoryPage)
+            {
+                <ul class="category-listing">
+                    @_Helpers.MediaDirectoriesTable()
+                </ul>
+            }
+            else
+            {
+                @Html.Partial("Partials/MediaListingPartial", Model.MediaListing)
+            }
+        </div>
+    </div>
+</div>
+
+@section Modals {
+
+    <div id="MediaModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h2>Upload Media</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="content container-fluid">
+                        <form action="/admin/fileUpload" class="dropzone" id="my-awesome-dropzone">
+                            <input type="hidden" name="category" value="@Model.Category"/>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="DeleteMediaModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h2>Confirm Delete.</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="content container-fluid">
+                        <p class="lead">Are you sure you want to delete this file?</p>
+                        <p class=""><strong><span class="file"></span></strong>will be <em>permanently</em> deleted.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a id="ConfirmMediaDelete" class="pull-right btn btn-danger confirmDeleteButton confirmModalButton">Delete</a>
+                    <a class="pull-right btn btn-default" onclick="$('#DeleteMediaModal').modal('hide');">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+
+    <script src="/Areas/Admin/Scripts/jquery/plugins/jquery.zclip.min.js"></script>
+    <script src="/Areas/Admin/Scripts/jquery/plugins/dropzone/dropzone.js"></script>
+    <link href="/Areas/Admin/Scripts/jquery/plugins/dropzone/css/dropzone.css" type="text/css" rel="stylesheet">
+    <link href="/Areas/Admin/Scripts/jquery/plugins/dropzone/css/basic.css" type="text/css" rel="stylesheet">
+
+    <script src="/Areas/Admin/Scripts/jquery/plugins/datatables/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        
+        @{
+            //
+            int sort = 0;
+            if (isCategoryPage)
+            {
+                sort = 1;
+            }
+        }
+
+        $(function () {
+            var zclip = undefined;
+
+            oTable = $("table.manageTable").dataTable({
+                "iDisplayLength": 25,
+                "fnDrawCallback": function () {
+                    $('.zclip').remove();
+                    media.initZClip($(".copy"));
+                },
+                "aoColumnDefs": [
+                    {
+                        "bSortable": false,
+                        "aTargets": ["thumbnail", "actions", "location"]
+                    }
+                ],
+                "aaSorting": [[@sort, "asc"]]
+            });
+
+            zclip = media.initZClip(oTable.$(".copy"));
+        });
+    </script>
+
+    <script>
+        $(function () {
+            Dropzone.options.myAwesomeDropzone = {
+                url: "/admin/media/uploadfile/",
+                init: function () {
+                    this.on("success", function (file, data) {
+
+                        if (data && data.success) {
+
+                            var $els = $(data.html);
+
+                            $('.zclip').remove();
+                            if (typeof oTable == "undefined") {
+                                $('.manageTable tbody').prepend($(data.html));
+                            } else {
+                                oTable.fnAddTr($els, true);
+                            }
+
+                            media.initZClip($(".copy"));
+
+                            if (data.warning) {
+                                noty({ text: data.warning, type: 'warning', timeout: 3000 });
+                            }
+
+                            $('#MediaModal').modal('hide');
+
+                        } else {
+
+                            noty({ text: data.error, type: 'error', timeout: 3000 });
+
+                        }
+                    });
+                }
+            };
+        });
+    </script>
+}

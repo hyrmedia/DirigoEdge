@@ -1,0 +1,105 @@
+﻿@{
+	ViewBag.Title = "Edit Content";
+	Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@model DirigoEdgeCore.Models.ViewModels.EditContentViewModel
+@using DirigoEdgeCore.Utils
+
+
+<div class="editContent" data-id="@Model.ThePage.ContentPageId">
+    
+    @Html.Partial("Partials/PageEditHeaderPartial")
+
+    <div class="row visibleOverflow" id="ContentRowContainer">
+        <div id="ContentRow" class="col-lg-9">
+            
+            @{
+                string permaLinkModded = !String.IsNullOrEmpty(@Model.ThePage.Permalink) ? "True" : "False";
+            }
+
+            <div class="contentTitle">
+                <input id="PageTitle" class="required form-control input-lg" type="text" value="@Model.ThePage.Title" autocomplete=off />
+                <span class="permHint">Permalink: </span>
+                <span data-url="@Model.SiteUrl" id="SiteUrl">@Model.SiteUrl</span><span id="PermaLinkEnd" data-modified="@permaLinkModded">@ContentUtils.GetFormattedUrl(Model.ThePage.Permalink)</span><input id="PermaLinkEditPane" type="text" class="hide autogrow" autocomplete="off" /><span>/</span>
+                <a id="EditPermaLink" href="javascript:void(0);">edit</a>
+                <a id="ViewPermaLink" href="@Model.SiteUrl@Model.ThePage.Permalink" target="_blank">view live page</a>
+            </div>
+
+            <textarea id="CKEDITCONTENT" cols="40" rows="20" autocomplete="off">@Model.ThePage.HTMLContent</textarea>            
+        </div>
+
+        <div class="col-lg-3">
+            @Html.Partial("~/Areas/Admin/Views/Shared/EditContentSettingsPartial.cshtml")
+        </div>
+
+    </div>   
+
+</div>
+
+@section Scripts {
+    
+    <script src="/Scripts/jquery/plugins/jquery.zclip.min.js"></script>
+    <script src="/Scripts/jquery/plugins/dropzone/dropzone.js"></script>
+    <link href="/Scripts/jquery/plugins/dropzone/css/dropzone.css" type="text/css" rel="stylesheet">
+    <link href="/Scripts/jquery/plugins/dropzone/css/basic.css" type="text/css" rel="stylesheet">
+    
+    @*CKEditor and Mustache required for Schema Editor*@
+    <script src="/scripts/ckeditor/ckeditor.js"></script>
+    <script src="/Areas/Admin/Scripts/mustache/mustache.js"></script>
+    <script src="/Areas/Admin/Scripts/fieldEditor.js"></script>
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // AutoGrow Input
+            $("input.autogrow").autoGrowInput();
+        });
+    </script>
+}
+
+@section Modals {
+    
+    @Html.Partial("Partials/InsertImageModalPartial")
+
+    @Html.Partial("Partials/RevisionDetailPartial")
+
+    <div id="SEOMetaModal" class="modal medium">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h2>SEO / Meta</h2>
+                    <p class="lead">Set your content's meta information</p>
+                </div>
+                <div class="modal-body">
+                    <div class="content container-fluid">
+                        <label class="" data-toggle="tooltip" data-placement="top" title="Commonly used by search engines to display preview snippets for a given page.">Meta Description</label>
+                        <input class=" form-control" id="MetaDescription" type="text" placeholder="" autocomplete=off value="@Model.ThePage.MetaDescription">
+
+                        @*<label class="" data-toggle="tooltip" data-placement="top" title="Open Graph : The title of your object as it should appear within the graph, e.g., 'The Rock'.">OG Title</label>
+                        <input id="OGTitle" type="text" placeholder="" autocomplete=off value="@Model.ThePage.OGTitle">
+
+                        <label class="" data-toggle="tooltip" data-placement="top" title="Open Graph : An image URL which should represent your object within the graph.">OGImage</label>
+                        <input id="OGImage" type="text" placeholder="" autocomplete=off value="@Model.ThePage.OGImage">
+
+                        <label class="" data-toggle="tooltip" data-placement="top" title="Open Graph : The type of your object, e.g., 'video.movie'. Depending on the type you specify, other properties may also be required.">OGType</label>
+                        <input id="OGType" type="text" placeholder="" autocomplete=off value="@Model.ThePage.OGType">
+
+                        <label class="" data-toggle="tooltip" data-placement="top" title="Open Graph : The canonical URL of your object that will be used as its permanent ID in the graph, e.g., 'http://www.imdb.com/title/tt0117500/'">OGUrl</label>
+                        <input id="OGUrl" type="text" placeholder="" autocomplete=off value="@Model.ThePage.OGUrl">
+
+                        <label class="" data-toggle="tooltip" data-placement="top" title="The one authoritatively correct URL for a resource.">Canonical</label>
+                        <input id="Canonical" type="text" placeholder="" autocomplete=off value="@Model.ThePage.Canonical">*@
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="pull-right btn btn-default" onclick=" $('#SEOMetaModal').modal('hide');">Close</a>
+                    <p class="pull-right saveTip" style="">(Changes will be saved when you save your blog)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}

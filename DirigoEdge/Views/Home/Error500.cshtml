@@ -1,0 +1,18 @@
+﻿@using DirigoEdgeCore.Context
+@using DirigoEdgeCore.Data.Context
+@{
+    ViewBag.Title = "Page Not Found";
+
+    string htmlContent = "<h1>500</h1>";
+    using (var context = new DataContext())
+    {
+        var page = context.ContentPages.FirstOrDefault(x => x.Permalink == "500");
+
+        if (page != null)
+        {
+            htmlContent = page.HTMLContentFormatted;
+        }
+    }
+}
+
+@Html.Raw(htmlContent)

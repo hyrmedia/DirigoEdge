@@ -1,0 +1,13 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/DirigoEdge/bin
+/DirigoEdge/Content/uploaded/*
+/DirigoEdge/images
+/DirigoEdge/node_modules
+/DirigoEdge/obj
+/DirigoEdge/Plugins
+/DirigoEdge/Properties/PublishProfiles
+*.user
+/packages

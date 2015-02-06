@@ -1,0 +1,50 @@
+﻿div.aceEditArea { 
+   position: absolute;
+   top: 0;
+   right: 0;
+   bottom: 0;
+   left: 0;
+}
+
+li.editTabArea { min-height:300px; }
+
+#InsertContentImage {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+}
+
+#ContentEditorLink {
+    clear: left;
+	margin: 10px 0 0;
+}
+
+a#wysiwygEditorLink {
+	background: none repeat scroll 0 0 transparent;
+	border: medium none;
+	box-shadow: none;
+	clear: left;
+	color: #2BA6CB;
+	opacity: 1;
+	padding: 0;
+	position: relative;
+	right: auto;
+	text-decoration: underline;
+	top: 9px;
+}
+
+span.unsavedChanges {
+	float: left;
+	position: relative;
+	top: 12px;
+	margin-left: 10px;
+	color: #999;
+	font-size: 10px;
+}
+div.tipContainer {
+	margin: 20px 0;
+	color: #888;
+}
+div.tipContainer kbd {
+	margin-right: 4px;
+}

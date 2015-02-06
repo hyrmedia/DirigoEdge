@@ -1,0 +1,48 @@
+﻿@model DirigoEdge.Areas.Admin.Models.ViewModels.NavContainer
+
+<div class="inputContainer form-group">
+    <label>Label : </label>
+    <input class="name form-control" type="text" value="@Model.NavItem.Name"  autocomplete="off"/>
+</div>
+
+<div class="pageSelectContainer">
+
+    <div class="inputContainer form-group">
+        @{
+            string pageChecked = Model.NavItem.UsesContentPage ? "checked=checked" : "";
+            string id = "PageRadio_" + Model.NavItem.NavigationItemId;
+            string name = "pageRadio_" + Model.NavItem.NavigationItemId;
+        }
+        <input class="pageRadio" id="@id" name="@name" type="radio" @pageChecked autocomplete="off"/>
+        <label for="@id">Page : </label>
+        <select class="pageList form-control">
+            @foreach (var kvp in Model.OptionList)
+            {
+                string selected = Model.NavItem.ContentPageId == kvp.Key ? "selected=selected" : "";
+                                                    
+                <option @selected data-id="@kvp.Key">@kvp.Value</option>        
+            }
+        </select>
+    </div>
+
+    <div class="inputContainer form-group">
+        @{
+            string hrefChecked = !Model.NavItem.UsesContentPage ? "checked='checked'" : "";
+            string hrefId = "HrefRadio_" + Model.NavItem.NavigationItemId;
+        }
+        <input id="@hrefId" name="@name" type="radio" @hrefChecked autocomplete="off"/>
+        <label for="@hrefId">Href : </label>
+        <input class="href form-control" type="text" value="@Model.NavItem.Href"  autocomplete="off"/>
+    </div>
+        
+    <div class="inputContainer form-group">
+        @{
+            string targetChecked = Model.NavItem.TargetBlank ? "checked='checked'" : "";
+        }
+        <label for="">Target _blank : </label>
+        <input class="target" type="checkbox" @targetChecked autocomplete="off" />
+    </div>
+
+</div>
+
+<a href="#" class="remove pull-right btn btn-danger btn-group-xs btn-sm">Remove</a>
