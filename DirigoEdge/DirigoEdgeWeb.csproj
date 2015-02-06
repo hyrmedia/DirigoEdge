@@ -224,39 +224,89 @@
     <Compile Include="Areas\Admin\Models\ViewModels\ManageMediaViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\ManageModulesViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\ManageUsersViewModel.cs" />
-    <Content Include="Areas\Admin\Content\themes\base\adminEdit.css" />
-    <Content Include="Areas\Admin\Content\themes\base\CSS\base.css" />
-    <Content Include="Areas\Admin\Content\themes\base\CSS\common.css" />
-    <Content Include="Areas\Admin\Content\themes\base\CSS\kendo.common.min.css" />
-    <Content Include="Areas\Admin\Content\themes\base\CSS\msftStyles.css" />
-    <Content Include="Areas\Admin\Content\themes\base\CSS\navBuilder.css" />
-    <Content Include="Areas\Admin\Content\themes\base\CSS\offcanvas.css" />
-    <Content Include="Areas\Admin\Content\themes\base\CSS\print.css" />
-    <Content Include="Areas\Admin\Content\themes\base\file-browser.css" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\ajaxLoader.gif" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\ajaxLoaderTransparent.gif" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\builder\template_1.jpg" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\builder\template_2.jpg" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\builder\template_3.jpg" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\collapse.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\expand.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\business_contact.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\compass.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\edit_white.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\services.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\TableSorter\back_disabled.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\TableSorter\back_enabled.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\TableSorter\back_enabled_hover.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\TableSorter\favicon.ico" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\TableSorter\forward_disabled.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\TableSorter\forward_enabled.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\TableSorter\forward_enabled_hover.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\TableSorter\sort_asc.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\TableSorter\sort_asc_disabled.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\TableSorter\sort_both.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\TableSorter\sort_desc.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\TableSorter\sort_desc_disabled.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\User_white.png" />
+    <Content Include="Areas\Admin\CSS\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Areas\Admin\CSS\images\ajaxLoader.gif" />
+    <Content Include="Areas\Admin\CSS\images\ajaxLoaderTransparent.gif" />
+    <Content Include="Areas\Admin\CSS\images\back_disabled.png" />
+    <Content Include="Areas\Admin\CSS\images\back_enabled.png" />
+    <Content Include="Areas\Admin\CSS\images\back_enabled_hover.png" />
+    <Content Include="Areas\Admin\CSS\images\builder\template_1.jpg" />
+    <Content Include="Areas\Admin\CSS\images\builder\template_2.jpg" />
+    <Content Include="Areas\Admin\CSS\images\builder\template_3.jpg" />
+    <Content Include="Areas\Admin\CSS\images\collapse.png" />
+    <Content Include="Areas\Admin\CSS\images\cream_dust.png" />
+    <Content Include="Areas\Admin\CSS\images\debut_dark.png" />
+    <Content Include="Areas\Admin\CSS\images\expand.png" />
+    <Content Include="Areas\Admin\CSS\images\favicon.ico" />
+    <Content Include="Areas\Admin\CSS\images\forward_disabled.png" />
+    <Content Include="Areas\Admin\CSS\images\forward_enabled.png" />
+    <Content Include="Areas\Admin\CSS\images\forward_enabled_hover.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\add_file.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\add_user.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\bg_color.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\businessman.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\business_contact.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\calendar.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\compass.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\conference.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\css.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\delete_message.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\detective.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\doctor.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\download.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\edit.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\edit_white.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\error.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\file.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\folder.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\full_trash.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\globe.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\group.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\guest.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\hearts.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\home.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\installing_updates.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\jpg.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\medium_connection.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\message.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\monitor.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\notes.txt" />
+    <Content Include="Areas\Admin\CSS\images\icons\no_connection.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\paper.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\pencil.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\pictures.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\pocket_lantern.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\police.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\printer.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\rating.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\right_round.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\search.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\services.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\shoping_cart.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\solutions.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\spiderman_old.png" />
+    <Content Include="Areas\Admin\CSS\images\icons\support.png" />
+    <Content Include="Areas\Admin\CSS\images\sort_asc.png" />
+    <Content Include="Areas\Admin\CSS\images\sort_asc_disabled.png" />
+    <Content Include="Areas\Admin\CSS\images\sort_both.png" />
+    <Content Include="Areas\Admin\CSS\images\sort_desc.png" />
+    <Content Include="Areas\Admin\CSS\images\sort_desc_disabled.png" />
+    <Content Include="Areas\Admin\CSS\images\TableSorter\back_disabled.png" />
+    <Content Include="Areas\Admin\CSS\images\TableSorter\back_enabled.png" />
+    <Content Include="Areas\Admin\CSS\images\TableSorter\back_enabled_hover.png" />
+    <Content Include="Areas\Admin\CSS\images\TableSorter\favicon.ico" />
+    <Content Include="Areas\Admin\CSS\images\TableSorter\forward_disabled.png" />
+    <Content Include="Areas\Admin\CSS\images\TableSorter\forward_enabled.png" />
+    <Content Include="Areas\Admin\CSS\images\TableSorter\forward_enabled_hover.png" />
+    <Content Include="Areas\Admin\CSS\images\TableSorter\sort_asc.png" />
+    <Content Include="Areas\Admin\CSS\images\TableSorter\sort_asc_disabled.png" />
+    <Content Include="Areas\Admin\CSS\images\TableSorter\sort_both.png" />
+    <Content Include="Areas\Admin\CSS\images\TableSorter\sort_desc.png" />
+    <Content Include="Areas\Admin\CSS\images\TableSorter\sort_desc_disabled.png" />
+    <Content Include="Areas\Admin\CSS\images\User.png" />
+    <Content Include="Areas\Admin\CSS\images\User_white.png" />
+    <Content Include="Areas\Admin\CSS\logged-in.css" />
+    <Content Include="Areas\Admin\CSS\main.css" />
     <Content Include="Areas\Admin\Scripts\adminContentEditorModal.js" />
     <Content Include="Areas\Admin\Scripts\adminSave.js" />
     <Content Include="Areas\Admin\Scripts\blogAuthorsAdmin.js" />
@@ -393,52 +443,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Admin\Content\themes\base\admin.css" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\User.png" />
-    <Content Include="Areas\Admin\Content\themes\base\mediaQueries.css" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\cream_dust.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\debut_dark.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\add_file.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\add_user.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\bg_color.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\businessman.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\calendar.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\conference.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\css.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\delete_message.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\detective.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\doctor.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\download.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\edit.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\error.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\file.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\folder.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\full_trash.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\globe.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\group.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\guest.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\hearts.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\home.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\installing_updates.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\jpg.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\medium_connection.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\message.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\monitor.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\notes.txt" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\no_connection.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\paper.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\pencil.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\pictures.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\pocket_lantern.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\police.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\printer.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\rating.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\right_round.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\search.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\shoping_cart.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\solutions.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\spiderman_old.png" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\icons\support.png" />
     <Content Include="Areas\Admin\Scripts\adminContentEditor.js" />
     <Content Include="Areas\Admin\Scripts\blogAdmin.js" />
     <Content Include="Areas\Admin\Scripts\categoriesAdmin.js" />
@@ -957,6 +961,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\OutputCache\" />
+    <Folder Include="Areas\Admin\Scss\sass\" />
     <Folder Include="Content\uploaded\Images\images\" />
     <Folder Include="Content\uploaded\ModuleThumbs\" />
     <Folder Include="Content\uploaded\Sliders\" />
@@ -1028,7 +1033,6 @@
     <Content Include="Areas\Admin\Views\Slideshow\EditSlideShow.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\SiteSettings.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\BlogSettings.cshtml" />
-    <Content Include="Areas\Admin\Content\themes\base\Images\TableSorter\Sorting icons.psd" />
     <Content Include="Views\Shared\SlideShowModule.cshtml" />
     <Content Include="Views\Shared\GridLayoutOverlayPartial.cshtml" />
     <Content Include="Views\Blog\CategoriesSingle.cshtml" />
@@ -1065,9 +1069,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Partials\ContactSuccessModal.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Admin\Content\themes\base\Images\collapseExpand.psd" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Views\Shared\Partials\InsertImageModalPartial.cshtml" />
@@ -1173,6 +1174,57 @@
     <Content Include="Scss\modules\_membership.scss" />
     <Content Include="Scss\vendor\_bootstrap.scss" />
     <Content Include="Scss\vendor\_jquery-ui.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Scss\main.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\CSS\fonts\glyphicons-halflings-regular.eot" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\CSS\fonts\glyphicons-halflings-regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\CSS\fonts\glyphicons-halflings-regular.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Scss\vendor\_bootstrap.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Scss\global\_helpers.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Scss\vendor\_jquery-ui.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Scss\modules\_admin.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Scss\modules\_filebrowser.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Scss\modules\_navbuilder.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Scss\global\_media-queries.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\CSS\images\Sorting icons.psd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Scss\modules\_data-tables.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\CSS\images\TableSorter\Sorting icons.psd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\CSS\images\collapseExpand.psd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Scss\admin\_admin-edit.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Scss\logged-in.scss" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

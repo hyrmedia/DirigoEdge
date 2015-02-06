@@ -77,6 +77,10 @@
     <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
 
     <link href='/css/main.css' rel='stylesheet' type='text/css'>
+    @if (UserUtils.UserIsAdmin())
+    {
+        <link href='/areas/admin/css/logged-in.css' rel='stylesheet' type='text/css'>
+    }
     
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
@@ -119,17 +123,17 @@
         }
 
     <!-- Header and Nav -->
-<header class="container-fluid">
+    <header class="container-fluid">
         @{
             List<NavigationItem> NavSet = CachedObjects.GetMasterNavigationList();
         }
         @Html.Partial("~/Views/Shared/Partials/HeaderPartial.cshtml", new HeaderPartialViewModel()) 
     </header>
 
-        <!-- Body Content -->
-        <section class="container" id="Main">
-            @RenderBody()
-        </section>
+    <!-- Body Content -->
+    <section class="container" id="Main">
+        @RenderBody()
+    </section>
 
         <!-- Footer -->
     <footer class="container">
@@ -154,65 +158,61 @@
         </div>
     </footer>
     
-        @* Modals *@
-        @RenderSection("Modals", false)
-        @Html.Partial("Partials/ContactSuccessModal")
+    @* Modals *@
+    @RenderSection("Modals", false)
+    @Html.Partial("Partials/ContactSuccessModal")
         
 
-        @* Use Google jquery CDN, with fallback to local *@
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="/Scripts/jquery/jquery-1.11.1.min.js"><\/script>')</script>
-        @{ 
-            string scripts = SquishIt.Framework.Bundle.JavaScript()
+    @* Use Google jquery CDN, with fallback to local *@
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/Scripts/jquery/jquery-1.11.1.min.js"><\/script>')</script>
+    @{ 
+        string scripts = SquishIt.Framework.Bundle.JavaScript()
 
-                .Add("~/scripts/common.js")
+            .Add("~/scripts/common.js")
 
-                // Used in validating Contact Form
-                .Add("~/scripts/jquery/plugins/jquery.validate.js")
-                .Add("~/scripts/jquery/plugins/jquery.form.js")
+            // Used in validating Contact Form
+            .Add("~/scripts/jquery/plugins/jquery.validate.js")
+            .Add("~/scripts/jquery/plugins/jquery.form.js")
 
-                // Bootstrap Resources. Use only what you need
-                .Add("~/scripts/bootstrap/js/bootstrap.js")
+            // Bootstrap Resources. Use only what you need
+            .Add("~/scripts/bootstrap/js/bootstrap.js")
             
-                // Site Specific
-                .Add("~/scripts/mcp.js")
-                .Add("~/scripts/blog_class.js")
+            // Site Specific
+            .Add("~/scripts/mcp.js")
+            .Add("~/scripts/blog_class.js")
                 
 
-                //.ForceRelease() // Force Minification. Uncomment to minify
-            .Render("~/scripts/combined_#.js");
-        }
-        @Html.Raw(scripts)
+            //.ForceRelease() // Force Minification. Uncomment to minify
+        .Render("~/scripts/combined_#.js");
+    }
+    @Html.Raw(scripts)
 
-        @{
-            // Load the text editor plugin and text editor modal for admins so they can edit content in place
-            if (UserUtils.UserIsAdmin())
-            {
-                Html.RenderPartial("~/Areas/Admin/Views/Shared/AdminEditPartial.cshtml");
+    @* Load the text editor plugin and text editor modal for admins so they can edit content in place *@
+    @if (UserUtils.UserIsAdmin())
+    {
+        Html.RenderPartial("~/Areas/Admin/Views/Shared/AdminEditPartial.cshtml");
                 
-                <script src="/Scripts/jqueryui/js/jquery-ui-1.9.2.custom.js"></script>
-                <script src="/Areas/Admin/Scripts/filebrowser.js"></script>
-                <script src="/Scripts/ckeditor/ckeditor.js"></script>
-                <script src="/Areas/Admin/Scripts/adminContentEditor.js"></script>
+        <script src="/Scripts/jqueryui/js/jquery-ui-1.9.2.custom.js"></script>
+        <script src="/Areas/Admin/Scripts/filebrowser.js"></script>
+        <script src="/Scripts/ckeditor/ckeditor.js"></script>
+        <script src="/Areas/Admin/Scripts/adminContentEditor.js"></script>
             
-                @* Add scripts for content editor in modal *@
-                <script src="http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-                <script src="/Scripts/jquery/plugins/dropzone/dropzone.js"></script>
-                <script src="/Scripts/jquery/plugins/jquery.noty.js"></script>
-                <script src="/Scripts/jquery/plugins/jquery.noty.layout.js"></script>
-                <script src="/Scripts/jquery/plugins/jquery.noty.theme.js"></script>
-                <script src="/Areas/Admin/Scripts/adminContentEditorModal.js"></script>
+        @* Add scripts for content editor in modal *@
+        <script src="http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/Scripts/jquery/plugins/dropzone/dropzone.js"></script>
+        <script src="/Scripts/jquery/plugins/jquery.noty.js"></script>
+        <script src="/Scripts/jquery/plugins/jquery.noty.layout.js"></script>
+        <script src="/Scripts/jquery/plugins/jquery.noty.theme.js"></script>
+        <script src="/Areas/Admin/Scripts/adminContentEditorModal.js"></script>
             
-                <link href="/Scripts/jquery/plugins/dropzone/css/dropzone.css" type="text/css" rel="stylesheet">
-                <link href="/Scripts/jquery/plugins/dropzone/css/basic.css" type="text/css" rel="stylesheet">
-                <link href="/Areas/Admin/Content/themes/base/adminEdit.css" type="text/css" rel="stylesheet">
-                <link href="/Areas/Admin/Content/themes/base/file-browser.css" rel="stylesheet" />
-                @Html.DoAction("footer_logged_in")    
-            }
-        }
+        <link href="/Scripts/jquery/plugins/dropzone/css/dropzone.css" type="text/css" rel="stylesheet">
+        <link href="/Scripts/jquery/plugins/dropzone/css/basic.css" type="text/css" rel="stylesheet">
+        @Html.DoAction("footer_logged_in")    
+    }
 
-        @RenderSection("Scripts", false)
+    @RenderSection("Scripts", false)
     
-        @Html.DoAction("footer")    
+    @Html.DoAction("footer")    
 </body>
 </html>
