@@ -29,4 +29,6 @@ CKEDITOR.editorConfig = function( config ) {
 	config.removeDialogTabs = 'link:advanced';
 	config.extraPlugins = 'codemirror,insertimage';
 
+    config.allowedContent = true;
+
 };
