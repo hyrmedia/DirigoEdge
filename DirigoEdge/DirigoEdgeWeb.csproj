@@ -80,10 +80,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PageBuilder_Plugin, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DirigoEdgePagebuilder.2.0.12\lib\PageBuilder_Plugin.dll</HintPath>
-    </Reference>
     <Reference Include="SquishIt.Framework, Version=0.8.6.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Lib\SquishIt\SquishIt.Framework.dll</HintPath>
@@ -183,7 +179,6 @@
     <Compile Include="App_Start\AuthConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\pagebuilder_plugin.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
@@ -351,15 +346,6 @@
     <Content Include="CSS\images\ui-icons_ffffff_256x240.png" />
     <Content Include="CSS\main.css" />
     <Content Include="gulpfile.js" />
-    <Content Include="Plugins\PageBuilder_Plugin\CSS\bootstrap-pagebuilder.css" />
-    <Content Include="Plugins\PageBuilder_Plugin\CSS\font-awesome.css" />
-    <Content Include="Plugins\PageBuilder_Plugin\CSS\fonts\fontawesome-webfont.svg" />
-    <Content Include="Plugins\PageBuilder_Plugin\CSS\pageBuilder.css" />
-    <Content Include="Plugins\PageBuilder_Plugin\Scripts\bootstrap-pagebuilder.js" />
-    <Content Include="Plugins\PageBuilder_Plugin\Scripts\isotope.pkgd.min.js" />
-    <Content Include="Plugins\PageBuilder_Plugin\Scripts\jquery-pagebuilder.js" />
-    <Content Include="Plugins\PageBuilder_Plugin\Scripts\liquidmetal.js" />
-    <Content Include="Plugins\PageBuilder_Plugin\Scripts\pageBuilder.js" />
     <Content Include="Scripts\moment-timezone.js" />
     <Content Include="Areas\Admin\Scripts\mustache\mustache.js" />
     <Content Include="Areas\Admin\Scripts\navBuilder.js" />
@@ -1179,19 +1165,6 @@
     <Content Include="CSS\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="CSS\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="CSS\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="Plugins\PageBuilder_Plugin\Views\Web.config" />
-    <Content Include="Plugins\PageBuilder_Plugin\Views\Shared\Partials\SEOMetaModalPartial.cshtml" />
-    <Content Include="Plugins\PageBuilder_Plugin\Views\Shared\Partials\PageBuilderSettingsPartial.cshtml" />
-    <Content Include="Plugins\PageBuilder_Plugin\Views\Shared\Partials\BuilderToolbarPartial.cshtml" />
-    <Content Include="Plugins\PageBuilder_Plugin\Views\Shared\Partials\BuilderPageSettings.cshtml" />
-    <Content Include="Plugins\PageBuilder_Plugin\Views\Shared\Partials\BuilderModalsPartial.cshtml" />
-    <Content Include="Plugins\PageBuilder_Plugin\Views\Shared\Error.cshtml" />
-    <Content Include="Plugins\PageBuilder_Plugin\Views\Shared\_Layout.cshtml" />
-    <Content Include="Plugins\PageBuilder_Plugin\Views\_ViewStart.cshtml" />
-    <Content Include="Plugins\PageBuilder_Plugin\CSS\fonts\fontawesome-webfont.woff" />
-    <Content Include="Plugins\PageBuilder_Plugin\CSS\fonts\fontawesome-webfont.ttf" />
-    <Content Include="Plugins\PageBuilder_Plugin\CSS\fonts\fontawesome-webfont.eot" />
-    <Content Include="Plugins\PageBuilder_Plugin\CSS\fonts\FontAwesome.otf" />
     <Content Include="Scss\main.scss" />
     <Content Include="Scss\vendor\_normalize.scss" />
     <Content Include="Scss\modules\_blog.scss" />
@@ -1200,7 +1173,6 @@
     <Content Include="Scss\modules\_membership.scss" />
     <Content Include="Scss\vendor\_bootstrap.scss" />
     <Content Include="Scss\vendor\_jquery-ui.scss" />
-    <Content Include="Views\Content\Templates\PageBuilderTemplate.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
