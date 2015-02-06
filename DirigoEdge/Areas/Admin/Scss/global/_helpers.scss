@@ -147,7 +147,7 @@ div.ajaxContainer {
 }
 
 div.ajaxLoader {
-    background: url("../Images/ajaxLoader.gif") no-repeat scroll 50% 50% #FFF;
+    background: url("images/ajaxLoader.gif") no-repeat scroll 50% 50% #FFF;
     height: 50px;
     left: 45%;
     opacity: 1;
@@ -158,7 +158,7 @@ div.ajaxLoader {
 }
 
 div.standaloneSpinner {
-    background: url("../Images/ajaxLoaderTransparent.gif") no-repeat scroll 50% 50% transparent;
+    background: url("images/ajaxLoaderTransparent.gif") no-repeat scroll 50% 50% transparent;
     height: 50px;
     width: 50px;
     z-index: 2001;
@@ -178,7 +178,7 @@ div.saveContainer div.standaloneSpinner {
 }
 
 #SaveIndicator {
-    background: url("../Images/ajaxLoaderTransparent.gif") no-repeat scroll 50% 50% transparent;
+    background: url("images/ajaxLoaderTransparent.gif") no-repeat scroll 50% 50% transparent;
     height: 50px;
     width: 50px;
     z-index: 2001;
@@ -303,4 +303,17 @@ a.cke_button, a.cke_dialog_tab_selected, a.cke_dialog_tab {
     -moz-box-sizing:content-box;
     -webkit-box-sizing:content-box;
     -o-box-sizing:content-box;
+}
+
+div.validation-summary-errors span {
+	color:#00395A;
+	font-weight:bold;
+}
+
+span.field-validation-error {
+    color:#FF002A;
+}
+
+div.validation-summary-errors ul li {
+    color:#FF002A;
 }

@@ -41,23 +41,7 @@
 
     <title>@ViewBag.Title</title>
 
-    @{
-        string style = SquishIt.Framework.Bundle.Css()
-                .Add("~/Areas/Admin/Scripts/bootstrap/css/bootstrap.css")
-                .Add("~/Areas/Admin/Content/themes/base/css/base.css")
-                .Add("~/Areas/Admin/Content/themes/base/css/common.css")
-                .Add("~/Areas/Admin/Content/themes/base/css/print.css")
-                .Add("~/Areas/Admin/Content/themes/base/css/msftStyles.css") // Styles for membership framework validation errors, etc.
-                .Add("~/Areas/Admin/Scripts/jqueryui/css/smoothness/jquery-ui-1.9.2.custom.css")
-                .Add("~/Areas/Admin/Content/themes/base/admin.css")
-                .Add("~/Areas/Admin/Content/themes/base/file-browser.css")
-                .Add("~/Areas/Admin/Content/themes/base/CSS/navBuilder.css")
-                .Add("~/Areas/Admin/Content/themes/base/mediaQueries.css")
-                .Add("~/Areas/Admin/Scripts/jquery/plugins/datatables/css/jquery.dataTables.css")
-                .ForceDebug()
-                .Render("~/CSS/admin_#.css");
-    }
-    @Html.Raw(style)
+    <link href="/areas/admin/css/main.css" rel="stylesheet" type="text/css">
 
     @RenderSection("Styles", false)
     @Html.DoAction("Admin_Styles")
