@@ -191,3 +191,4 @@ FakesAssemblies/
 /DirigoEdge/Properties/PublishProfiles
 *.user
 /packages
+*.suo
