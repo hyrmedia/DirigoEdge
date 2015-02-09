@@ -1,4 +1,5 @@
-﻿var gulp         = require('gulp'),
+/// <vs SolutionOpened='dev, dev:admin' />
+var gulp         = require('gulp'),
     sass         = require('gulp-sass'),
     sourcemaps   = require('gulp-sourcemaps'),
     beep         = require('beepbeep'),

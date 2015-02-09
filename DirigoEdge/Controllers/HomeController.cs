@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Web.Mvc;
+using DirigoEdge.Utils;
 using DirigoEdgeCore.Controllers;
 using DirigoEdgeCore.Models.ViewModels;
 using DirigoEdgeCore.Utils;
@@ -47,18 +48,14 @@ namespace DirigoEdge.Controllers
             return View(model);
         }
 
-		// Generate a sitemap on request
 		public XmlSitemapResult SitemapXML()
 		{
 			string hostUrl = HTTPUtils.GetFullyQualifiedApplicationPath();
 
-			var items = new List<SitemapItem>()
-			{
-				new SitemapItem(hostUrl + "blog/")	
-			};
+			var items = new List<SitemapItem>();
 
 			// Add generated blogs, public content pages, etc.
-			items.AddRange(Sitemap.GetGeneratedSiteMapItems(hostUrl));
+			items.AddRange(Utils.Sitemap.GetGeneratedSiteMapItems(hostUrl));
 
 			return new XmlSitemapResult(items);
 		}
