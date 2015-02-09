@@ -1,10 +1,10 @@
-﻿@{
+﻿@model DirigoEdge.Areas.Admin.Models.ViewModels.EditBlogViewModel
+@using DirigoEdgeCore.Utils
+
+@{
 	ViewBag.Title = "Edit Blog";
 	Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
-
-@model DirigoEdge.Areas.Admin.Models.ViewModels.EditBlogViewModel
-@using DirigoEdgeCore.Utils
 
 <div class="editBlog module" data-id="@Model.ThisBlog.BlogId">
     <div class="row">
@@ -34,26 +34,22 @@
                 </div>
             </div>
             
-            @{
-                foreach (var module in Model.AdminModulesColumn1)
-                {
-                    string collapsed = module.IsCollapsed ? "collapsed" : "";
-                    <div id="@module.ModuleName" class="panel sortable @collapsed">
-                        @Html.Partial("Partials/BlogAdminModules/" + module.ModuleName)
-                    </div>
-                }
-            }            
+            @foreach (var module in Model.AdminModulesColumn1)
+            {
+                string collapsed = module.IsCollapsed ? "collapsed" : "";
+                <div id="@module.ModuleName" class="panel sortable @collapsed">
+                    @Html.Partial("Partials/BlogAdminModules/" + module.ModuleName)
+                </div>
+            }         
         </div>
 
         <div id="Sortable2" class="col-lg-4 connectedSortable">                                    
-            @{
-                foreach (var module in Model.AdminModulesColumn2)
-                {
-                    string collapsed = module.IsCollapsed ? "collapsed" : "";
-                    <div id="@module.ModuleName" class="panel sortable @collapsed">
-                        @Html.Partial("Partials/BlogAdminModules/" + module.ModuleName)
-                    </div>
-                }
+            @foreach (var module in Model.AdminModulesColumn2)
+            {
+                string collapsed = module.IsCollapsed ? "collapsed" : "";
+                <div id="@module.ModuleName" class="panel sortable @collapsed">
+                    @Html.Partial("Partials/BlogAdminModules/" + module.ModuleName)
+                </div>
             }
         </div>
 

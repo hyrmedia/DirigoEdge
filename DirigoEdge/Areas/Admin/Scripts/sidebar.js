@@ -70,6 +70,8 @@ sidebar_class.prototype.initPageEvents = function () {
 
         $("body").toggleClass("collapse-menu");
         $(this).blur();
+
+        return false;
     });
 
     if (Modernizr.localstorage && localStorage["collapse-menu"] === "true") {

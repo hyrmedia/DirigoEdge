@@ -1,7 +1,7 @@
 ﻿@model DirigoEdgeCore.Models.ViewModels.EditContentViewModel
 
 <div class="panel container-fluid settings">
-    <h3>Settings</h3>
+    <h4>Settings</h4>
     
     @{
         bool isActive = Convert.ToBoolean(Model.ThePage.IsActive);
@@ -10,14 +10,14 @@
         string statLabel = isActive ? "Published" : "Draft";
     }
 
-    <div class="saveContainer container-fluid">
+    <div class="saveContainer">
         <a id="SaveDraftButton" class="btn btn-default">Save Draft</a>
         <a id="SaveContentButton" class="btn btn-primary mobileMarginBottom">@publishedLabel</a>
         <a id="PreviewContentButton" href="/admin/pages/previewcontent/?id=@Model.ThePage.ContentPageId" class="btn btn-info mobileMarginBottom" target="_blank">Preview</a>
         <div id="SaveSpinner" class="standaloneSpinner"></div>
     </div>
     
-    <div class="contentStatus container-fluid">
+    <div class="contentStatus">
         <label>Status : <a id="StatusLabel" href="#">@statLabel</a></label>
         
         <div id="DraftStatusContainer">
@@ -39,32 +39,32 @@
         
     </div>
 
-    <div class="publishContainer clearfix container-fluid">
+    <div class="publishContainer clearfix">
         Last Published : <span id="PublishedDate" date="@Model.ThePage.PublishDate" timezone="@Model.TimeZone"  format="MM/DD/YYYY &#64; h:mm" class="convertTime">@formattedDate</span>
     </div>
 
 </div>
 
 <div class="panel container-fluid template">
-    <h3>Template</h3>
-    <select class=" form-control" id="ContentTemplateSelect">
-        @{
-            foreach(var template in Model.Templates)
+    <h4>Template</h4>
+    <div class="form-group">
+        <select class=" form-control" id="ContentTemplateSelect">
+            @foreach (var template in Model.Templates)
             {
                 string templateName = template.Value.TemplateName;
                 string selected = template.Key == Model.ThePage.Template ? "selected = selected" : "";
-                
+
                 <option @selected value="@template.Key">@templateName</option>
-            }            
-        }
-    </select>
+            }
+        </select>
+    </div>
 </div>
 
 @{
     string hideSchemaClass = !Model.ShowSchemaSelector ? "hide" : "";
 }
 <div class="panel container-fluid @hideSchemaClass">
-    <h3>Schema</h3>
+    <h4>Schema</h4>
                 
     <select class="form-control" id="SchemaSelector" autocomplete="off">
                     
@@ -72,12 +72,10 @@
             string noneSelected = (Model.ThePage.SchemaId == null || Model.ThePage.SchemaId <= 0) ? "selected=selected" : "";
         }
         <option data-id="-1" @noneSelected>None</option>
-        @{
-            foreach (var schema in Model.Schemas)
-            {
-                string selected = schema.SchemaId == Model.ThePage.SchemaId ? "selected=selected" : "";
-                <option @selected data-id="@schema.SchemaId">@schema.DisplayName</option>
-            }
+        @foreach (var schema in Model.Schemas)
+        {
+            string selected = schema.SchemaId == Model.ThePage.SchemaId ? "selected=selected" : "";
+            <option @selected data-id="@schema.SchemaId">@schema.DisplayName</option>
         }
     </select>
             
@@ -100,18 +98,17 @@
 
 <div class="panel container-fluid">
     <h4>Parent</h4>
-    
-    <select id="PageCategory" class="form-control" autocomplete="off">
-        <option data-id="-2">Root</option>
-        @{
-            foreach (var kvp in Model.NavList)
+    <div class="form-group">
+        <select id="PageCategory" class="form-control" autocomplete="off">
+            <option data-id="-2">Root</option>
+            @foreach (var kvp in Model.NavList)
             {
                 string disabled = Model.ParentNavIdsToDisable.Any(x => x == kvp.Key) ? "disabled=disabled" : "";
                 string selected = Model.ThePage.ParentNavigationItemId == kvp.Key ? "selected=selected" : "";
-                <option @disabled  data-id="@kvp.Key" @selected>@Html.Raw(kvp.Value)</option>    
+                <option @disabled data-id="@kvp.Key" @selected>@Html.Raw(kvp.Value)</option>
             }
-        }
-    </select>
+        </select>
+    </div>
 </div>
 
 <div class="panel container-fluid setMetaInformation">
@@ -132,7 +129,15 @@
             <input type="checkbox" class="no-follow" @followChecked /> No Follow
         </label>
     </div>
-    <a href="javascript:void(0);" data-toggle="modal" data-target="#SEOMetaModal">Set Meta Information</a>
+    <div class="form-group">
+        <label class="" data-toggle="tooltip" data-placement="top" title="Commonly used by search engines to display preview snippets for a given page.">Meta Description</label>
+        <input id="MetaDescription" class=" form-control" type="text" placeholder="" autocomplete=off value="@Model.ThePage.MetaDescription">
+    </div>
+    <div class="form-group">
+        <label class="" data-toggle="tooltip" data-placement="top" title="Open Graph : An image URL which should represent your object within the graph.">OGImage</label>
+        <input class=" form-control" id="OGImage" type="text" placeholder="" autocomplete=off value="@Model.ThePage.OGImage">
+        @*<a href="javascript:void(0);" data-toggle="modal" data-target="#SEOMetaModal">Set Meta Information</a>*@
+    </div>
 </div>
 
 <div class="panel container-fluid reviewRevisions">
