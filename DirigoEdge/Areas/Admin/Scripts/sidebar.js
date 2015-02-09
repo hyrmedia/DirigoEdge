@@ -6,7 +6,7 @@ sidebar_class.prototype.initPageEvents = function () {
     var self = this;
     
     // Sidebar menu
-    $("#sidebar ul > li.has-dropdown > a").click(function (e) {
+    $(".sidebar ul > li.has-dropdown > a").click(function (e) {
         e.preventDefault();
         
         var $li = $(this).parent();
@@ -23,12 +23,12 @@ sidebar_class.prototype.initPageEvents = function () {
 
     // Keep sidebar open if on manage page
     var path = window.location.pathname;
-    $("#sidebar ul > li.has-dropdown > ul > li > a[href='" + path + "']").closest("li.has-dropdown").addClass("active").find('ul.dropdown').show();
+    $(".sidebar ul > li.has-dropdown > ul > li > a[href='" + path + "']").closest("li.has-dropdown").addClass("active").find('ul.dropdown').show();
 
-    $('#sidebar .collapse').collapse({ toggle: false });
+    $('.sidebar .collapse').collapse({ toggle: false });
 
     self.timeout = {};
-    $("body #sidebar").hover(function () {
+    $("body .sidebar").hover(function () {
 
         $("body").addClass("sidebarOpen");
 
@@ -36,7 +36,7 @@ sidebar_class.prototype.initPageEvents = function () {
 
         $("body").removeClass("sidebarOpen");
 
-        $('#sidebar .collapse').collapse('hide');
+        $('.sidebar .collapse').collapse('hide');
 
     });
 
@@ -44,7 +44,7 @@ sidebar_class.prototype.initPageEvents = function () {
     // Avoid event propagation issues with anchors. Should
     // be clickable when sidebar is open, should open sidebar
     // if it is not already open.
-    $("#sidebar a").click(function (e) {
+    $(".sidebar a").click(function (e) {
         if ($('body').hasClass('sidebarOpen')) {
             return true;
         }
@@ -53,26 +53,27 @@ sidebar_class.prototype.initPageEvents = function () {
     });
 
     // If the sidebar element itself is clicked, toggle sidebar.
-    $("#sidebar").click(function (e) {
+    $(".sidebar").click(function (e) {
         if (e.originalEvent.target.nodeName.toLowerCase() === 'section' && e.originalEvent.target.id === 'sidebar') {
             $("body").toggleClass("sidebarOpen");
             return false;
         }
     });
 
-    self.getMenuState();
-};
+    $('.js-toggle-sidebar').click(function () {
+        var toggledMenu;
 
-sidebar_class.prototype.saveMenuState = function(state) {
-    if (Modernizr.localstorage) {
-        localStorage.setItem("menuState", state);
-    }
-};
+        if (Modernizr.localstorage) {
+            toggledMenu = localStorage.getItem("collapse-menu") === "true" ? "false" : "true";
+            localStorage.setItem("collapse-menu", toggledMenu);
+        }
 
-sidebar_class.prototype.getMenuState = function () {
-    if (Modernizr.localstorage) {
-        var bClass = localStorage["menuState"];
-        $("body").addClass(bClass);
+        $("body").toggleClass("collapse-menu");
+        $(this).blur();
+    });
+
+    if (Modernizr.localstorage && localStorage["collapse-menu"] === "true") {
+        $("body").addClass("collapse-menu");
     }
 };
 

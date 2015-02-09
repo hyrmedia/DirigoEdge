@@ -10,10 +10,12 @@ $hasMediaQueries : true;
 
 // Global
 @import 'global/helpers',
-        'global/media-queries';
+        'global/media-queries',
+        'global/layout';
 
 // Modules
 @import 'modules/admin',
+        'modules/sidebar',
         'modules/filebrowser',
         'modules/navbuilder',
         'modules/data-tables';

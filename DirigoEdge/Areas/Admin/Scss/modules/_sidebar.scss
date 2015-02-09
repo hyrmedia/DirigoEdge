@@ -1,0 +1,103 @@
+﻿.sidebar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 220px;
+    padding: 33px 0;
+    background: #222;
+    overflow: auto;
+
+    .collapse-menu & {
+        left: -178px;
+    }
+
+    > ul {
+        margin: 0;
+
+        > li {
+            border-left: 3px solid #16bed4;
+        }
+
+        > li.has-dropdown.active {
+            border: none;
+
+            > a {
+                background: #f4f4f4;
+                color: #666;
+                position: relative;
+                border-left: 3px solid #2BA6CB;
+            }
+
+            > a:hover {
+                background: #f2f2f2;
+                color: #666;
+            }
+        }
+
+        .toggle-sidebar {
+            position: relative;
+            top: -1em;
+            border: none;
+        }
+    }
+
+    .nav-stacked > li + li {
+        margin: 0;
+    }
+
+    > .nav {
+
+        > .divider {
+            border: 1px solid #ddd;
+        }
+
+        a {
+            @extend .clearfix;
+            padding: 10px 0 10px 15px;
+            font-size: 0.9em;
+            color: white;
+
+            &:hover {
+                color: #222;
+            }
+
+            &[data-toggle="collapse"] {
+                background: #eee;
+                color: #222;
+            }
+
+            &[data-toggle="collapse"].collapsed {
+                background: #222;
+                color: white;
+            }
+
+            &[data-toggle="collapse"].collapsed:hover {
+                background: #eee;
+                color: #222;
+            }
+
+            > i {
+                position: relative;
+                top: 1px;
+                width: 47px;
+                font-size: 1.25em;
+                text-align: center;
+                float: right;
+            }
+        }
+
+        .collapse,
+        .collapsing {
+            background: #eee;
+
+            a {
+                color: #222;
+
+                &:hover {
+                    background: #e7e7e7
+                }
+            }
+        }
+    }
+}

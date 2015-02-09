@@ -132,20 +132,19 @@
                 </ul>
             </section>
         </nav>
-        @*</div>
-        </div>*@
 
         <div class="outer-wrapper">
-            <section id="Main" role="main">
+            <section id="Main" class="main" role="main">
                 @RenderBody()
             </section>
 
-            <section role="complementary" id="sidebar">
+            <section role="complementary" class="sidebar">
                 <!-- New Nav Structure -->
                 <ul class="nav nav-stacked" role="tablist">
-                    <li>
-                        <a href="#">
+                    <li class="toggle-sidebar">
+                        <a href="#" class="js-toggle-sidebar">
                             <i class="fa fa-navicon"></i>
+                            <span>Toggle Sidebar</span>
                         </a>
                     </li>
                     <li>
@@ -173,33 +172,32 @@
                                 <span class="caret"></span>
                             </a>
                             <ul id="blogDropdown" class="collapse nav nav-stacked">
-                                @{
-                                    if (UserRoleUtilities.UserHasPermission("Can Edit Blogs"))
-                                    {
-                                        <li>
-                                            <a href="@Url.Action("ManageBlogs", "Blog")">
-                                                <span>Manage Posts</span>
-                                            </a>
-                                        </li>
-                                    }
+                                @if (UserRoleUtilities.UserHasPermission("Can Edit Blogs"))
+                                {
+                                    <li>
+                                        <a href="@Url.Action("ManageBlogs", "Blog")">
+                                            <span>Manage Posts</span>
+                                        </a>
+                                    </li>
+                                }
 
-                                    if (UserRoleUtilities.UserHasPermission("Can Edit Blog Categories"))
-                                    {
-                                        <li>
-                                            <a href="@Url.Action("ManageCategories", "Blog")">
-                                                <span>Categories</span>
-                                            </a>
-                                        </li>
-                                    }
+                                @if (UserRoleUtilities.UserHasPermission("Can Edit Blog Categories"))
+                                {
+                                    <li>
+                                        <a href="@Url.Action("ManageCategories", "Blog")">
+                                            <span>Categories</span>
+                                        </a>
+                                    </li>
+                                }
 
-                                    if (UserRoleUtilities.UserHasPermission("Can Edit Blog Authors"))
-                                    {
-                                        <li>
-                                            <a href="@Url.Action("ManageBlogAuthors", "Blog")"><span>Authors</span></a>
-                                        </li>
-                                    }
+                                @if (UserRoleUtilities.UserHasPermission("Can Edit Blog Authors"))
+                                {
+                                    <li>
+                                        <a href="@Url.Action("ManageBlogAuthors", "Blog")"><span>Authors</span></a>
+                                    </li>
+                                }
                                     
-                                    @Html.DoAction("admin_blog_menu_end")                                    
+                                @Html.DoAction("admin_blog_menu_end")                                    
                                 }
                             </ul>
                         </li>

@@ -1,0 +1,29 @@
+﻿.contents {
+    height: calc(100% - 57px);
+}
+
+.outer-wrapper {
+    position: relative;
+    min-height: 100%;
+
+    .collapse-menu & {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .sidebarOpen & {
+        transform: translate3d(0, 0, 0);
+    }
+
+    .sidebarOpen.collapse-menu & {
+        transform: translate3d(178px, 0, 0);
+    }
+}
+
+.main {
+    position: relative;
+    padding: calc(2em - 20px) 2em 2em calc(220px + 2em);
+
+    .collapse-menu & {
+        padding: calc(2em - 20px) 2em 2em calc(42px + 2em);
+    }
+}
