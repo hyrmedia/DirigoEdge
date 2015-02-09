@@ -271,17 +271,7 @@ ul.tabs-content.contained li {
 #ConfirmFeatImage {
     margin-top:8px;
 }
-/** ACE Editor*/
-div.aceEditArea { 
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: white;
-    font-size: 1em;
-}
-li.editTabArea { min-height:400px; }
+
 div.manageBlogs table td.actions { min-width:166px; }
 
 .newContentButton,
@@ -786,47 +776,6 @@ div.alert a {
     top: 2px;
 }
 
-/** Schema Editor **/
-span.requiredToken {
-    color: #ff0000;
-}
-p.labelDescription {
-    font-size: 12px;
-    position: relative;
-    top: -5px;
-}
-div.wysiwyg p.labelDescription { top: 5px; }
-
-div.formContainer { margin-bottom: 12px; }
-div.formContainer select { margin-bottom: 12px; }
-div.formContainer.small input[type=text] { max-width: 280px; }
-div.formContainer.medium input[type=text] { max-width: 560px; }
-
-#FieldEntry div.formContainer.image .upload.btn {
-    float: left;
-    position: relative;
-    top: 2px;
-    margin-left: 12px;
-    font-weight: normal;
-}
-
-#FieldEntry div.formContainer.image input[type="text"] {
-    float: left;
-    max-width: 426px;
-}
-#FieldEntry div.formContainer.image { overflow: hidden; }
-
-#HtmlTab {
-    position: relative;
-    margin-bottom: 40px;
-}
-#HtmlTab div.tipContainer {
-    position: absolute;
-    bottom: -20px;
-    left: 0;
-    margin: 0;
-}
-
 div.panel .panelActions {
     color: #999;
     margin-top: 6px;
@@ -887,10 +836,6 @@ ul.commonTags li { float: left; margin: 0px 5px;}
 
 .dashboard-panel ul li:hover a {
     color: #fff;
-}
-
-ol {
-    list-style: none;
 }
 
 .navbar {

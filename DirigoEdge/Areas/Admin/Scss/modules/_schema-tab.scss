@@ -1,0 +1,54 @@
+﻿#FieldEditorContainer {
+    padding: 1.5em;
+    background: white;
+}
+
+.requiredToken {
+    color: #ff0000;
+}
+.labelDescription {
+    font-size: 12px;
+    position: relative;
+    top: -5px;
+
+    .wysiwyg & {
+        top: 5px;
+    }
+}
+
+.formContainer {
+    margin-bottom: 1.5em;
+
+    select { margin-bottom: 12px; }
+    &.small input[type=text] { max-width: 280px; }
+    &.medium input[type=text] { max-width: 560px; }
+}
+
+#FieldEntry {
+    > ol {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    .formContainer.image {
+        overflow: hidden;
+
+        .upload.btn {
+            float: left;
+            position: relative;
+            top: 2px;
+            margin-left: 12px;
+            font-weight: normal;
+        }
+
+        input[type="text"] {
+            float: left;
+            max-width: 426px;
+        }
+    }
+
+    label {
+        display: block;
+    }
+}

@@ -11,7 +11,8 @@ $hasMediaQueries : true;
 // Global
 @import 'global/helpers',
         'global/media-queries',
-        'global/layout';
+        'global/layout',
+        'global/tabs';
 
 // Modules
 @import 'modules/admin',
@@ -19,4 +20,6 @@ $hasMediaQueries : true;
         'modules/filebrowser',
         'modules/navbuilder',
         'modules/data-tables',
-        'modules/edit-content';
+        'modules/edit-content',
+        'modules/schema-tab',
+        'modules/ace-editor';

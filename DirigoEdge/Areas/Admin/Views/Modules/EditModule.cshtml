@@ -39,19 +39,15 @@
 
                 @*Schema Editor*@
                 <li class="relative tab-pane editTabArea @fieldEditorActive" id="EditorTab" data-schemaid="@Model.TheModule.SchemaId">
-                    @{
-                        if (Model.TheModule.SchemaId == null || Model.TheModule.SchemaId < 1)
-                        {
+                    @if (Model.TheModule.SchemaId == null || Model.TheModule.SchemaId < 1)
+                    {
                         <p>No Schema assigned.</p>
-                        }
                     }
                 </li>
 
                 @*HTML*@
                 <li class="relative tab-pane editTabArea @htmlEditorActive" id="HtmlTab">
                     <div class="aceEditArea" id="HTMLContent">@Model.TheModule.HTMLUnparsed</div>
-
-                    <div class="tipContainer">Tip: Insert values from the Fields tab via <a href="https://github.com/janl/mustache.js" target="_blank">mustache.js</a>. Example: {{Field Label}} or {{{Field Label}}} for raw/unescaped html.</div>
                 </li>
 
                 @*CSS*@
@@ -67,9 +63,9 @@
             </ul>
 
 
-            <div class="tipContainer hide-for-touch">
+            @*<div class="tipContainer hide-for-touch">
                 Tip: You can press <kbd>Ctrl - S </kbd>to save within the editor.
-            </div>
+            </div>*@
 
 
         </div>
@@ -86,13 +82,13 @@
                     string statLabel = isActive ? "Published" : "Draft";
                 }
 
-                <div class="saveContainer container-fluid">
+                <div class="saveContainer">
                     <a id="SaveModuleDraftButton" class="btn btn-default">Save Draft</a>
                     <a id="SaveModuleButton" class="btn btn-primary mobileMarginBottom" data-url="modifymodule">@publishedLabel</a>
                     <div id="SaveSpinner" class="standaloneSpinner"></div>
                 </div>
 
-                <div class="contentStatus container-fluid">
+                <div class="contentStatus">
                     <label>Status : <a id="StatusLabel" href="#">@statLabel</a></label>
 
                     <div id="DraftStatusContainer">
@@ -110,11 +106,9 @@
                         <a id="CloseDraftStatus" href="#">Close</a>
 
                     </div>
-
-
                 </div>
 
-                <div class="publishContainer clearfix container-fluid">
+                <div class="publishContainer clearfix">
                     Last Published : <span id="PublishedDate"  date="@Model.TheModule.CreateDate" timezone="@Model.TimeZone" format="MM/DD/YYYY &#64; h:mm" class="convertTime">@formattedDate</span>
                 </div>
 
