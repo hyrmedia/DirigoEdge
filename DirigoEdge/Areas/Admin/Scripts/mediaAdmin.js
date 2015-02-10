@@ -28,9 +28,27 @@ media_class.prototype.initPageEvents = function () {
     });
 
     $('input', '#AddFolderModal').on('keyup', function (e) {
-        var key = e.keyCode || e.which;
-        if (key === 13) {
+        var key = e.keyCode || e.which,
+            $this = $(this);
+
+        if (key === 13 && $this.val().indexOf('+') === -1) {
             self.methods.addMediaFolder();
+        } else {
+            if ($this.val().indexOf('+') > -1) {
+                $this
+                    .parent('.form-group')
+                    .addClass('has-error')
+                    .find('small.control-label')
+                    .removeClass('hidden');
+                $('#ConfirmFolderAdd').addClass('disabled');
+            } else {
+                $this
+                    .parent('.form-group')
+                    .removeClass('has-error')
+                    .find('small.control-label')
+                    .addClass('hidden');
+                $('#ConfirmFolderAdd').removeClass('disabled');
+            }
         }
     });
 
