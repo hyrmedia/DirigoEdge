@@ -153,18 +153,16 @@
 
 @section Scripts {
 
-    <script src="/Areas/Admin/Scripts/jquery/plugins/jquery.zclip.min.js"></script>
-    <script src="/Areas/Admin/Scripts/jquery/plugins/dropzone/dropzone.js"></script>
-    <link href="/Areas/Admin/Scripts/jquery/plugins/dropzone/css/dropzone.css" type="text/css" rel="stylesheet">
-    <link href="/Areas/Admin/Scripts/jquery/plugins/dropzone/css/basic.css" type="text/css" rel="stylesheet">
+    <script src="/areas/admin/scripts/jquery/plugins/jquery.zclip.min.js"></script>
+    <script src="/areas/admin/scripts/jquery/plugins/dropzone/dropzone.js"></script>
+    <link href="/areas/admin/scripts/jquery/plugins/dropzone/css/dropzone.css" type="text/css" rel="stylesheet">
+    <link href="/areas/admin/scripts/jquery/plugins/dropzone/css/basic.css" type="text/css" rel="stylesheet">
 
-    <script src="/Areas/Admin/Scripts/jquery/plugins/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="/areas/admin/scripts/jquery/plugins/datatables/js/jquery.dataTables.min.js"></script>
 
     <script>
-        
         @{
-            //
-            int sort = 0;
+            var sort = 0;
             if (isCategoryPage)
             {
                 sort = 1;
@@ -172,56 +170,47 @@
         }
 
         $(function () {
-            var zclip = undefined;
-
-            oTable = $("table.manageTable").dataTable({
-                "iDisplayLength": 25,
-                "fnDrawCallback": function () {
+            var oTable = $("table.manageTable").DataTable({
+                "iDisplayLength" : 25,
+                "fnDrawCallback" : function () {
                     $('.zclip').remove();
                     media.initZClip($(".copy"));
                 },
-                "aoColumnDefs": [
+                "aoColumnDefs" : [
                     {
-                        "bSortable": false,
-                        "aTargets": ["thumbnail", "actions", "location"]
+                        "bSortable" : false,
+                        "aTargets" : ["thumbnail", "actions", "location"]
                     }
                 ],
-                "aaSorting": [[@sort, "asc"]]
-            });
-
+                "aaSorting" : [[@sort, "asc"]]
+            }),
             zclip = media.initZClip(oTable.$(".copy"));
-        });
-    </script>
 
-    <script>
-        $(function () {
             Dropzone.options.myAwesomeDropzone = {
-                url: "/admin/media/uploadfile/",
-                init: function () {
+                url : "/admin/media/uploadfile/",
+                init : function () {
                     this.on("success", function (file, data) {
+
+                        this.removeAllFiles(true);
 
                         if (data && data.success) {
 
                             var $els = $(data.html);
 
                             $('.zclip').remove();
-                            if (typeof oTable == "undefined") {
-                                $('.manageTable tbody').prepend($(data.html));
-                            } else {
-                                oTable.fnAddTr($els, true);
-                            }
+                            oTable.row.add($els).draw();
 
                             media.initZClip($(".copy"));
 
                             if (data.warning) {
-                                noty({ text: data.warning, type: 'warning', timeout: 3000 });
+                                noty({ text : data.warning, type : 'warning', timeout : 3000 });
                             }
 
                             $('#MediaModal').modal('hide');
 
                         } else {
 
-                            noty({ text: data.error, type: 'error', timeout: 3000 });
+                            noty({ text : data.error, type : 'error', timeout : 3000 });
 
                         }
                     });

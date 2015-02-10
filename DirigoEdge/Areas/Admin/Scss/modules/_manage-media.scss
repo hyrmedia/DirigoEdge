@@ -1,0 +1,83 @@
+﻿.manageMedia {
+    h3 {
+        float: left;
+        text-transform: capitalize;
+    }
+
+    .main-actions {
+        margin: 14px 0;
+        float: right;
+
+        label,
+        .btn {
+            display: block;
+            margin: 0 0 0 1em;
+            float: left;    
+        }
+
+        a {
+            position: static !important; 
+        }
+
+        label {
+            line-height: 37px;
+        }
+    }
+
+    .copyImg input {
+        width: 60%;
+        display: inline-block;
+        margin: 0px;
+    }
+
+    .copyImg .btn {
+        display: inline-block;
+    }
+    .manageTable .new-row {
+        background: lightyellow;
+    }
+
+    .manageTable .thumb {
+        width: 72px;
+    }
+
+    .manageTable .thumb .image {
+        width: 60px;
+        height: 60px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center center;
+        margin-right: -8px;
+        text-align: center;
+    }
+
+    .manageTable .thumb i {
+        font-size: 34px;
+        padding-top: 12px;
+        color: #555;
+    }
+
+    .tip-image {
+        max-width: 300px;
+    }
+
+    ul.folder-listing {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+            display: block;
+            background: #f7f7f7
+        }
+
+        a {
+            font-size: 1.125em;
+            color: inherit;
+        }
+
+        a i {
+            float: none;
+        }
+    }
+}

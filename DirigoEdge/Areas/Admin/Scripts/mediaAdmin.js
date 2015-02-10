@@ -2,7 +2,6 @@
 
     this.el = '.manageMedia';
     this.$el = $(this.el);
-    parentClass = this;
 
 };
 
@@ -52,7 +51,9 @@ media_class.prototype.initPageEvents = function () {
         }
     });
 
-    $('#ConfirmFolderAdd').on('click', this.methods.addMediaFolder);
+    $('#ConfirmFolderAdd').on('click', function () {
+        self.addMediaFolder(this);
+    });
     
     // Events to trigger delete folder
     // confirmation and call method to
@@ -64,7 +65,9 @@ media_class.prototype.initPageEvents = function () {
         return false;
     });
     
-    $('#ConfirmFolderDelete').on('click', this.methods.deleteMediaFolder);
+    $('#ConfirmFolderDelete').on('click', function () {
+        self.deleteMediaFolder(this);
+    });
     
     // Events to trigger delete file
     // confirmation and call method to
@@ -133,11 +136,119 @@ media_class.prototype.initZClip = function ($element) {
 
 };
 
+media_class.prototype.addMediaFolder = function (el) {
+
+    var _this      = this,
+        $input     = $('#AddFolderModal').find('input').first(),
+        folderName = $input.val(),
+        data       = {
+            folder : folderName
+        };
+
+    var $container = $('#AddFolderModal div.content');
+    common.showAjaxLoader($container);
+    $.ajax({
+        url : "/admin/media/addfolder/",
+        type : "POST",
+        dataType : 'json',
+        contentType : 'application/json; charset=utf-8',
+        data : JSON.stringify(data, null, 2),
+        success : function (res) {
+
+            $input.val('');
+
+            if (res && res.success) {
+                _this.refreshTable();
+                $('#AddFolderModal').modal('hide');
+            } else {
+                noty({ text : res.error, type : 'error', timeout : 3000 });
+            }
+
+            common.hideAjaxLoader($container);
+        }
+    });
+
+    return false;
+
+};
+
+media_class.prototype.deleteMediaFolder = function (el) {
+
+    var _this  = this,
+        $this  = $(el),
+        folder = $this.attr('data-folder'),
+        data   = {
+            folder : folder
+        };
+
+    $.ajax({
+        url         : "/admin/media/deletefolder/",
+        type        : "POST",
+        dataType    : 'json',
+        contentType : 'application/json; charset=utf-8',
+        data        : JSON.stringify(data, null, 2),
+        success     : function (res) {
+                
+            $('#DeleteFolderModal').modal('hide');
+
+            if (res && res.success) {
+                    
+                // If user is in folder that just got deleted, redirect
+                // them to the dashboard. Otherwise just remove
+                // the folder.
+                var rgx = new RegExp('^(?:/admin)\/managemedia\/(?:' + folder + '/?)$', 'ig');
+                if (location.pathname.match(rgx)) {
+                    window.location = '/admin';
+                } else {
+                    _this.refreshTable();
+                    //$('.dropdown [data-folder="' + folder + '"], tr[data-folder="' + folder + '"]').remove();
+                }
+
+            } else {
+                noty({ text: res.error, type: 'error', timeout: 3000 });
+            }
+
+        }
+    });
+
+    return false;
+        
+};
+
+media_class.prototype.refreshTable = function() {
+    //Refresh the inner content to show the new user
+    var $container = $(".category-listing");
+
+    common.showAjaxLoader($container);
+    $container.load("/admin/media/managemedia/ .category-listing", function (data) {
+        common.hideAjaxLoader($container);
+        var zclip = undefined;
+        if (!$.fn.dataTable.isDataTable('.manageTable')) {
+            window.oTable = $("table.manageTable").dataTable({
+                "iDisplayLength": 25,
+                "fnDrawCallback": function () {
+                    $('.zclip').remove();
+                    media.initZClip($(".copy"));
+                },
+                "aoColumnDefs": [
+                    {
+                        "bSortable": false,
+                        "aTargets": ["thumbnail", "actions", "location"]
+                    }
+                ],
+                //"aaSorting": [[0, "asc"]]
+            });
+        }
+            
+        zclip = media.initZClip(oTable.$(".copy"));
+    });
+};
+
 media_class.prototype.methods = {
     toggleThumbnails: function () {
 
         var _this,
-            $image = $('.thumbnail .image');
+            $image = $('.thumb .image');
 
         if ($(this).prop('checked')) {
             $image.each(function () {
@@ -150,111 +261,6 @@ media_class.prototype.methods = {
                 .attr('style', '');
         }
 
-    },
-    
-    addMediaFolder: function () {
-
-        var $input     = $('#AddFolderModal').find('input').first(),
-            folderName = $input.val(),
-            data       = {
-                folder : folderName
-            };
-
-        var $container = $('#AddFolderModal div.content');
-        common.showAjaxLoader($container);
-        $.ajax({
-            url         : "/admin/media/addfolder/",
-            type        : "POST",
-            dataType    : 'json',
-            contentType : 'application/json; charset=utf-8',
-            data        : JSON.stringify(data, null, 2),
-            success     : function (res) {
-                
-                $input.val('');
-
-                if (res && res.success) {
-                    parentClass.methods.refreshTable();
-                    $('#AddFolderModal').modal('hide');
-                } else {
-                    noty({ text: res.error, type: 'error', timeout: 3000 });
-                }
-
-                common.hideAjaxLoader($container);
-            }
-        });
-
-        return false;
-    },
-    
-    deleteMediaFolder : function () {
-
-        var $this  = $(this),
-            folder = $(this).attr('data-folder'),
-            data   = {
-                folder : folder
-            };
-
-        $.ajax({
-            url         : "/admin/media/deletefolder/",
-            type        : "POST",
-            dataType    : 'json',
-            contentType : 'application/json; charset=utf-8',
-            data        : JSON.stringify(data, null, 2),
-            success     : function (res) {
-                
-                $('#DeleteFolderModal').modal('hide');
-
-                if (res && res.success) {
-                    
-                    // If user is in folder that just got deleted, redirect
-                    // them to the dashboard. Otherwise just remove
-                    // the folder.
-                    var rgx = new RegExp('^(?:/admin)\/managemedia\/(?:' + folder + '/?)$', 'ig');
-                    if (location.pathname.match(rgx)) {
-                        window.location = '/admin';
-                    } else {
-                        parentClass.methods.refreshTable();
-                        //$('.dropdown [data-folder="' + folder + '"], tr[data-folder="' + folder + '"]').remove();
-                    }
-
-                } else {
-                    noty({ text: res.error, type: 'error', timeout: 3000 });
-                }
-
-            }
-        });
-
-        return false;
-        
-    },
-
-    refreshTable : function() {
-        //Refresh the inner content to show the new user
-        var $container = $(".category-listing");
-
-        common.showAjaxLoader($container);
-        $container.load("/admin/media/managemedia/ .category-listing", function (data) {
-            common.hideAjaxLoader($container);
-            var zclip = undefined;
-            if (!$.fn.dataTable.isDataTable('.manageTable')) {
-                window.oTable = $("table.manageTable").dataTable({
-                    "iDisplayLength": 25,
-                    "fnDrawCallback": function () {
-                        $('.zclip').remove();
-                        media.initZClip($(".copy"));
-                    },
-                    "aoColumnDefs": [
-                        {
-                            "bSortable": false,
-                            "aTargets": ["thumbnail", "actions", "location"]
-                        }
-                    ],
-                    //"aaSorting": [[0, "asc"]]
-                });
-            }
-            
-            zclip = media.initZClip(oTable.$(".copy"));
-        });
     }
 };
 

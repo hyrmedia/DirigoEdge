@@ -4,7 +4,7 @@
 <table class="manageTable twelve bordered manageTable">
     <thead>
         <tr>
-            <th class="thumbnail hidden-xs"></th>
+            <th class="thumb hidden-xs">Preview</th>
             <th class="name">Name</th>
             <th class="date">Create Date</th>
             <th class="location hidden-xs">Location</th>
@@ -15,13 +15,11 @@
         @foreach (var media in Model)
         {
             <tr>
-                <td class="thumbnail hidden-xs">
+                <td class="thumb hidden-xs">
                     <div class="image @media.FileExtensionClass" data-image="@media.IsImage.ToString().ToLower()" data-thumb="@media.ThumbnailPath">
-                        @{
-                            if (!media.IsImage)
-                            {
-                                <i class="fa fa fa-file-text"></i>
-                            }
+                        @if (!media.IsImage)
+                        {
+                            <i class="fa fa-file-text"></i>
                         }
                     </div>
                 </td>
