@@ -45,7 +45,7 @@ user_class.prototype.manageUserAdminEvents = function () {
         $("#NewUserFirstName").val('');
         $("#NewUserLastName").val('');
         $('#NewUserEmail').val('');
-        $("#NewUserImage").val('/Areas/Admin/Content/Themes/Base/Images/User.png');
+        $("#NewUserImage").val("/areas/admin/css/images/user.png");
         $("#NewUserPassword").val('');
         $("#NewUserModal div.roleListing input[type=checkbox]").each(function () {
             $(this).prop('checked', false).next().removeClass("checked");

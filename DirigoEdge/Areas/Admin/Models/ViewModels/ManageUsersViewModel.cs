@@ -11,7 +11,7 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
     {
         public List<User> Users;
         public List<string> RolesList;
-        public readonly string NOUSERIMAGE = "/Areas/Admin/Content/Themes/Base/Images/User.png";
+        public readonly string NOUSERIMAGE = "/areas/admin/css/images/user.png";
 
         public ManageUsersViewModel()
         {

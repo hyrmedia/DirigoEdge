@@ -9,7 +9,7 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
     public class ManageBlogAuthorsViewModel : DirigoBaseModel
     {
         public List<BlogUser> Users;
-        public const string NOUSERIMAGE = "/Areas/Admin/Content/Themes/Base/Images/User.png";
+        public const string NOUSERIMAGE = "/areas/admin/css/images/user.png";
 
         public ManageBlogAuthorsViewModel()
         {
