@@ -20,10 +20,9 @@
                     <tr>
                         <th class="hidden-xs">Thumbnail</th>
                         <th>User Name</th>
-                        <th class="hidden-xs">User Image Location</th>
-                        <th class="hidden-xs">First</th>
-                        <th class="hidden-xs">Last</th>
-                        <th class="hidden-xs">Email</th>
+                        <th class="visible-lg">First</th>
+                        <th class="visible-lg">Last</th>
+                        <th class="visible-lg">Email</th>
                         <th class="hidden-xs">Role(s)</th>
                         <th class="actions" style="min-width: 120px">Actions</th>
                     </tr>
@@ -38,10 +37,11 @@
                                 <img width="80" src="@user.UserImageLocation" />
                             </td>
                             <td class="displayName">@user.Username</td>
-                            <td class="hidden-xs"><a class="" data-toggle="tooltip" data-placement="top" href="javascript:void(0);" title="<img src='@user.UserImageLocation' alt='Image Not Found'>">@user.UserImageLocation</a></td>
-                            <td class="displayFirstName hidden-xs">@user.FirstName</td>
-                            <td class="displayLastName hidden-xs">@user.LastName</td>
-                            <td class="displayEmail hidden-xs">@user.Email</td>
+                            <td class="displayFirstName visible-lg">@user.FirstName</td>
+                            <td class="displayLastName visible-lg">@user.LastName</td>
+                            <td class="displayEmail visible-lg">
+                                <a href="mailto:@user.Email">@user.Email</a>
+                            </td>
                             @{
                             string roleList = "";
                             if (user.Roles != null && user.Roles.Count > 0)
