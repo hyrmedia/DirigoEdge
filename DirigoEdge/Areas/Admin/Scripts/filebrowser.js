@@ -54,7 +54,6 @@
         if (this.initialized) {
             this.show();
         } else {
-            this.show();
             common.showAjaxLoader(this.$el);
             this.initFileBrowserData(this);
         }
@@ -193,17 +192,17 @@
 
     Plugin.prototype.showFileBrowser = function (data) {
 
-        var self = this;
-
-        self.$el
+        this.$el
             .html(data.html);
-        common.hideAjaxLoader(self.$el);
+        common.hideAjaxLoader(this.$el);
 
-        if (self.settings.directory) {
-            self.loadDirectoryFiles(self.settings.directory);
+        if (this.settings.directory) {
+            this.loadDirectoryFiles(this.settings.directory);
         } else {
-            self.loadDirectoryFiles($('a', '.folders').first().data('directory'));
+            this.loadDirectoryFiles($('a', '.folders').first().data('directory'));
         }
+
+        this.show();
 
     };
 
