@@ -83,7 +83,7 @@ namespace DirigoEdge.Controllers
                 }
                 if (model.ThePage.NoFollow)
                 {
-                    ViewBag.NoIndex = "nofollow";
+                    ViewBag.NoFollow = "nofollow";
                 }
 
                 return View(model.TheTemplate.ViewLocation, model);
