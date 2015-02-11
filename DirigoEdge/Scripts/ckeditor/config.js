@@ -24,11 +24,11 @@ CKEDITOR.editorConfig = function( config ) {
 	];
 
 	// Remove some buttons, provided by the standard plugins, which we don't
-	// need to have in the Standard(s) toolbar.
+	// need to have in the standard toolbar.
 	config.removeButtons = 'Underline,Subscript,Superscript,Image,Flash,Smiley,PageBreak,Iframe,ShowBlocks,Save,NewPage,Preview,Print,Templates,CreateDiv,Font,FontSize';
 	config.removeDialogTabs = 'link:advanced';
+	config.removePlugins = 'magicline';
 	config.extraPlugins = 'codemirror,insertimage';
-
+	config.disableNativeSpellChecker = false;
     config.allowedContent = true;
-
 };
