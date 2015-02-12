@@ -5,7 +5,8 @@ var gulp         = require('gulp'),
     beep         = require('beepbeep'),
     autoprefixer = require('gulp-autoprefixer'),
     rimraf       = require('gulp-rimraf'),
-    colors       = require('colors');
+    colors       = require('colors'),
+    livereload   = require('gulp-livereload');
 
 gulp.task('sass:dev', function () {
 
@@ -29,7 +30,8 @@ gulp.task('sass:dev', function () {
         .pipe(autoprefixer({
             browsers: ['last 3 versions', 'ie 9']
         }))
-        .pipe(gulp.dest('./css'));
+        .pipe(gulp.dest('./css'))
+        .pipe(livereload());
 });
 
 gulp.task('sass:prod', function () {
@@ -79,7 +81,8 @@ gulp.task('sass:admin:dev', function () {
             browsers: ['last 3 versions', 'ie 9']
         }))
 
-        .pipe(gulp.dest('./areas/admin/css'));
+        .pipe(gulp.dest('./areas/admin/css'))
+        .pipe(livereload());
         
 });
 
@@ -112,6 +115,7 @@ gulp.task('watch', function () {
 
     console.log('[watch]'.bold.magenta + ' Watching Sass files for changes');
 
+    livereload.listen();
     gulp.watch(['scss/**/*.scss'], ['sass:dev']);
 
 });
@@ -121,6 +125,7 @@ gulp.task('watch:admin', function () {
 
     console.log('[watch]'.bold.magenta + ' Watching Sass files for changes');
 
+    livereload.listen();
     gulp.watch(['areas/admin/scss/**/*.scss'], ['sass:admin:dev']);
 
 });
