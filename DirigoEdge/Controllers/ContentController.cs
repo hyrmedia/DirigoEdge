@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using DirigoEdgeCore.Controllers;
@@ -33,20 +34,6 @@ namespace DirigoEdge.Controllers
                 model = new ContentViewViewModel(title);
             }
 
-            // Last ditch try based strictly on the right-most url piece. 
-            // Ex: /parent/child/myUrl will dp a lookup on "myUrl" and return a page if it is the *only* page with that permalink
-            // todo: use recusion to check parent nav items
-            if (model.ThePage == null && title.Split('/').Count() >= 3)
-            {
-                string lastDitchTitle = title.Split('/').LastOrDefault();
-
-                var page = Context.ContentPages.Where(x => x.Permalink == lastDitchTitle && x.IsActive == true);
-                if (page.Count() == 1)
-                {
-                    model = new ContentViewViewModel(lastDitchTitle, true);
-                }
-            }
-
             // If we found a hit, return the view, otherwise 404
             if (model.ThePage != null)
             {
@@ -56,14 +43,12 @@ namespace DirigoEdge.Controllers
                     var userName = UserUtils.CurrentMembershipUsername();
                     var user = Context.Users.First(usr => usr.Username == userName);
 
-                   var pageModel = new EditContentViewModel(model.ThePage.ContentPageId)
-                   {
-                       BookmarkTitle = model.ThePage.Title,
-                       IsBookmarked = Context.Bookmarks.Any(bookmark => bookmark.Title == title && bookmark.Url == Request.RawUrl && bookmark.UserId == user.UserId)
-                   };
+                    var pageModel = new EditContentViewModel(model.ThePage.ContentPageId)
+                    {
+                        BookmarkTitle = model.ThePage.Title,
+                        IsBookmarked = Context.Bookmarks.Any(bookmark => bookmark.Title == title && bookmark.Url == Request.RawUrl && bookmark.UserId == user.UserId)
+                    };
 
-
-                   
                     ViewBag.PageModel = pageModel;
                 }
 
@@ -110,23 +95,27 @@ namespace DirigoEdge.Controllers
             return title;
         }
 
-        private ContentViewViewModel GetSubDirectoryModel(string title)
+        private ContentViewViewModel GetSubDirectoryModel(string path)
         {
             var masterList = CachedObjects.GetMasterNavigationList(Context);
-            string leftUrl = title.Split(new[] { '/' }).FirstOrDefault();
-            string rightUrl = title.Split(new[] { '/' }).LastOrDefault();
+            var pathPieces = path.Split('/');
+            var permalink = pathPieces.Last().ToLower();
 
-            var urlItem = masterList.FirstOrDefault(x => x.Href.ToLower().Replace("/", "") == leftUrl.ToLower());
+            var currentPath = "/" + pathPieces[0] + "/";
+            var currentNavigation = masterList.FirstOrDefault(x => String.Equals(x.Href, currentPath, StringComparison.CurrentCultureIgnoreCase));
 
-            if (urlItem == null)
+            foreach (var piece in pathPieces.Skip(1).Take(pathPieces.Count() - 2))
             {
-                return null;
+                if (currentNavigation == null) break;
+                currentPath = currentPath + piece + "/";
+                currentNavigation = currentNavigation.Children.FirstOrDefault(x => String.Equals(x.Href, currentPath, StringComparison.CurrentCultureIgnoreCase));
             }
-            var thePage = Context.ContentPages.FirstOrDefault(x => x.Permalink == rightUrl && x.ParentNavigationItemId == urlItem.NavigationItemId);
 
-            return thePage != null 
-                ? new ContentViewViewModel(thePage.ContentPageId) 
-                : null;
+            if (currentNavigation == null) return null;
+
+            var thePage = Context.ContentPages.FirstOrDefault(x => x.Permalink == permalink && x.ParentNavigationItemId == currentNavigation.NavigationItemId);
+
+            return thePage != null ? new ContentViewViewModel(thePage.ContentPageId) : null;
         }
 
         // Helper methods
