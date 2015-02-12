@@ -255,6 +255,15 @@
                             params: {
                                 category: dir
                             },
+                            accept: function (file, done) {
+
+                                if (file.size > 20971520) {
+                                    done('Filesize cannot exceed 20mb');
+                                } else {
+                                    done();
+                                }
+
+                            },
                             init: function () {
                                 this.on("success", function (file, data) {
                                     if (data && data.success) {
@@ -262,6 +271,16 @@
                                     } else {
                                         noty({ text: data.error, type: 'error', timeout: 3000 });
                                     }
+                                });
+
+                                this.on("error", function (file, err, xhr) {
+
+                                    if (file.size > 20971520) {
+                                        noty({ text: 'Filesize cannot exceed 20mb', type: 'error', timeout: 3000 });
+                                    } else {
+                                        noty({ text: 'Something has gone wrong.', type: 'error', timeout: 3000 });
+                                    }
+
                                 });
                             }
                         });
