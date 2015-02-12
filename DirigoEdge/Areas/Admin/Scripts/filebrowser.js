@@ -266,6 +266,9 @@
                             },
                             init: function () {
                                 this.on("success", function (file, data) {
+
+                                    this.removeAllFiles(true);
+
                                     if (data && data.success) {
                                         self.loadDirectoryFiles(this.options.params.category);
                                     } else {
@@ -274,6 +277,8 @@
                                 });
 
                                 this.on("error", function (file, err, xhr) {
+
+                                    this.removeAllFiles(true);
 
                                     if (file.size > 20971520) {
                                         noty({ text: 'Filesize cannot exceed 20mb', type: 'error', timeout: 3000 });

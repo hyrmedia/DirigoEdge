@@ -226,6 +226,8 @@
 
                     this.on("error", function (file, err, xhr) {
 
+                        this.removeAllFiles(true);
+
                         if (file.size > 20971520) {
                             noty({ text: 'Filesize cannot exceed 20mb', type: 'error', timeout: 3000 });
                         } else {
