@@ -54,7 +54,7 @@
   <ItemGroup>
     <Reference Include="DirigoEdgeCore, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DirigoEdgeCore.0.0.14\lib\DirigoEdgeCore.dll</HintPath>
+      <HintPath>..\packages\DirigoEdgeCore.1.1.0\lib\DirigoEdgeCore.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
@@ -1034,7 +1034,6 @@
     <Content Include="Areas\Admin\Views\Settings\SiteSettings.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\BlogSettings.cshtml" />
     <Content Include="Views\Shared\SlideShowModule.cshtml" />
-    <Content Include="Views\Shared\GridLayoutOverlayPartial.cshtml" />
     <Content Include="Views\Blog\CategoriesSingle.cshtml" />
     <Content Include="Views\Shared\Partials\BlogArticlePartial.cshtml" />
     <Content Include="Views\Shared\FacebookAPIInclude.cshtml" />
@@ -1072,9 +1071,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Views\Shared\Partials\InsertImageModalPartial.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\Partials\GoogleAnalyticsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\uploaded\Images\ph" />

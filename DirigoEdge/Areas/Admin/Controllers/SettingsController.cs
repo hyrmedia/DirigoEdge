@@ -96,6 +96,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 					siteSettings.ContactEmail = entity.ContactEmail;
 					siteSettings.SearchIndex = entity.SearchIndex;
 					siteSettings.GoogleAnalyticsId = entity.GoogleAnalyticsId;
+                    siteSettings.GoogleAnalyticsType = entity.GoogleAnalyticsType;
 					siteSettings.ContentPageRevisionsRetensionCount = entity.ContentPageRevisionsRetensionCount;
                     siteSettings.DefaultUserRole = entity.DefaultUserRole;
 

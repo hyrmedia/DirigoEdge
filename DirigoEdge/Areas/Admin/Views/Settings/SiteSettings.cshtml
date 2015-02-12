@@ -1,8 +1,9 @@
-﻿@{
+﻿@model DirigoEdge.Areas.Admin.Models.ViewModels.SiteSettingsViewModel
+
+@{
 	ViewBag.Title = "Site Settings";
 	Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
-@model DirigoEdge.Areas.Admin.Models.ViewModels.SiteSettingsViewModel
 
 <div class="siteSettings">
     <div class="row">
@@ -17,7 +18,16 @@
         </div>
         <div class="col-lg-8  col-xs-6">
             <form class="custom">
-                <input type="text" class="eight commentBelow saveField form-control" data-field="GoogleAnalyticsId" autocomplete="off" value="@Model.Settings.GoogleAnalyticsId" />
+                <textarea class="saveField form-control" rows="5" data-field="GoogleAnalyticsId">@Model.Settings.GoogleAnalyticsId</textarea>
+                <label class="radio-inline">
+                    <input class="saveField" type="radio" name="GoogleAnalyticsType" id="GoogleAnalyticsTypeGTM" value="Tag Manager" @(Model.Settings.GoogleAnalyticsType == "Tag Manager" ? "checked" : "")> Tag Manager
+                </label>
+                <label class="radio-inline">
+                    <input class="saveField" type="radio" name="GoogleAnalyticsType" id="GoogleAnalyticsTypeUA" value="Universal Analytics" @(Model.Settings.GoogleAnalyticsType == "Universal Analytics" ? "checked" : "")> Universal Analytics
+                </label>
+                <label class="radio-inline">
+                    <input class="saveField" type="radio" name="GoogleAnalyticsType" id="GoogleAnalyticsTypeC" value="Classic Analytics" @(Model.Settings.GoogleAnalyticsType == "Classic Analytics" ? "checked" : "")> Classic Analytics
+                </label>
                 <div class="settingsComment hidden-xs">Your Google Analytics Tracking Id. Ex : UA-XXXXX-X</div>
             </form>
         </div>

@@ -71,6 +71,24 @@ save_class.prototype.getData = function() {
         data.entity[field] = value;
     });
 
+    // Textareas
+    $("textarea.saveField").each(function () {
+        var field = $(this).attr("data-field");
+        var value = $(this).val();
+
+        data.entity[field] = value;
+    });
+
+    // Radio Buttons
+    $('input[type=radio].saveField').each(function () {
+        if ($(this).is(':checked')) {
+            var field = $(this).attr('name');
+            var value = $(this).val();
+
+            data.entity[field] = value;
+        }
+    });
+
     return data;
 };
 

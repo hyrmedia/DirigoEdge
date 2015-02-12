@@ -4,6 +4,12 @@
 @using DirigoEdgeCore.Utils
 @using SquishIt.Framework
 
+@{
+    var siteSettings = new SiteSettingsUtils();
+    var analyticsType = siteSettings.GetGoogleAnalyticsType();
+    var analyticsSnippet = siteSettings.GetGoogleAnalyticsId();
+}
+
 <!DOCTYPE html>
 <!--[if lt IE 7 ]> <html class="ie ie6 no-js" lang="en"> <![endif]-->
 <!--[if IE 7 ]>    <html class="ie ie7 no-js" lang="en"> <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" ><![endif]-->
@@ -13,206 +19,190 @@
 <html class="no-js" lang="en">
 <!--<![endif]-->
 
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    @* ** Sets the viewport width to device-width. sets initial zoom level to 100% **@
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+        @* ** Sets the viewport width to device-width. sets initial zoom level to 100% **@
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         
-    <title>@ViewBag.Title</title>
+        <title>@ViewBag.Title</title>
 
-    @* ** Basic Meta Information ** *@
-    @{
-        string metaDescription = ViewBag.MetaDesc ?? "";
-    }
-    <meta name="description" content="@metaDescription">
-    
-    @{
-        var noindex = "";
-        var nofollow = "";
-        var all = "all";
-        if (ViewBag.NoFollow != null)
-        {
-            nofollow = ViewBag.NoFollow;
-            all = "";
+        @* ** Basic Meta Information ** *@
+        @{
+            string metaDescription = ViewBag.MetaDesc ?? "";
         }
-        if (ViewBag.NoIndex != null)
-        {
-            noindex = ViewBag.NoIndex;
-            all = "";
+        <meta name="description" content="@metaDescription">
+    
+        @{
+            var noindex = "";
+            var nofollow = "";
+            var all = "all";
+            if (ViewBag.NoFollow != null)
+            {
+                nofollow = ViewBag.NoFollow;
+                all = "";
+            }
+            if (ViewBag.NoIndex != null)
+            {
+                noindex = ViewBag.NoIndex;
+                all = "";
+            }
+            var separator = ViewBag.NoFollow != null && ViewBag.NoIndex != null ? ", " : "";
         }
-        var separator = ViewBag.NoFollow != null && ViewBag.NoIndex != null ? ", " : "";
-    }
-    <meta name="robots" content="@all@noindex@separator@nofollow" />
+        <meta name="robots" content="@all@noindex@separator@nofollow" />
     
-    @* ** Facebook OG tags ** *@
+        @* ** Facebook OG tags ** *@
+        @{
+            var oGType = ViewBag.OGType ?? "article";
+            var oGTitle = ViewBag.OGTitle ?? "";
+            var oGImage = ViewBag.OGImage ?? "";
+            var oGUrl = ViewBag.OGUrl ?? "";
+        }
+    
+        @if (!String.IsNullOrEmpty(oGTitle))
+        {
+            <meta property="og:title" content="@oGTitle" />
+            <meta property="og:type" content="@oGType" />
+            <meta property="og:image" content="@oGImage" />
+            <meta property="og:description" content="@metaDescription" />
+            <meta property="og:url" content="@oGUrl" />
+        }
+    
+        @RenderSection("Meta", false)
+    
+        @Html.DoAction("head")
+    
+        @Html.DoAction("head_layout")
+    
+        @if (UserUtils.UserIsAdmin())
+        {
+            @Html.DoAction("head_logged_in")
+        }
+    
+        <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+
+        <link href='/css/main.css' rel='stylesheet' type='text/css'>
+        @if (UserUtils.UserIsAdmin())
+        {
+            <link href='/areas/admin/css/logged-in.css' rel='stylesheet' type='text/css'>
+        }
+    
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+        @RenderSection("Styles", false)
+
+        @* Modernizr stays in <head> *@
+        <script src="@Url.Content("~/Scripts/modernizr-2.8.2.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/moment.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/moment-timezone.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/tzdetect.js")" type="text/javascript"></script>
+    </head>
+    
     @{
-        var oGType = ViewBag.OGType ?? "article";
-        var oGTitle = ViewBag.OGTitle ?? "";
-        var oGImage = ViewBag.OGImage ?? "";
-        var oGUrl = ViewBag.OGUrl ?? "";
+        bool userIsAdmin = UserUtils.UserIsAdmin();
     }
-    
-    @if (!String.IsNullOrEmpty(oGTitle))
-    {
-        <meta property="og:title" content="@oGTitle" />
-        <meta property="og:type" content="@oGType" />
-        <meta property="og:image" content="@oGImage" />
-        <meta property="og:description" content="@metaDescription" />
-        <meta property="og:url" content="@oGUrl" />
-    }
-    
-    @RenderSection("Meta", false)
-    
-    @Html.DoAction("head")
-    
-    @Html.DoAction("head_layout")
-    
-    @if (UserUtils.UserIsAdmin())
-    {
-        @Html.DoAction("head_logged_in")
-    }
-    
-    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+    <body>
 
-    <link href='/css/main.css' rel='stylesheet' type='text/css'>
-    @if (UserUtils.UserIsAdmin())
-    {
-        <link href='/areas/admin/css/logged-in.css' rel='stylesheet' type='text/css'>
-    }
-    
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-
-    @RenderSection("Styles", false)
-
-    @* Modernizr stays in <head> *@
-    <script src="@Url.Content("~/Scripts/modernizr-2.8.2.min.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/moment.min.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/moment-timezone.js")" type="text/javascript"></script>
-     <script src="@Url.Content("~/Scripts/tzdetect.js")" type="text/javascript"></script>
-    <!-- Google Analytics: change UA-XXXXX-X in site admin to be your site's ID. -->
-    @Html.Partial("Partials/GoogleAnalyticsPartial")
-</head>
-    
-@{
-    bool userIsAdmin = UserUtils.UserIsAdmin();
-}
-<body>
-        <!--[if lt IE 8]>
+        @if (analyticsType == "Tag Manager" && !String.IsNullOrEmpty(analyticsSnippet))
+        {
+            @Html.Raw(analyticsSnippet)
+        }
+        
+        <!--[if lt IE 9]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        @{
-            // Load Facebook api if we need it
-            // Currently only FB Comments needs the API
-            var util = new SiteSettingsUtils();
-            if (util.ShowFbComments())
-            {
-                // Grid overlay partial allows a transparent grid to be overlayed the screen
-                Html.RenderPartial("FacebookAPIInclude");
-            }
+        <!-- Header and Nav -->
+        <header class="container-fluid">
+            @Html.Partial("~/Views/Shared/Partials/HeaderPartial.cshtml", new HeaderPartialViewModel())
+        </header>
 
-            // ** Admins Get Grid Overlay **
-            // Load Grid Overlay so devs can easily see if their layout is correct
-            if (userIsAdmin)
-            {
-                // Grid overlay partial allows a transparent grid to be overlayed the screen
-                Html.RenderPartial("GridLayoutOverlayPartial");
-            }
-        }
-
-    <!-- Header and Nav -->
-    <header class="container-fluid">
-        @{
-            List<NavigationItem> NavSet = CachedObjects.GetMasterNavigationList();
-        }
-        @Html.Partial("~/Views/Shared/Partials/HeaderPartial.cshtml", new HeaderPartialViewModel()) 
-    </header>
-
-    <!-- Body Content -->
-    <section class="container" id="Main">
-        @RenderBody()
-    </section>
+        <!-- Body Content -->
+        <section class="container" id="Main">
+            @RenderBody()
+        </section>
 
         <!-- Footer -->
-    <footer class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <hr />
-                <div class="row">
-                    <div class="col-lg-6">
-                        <p>&copy; Copyright no one at alllllll. Go to town.</p>
-                    </div>
-                    <div class="col-lg-6">
-                        <ul class="list-inline pull-right">
-                            <li><a href="/">Home</a></li>
-                            <li><a href="/about">About</a></li>
-                            <li><a href="/contact">Contact</a></li>
-                            <li><a href="/blog">Blog</a></li>
-                            <li><a href="/admin">Admin</a></li>
-                        </ul>
+        <footer class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <hr/>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <p>&copy; Copyright no one at alllllll. Go to town.</p>
+                        </div>
+                        <div class="col-lg-6">
+                            <ul class="list-inline pull-right">
+                                <li><a href="/">Home</a></li>
+                                <li><a href="/about">About</a></li>
+                                <li><a href="/contact">Contact</a></li>
+                                <li><a href="/blog">Blog</a></li>
+                                <li><a href="/admin">Admin</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </footer>
-    
-    @* Modals *@
-    @RenderSection("Modals", false)
-    @Html.Partial("Partials/ContactSuccessModal")
-        
+        </footer>
 
-    @* Use Google jquery CDN, with fallback to local *@
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="/Scripts/jquery/jquery-1.11.1.min.js"><\/script>')</script>
-    @{ 
-        string scripts = SquishIt.Framework.Bundle.JavaScript()
+        @* Modals *@
+        @RenderSection("Modals", false)
+        @Html.Partial("Partials/ContactSuccessModal")
 
-            .Add("~/scripts/common.js")
+        @* Use Google jquery CDN, with fallback to local *@
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script> window.jQuery || document.write('<script src="/Scripts/jquery/jquery-1.11.1.min.js"><\/script>') </script>
+        @{
+            string scripts = SquishIt.Framework.Bundle.JavaScript()
 
-            // Used in validating Contact Form
-            .Add("~/scripts/jquery/plugins/jquery.validate.js")
-            .Add("~/scripts/jquery/plugins/jquery.form.js")
+                .Add("~/scripts/common.js")
 
-            // Bootstrap Resources. Use only what you need
-            .Add("~/scripts/bootstrap/js/bootstrap.js")
-            
-            // Site Specific
-            .Add("~/scripts/mcp.js")
-            .Add("~/scripts/blog_class.js")
-                
+                // Used in validating Contact Form
+                .Add("~/scripts/jquery/plugins/jquery.validate.js")
+                .Add("~/scripts/jquery/plugins/jquery.form.js")
 
-            //.ForceRelease() // Force Minification. Uncomment to minify
-        .Render("~/scripts/combined_#.js");
-    }
-    @Html.Raw(scripts)
+                // Bootstrap Resources. Use only what you need
+                .Add("~/scripts/bootstrap/js/bootstrap.js")
 
-    @* Load the text editor plugin and text editor modal for admins so they can edit content in place *@
-    @if (UserUtils.UserIsAdmin())
-    {
-        Html.RenderPartial("~/Areas/Admin/Views/Shared/AdminEditPartial.cshtml");
-                
-        <script src="/Scripts/jqueryui/js/jquery-ui-1.9.2.custom.js"></script>
-        <script src="/Areas/Admin/Scripts/filebrowser.js"></script>
-        <script src="/Scripts/ckeditor/ckeditor.js"></script>
-        <script src="/Areas/Admin/Scripts/adminContentEditor.js"></script>
-            
-        @* Add scripts for content editor in modal *@
-        <script src="http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-        <script src="/Scripts/jquery/plugins/dropzone/dropzone.js"></script>
-        <script src="/Scripts/jquery/plugins/jquery.noty.js"></script>
-        <script src="/Scripts/jquery/plugins/jquery.noty.layout.js"></script>
-        <script src="/Scripts/jquery/plugins/jquery.noty.theme.js"></script>
-        <script src="/Areas/Admin/Scripts/adminContentEditorModal.js"></script>
-            
-        <link href="/Scripts/jquery/plugins/dropzone/css/dropzone.css" type="text/css" rel="stylesheet">
-        <link href="/Scripts/jquery/plugins/dropzone/css/basic.css" type="text/css" rel="stylesheet">
-        @Html.DoAction("footer_logged_in")    
-    }
+                // Site Specific
+                .Add("~/scripts/mcp.js")
+                .Add("~/scripts/blog_class.js")
 
-    @RenderSection("Scripts", false)
-    
-    @Html.DoAction("footer")    
-</body>
+                .Render("~/scripts/combined_#.js");
+        }
+        @Html.Raw(scripts)
+
+        @* Load the text editor plugin and text editor modal for admins so they can edit content in place *@
+        @if (UserUtils.UserIsAdmin())
+        {
+            Html.RenderPartial("~/Areas/Admin/Views/Shared/AdminEditPartial.cshtml");
+
+            <script src="/Scripts/jqueryui/js/jquery-ui-1.9.2.custom.js"></script>
+            <script src="/Areas/Admin/Scripts/filebrowser.js"></script>
+            <script src="/Scripts/ckeditor/ckeditor.js"></script>
+            <script src="/Areas/Admin/Scripts/adminContentEditor.js"></script>
+
+                @* Add scripts for content editor in modal *@
+            <script src="http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+            <script src="/Scripts/jquery/plugins/dropzone/dropzone.js"></script>
+            <script src="/Scripts/jquery/plugins/jquery.noty.js"></script>
+            <script src="/Scripts/jquery/plugins/jquery.noty.layout.js"></script>
+            <script src="/Scripts/jquery/plugins/jquery.noty.theme.js"></script>
+            <script src="/Areas/Admin/Scripts/adminContentEditorModal.js"></script>
+
+            <link href="/Scripts/jquery/plugins/dropzone/css/dropzone.css" type="text/css" rel="stylesheet">
+            <link href="/Scripts/jquery/plugins/dropzone/css/basic.css" type="text/css" rel="stylesheet">
+            @Html.DoAction("footer_logged_in")
+        }
+
+        @RenderSection("Scripts", false)
+
+        @Html.DoAction("footer")
+
+        @if (analyticsType != "Tag Manager" && !String.IsNullOrEmpty(analyticsSnippet))
+        {
+            @Html.Raw(analyticsSnippet)
+        }
+    </body>
 </html>
