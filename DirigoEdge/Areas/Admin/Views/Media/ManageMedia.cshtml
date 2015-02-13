@@ -115,8 +115,12 @@
                 </div>
                 <div class="modal-body">
                     <div class="content container-fluid">
-                        <form action="/admin/fileUpload" class="dropzone" id="my-awesome-dropzone">
-                            <input type="hidden" name="category" value="@Model.Category"/>
+                        <form action="/admin/media/uploadfile/" method="post" enctype="multipart/form-data" class="dropzone" id="my-awesome-dropzone">
+                            <input type="hidden" name="category" value="@Model.Category" />
+                            <div class="fallback">
+                                <input name="file" type="file" multiple />
+                                <input type="submit" value="Upload" />
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -197,10 +201,8 @@
                     }
 
                 },
-                init : function () {
+                init: function () {
                     this.on("success", function (file, data) {
-
-                        this.removeAllFiles(true);
 
                         if (data && data.success) {
 
@@ -212,27 +214,31 @@
                             media.initZClip($(".copy"));
 
                             if (data.warning) {
-                                noty({ text : data.warning, type : 'warning', timeout : 3000 });
+                                noty({ text: data.warning, type: 'warning', timeout: 3000 });
                             }
 
                             $('#MediaModal').modal('hide');
 
                         } else {
 
-                            noty({ text : data.error, type : 'error', timeout : 3000 });
+                            noty({ text: data.error, type: 'error', timeout: 3000 });
 
                         }
                     });
 
                     this.on("error", function (file, err, xhr) {
 
-                        this.removeAllFiles(true);
-
                         if (file.size > 20971520) {
                             noty({ text: 'Filesize cannot exceed 20mb', type: 'error', timeout: 3000 });
                         } else {
                             noty({ text: 'Something has gone wrong.', type: 'error', timeout: 3000 });
                         }
+
+                    });
+
+                    this.on("complete", function (file) {
+
+                        this.removeFile(file);
 
                     });
                 }
