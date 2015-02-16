@@ -53,6 +53,17 @@ common_class.prototype.executeFunctionByName = function(functionName, context /*
     return context[func].apply(this, args);
 };
 
+common_class.prototype.isValidPassword = function (str) {
+    /*
+            (?=.*[A-Z].*[A-Z])        Ensure string has at least one uppercase letter.
+            (?=.*[!@#$&*])            Ensure string has at least one special case letter.
+            (?=.*[0-9])        Ensure string has at least one digit.
+            (?=.*[a-z]) Ensure string has at least one lowercase letter.
+            .{8,}                     Ensure string is at least of length 8.
+        */
+    return /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{12,}/.test(str);
+};
+
 /**
  * http://stackoverflow.com/a/10997390/11236
  */

@@ -5,6 +5,7 @@ using DirigoEdgeCore.Controllers;
 using DirigoEdgeCore.Membership;
 using DirigoEdgeCore.Models;
 using DirigoEdgeCore.Utils;
+using DirigoEdgeCore.Models.ViewModels;
 
 namespace DirigoEdge.Controllers
 {
@@ -116,7 +117,126 @@ namespace DirigoEdge.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
+        public ActionResult ResetPassword()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult ResetPassword(ResetPasswordModel model)
+        {
+            var errorMessage = String.Empty;
+            if (ModelState.IsValid)
+            {
+                // Try sending reset
+                try
+                {
+                    var question = WebSecurity.GetSecretQuestion(model.Email);
+                }
+                catch (MembershipPasswordException e)
+                {
+                    errorMessage = e.Message;
+                }
+
+                if (String.IsNullOrEmpty(errorMessage))
+                {
+                    var success = WebSecurity.SendResetPassword(Request.Url.Host, model.Email, model.Answer);
+
+                    if (success)
+                    {
+                        return RedirectToAction("ResetPasswordSuccess");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "The answer did not match our records");
+                        return View(model);
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", errorMessage);
+                    return View(model);
+                }
+            }
+
+            return View(model);
+
+        }
+
+        [AllowAnonymous]
+        public ActionResult ResetPasswordSuccess()
+        {
+            //var model = new ContentViewViewModel("resetpasswordsuccess");
+
+            //if (model.ThePage != null)
+            //{
+            //    return View(model.TheTemplate.ViewLocation, model);
+            //}
+
+            //HttpContext.Response.StatusCode = 404;
+            //return View("~/Views/Home/Error404.cshtml");
+            return View();
+        }
+
+
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult GetSecretQuestion(string email)
+        {
+            // check database to see if there has been a try already
+            var errorMessage = String.Empty;
+            var question = String.Empty;
+
+            try
+            {
+                question = WebSecurity.GetSecretQuestion(email);
+            }
+            catch (MembershipPasswordException e)
+            {
+                errorMessage = e.Message;
+            }
+
+            var result = new JsonResult();
+            result.Data = new { secret = question, error = !String.IsNullOrEmpty(errorMessage), errorMessage = errorMessage };
+
+            return result;
+        }
+
+        [AllowAnonymous]
+        public ActionResult ChangePassword(string key)
+        {
+
+            var model = new ChangePasswordModel(key);
+
+            if (model.Key != null) return View(model);
+
+            return RedirectToAction("Login", new { returnUrl = "/" });
+
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePassword(ChangePasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = WebSecurity.GetUserFromKey(model.Key);
+                if (user != null)
+                {
+                    MembershipUser u = Membership.GetUser(user.Username);
+                    WebSecurity.ChangePassword(u.UserName, model.Password);
+                    WebSecurity.ClearResetKey(u.UserName);
+                }
+
+                return RedirectToAction("Login", new { returnUrl = "/app/" });
+            }
+
+            return View(model);
+        }
 
 
         #region Helpers

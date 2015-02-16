@@ -54,7 +54,7 @@
   <ItemGroup>
     <Reference Include="DirigoEdgeCore, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DirigoEdgeCore.1.1.0\lib\DirigoEdgeCore.dll</HintPath>
+      <HintPath>..\packages\DirigoEdgeCore.1.2.0\lib\DirigoEdgeCore.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
@@ -935,6 +935,7 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\resetPassword.js" />
     <Content Include="Scripts\tzdetect.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1242,6 +1243,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Scss\modules\_manage-media.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\ChangePassword.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\ResetPasswordSuccess.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
