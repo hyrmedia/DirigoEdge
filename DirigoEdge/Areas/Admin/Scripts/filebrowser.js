@@ -250,12 +250,12 @@
                         self.fileDropzone.options.params.category = dir;
                     } else {
                         self.fileDropzone = new Dropzone('#' + self.dropzoneId, {
-                            clickable: '.toolbar',
-                            url: "/admin/media/uploadfile/",
-                            params: {
-                                category: dir
+                            clickable : '.toolbar',
+                            url : "/admin/media/uploadfile/",
+                            params : {
+                                category : dir
                             },
-                            accept: function (file, done) {
+                            accept : function (file, done) {
 
                                 if (file.size > 20971520) {
                                     done('Filesize cannot exceed 20mb');
@@ -264,27 +264,29 @@
                                 }
 
                             },
-                            init: function () {
+                            init : function () {
                                 this.on("success", function (file, data) {
-
-                                    this.removeAllFiles(true);
 
                                     if (data && data.success) {
                                         self.loadDirectoryFiles(this.options.params.category);
                                     } else {
-                                        noty({ text: data.error, type: 'error', timeout: 3000 });
+                                        noty({ text : data.error, type : 'error', timeout : 3000 });
                                     }
                                 });
 
                                 this.on("error", function (file, err, xhr) {
 
-                                    this.removeAllFiles(true);
-
                                     if (file.size > 20971520) {
-                                        noty({ text: 'Filesize cannot exceed 20mb', type: 'error', timeout: 3000 });
+                                        noty({ text : 'Filesize cannot exceed 20mb', type : 'error', timeout : 3000 });
                                     } else {
-                                        noty({ text: 'Something has gone wrong.', type: 'error', timeout: 3000 });
+                                        noty({ text : 'Something has gone wrong.', type : 'error', timeout : 3000 });
                                     }
+
+                                });
+
+                                this.on("complete", function(file) {
+
+                                    this.removeFile(file);
 
                                 });
                             }
