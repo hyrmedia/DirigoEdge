@@ -113,7 +113,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
             if (!String.IsNullOrEmpty(user.Username))
             {
                 // Add to .Net Membership Framework First
-                WebSecurity.CreateUserAndAccount(user.Username, user.Password, user.TimeZone);
+                WebSecurity.CreateUserAndAccount(user.Username, user.Password, user.TimeZone, user.Email);
 
                 // Now add additional fields to  CodeFirst User
                 var newlyAddedUser = Context.Users.FirstOrDefault(x => x.Username == user.Username);
