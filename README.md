@@ -10,7 +10,7 @@ Please follow the installation instructions below before running the program.
 	- Run "aspnet_regsql.exe" on your database and follow the on screen instruction. 
 		- The reg sql program is typically found : C:\Windows\Microsoft.NET\Framework\v4.0.30319    (your .Net version may vary)
 		- This program installs various sql tables and stored procedures required by the .Net Membership provider.
-	- For more a step by step guid : http://runtingsproper.blogspot.com/2009/08/using-aspnetregsql-via-command-line-to.html
+	- For more a step by step gui : http://runtingsproper.blogspot.com/2009/08/using-aspnetregsql-via-command-line-to.html
 	
 3. Run the application and create a new user.
 	- Running the application for the first time will seed the database and provide you with some initial content to play around with.
