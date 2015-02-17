@@ -54,7 +54,7 @@
   <ItemGroup>
     <Reference Include="DirigoEdgeCore, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DirigoEdgeCore.1.2.0\lib\DirigoEdgeCore.dll</HintPath>
+      <HintPath>..\packages\DirigoEdgeCore.1.2.1\lib\DirigoEdgeCore.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
@@ -416,6 +416,7 @@
     <Compile Include="Controllers\ContentController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="CustomUtils\WebUtils.cs" />
     <Compile Include="Data\Context\WebDataContext.cs" />
     <Compile Include="Data\Context\WebDataContextInitializer.cs" />
     <Compile Include="Global.asax.cs">
@@ -966,7 +967,6 @@
     <Folder Include="Content\uploaded\Images\images\" />
     <Folder Include="Content\uploaded\ModuleThumbs\" />
     <Folder Include="Content\uploaded\Sliders\" />
-    <Folder Include="CustomUtils\" />
     <Folder Include="Data\Entities\" />
     <Folder Include="Scripts\ckeditor\plugins\image\images\" />
     <Folder Include="Scss\sass\" />

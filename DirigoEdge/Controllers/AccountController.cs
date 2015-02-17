@@ -6,6 +6,8 @@ using DirigoEdgeCore.Membership;
 using DirigoEdgeCore.Models;
 using DirigoEdgeCore.Utils;
 using DirigoEdgeCore.Models.ViewModels;
+using DirigoEdgeCore.Data.Entities;
+using DirigoEdge.CustomUtils;
 
 namespace DirigoEdge.Controllers
 {
@@ -25,6 +27,13 @@ namespace DirigoEdge.Controllers
         {
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, model.RememberMe))
             {
+                LoginLog loginLog = new LoginLog();
+                loginLog.UserName = model.UserName;
+                loginLog.IPAddress = WebUtils.ClientIPAddress();
+                loginLog.Date = DateTime.UtcNow;
+                Context.LoginLog.Add(loginLog);
+                Context.SaveChanges();
+
                 return RedirectToLocal(returnUrl);
             }
 
