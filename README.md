@@ -1,6 +1,6 @@
 # DirigoEdge
 
-DirigoEdge is an Open Source development framework built on .Net that makes managing content and building websites faster and easier. It is fully responsive, built on MVC, Microsoft’s CodeFirst, and has a robust shortcode and plugin system.
+DirigoEdge is an Open Source development framework built on .Net that makes managing content and building websites faster and easier. It is fully responsive, built on MVC, Microsoftâ€™s CodeFirst, and has a robust shortcode and plugin system.
 
 ## Getting Started
 
@@ -35,7 +35,7 @@ Before submitting an issue search through open and closed issues to see if your 
 All development work for DirigoEdge is done on the `develop` branch. Any new code contributions should be made on (or branched off) this branch.
 
 ### Step 1: Fork
-For the project on GitHub and check out your copy locally.
+Fork the project on GitHub and check out your copy locally.
 
 ```
 $ git clone https://github.com/dirigodev/DirigoEdge.git
