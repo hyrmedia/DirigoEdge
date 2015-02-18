@@ -1,8 +1,8 @@
-# Dirigo Edge
+# DirigoEdge
 
-Please follow the installation instructions below before running the program.
+DirigoEdge is an Open Source development framework built on .Net that makes managing content and building websites faster and easier. It is fully responsive, built on MVC, Microsoft’s CodeFirst, and has a robust shortcode and plugin system.
 
-## Setting up your website
+## Getting Started
 
 1. Edit your web.config file with your appopriate database connections.
 	
