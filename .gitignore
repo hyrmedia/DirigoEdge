@@ -183,7 +183,8 @@ UpgradeLog*.htm
 FakesAssemblies/
 
 /DirigoEdge/bin
-/DirigoEdge/Content/uploaded/*
+/DirigoEdge/Content/uploaded/Images/*/
+!/DirigoEdge/Content/uploaded/Images/content/
 /DirigoEdge/images
 /DirigoEdge/node_modules
 /DirigoEdge/obj

@@ -406,7 +406,6 @@
     <Content Include="Areas\Admin\Scripts\sidebar.js" />
     <Content Include="Areas\Admin\Scripts\siteSettings.js" />
     <Content Include="Content\logo.png" />
-    <Content Include="Content\uploaded\dirigoLogo.jpg" />
     <Content Include="Content\uploaded\Images\content\edge_logo_head.png" />
     <Content Include="Content\uploaded\Media\ph.txt" />
     <Compile Include="Areas\Admin\Models\ViewModels\SiteSettingsViewModel.cs" />
@@ -1072,9 +1071,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Views\Shared\Partials\InsertImageModalPartial.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\uploaded\Images\ph" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Blog\BlogsByUser.cshtml" />
