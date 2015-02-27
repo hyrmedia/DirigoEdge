@@ -51,7 +51,10 @@ role_class.prototype.manageUserRoleAdminEvents = function () {
                 data.role.Permissions.push({ PermissionId: $(this).data("key"), PermissionName: $(this).data("name") });
             }
         });
-        
+        if (data.role.Permissions.length < 1) {
+            noty({ text: 'Please Select a Permission.', type: 'error', timeout: 3000 });
+            return false;
+        }
         var $container = $("#NewUserRoleModal div.content");
         common.showAjaxLoader($container);
         $.ajax({
@@ -67,7 +70,7 @@ role_class.prototype.manageUserRoleAdminEvents = function () {
                 common.hideAjaxLoader($container);
 
                 //Refresh the inner content to show the new user
-                self.refreshUserRoleTable(noty({ text: 'User Successfully Created.', type: 'success', timeout: 3000 }));
+                self.refreshUserRoleTable(noty({ text: 'Role Successfully Created.', type: 'success', timeout: 3000 }));
             },
             error: function (data) {
                 $('#NewUserModal').modal('hide');
@@ -108,7 +111,7 @@ role_class.prototype.manageUserRoleAdminEvents = function () {
                 common.hideAjaxLoader($container);
                 $('#DeleteUserRoleModal').modal('hide');
 
-                self.refreshUserRoleTable(noty({ text: 'User Successfully Deleted.', type: 'success', timeout: 3000 }));
+                self.refreshUserRoleTable(noty({ text: 'Role Successfully Deleted.', type: 'success', timeout: 3000 }));
             },
             error: function (data) {
                 common.hideAjaxLoader($container);
@@ -215,7 +218,10 @@ role_class.prototype.initPermissionEvents = function () {
                 data.role.Permissions.push({ PermissionId: $(this).data("key"), PermissionName: $(this).data("name") });
             }
         });
-
+        if (data.role.Permissions.length < 1) {
+            noty({ text: 'Please Select a Permission.', type: 'error', timeout: 3000 });
+            return false;
+        }
         var $container = $("#EditUserRolePermissionsModal div.content");
         common.showAjaxLoader($container);
         $.ajax({
@@ -232,7 +238,7 @@ role_class.prototype.initPermissionEvents = function () {
                 $('#EditUserRolePermissionsModal').modal('hide');
 
                 //Refresh the inner content to show the new user
-                self.refreshUserRoleTable(noty({ text: 'Permissions Successfully Modified.', type: 'success', timeout: 3000 }));
+                self.refreshUserRoleTable(noty({ text: 'Permission(s) Successfully Modified.', type: 'success', timeout: 3000 }));
             },
             error: function () {
                 common.hideAjaxLoader($container);
