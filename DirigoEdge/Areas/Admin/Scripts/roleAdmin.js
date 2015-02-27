@@ -41,13 +41,15 @@ role_class.prototype.manageUserRoleAdminEvents = function () {
         var data = {
             role: {
                 RoleName: roleName,
-                Permissions: {}
+                Permissions: []
             }
         };
 
         // Add the Roles
         $("#NewUserRoleModal ul.rolePermissionsList input[type=checkbox]").each(function () {
-             data.role.Permissions[$(this).data("key")] = $(this).is(":checked");
+            if ($(this).is(":checked")) {
+                data.role.Permissions.push({ PermissionId: $(this).data("key"), PermissionName: $(this).data("name") });
+            }
         });
         
         var $container = $("#NewUserRoleModal div.content");
@@ -173,7 +175,7 @@ role_class.prototype.initPermissionEvents = function () {
     var self = this;
     
     // Show user permissions
-    $("#ManageUserRolesTable").on("click", "a.showPermissions", function () {
+    $(document).on("click", "a.showPermissions", function () {
         var $row = $(this).parent().parent();
         self.EditUserRoleId = $(this).attr("data-id");
         self.EditUserRoleDisplayName = $row.find("td.roleName").text();
@@ -186,10 +188,10 @@ role_class.prototype.initPermissionEvents = function () {
             var currentRole = $(this).find("span.key").text();
 
             if ($.inArray(currentRole, nCurrentRolePermissions) != -1) {
-                $(this).find("span.checkbox").addClass("checked");
+                $(this).find("input[type=checkbox]").prop('checked', true);
             }
             else {
-                $(this).find("span.checkbox").removeClass("checked");
+                $(this).find("input[type=checkbox]").prop('checked', false);
             }
         });
 
@@ -203,16 +205,15 @@ role_class.prototype.initPermissionEvents = function () {
             role: {
                 RoleName: self.EditUserRoleDisplayName,
                 RoleId: self.EditUserRoleId,
-                Permissions: {}
+                Permissions: []
             }
         };
 
         // Add the roles
-        $("#EditUserRolePermissionsModal ul.rolePermissionsList li").each(function () {
-            var key = $(this).find("input[type='checkbox']").data("key");
-            var isChecked = $(this).find(".checkbox").hasClass("checked");
-
-            data.role.Permissions[key] = isChecked;
+        $("#EditUserRolePermissionsModal ul.rolePermissionsList input[type=checkbox]").each(function () {
+            if ($(this).is(":checked")) {
+                data.role.Permissions.push({ PermissionId: $(this).data("key"), PermissionName: $(this).data("name") });
+            }
         });
 
         var $container = $("#EditUserRolePermissionsModal div.content");
@@ -231,7 +232,7 @@ role_class.prototype.initPermissionEvents = function () {
                 $('#EditUserRolePermissionsModal').modal('hide');
 
                 //Refresh the inner content to show the new user
-                self.refreshUserRoleTable(noty({ text: 'User Successfully Modified.', type: 'success', timeout: 3000 }));
+                self.refreshUserRoleTable(noty({ text: 'Permissions Successfully Modified.', type: 'success', timeout: 3000 }));
             },
             error: function () {
                 common.hideAjaxLoader($container);

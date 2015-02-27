@@ -46,8 +46,16 @@ namespace DirigoEdge.Areas.Admin.Controllers
             {
                 RoleId = Guid.NewGuid(),
                 RoleName = role.RoleName,
-                Permissions = role.Permissions
+                Permissions = new List<Permission>()
             };
+            foreach (var permission in role.Permissions)
+            {
+                var existingPermission = Context.Permissions.FirstOrDefault(x => x.PermissionId == permission.PermissionId);
+                if (existingPermission != null)
+                {
+                    NewRole.Permissions.Add(existingPermission);
+                }
+            }
             Context.Roles.Add(NewRole);
             success = Context.SaveChanges();
 
@@ -121,9 +129,21 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 if (RoleToModify.RoleName != "Administrators")
                 {
                     // Now change permissions
-                    RoleToModify.Permissions = role.Permissions;
+                    var count = RoleToModify.Permissions.Count;
+                    for (var i = count - 1; i >= 0; i--)
+                    {
+                        RoleToModify.Permissions.Remove(RoleToModify.Permissions.ElementAt(i));
+                    }
+                    foreach (var permission in role.Permissions)
+                    {
+                        var existingPermission = Context.Permissions.FirstOrDefault(x => x.PermissionId == permission.PermissionId);
+                        if (existingPermission != null)
+                        {
+                            RoleToModify.Permissions.Add(existingPermission);
+                        }
+                    }
 
-                    Context.SaveChanges();
+                    result.Data = Context.SaveChanges();
                 }
             }
 
