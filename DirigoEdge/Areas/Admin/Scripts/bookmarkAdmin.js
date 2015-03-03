@@ -28,9 +28,65 @@ BookmarkClass.prototype.initPageEvents = function () {
 
     $('#ConfirmBookmarkDelete').on('click', this.methods.deleteBookmark);
 
+    $('body').on('click', '.edit-bookmark', function () {
+        var $modal = $("#EditBookmarkModal"),
+            $row = $(this).closest('li, tr');
+
+        $("#ConfirmBookmarkEdit").attr('data-bookmark', $row.attr('data-bookmark'));
+
+        $modal.find('#bookmarkName').val($row.attr('data-title'));
+        $modal.find('#bookmarkUrl').val($row.attr('data-url'));
+
+        $("#EditBookmarkModal").modal();
+
+        return false;
+    });
+
+    $('#ConfirmBookmarkEdit').on('click', this.methods.editBookmark);
+
 };
 
 BookmarkClass.prototype.methods = {
+
+    editBookmark: function () {
+
+        var $this = $(this),
+            $modal = $this.closest('.modal'),
+            data = {
+                id: parseInt($this.attr('data-bookmark')),
+                title: $modal.find('#bookmarkName').val(),
+                url: $modal.find('#bookmarkUrl').val()
+            };
+
+        $.ajax({
+            url : "/admin/bookmark/edit/",
+            type : "POST",
+            dataType : 'json',
+            contentType : 'application/json; charset=utf-8',
+            data : JSON.stringify(data, null, 2),
+            success : function (res) {
+
+                $modal.modal('hide');
+
+                // Reset values to prevent bad things
+                $this.attr('data-bookmark', '');
+                $modal.find('#bookmarkName').val('');
+                $modal.find('#bookmarkUrl').val('');
+
+                if (res && res.response === 'success') {
+                    parentClass.methods.refreshTable();
+                    noty({ text: 'Bookmark successfully edited.', type: 'success', timeout: 3000 });
+                } else {
+                    noty({ text : res.error, type : 'error', timeout : 3000 });
+                }
+
+            }
+        });
+
+        return false;
+
+    },
+
     deleteBookmark: function () {
 
         var $this = $(this),
@@ -40,7 +96,7 @@ BookmarkClass.prototype.methods = {
             };
 
         $.ajax({
-            url: "/admin/bookmark/ajaxdelete/",
+            url: "/admin/bookmark/delete/",
             type: "POST",
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
@@ -49,8 +105,9 @@ BookmarkClass.prototype.methods = {
 
                 $('#DeleteBookmarkModal').modal('hide');
 
-                if (res && res.success) {
+                if (res && res.response === "success") {
                     parentClass.methods.refreshTable();
+                    noty({ text: 'Bookmark successfully deleted.', type: 'success', timeout: 3000 });
                 } else {
                     noty({ text: res.error, type: 'error', timeout: 3000 });
                 }

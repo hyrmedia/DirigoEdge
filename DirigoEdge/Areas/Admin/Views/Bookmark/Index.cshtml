@@ -23,13 +23,13 @@
             <tbody>
                 @foreach (var bookmark in Model.Bookmarks)
                 {
-                    <tr data-bookmark="@bookmark.BookmarkId">
+                    <tr data-bookmark="@bookmark.BookmarkId" data-title="@bookmark.Title" data-url="@bookmark.Url">
                         <td class="title">
                             <a href="@bookmark.Url">@bookmark.Title</a>
                         </td>
                         <td>
-                            <button class="btn  btn-primary btn-sm edit-bookmark">Edit</button>
-                            <button class="btn  btn-danger btn-sm delete-bookmark">Delete</button>
+                            <button class="btn btn-primary btn-sm edit-bookmark">Edit</button>
+                            <button class="btn btn-danger btn-sm delete-bookmark">Delete</button>
                         </td>
                     </tr>
                 }
@@ -41,7 +41,7 @@
 
 @section Modals {
 
-    <div id="MediaModal" class="modal">
+    <div id="EditBookmarkModal" class="modal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -49,16 +49,25 @@
                         <span aria-hidden="true">&times;</span>
                         <span class="sr-only">Close</span>
                     </button>
-                    <h2>Upload Media</h2>
+                    <h2>Edit Bookmark.</h2>
                 </div>
                 <div class="modal-body">
-                    <div class="content container-fluid">
-                        <form action="/admin/fileUpload" class="dropzone" id="my-awesome-dropzone">
-                            @*<input type="hidden" name="category" value="@Model.Category"/>*@
+                    <div class="container-fluid">
+                        <form>
+                            <div class="form-group">
+                                <label for="bookmarkName">Name</label>
+                                <input type="text" class="form-control" id="bookmarkName">
+                            </div>
+                            <div class="form-group">
+                                <label for="bookmarkUrl">URL</label>
+                                <input type="url" class="form-control" id="bookmarkUrl">
+                            </div>
                         </form>
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <a id="ConfirmBookmarkEdit" class="pull-right btn btn-primary confirmModalButton">Save</a>
+                    <a class="pull-right btn btn-default" data-dismiss="modal">Cancel</a>
                 </div>
             </div>
         </div>
@@ -82,7 +91,7 @@
                 </div>
                 <div class="modal-footer">
                     <a id="ConfirmBookmarkDelete" class="pull-right btn btn-danger confirmDeleteButton confirmModalButton">Delete</a>
-                    <a class="pull-right btn btn-default" onclick="$('#DeleteMediaModal').modal('hide');">Cancel</a>
+                    <a class="pull-right btn btn-default" data-dismiss="modal">Cancel</a>
                 </div>
             </div>
         </div>
