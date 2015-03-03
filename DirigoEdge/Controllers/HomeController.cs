@@ -5,6 +5,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Web.Mvc;
 using DirigoEdge.Utils;
+using DirigoEdgeCore.Business;
 using DirigoEdgeCore.Controllers;
 using DirigoEdgeCore.Models.ViewModels;
 using DirigoEdgeCore.Utils;
@@ -16,9 +17,11 @@ namespace DirigoEdge.Controllers
 	{
 		public ActionResult Index()
 		{
-            var model = new ContentViewViewModel("home");
+		    var model = new ContentViewViewModel {ThePage = ContentLoader.GetDetailsByTitle(String.Empty)};
+            model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
+            model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent, Context);
 
-            if (model.ThePage != null)
+		    if (model.ThePage != null)
             {
                 return View(model.TheTemplate.ViewLocation, model);
             }

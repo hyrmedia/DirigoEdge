@@ -1,7 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using AutoMapper;
+using DirigoEdgeCore.Business;
+using DirigoEdgeCore.Business.Models;
 using DirigoEdgeCore.Controllers;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models.ViewModels;
@@ -11,6 +13,11 @@ namespace DirigoEdge.Controllers
 {
     public class ContentController : DirigoBaseController
     {
+        static ContentController()
+        {
+            Mapper.CreateMap<ContentPage, PageDetails>();
+        }
+
         public ActionResult Index()
         {
             ContentViewViewModel model = null;
@@ -31,7 +38,9 @@ namespace DirigoEdge.Controllers
             // If not a subdirectory try based on permalink / title
             if (model == null || model.ThePage == null)
             {
-                model = new ContentViewViewModel(title);
+                model = new ContentViewViewModel { ThePage = ContentLoader.GetDetailsByTitle(title) };
+                model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
+                model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent, Context);
             }
 
             // If we found a hit, return the view, otherwise 404
@@ -115,10 +124,19 @@ namespace DirigoEdge.Controllers
 
             var thePage = Context.ContentPages.FirstOrDefault(x => x.Permalink == permalink && x.ParentNavigationItemId == currentNavigation.NavigationItemId);
 
-            return thePage != null ? new ContentViewViewModel(thePage.ContentPageId) : null;
+            if (thePage != null)
+            {
+                var model = new ContentViewViewModel {ThePage = ContentLoader.GetDetailById(thePage.ContentPageId)};
+                model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
+                model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent, Context);
+                return new ContentViewViewModel();
+            }
+            else
+            {
+                return null;
+            }
         }
 
-        // Helper methods
         public string GetCanonical(ContentPage page)
         {
             // If canonical is explicitly set, use that
@@ -145,8 +163,6 @@ namespace DirigoEdge.Controllers
             }
 
             return baseUrl.TrimEnd('/') + generatedUrl;
-
-            // Otherwise use DisplayName
         }
     }
 }
