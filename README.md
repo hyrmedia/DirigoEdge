@@ -18,7 +18,7 @@ DirigoEdge is an Open Source development framework built on .Net that makes mana
 	- When you register a new user, you will be added as an Administrator.
 	- After you create a user and have successfully logged in, you may add a registration code under Users > Roles.
 
-5. You may need to set permissions on the folders `content/uploaded` and `scripts` so that the 'IISUSR' and 'ISUR' has full permission
+5. You may need to set permissions on the folders `uploaded` and `scripts` so that the 'IISUSR' and 'ISUR' has full permission
 	- Edge will automatically combine and minify your CSS and Javascript files in this directory when you publish your solution or run in Release mode
 	- More information on SquishIt can be found at https://github.com/jetheredge/SquishIt
 

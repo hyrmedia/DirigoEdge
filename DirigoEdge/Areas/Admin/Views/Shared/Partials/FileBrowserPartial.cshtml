@@ -14,7 +14,7 @@
                 @foreach (var folder in Model.FolderListing)
                 {
                     <li>
-                        <a href="/content/uploaded/Images/@folder.Name" class="directory" data-directory="@folder.Name">
+                        <a href="/uploaded/@folder.Name" class="directory" data-directory="@folder.Name">
                             <i class="fa fa-folder"></i>
                             <div class="folder-name">@folder.Name</div>
                             <div class="folder-count badge">@folder.FileCount</div>
@@ -37,7 +37,7 @@
                             <a href="@file.WebPath" class="thumbnail" target="_blank">
                                 @if (file.Icon == "picture-o")
                                 {
-                                    <img src="/content/uploaded/Images/@file.Folder/@file.Filename"/>
+                                    <img src="/uploaded/@file.Folder/@file.Filename"/>
                                 }
                                 else
                                 {
