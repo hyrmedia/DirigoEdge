@@ -17,12 +17,12 @@ namespace DirigoEdge.Controllers
 	{
 		public ActionResult Index()
 		{
-		    var model = new ContentViewViewModel {ThePage = ContentLoader.GetDetailsByTitle(String.Empty)};
-            model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
-            model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent, Context);
+		    var model = new ContentViewViewModel {ThePage = ContentLoader.GetDetailsByTitle("home")};
 
 		    if (model.ThePage != null)
             {
+                model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
+                model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent, Context);
                 return View(model.TheTemplate.ViewLocation, model);
             }
             

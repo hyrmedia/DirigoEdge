@@ -39,24 +39,32 @@ namespace DirigoEdge.Controllers
             if (model == null || model.ThePage == null)
             {
                 model = new ContentViewViewModel { ThePage = ContentLoader.GetDetailsByTitle(title) };
-                model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
-                model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent, Context);
+                
             }
 
             // If we found a hit, return the view, otherwise 404
             if (model.ThePage != null)
             {
+                model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
+                model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent, Context);
+
                 if (UserUtils.UserIsAdmin())
                 {
 
                     var userName = UserUtils.CurrentMembershipUsername();
                     var user = Context.Users.First(usr => usr.Username == userName);
 
-                    var pageModel = new EditContentViewModel(model.ThePage.ContentPageId)
-                    {
-                        BookmarkTitle = model.ThePage.Title,
-                        IsBookmarked = Context.Bookmarks.Any(bookmark => bookmark.Title == title && bookmark.Url == Request.RawUrl && bookmark.UserId == user.UserId)
-                    };
+                    var pageModel = new EditContentViewModel();
+                    var editContentHelper = new EditContentHelper(Context);
+                    editContentHelper.LoadContentViewById(model.ThePage.ContentPageId, pageModel);
+
+                    pageModel.BookmarkTitle = model.ThePage.Title;
+                    pageModel.IsBookmarked =
+                        Context.Bookmarks.Any(
+                            bookmark =>
+                                bookmark.Title == title && bookmark.Url == Request.RawUrl &&
+                                bookmark.UserId == user.UserId);
+                    
 
                     ViewBag.PageModel = pageModel;
                 }
@@ -68,8 +76,8 @@ namespace DirigoEdge.Controllers
                 ViewBag.OGTitle = model.ThePage.OGTitle ?? model.ThePage.Title;
 
                 // Set the page Canonical Tag and OGURl
-                ViewBag.OGUrl = model.ThePage.OGUrl ?? GetCanonical(model.ThePage);
                 ViewBag.Canonical = GetCanonical(model.ThePage);
+                ViewBag.OGUrl = model.ThePage.OGUrl ?? ViewBag.Canonical;
 
                 if (model.ThePage.NoIndex)
                 {
@@ -129,7 +137,7 @@ namespace DirigoEdge.Controllers
                 var model = new ContentViewViewModel {ThePage = ContentLoader.GetDetailById(thePage.ContentPageId)};
                 model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
                 model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent, Context);
-                return new ContentViewViewModel();
+                return model;
             }
             else
             {
@@ -137,7 +145,7 @@ namespace DirigoEdge.Controllers
             }
         }
 
-        public string GetCanonical(ContentPage page)
+        public string GetCanonical(PageDetails page)
         {
             // If canonical is explicitly set, use that
             if (!String.IsNullOrEmpty(page.Canonical))

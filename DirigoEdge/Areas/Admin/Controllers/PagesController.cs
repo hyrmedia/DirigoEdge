@@ -115,8 +115,11 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [PermissionsFilter(Permissions = "Can Edit Pages")]
         public ActionResult EditContent(int id, string schema, string editContentHeading)
         {
-            var model = new EditContentViewModel(id);
+            var model = new EditContentViewModel();
 
+            var editContentHelper = new EditContentHelper(Context);
+            editContentHelper.LoadContentViewById(id, model);
+            
             var userName = UserUtils.CurrentMembershipUsername();
             var user = Context.Users.First(usr => usr.Username == userName);
             model.IsBookmarked = Context.Bookmarks.Any(bookmark => bookmark.Url == Request.RawUrl && bookmark.UserId == user.UserId);
@@ -141,7 +144,11 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [PermissionsFilter(Permissions = "Can Edit Pages")]
         public ActionResult EditContentBasic(int id)
         {
-            var model = new EditContentViewModel(id);
+            var model = new EditContentViewModel();
+            
+            var editContentHelper = new EditContentHelper(Context);
+            editContentHelper.LoadContentViewById(id, model);
+
             return View(model);
         }
 
