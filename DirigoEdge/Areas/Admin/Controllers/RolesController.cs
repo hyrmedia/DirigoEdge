@@ -46,8 +46,19 @@ namespace DirigoEdge.Areas.Admin.Controllers
             {
                 RoleId = Guid.NewGuid(),
                 RoleName = role.RoleName,
-                Permissions = role.Permissions
+                Permissions = new List<Permission>()
             };
+            if (role.Permissions != null)
+            {
+                foreach (var permission in role.Permissions)
+                {
+                    var existingPermission = Context.Permissions.FirstOrDefault(x => x.PermissionId == permission.PermissionId);
+                    if (existingPermission != null)
+                    {
+                        NewRole.Permissions.Add(existingPermission);
+                    }
+                }
+            }
             Context.Roles.Add(NewRole);
             success = Context.SaveChanges();
 
@@ -78,21 +89,22 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 // Delete from CodeFirst
 
                 var RoleToDelete = Context.Roles.FirstOrDefault(x => x.RoleId == role.RoleId);
-
+                
                 if (RoleToDelete != null)
                 {
+                    // Disallow deletion of administrators role
+                    if (RoleToDelete.RoleName == "Administrators")
+                    {
+                        return result;
+                    }
+
+                    role.RoleName = RoleToDelete.RoleName;
                     Context.Roles.Remove(RoleToDelete);
                     var success = Context.SaveChanges();
 
                     if (success > 0)
                     {
                         result.Data = new { success = true, message = "The role has been successfully deleted." };
-                    }
-
-                    // Disallow deletion of administrators role
-                    if (RoleToDelete.RoleName == "Administrators")
-                    {
-                        return result;
                     }
                 }
 
@@ -112,7 +124,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         {
             var result = new JsonResult();
 
-            if (!String.IsNullOrEmpty(role.RoleId.ToString()))
+            if (!String.IsNullOrEmpty(role.RoleId.ToString()) && role.Permissions != null)
             {
                 // Delete from CodeFirst
                 var RoleToModify = Context.Roles.FirstOrDefault(x => x.RoleId == role.RoleId);
@@ -121,9 +133,21 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 if (RoleToModify.RoleName != "Administrators")
                 {
                     // Now change permissions
-                    RoleToModify.Permissions = role.Permissions;
+                    var count = RoleToModify.Permissions.Count;
+                    for (var i = count - 1; i >= 0; i--)
+                    {
+                        RoleToModify.Permissions.Remove(RoleToModify.Permissions.ElementAt(i));
+                    }
+                    foreach (var permission in role.Permissions)
+                    {
+                        var existingPermission = Context.Permissions.FirstOrDefault(x => x.PermissionId == permission.PermissionId);
+                        if (existingPermission != null)
+                        {
+                            RoleToModify.Permissions.Add(existingPermission);
+                        }
+                    }
 
-                    Context.SaveChanges();
+                    result.Data = Context.SaveChanges();
                 }
             }
 

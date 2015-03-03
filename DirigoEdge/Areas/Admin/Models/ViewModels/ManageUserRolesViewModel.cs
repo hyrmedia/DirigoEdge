@@ -12,7 +12,7 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
         public Dictionary<Role, List<string>> RoleUsersKVP;
         public List<string> RolesList;
 
-        public Dictionary<string, bool> RolePersmissionsList;
+        public List<Permission> RolePersmissionsList;
 
         public const string NOUSERIMAGE = "/areas/admin/css/images/user.png";
 
@@ -33,7 +33,7 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
                 }
             }
 
-            RolePersmissionsList = UserRoleUtilities.GetRolePermissionsList(new RolePermissions());
+            RolePersmissionsList = Context.Permissions.ToList();
         }
     }
 }
