@@ -178,16 +178,15 @@ namespace DirigoEdge.Controllers
         [AllowAnonymous]
         public ActionResult ResetPasswordSuccess()
         {
-            //var model = new ContentViewViewModel("resetpasswordsuccess");
+            var model = new ContentViewViewModel("resetpasswordsuccess");
 
-            //if (model.ThePage != null)
-            //{
-            //    return View(model.TheTemplate.ViewLocation, model);
-            //}
+            if (model.ThePage != null)
+            {
+                return View(model.TheTemplate.ViewLocation, model);
+            }
 
-            //HttpContext.Response.StatusCode = 404;
-            //return View("~/Views/Home/Error404.cshtml");
-            return View();
+            HttpContext.Response.StatusCode = 404;
+            return View("~/Views/Home/Error404.cshtml");
         }
 
 

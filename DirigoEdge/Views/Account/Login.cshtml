@@ -12,10 +12,10 @@
         @Html.ValidationSummary(true, "Login was unsuccessful. Please correct the errors and try again.")
 
         @using (Html.BeginForm())
-		{
+        {
             <div class="form-group">
                 @Html.LabelFor(m => m.UserName)
-                <input class="form-control"  data-val="true" data-val-required="The User name field is required." id="UserName" name="UserName" type="text" value="">
+                <input class="form-control" data-val="true" data-val-required="The User name field is required." id="UserName" name="UserName" type="text" value="">
                 @Html.ValidationMessageFor(m => m.UserName)
             </div>
             <div class="form-group">
@@ -23,19 +23,17 @@
                 <input class="form-control" data-val="true" data-val-required="The Password field is required." id="Password" name="Password" type="password">
                 @Html.ValidationMessageFor(m => m.Password)
             </div>
-            <div class="checkbox">
-                <label>
+            <div class="form-group">
+                <div>
                     @Html.CheckBoxFor(m => m.RememberMe)
                     <label for="RememberMe" class="fltLeft" style="display: inline-block; margin-bottom: 20px;">
                         Remember me
                     </label>
-                    <a style="display: inline-block; margin-left: 10px;margin-bottom: 20px;">
-                        <a href="/account/resetpassword/">Forgot Password</a>
-                    </a>
-                </label>
+                    <a href="/account/resetpassword/" style="display: inline-block; margin-bottom: 20px;float:right;">Forgot Password</a>
+                </div>
             </div>
 
-		    <button type="submit" class="btn btn-default">Log On</button>
-		}
+            <button type="submit" class="btn btn-default">Log On</button>
+        }
     </div>
 </div>
