@@ -123,8 +123,10 @@
                             <ul>
                                 @foreach (var template in Model.Templates)
                                 {
+                                    var activeClass = template == Model.Templates.First() ? "active" : "";
+                                    
                                     <li>
-                                        <a class="active" href="#" data-template-path="@template.TemplatePath" data-view-template="@template.ViewTemplate">
+                                        <a class="@activeClass" href="#" data-template-path="@template.TemplatePath" data-view-template="@template.ViewTemplate">
                                             <img src="@template.ThumbnailPath" />
                                             <span>@template.Name</span>
                                         </a>
