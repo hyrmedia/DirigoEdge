@@ -80,10 +80,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PageBuilder_Plugin, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DirigoEdgePagebuilder.2.0.17\lib\PageBuilder_Plugin.dll</HintPath>
-    </Reference>
     <Reference Include="SquishIt.Framework, Version=0.8.6.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Lib\SquishIt\SquishIt.Framework.dll</HintPath>
@@ -183,7 +179,6 @@
     <Compile Include="App_Start\AuthConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\pagebuilder_plugin.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
@@ -405,16 +400,6 @@
     <Content Include="CSS\images\ui-icons_ffffff_256x240.png" />
     <Content Include="CSS\main.css" />
     <Content Include="gulpfile.js" />
-    <Content Include="Plugins\PageBuilder_Plugin\CSS\bootstrap-pagebuilder.css" />
-    <Content Include="Plugins\PageBuilder_Plugin\CSS\font-awesome.css" />
-    <Content Include="Plugins\PageBuilder_Plugin\CSS\fonts\fontawesome-webfont.svg" />
-    <Content Include="Plugins\PageBuilder_Plugin\CSS\pageBuilder.css" />
-    <Content Include="Plugins\PageBuilder_Plugin\Scripts\bootstrap-pagebuilder.js" />
-    <Content Include="Plugins\PageBuilder_Plugin\Scripts\isotope.pkgd.min.js" />
-    <Content Include="Plugins\PageBuilder_Plugin\Scripts\jquery-pagebuilder.js" />
-    <Content Include="Plugins\PageBuilder_Plugin\Scripts\liquidmetal.js" />
-    <Content Include="Plugins\PageBuilder_Plugin\Scripts\pagebuilder-admin.js" />
-    <Content Include="Plugins\PageBuilder_Plugin\Scripts\pageBuilder.js" />
     <Content Include="Scripts\moment-timezone.js" />
     <Content Include="Areas\Admin\Scripts\mustache\mustache.js" />
     <Content Include="Areas\Admin\Scripts\navBuilder.js" />
@@ -1257,52 +1242,7 @@
     <Content Include="Views\Account\ResetPasswordSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Admin\Views\Shared\Partials\StockPageTemplates\PageBuilderLeftRail.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Scss\edge\alerts.scss" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Content\Templates\PageBuilderTemplate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Plugins\PageBuilder_Plugin\Views\Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Plugins\PageBuilder_Plugin\Views\Shared\Partials\SEOMetaModalPartial.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Plugins\PageBuilder_Plugin\Views\Shared\Partials\PageBuilderSettingsPartial.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Plugins\PageBuilder_Plugin\Views\Shared\Partials\BuilderToolbarPartial.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Plugins\PageBuilder_Plugin\Views\Shared\Partials\BuilderPageSettings.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Plugins\PageBuilder_Plugin\Views\Shared\Partials\BuilderModalsPartial.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Plugins\PageBuilder_Plugin\Views\Shared\Error.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Plugins\PageBuilder_Plugin\Views\Shared\_Layout.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Plugins\PageBuilder_Plugin\Views\_ViewStart.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Plugins\PageBuilder_Plugin\CSS\fonts\fontawesome-webfont.woff" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Plugins\PageBuilder_Plugin\CSS\fonts\fontawesome-webfont.ttf" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Plugins\PageBuilder_Plugin\CSS\fonts\fontawesome-webfont.eot" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Plugins\PageBuilder_Plugin\CSS\fonts\FontAwesome.otf" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

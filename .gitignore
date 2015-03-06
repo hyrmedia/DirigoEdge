@@ -192,6 +192,7 @@ FakesAssemblies/
 *.user
 /packages
 *.suo
+*.orig
 
 # Generated CSS files
 /DirigoEdge/Areas/Admin/CSS/main.css
