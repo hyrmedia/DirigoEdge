@@ -1239,9 +1239,6 @@
     <Content Include="Views\Account\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\ResetPasswordSuccess.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Scss\edge\alerts.scss" />
   </ItemGroup>
   <PropertyGroup>
