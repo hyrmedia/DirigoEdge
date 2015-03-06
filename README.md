@@ -22,6 +22,33 @@ DirigoEdge is an Open Source development framework built on .Net that makes mana
 	- Edge will automatically combine and minify your CSS and Javascript files in this directory when you publish your solution or run in Release mode
 	- More information on SquishIt can be found at https://github.com/jetheredge/SquishIt
 
+## DirigoEdgeCore
+
+DirigoEdge and its plugins depend on [DirigoEdgeCore](https://github.com/dirigodev/DirigoEdgeCore). Stable versions are available and will be automatically installed from NuGet. If you would like to work with the latest development build of Core you'll need to pull down the project.
+
+### Step 1: Clone the repo
+Clone the repo from GitHub. This will automatically pull down the `develop` branch
+
+```
+$ git clone https://github.com/dirigodev/DirigoEdgeCore.git
+```
+
+### Step 2: Build the project
+Once you've opened the project in Visual Studio you'll need to do a build. This will automatically generate a new NuGet package in  `DirigoEdgeCore/bin`.
+
+### Step 3: Add a new NuGet Source
+In Package Manager Settings go to **NuGet Package Manager > Package Sources**. Add a new source and point it to `C:\path\to\DirigoEdgeCore\bin`. Make sure you hit Update when you're done.
+
+You can change the order in which NuGet looks for packages here, or you can explicitly set it in the Package Manager Console.
+
+### Step 4: Install DirigoEdgeCore
+Now you're ready to install DirigoEdgeCore in the Package Manager Console. If you didn't set your local package source at the top of list, be sure to set **Package source** to your local source.
+
+Now you are ready to update the package. The `-Reinstall` flag is necessary if you have made changes to DirigoEdgeCore and haven't changed the version in the nuspec file.
+```
+update-package DirigoEdgeCore -Reinstall
+```
+
 # Contributing
 
 ## Reporting An Issue
