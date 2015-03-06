@@ -183,8 +183,7 @@ UpgradeLog*.htm
 FakesAssemblies/
 
 /DirigoEdge/bin
-/DirigoEdge/Content/uploaded/Images/*/
-!/DirigoEdge/Content/uploaded/Images/content/
+/DirigoEdge/Content/uploaded
 /DirigoEdge/images
 /DirigoEdge/node_modules
 /DirigoEdge/obj
@@ -193,6 +192,7 @@ FakesAssemblies/
 *.user
 /packages
 *.suo
+*.orig
 
 # Generated CSS files
 /DirigoEdge/Areas/Admin/CSS/main.css

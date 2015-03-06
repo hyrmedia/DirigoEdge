@@ -70,6 +70,8 @@ namespace DirigoEdge.Controllers
                 }
 
                 ViewBag.IsPage = true;
+                ViewBag.PageId = model.ThePage.ContentPageId;
+                ViewBag.IsPublished = model.IsPublished;
                 ViewBag.OGType = model.ThePage.OGType ?? "website";
                 ViewBag.MetaDesc = model.ThePage.MetaDescription;
                 ViewBag.Title = model.ThePage.Title;

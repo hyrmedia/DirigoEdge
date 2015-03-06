@@ -5,6 +5,7 @@ using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdge.Controllers;
 using DirigoEdgeCore.Controllers;
 using DirigoEdgeCore.Utils;
+using Microsoft.Win32;
 using Delete = Microsoft.Ajax.Utilities.Delete;
 
 namespace DirigoEdge.Areas.Admin.Controllers
@@ -51,9 +52,26 @@ namespace DirigoEdge.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(String url, String title)
+        public ActionResult Edit(int id, String url, String title)
         {
-            return new HttpStatusCodeResult(200);
+            var result = new JsonResult
+            {
+                Data = new { response = "error", error = "An error occurred" }
+            };
+
+            var userId = UserUtils.GetCurrentUserId(Context);
+
+            try
+            {
+                BookmarkUtil.UpdateUserBookmark(id, userId, url, title);
+                result.Data = new { response = "success", data = new { BookmarkId = id, Title = title, Url = url } };
+            }
+            catch (Exception err)
+            {
+                result.Data = new { response = "error", error = "An error occurred" };
+            }
+
+            return result;
         }
 
         [HttpPost]

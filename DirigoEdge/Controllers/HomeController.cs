@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using DirigoEdge.Utils;
 using DirigoEdgeCore.Business;
 using DirigoEdgeCore.Controllers;
+using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models.ViewModels;
 using DirigoEdgeCore.Utils;
 
@@ -21,8 +22,27 @@ namespace DirigoEdge.Controllers
 
 		    if (model.ThePage != null)
             {
+                ViewBag.IsPage = true;
+                ViewBag.PageId = model.ThePage.ContentPageId;
+                ViewBag.IsPublished = model.IsPublished;
+                ViewBag.OGType = model.ThePage.OGType ?? "website";
+                ViewBag.MetaDesc = model.ThePage.MetaDescription;
+                ViewBag.Title = model.ThePage.Title;
+                ViewBag.OGTitle = model.ThePage.OGTitle ?? model.ThePage.Title;
                 model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
+                // Set the page Canonical Tag and OGURl
+                ViewBag.OGUrl = model.ThePage.OGUrl ?? GetCanonical(model.ThePage);
+                ViewBag.Canonical = GetCanonical(model.ThePage);
                 model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent, Context);
+                if (model.ThePage.NoIndex)
+                {
+                    ViewBag.NoIndex = "noindex";
+                }
+                if (model.ThePage.NoFollow)
+                {
+                    ViewBag.NoFollow = "nofollow";
+                }
+
                 return View(model.TheTemplate.ViewLocation, model);
             }
             
@@ -62,6 +82,39 @@ namespace DirigoEdge.Controllers
 
 			return new XmlSitemapResult(items);
 		}
+
+        public string GetCanonical(ContentPage page)
+        {
+            // If canonical is explicitly set, use that
+            if (!String.IsNullOrEmpty(page.Canonical))
+            {
+                return page.Canonical;
+            }
+
+            // otherwise generate canonical
+            string generatedBaseUrl = System.Web.HttpContext.Current.Request.Url.Scheme + "://" + System.Web.HttpContext.Current.Request.Url.Authority + System.Web.HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/"; // Fallback if site settings isn't in place
+            string baseUrl = SettingsUtils.GetSiteBaseUrl() ?? generatedBaseUrl;
+
+            // Use Permalink if it's available
+            if (String.IsNullOrEmpty(page.Permalink))
+            {
+                return baseUrl + page.DisplayName + "/";
+            }
+
+            var generatedUrl = NavigationUtils.GetGeneratedUrl(page);
+
+            if (generatedUrl == "/home/")
+            {
+                generatedUrl = generatedUrl.Replace("/home/", "/");
+            }
+
+            return baseUrl.TrimEnd('/') + generatedUrl;
+
+            // Otherwise use DisplayName
+        }
+
+
+
 
 		#region AjaxControllers
 

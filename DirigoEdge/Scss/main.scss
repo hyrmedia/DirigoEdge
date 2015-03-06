@@ -9,6 +9,9 @@ $hasMediaQueries : true;
         'vendor/bootstrap',
         'vendor/jquery-ui';
 
+// Edge Styles
+@import 'edge/alerts';
+
 // Global
 @import 'global/spinner';
 

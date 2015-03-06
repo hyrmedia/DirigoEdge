@@ -242,34 +242,5 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             return result;
         }
-
-        [HttpPost]
-        [PermissionsFilter(Permissions = "Can Manage Media")]
-		public JsonResult ViewDirectory(string dir)
-		{
-			var result = new JsonResult();
-
-			string directory = Server.MapPath("~/Content/Uploaded/Media");
-			var images = Directory.GetFiles(directory, "*.*")
-								.Where(file => file.ToLower().EndsWith("jpg") || file.ToLower().EndsWith("gif"))
-								.ToList();
-
-			var sb = new StringBuilder();
-			sb.Append("<ul id='UploadedMediaListing'>");
-			
-			foreach (string image in images)
-			{
-				string imgSrc = String.Format("/Content/Uploaded/Media/{0}", Path.GetFileName(image));
-				sb.Append("<li>");
-                sb.Append(String.Format("<a href='javascript:void(0);' class='stockImage th' data-toggle='tooltip' data-placement='top' title=\"<img class='constrained' src='{0}' />\" >", imgSrc));
-				sb.Append(String.Format("<img src='{0}' alt='Stock Image' />", imgSrc));
-				sb.Append("</a>");
-				sb.Append("</li>");
-			}
-			sb.Append("</ul>");
-
-			result.Data = new { html = sb.ToString()};
-			return result;
-		}
     }
 }
