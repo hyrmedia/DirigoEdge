@@ -54,6 +54,43 @@ namespace DirigoEdge.Areas.Admin.Controllers
             }
         }
 
+        [PermissionsFilter(Permissions = "Can Edit Settings")]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public JsonResult EditRedirect(int id, String source, String destination, Boolean isPermanent, Boolean rootMatching)
+        {
+            var result = new JsonResult();
+            try
+            {
+                var redirect = Context.Redirects.FirstOrDefault(x => x.RedirectId == id);
+
+                if (redirect != null)
+                {
+                    redirect.Source = source;
+                    redirect.Destination = destination;
+                    redirect.IsPermanent = isPermanent;
+                    redirect.RootMatching = rootMatching;
+                    redirect.DateModified = DateTime.UtcNow;
+                    redirect.IsActive = true;
+                
+                    Context.SaveChanges();
+
+                    result.Data = new
+                    {
+                        id = redirect.RedirectId,
+                        success = true
+                    };
+                }
+
+                CachedObjects.GetRedirectsList(true);
+                return result;
+            }
+            catch
+            {
+                result.Data = new { success = false };
+                return result;
+            }
+        }
+
         [HttpPost]
         [PermissionsFilter(Permissions = "Can Edit Settings")]
         [AcceptVerbs(HttpVerbs.Post)]

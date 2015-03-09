@@ -9,7 +9,7 @@
         <div class="col-lg-12">
             <h3><i class="fa fa-wrench"></i>Manage Redirects @Html.Partial("Partials/BookmarkButtonPartial")</h3>
         </div>
-        <a id="NewBlogPage" class="btn btn-primary mobileBlockStatic mobileMarginBottom" data-toggle="modal" data-target="#AddRedirectModal" href="#">New Redirect +</a>
+        <button id="NewBlogPage" class="btn btn-primary mobileBlockStatic mobileMarginBottom" data-toggle="modal" data-target="#AddRedirectModal">New Redirect +</button>
     </div>
 
     <table class="manageTable twelve bordered manageTable">
@@ -25,12 +25,13 @@
         <tbody id="redirectBody">
             @foreach (var redirect in Model.Redirects)
             {
-                <tr>
-                    <td>@redirect.Source</td>
-                    <td>@redirect.Destination</td>
-                    <td>@redirect.IsPermanent</td>
-                    <td>@redirect.RootMatching</td>
+                <tr data-id="@redirect.RedirectId">
+                    <td class="source">@redirect.Source</td>
+                    <td class="destination">@redirect.Destination</td>
+                    <td class="permanent">@redirect.IsPermanent</td>
+                    <td class="root-matching">@redirect.RootMatching</td>
                     <td>
+                        <a class="editRedirectButton btn btn-primary btn-sm" href="#" data-id="@redirect.RedirectId">Edit</a>
                         <a class="deleteRedirectButton btn btn-danger btn-sm" href="#" data-id="@redirect.RedirectId">Delete</a>
                     </td>
                 </tr>
@@ -40,19 +41,7 @@
 </div>
 @section Scripts {
     <script src="/Areas/Admin/Scripts/redirectAdmin.js"></script>
-      <script src="/Areas/Admin/Scripts/jquery/plugins/datatables/js/jquery.dataTables.min.js"></script>
-
-            <script>
-                $(document).ready(function () {
-                    $("table.manageTable").dataTable({
-                        "iDisplayLength": 25,
-                        "aoColumnDefs": [
-                            { "bSortable": false, "aTargets": ["actions"] } // No Sorting on actions
-                        ],
-                        "aaSorting": [[0, "desc"]] // Sort by id
-                    });
-                });
-            </script>
+    <script src="/Areas/Admin/Scripts/jquery/plugins/datatables/js/jquery.dataTables.min.js"></script>
 }
 @section Modals {
     
@@ -74,7 +63,7 @@
                 </div>
                 <div class="modal-footer">
                     <a id="ConfirmRedirectDelete" class="pull-right btn btn-primary confirmModalButton">Confirm</a>
-                    <a class="pull-right btn btn-default" onclick="$('#DeleteModal').modal('hide');">Cancel</a>
+                    <a class="pull-right btn btn-default" data-dismiss="modal">Cancel</a>
                 </div>
             </div>
         </div>
@@ -93,36 +82,120 @@
                 </div>
                 <div class="modal-body">
                     <div class="content container-fluid">
-                        <label>Source: </label>
-                        <input class=" form-control form-group" id="SourceInput" type="text" autocomplete="off" />
-                        <label>Destination: </label>
-                        <input class=" form-control form-group" id="DestinationInput" type="text" autocomplete="off" />
+                        <label for="SourceInput">Source</label>
+                        <input class="form-control form-group" id="SourceInput" type="text" autocomplete="off" placeholder="/source/path" />
+                        <label for="DestinationInput">Destination</label>
+                        <div class="redirect-destination-toggles">
+                            <small>
+                                <a href="#" class="redirect-destination-toggle existing disabled">Existing Page</a> |
+                                <a href="#" class="redirect-destination-toggle custom">Custom Redirect</a>
+                            </small>
+                        </div>
+                        <input class="form-control form-group redirect-destination hidden" id="DestinationInput" type="text" autocomplete="off" placeholder="/destination/path"/>
+                        <select class="form-control redirect-destination" id="DestinationSelect">
+                            @foreach (var page in Model.Pages)
+                            {
+                                <option>@(page == "/home/" ? "/" : page)</option>
+                            }
+                        </select>
                         <div class="checkbox">
                             <label>
-                                <input id="PermanentInput" type="checkbox" /> Permanent
+                                <input id="PermanentInput" type="checkbox"/>
+                                Permanent
                             </label>
+                            <button type="button" class="btn btn-no-button" data-container="body" data-toggle="popover" data-trigger="focus" data-placement="right"  data-html="true" data-content="@PermanentPopover()">
+                                <i class="fa fa-question-circle"></i>
+                            </button>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input id="MatchingInput" type="checkbox" /> Root matching
+                                <input id="MatchingInput" type="checkbox"/>
+                                Root matching
                             </label>
-                            <p class="help-block">
-                                <small>
-                                    When enabled <code>/source-path/</code> will match:<br />
-                                    <code>/destination-path/</code><br/>
-                                    <code>/destination-path/new-page</code><br/>
-                                    <code>/destination-path/new-page/two</code><br/>
-                                    etc.
-                                </small>
-                            </p>
+                            <button type="button" class="btn btn-no-button" data-container="body" data-toggle="popover" data-trigger="focus" data-placement="right" data-html="true" data-content="@RootMatchingPopover()">
+                                <i class="fa fa-question-circle"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <a id="ConfirmAddRedirect" class="pull-right btn btn-primary confirmModalButton tabletBlockStatic">Add</a>
-                    <a class="pull-right btn btn-default" onclick="$('#AddRedirectModal').hide();">Cancel</a>
+                    <a class="pull-right btn btn-default" data-dismiss="modal">Cancel</a>
                 </div>
             </div>
         </div>
     </div>
+
+<div id="EditRedirectModal" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h2>Edit Redirect</h2>
+            </div>
+            <div class="modal-body">
+                <div class="content container-fluid">
+                    <label for="EditSourceInput">Source</label>
+                    <input class=" form-control form-group" id="EditSourceInput" type="text" autocomplete="off" placeholder="/source/path" />
+                    <label for="EditDestinationInput">Destination</label>
+                    <div class="redirect-destination-toggles">
+                        <small>
+                            <a href="#" class="redirect-destination-toggle existing disabled">Existing Page</a> |
+                            <a href="#" class="redirect-destination-toggle custom">Custom Redirect</a>
+                        </small>
+                    </div>
+                    <input class=" form-control form-group redirect-destination hidden" id="EditDestinationInput" type="text" autocomplete="off" placeholder="/destination/path" />
+                    <select class="form-control redirect-destination" id="EditDestinationSelect">
+                        @foreach (var page in Model.Pages)
+                        {
+                            <option>@(page == "/home/" ? "/" : page)</option>
+                        }
+                    </select>
+                    <div class="checkbox">
+                        <label>
+                            <input id="EditPermanentInput" type="checkbox" />
+                            Permanent
+                        </label>
+                        <button type="button" class="btn btn-no-button" data-container="body" data-toggle="popover" data-trigger="focus" data-placement="right" data-html="true" data-content="@PermanentPopover()">
+                            <i class="fa fa-question-circle"></i>
+                        </button>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input id="EditMatchingInput" type="checkbox" />
+                            Root matching
+                        </label>
+                        <button type="button" class="btn btn-no-button" data-container="body" data-toggle="popover" data-trigger="focus" data-placement="right" data-html="true" data-content="@RootMatchingPopover()">
+                            <i class="fa fa-question-circle"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a id="ConfirmEditRedirect" class="pull-right btn btn-primary confirmModalButton tabletBlockStatic">Save</a>
+                <a class="pull-right btn btn-default" data-dismiss="modal">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+}
+
+@helper PermanentPopover()
+{
+    @:Use <strong>Permanent</strong> redirects for pages that are being permanently moved or replaced.
+}
+
+@helper RootMatchingPopover()
+{
+    <small>
+        When enabled <code>/source-path/</code> will match:<br />
+        <code>/destination-path/</code><br />
+        <code>/destination-path/new-page</code><br />
+        <code>/destination-path/new-page/two</code><br />
+        etc.
+    </small>
 }
