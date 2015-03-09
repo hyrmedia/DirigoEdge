@@ -231,8 +231,7 @@ content_class.prototype.initNewPageModalEvents = function () {
             },
             success: function (data) {
                 if (data.success) {
-                    // redirect to new page's url
-                    window.location = data.url;
+                    self.afterNewPageCreate(data);
                 } else {
                     $('#NewPageModal .modal-body .user-error')
                         .removeClass('hide')
@@ -248,6 +247,15 @@ content_class.prototype.initNewPageModalEvents = function () {
             }
         });
     });
+};
+
+content_class.prototype.afterNewPageCreate = function (data) {
+
+    console.log('Edge version');
+
+    // Redirect to code editor
+    window.location = '/admin/pages/editcontent/' + data.id + '/';
+
 };
 
 content_class.prototype.initCodeEditorEvents = function() {

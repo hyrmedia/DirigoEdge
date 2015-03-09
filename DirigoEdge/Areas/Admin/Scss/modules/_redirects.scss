@@ -1,0 +1,17 @@
+﻿.redirect-destination-toggles {
+    padding-bottom: 0.5em;
+}
+
+.redirect-destination-toggle {
+    text-decoration: none;
+
+    &:active,
+    &:hover,
+    &:focus {
+        text-decoration: none;
+    }
+}
+
+.redirect-destination {
+    margin-bottom: 15px;
+}

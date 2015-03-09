@@ -350,7 +350,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
             var page = new ContentPage
             {
                 Title = title,
-                IsActive = true,
+                IsActive = false,
                 CreateDate = DateTime.UtcNow,
                 Permalink = permalink,
                 DisplayName = permalink,
@@ -374,6 +374,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 urlLink = string.IsNullOrEmpty(urlLink) ? "/" + page.Permalink : urlLink;
                 result.Data = new
                 {
+                    id = page.ContentPageId,
                     url = urlLink,
                     success = true,
                     message = "Page created, redirecting."

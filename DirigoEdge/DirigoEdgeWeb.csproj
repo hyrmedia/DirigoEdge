@@ -54,7 +54,7 @@
   <ItemGroup>
     <Reference Include="DirigoEdgeCore, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DirigoEdgeCore.1.2.1\lib\DirigoEdgeCore.dll</HintPath>
+      <HintPath>..\packages\DirigoEdgeCore.1.3.7\lib\DirigoEdgeCore.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
@@ -376,6 +376,10 @@
     <Content Include="Areas\Admin\Scripts\jquery\plugins\tagit\jquery.tagit.js" />
     <Content Include="Areas\Admin\Scripts\jquery\plugins\zclip\ZeroClipboard.swf" />
     <Content Include="Areas\Admin\Scripts\modernizr-2.6.2.min.js" />
+    <Content Include="Content\Images\edge_logo_head.png" />
+    <Content Include="Content\Images\full-width.jpg" />
+    <Content Include="Content\Images\left-rail.jpg" />
+    <Content Include="Content\Images\right-rail.jpg" />
     <Content Include="CSS\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="CSS\images\ajaxLoader.gif" />
     <Content Include="CSS\images\ajaxLoaderTransparent.gif" />
@@ -406,9 +410,6 @@
     <Content Include="Areas\Admin\Scripts\sidebar.js" />
     <Content Include="Areas\Admin\Scripts\siteSettings.js" />
     <Content Include="Content\logo.png" />
-    <Content Include="Content\uploaded\dirigoLogo.jpg" />
-    <Content Include="Content\uploaded\Images\content\edge_logo_head.png" />
-    <Content Include="Content\uploaded\Media\ph.txt" />
     <Compile Include="Areas\Admin\Models\ViewModels\SiteSettingsViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BlogActionsController.cs" />
@@ -931,7 +932,7 @@
     <Content Include="Scripts\jquery\plugins\qaptcha\QapTcha.jquery.min.js" />
     <Content Include="Scripts\jquery\plugins\zclip\ZeroClipboard.swf" />
     <Content Include="Scripts\mcp.js" />
-    <Content Include="Scripts\modernizr-2.8.2.min.js" />
+    <Content Include="Scripts\modernizr.min.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
@@ -964,12 +965,10 @@
   <ItemGroup>
     <Folder Include="App_Data\OutputCache\" />
     <Folder Include="Areas\Admin\Scss\sass\" />
-    <Folder Include="Content\uploaded\Images\images\" />
-    <Folder Include="Content\uploaded\ModuleThumbs\" />
-    <Folder Include="Content\uploaded\Sliders\" />
     <Folder Include="Data\Entities\" />
     <Folder Include="Scripts\ckeditor\plugins\image\images\" />
     <Folder Include="Scss\sass\" />
+    <Folder Include="Uploaded\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -1062,19 +1061,10 @@
     <Content Include="Areas\Admin\Views\Shared\Partials\BlogAdminModules\FeaturedTextModule.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\uploaded\BlogFeaturedImages\ph" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\uploaded\BlogImages\ph" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Shared\Partials\ContactSuccessModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Views\Shared\Partials\InsertImageModalPartial.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\uploaded\Images\ph" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Blog\BlogsByUser.cshtml" />
@@ -1102,8 +1092,6 @@
     <Content Include="Areas\Admin\Views\Shared\Partials\EventAdminModules\FeaturedTextModule.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\Partials\EventAdminModules\PublishModule.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\Partials\EventAdminModules\SEOMetaModule.cshtml" />
-    <Content Include="Content\uploaded\EventFeaturedImages\ph" />
-    <Content Include="Content\uploaded\EventImages\ph" />
     <Content Include="Areas\Admin\Views\Settings\FeatureSettings.cshtml" />
     <Content Include="Areas\Admin\Views\Blog\ManageBlogAuthors.cshtml" />
     <Content Include="Areas\Admin\Views\Roles\ManageUserRoles.cshtml" />
@@ -1251,7 +1239,13 @@
     <Content Include="Views\Account\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\ResetPasswordSuccess.cshtml" />
+    <Content Include="Scss\edge\alerts.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Scss\global\_utility.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Scss\modules\_redirects.scss" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

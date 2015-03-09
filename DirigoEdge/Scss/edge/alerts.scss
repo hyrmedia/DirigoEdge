@@ -1,0 +1,16 @@
+﻿.edge-alert {
+
+    &-header {
+        margin-bottom: 0;
+        text-align: center;
+    }
+
+    &.disabled {
+        opacity: 0.6;
+
+        .cssfilters & {
+            opacity: 0.8;
+            filter: grayscale(100%);
+        }
+    }
+}

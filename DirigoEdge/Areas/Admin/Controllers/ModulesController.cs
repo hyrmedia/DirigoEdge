@@ -271,6 +271,11 @@ namespace DirigoEdge.Areas.Admin.Controllers
         {
             if (file != null)
             {
+                if (!Directory.Exists(Server.MapPath("~" + ContentGlobals.MODULETHUMBNAILIMAGEUPLOADDIRECTORY)))
+                {
+                    Directory.CreateDirectory(Server.MapPath("~" + ContentGlobals.MODULETHUMBNAILIMAGEUPLOADDIRECTORY));
+                }
+
                 var fileName = Path.GetFileName(file.FileName);
                 var physicalPath = Path.Combine(Server.MapPath("~" + ContentGlobals.MODULETHUMBNAILIMAGEUPLOADDIRECTORY), fileName);
 
