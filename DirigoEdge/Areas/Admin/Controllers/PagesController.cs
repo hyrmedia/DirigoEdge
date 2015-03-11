@@ -180,6 +180,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             if (model.ThePage != null)
             {
+                ViewBag.IsPublished = model.IsPublished;
                 return View(model.TheTemplate.ViewLocation, model);
             }
 
