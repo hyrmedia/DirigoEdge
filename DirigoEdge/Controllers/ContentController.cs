@@ -99,7 +99,7 @@ namespace DirigoEdge.Controllers
 
         private ContentViewViewModel GetSubDirectoryModel(string path)
         {
-            var masterList = CachedObjects.GetMasterNavigationList(Context);
+            var masterList = CachedObjects.GetMasterNavigationList();
             var pathPieces = path.Split('/');
             var permalink = pathPieces.Last().ToLower();
 
