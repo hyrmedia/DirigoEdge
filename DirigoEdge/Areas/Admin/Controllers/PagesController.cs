@@ -180,6 +180,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             if (model.ThePage != null)
             {
+                ViewBag.IsPublished = model.IsPublished;
                 return View(model.TheTemplate.ViewLocation, model);
             }
 
@@ -217,6 +218,8 @@ namespace DirigoEdge.Areas.Admin.Controllers
             editedContent.NoFollow = entity.NoFollow;
 
             Context.SaveChanges();
+
+            CachedObjects.GetCacheContentPages(true);
 
             result.Data = new { publishDate = Convert.ToDateTime(DateTime.UtcNow).ToString("MM/dd/yyyy @ hh:mm") };
 

@@ -99,7 +99,7 @@ namespace DirigoEdge.Controllers
 
         private ContentViewViewModel GetSubDirectoryModel(string path)
         {
-            var masterList = CachedObjects.GetMasterNavigationList(Context);
+            var masterList = CachedObjects.GetMasterNavigationList();
             var pathPieces = path.Split('/');
             var permalink = pathPieces.Last().ToLower();
 
@@ -115,7 +115,7 @@ namespace DirigoEdge.Controllers
 
             if (currentNavigation == null) return null;
 
-            var thePage = Context.ContentPages.FirstOrDefault(x => x.Permalink == permalink && x.ParentNavigationItemId == currentNavigation.NavigationItemId);
+            var thePage = CachedObjects.GetCacheContentPages().FirstOrDefault(x => x.Permalink == permalink && x.ParentNavigationItemId == currentNavigation.NavigationItemId);
 
             return thePage != null ? new ContentViewViewModel(thePage.ContentPageId) : null;
         }
