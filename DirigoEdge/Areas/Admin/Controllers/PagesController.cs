@@ -218,6 +218,8 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             Context.SaveChanges();
 
+            CachedObjects.GetCacheContentPages(true);
+
             result.Data = new { publishDate = Convert.ToDateTime(DateTime.UtcNow).ToString("MM/dd/yyyy @ hh:mm") };
 
             return result;

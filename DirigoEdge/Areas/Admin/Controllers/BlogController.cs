@@ -247,7 +247,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
                     editedBlog.MetaDescription = entity.MetaDescription;
 
                     success = Context.SaveChanges();
-
+                    CachedObjects.GetCacheContentPages(true);
                     BookmarkUtil.UpdateTitle("/admin/pages/editblog/" + editedBlog.BlogId + "/", entity.Title);
                 }
             }

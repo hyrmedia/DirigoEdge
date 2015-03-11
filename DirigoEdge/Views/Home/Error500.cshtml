@@ -1,18 +1,15 @@
-﻿@using DirigoEdgeCore.Context
-@using DirigoEdgeCore.Data.Context
+﻿@using DirigoEdgeCore.Utils
 @{
     ViewBag.Title = "Page Not Found";
 
     string htmlContent = "<h1>500</h1>";
-    using (var context = new DataContext())
-    {
-        var page = context.ContentPages.FirstOrDefault(x => x.Permalink == "500");
+    var page = CachedObjects.GetCacheContentPages().FirstOrDefault(x => x.Permalink == "500");
 
-        if (page != null)
-        {
-            htmlContent = page.HTMLContentFormatted;
-        }
+    if (page != null)
+    {
+        htmlContent = page.HTMLContentFormatted;
     }
+    
 }
 
 @Html.Raw(htmlContent)
