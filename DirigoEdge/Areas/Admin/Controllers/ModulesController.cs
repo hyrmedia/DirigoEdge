@@ -56,7 +56,11 @@ namespace DirigoEdge.Areas.Admin.Controllers
             int moduleId = Int32.Parse(id);
 
             var module = Context.ContentModules.FirstOrDefault(x => x.ContentModuleId == moduleId);
-
+            var revisions = Context.ContentModules.Where(x => x.ParentContentModuleId == module.ContentModuleId);
+            if (revisions.Any())
+            {
+                Context.ContentModules.RemoveRange(revisions);
+            }
             Context.ContentModules.Remove(module);
             var success = Context.SaveChanges();
 
