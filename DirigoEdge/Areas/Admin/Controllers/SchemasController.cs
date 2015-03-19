@@ -191,5 +191,19 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             return result;
         }
+
+        [HttpGet]
+        [PermissionsFilter(Permissions = "Can Edit Modules")]
+        [AcceptVerbs(HttpVerbs.Get)]
+        public JsonResult GetListOfModulesBySchemaId(int id)
+        {
+            var result = new JsonResult { JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+
+            List<string> moduleNames = Context.ContentModules.Where(x => x.SchemaId == id).Select(x => x.ModuleName).ToList();
+
+            result.Data = new { moduleNames };
+
+            return result;
+        }
     }
 }
