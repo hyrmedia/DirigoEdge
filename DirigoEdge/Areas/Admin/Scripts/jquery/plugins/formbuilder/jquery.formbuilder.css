@@ -37,7 +37,7 @@
 .fb-tabs li a{display:block;padding:10px 24px;font-size:14px;cursor:pointer;border-left:1px solid transparent;border-right: 1px solid transparent;color: #6f6f6f;}
 .fb-tabs li.active a{border:1px solid #ccc; margin-bottom:-1px;border-bottom-color: transparent; border-top: 3px solid #2ba6cb;color: #3c3c3c;font-weight: bold;background: #fff; }
 .fb-tab-content .fb-tab-pane{padding:0 20px;display:none}
-.fb-tab-content .fb-tab-pane.active{ display: block;background: #fff;padding-top: 20px; border-bottom: 1px solid #ddd;}
+.fb-tab-content .fb-tab-pane.active{ display: block;background: #fff;padding: 20px; border-bottom: 1px solid #ddd;}
 .fb-add-field-types .section{padding-bottom:5px;margin-bottom:20px}
 .fb-add-field-types{font-size:0}
 .fb-add-field-types a{font-size:13px;display:inline-block;width:48%;background-color:#2BA6CB;margin-bottom:9px;box-sizing:border-box}
@@ -62,7 +62,7 @@
 .fb-field-wrapper .subtemplate-wrapper{border:1px dashed transparent;margin-bottom:10px;padding:10px;position:relative}
 .fb-field-wrapper .subtemplate-wrapper .cover{position:absolute;top:0;left:0;height:100%;width:100%;z-index:2}
 .fb-field-wrapper .subtemplate-wrapper > label{display:block;border-bottom:thin solid #eee;padding-bottom:3px;margin-bottom:7px}
-.fb-field-wrapper .subtemplate-wrapper abbr{color:#f00}
+.fb-field-wrapper .subtemplate-wrapper abbr{ color: #f00;border-bottom: none;}
 .fb-field-wrapper .input-line{clear:both;margin-bottom:10px}
 .fb-field-wrapper .input-line .above-line{margin-top:7px}
 .fb-field-wrapper .input-line > span{display:inline-block;vertical-align:top}
@@ -81,7 +81,7 @@
 .fb-common-wrapper .fb-label-description input,.fb-common-wrapper .fb-label-description textarea{width:100%}
 .fb-common-wrapper .fb-label-description textarea{min-height:5em}
 .response-field-draggable-helper{border:1px dashed #ddd;background:#eee}
-.response-field-text input.rf-size-small{width:130px}
+.response-field-text input.rf-size-small, .response-field-date input.rf-size-small{width:130px}
 .response-field-text input.rf-size-medium{width:300px}
 .response-field-text input.rf-size-large{width:100%}
 .response-field-paragraph textarea.rf-size-small{width:200px;min-height:60px}
@@ -93,3 +93,15 @@
 .response-field-time .hours,.response-field-time .minutes,.response-field-time .seconds{width:50px}
 .response-field-checkboxes .fb-option,.response-field-radio .fb-option{margin-bottom:5px;display:inline-block}
 .response-field-website input{width:200px}
+.response-field-date input.datepicker { float: left; }
+.response-field-date input.datepicker + i { padding: 6px 10px; font-size: 1.4em; cursor: pointer; }
+
+
+.listingContainer {
+    min-height: 80px;
+    border-left: 5px solid #CCC;
+    background: #fff;
+    padding: 12px 12px 80px;
+}
+.drop-hover { background: lightblue; }
+.sorting { background: #fff; }
