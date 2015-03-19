@@ -89,27 +89,29 @@ fieldEditor_class.prototype.loadSchemaIntoFields = function (schemaId, moduleId)
     });
 };
 
-fieldEditor_class.prototype.initSpecialFields = function () {
+fieldEditor_class.prototype.initSpecialFields = function ($parent) {
+
+    $parent = $parent || $('#FieldEntry');
+
     // Set up Image Uploaders
-    $('#FieldEntry a.upload').fileBrowser({
+    $('a.upload', $parent).fileBrowser({
         directory: "",
         isEditor: false
-    },
-        function (object) {
-            var path = object.src || object.href,
-                $input = $(object.elem).parent().find("input[type=text]");
+    }, function (object) {
+        var path = object.src || object.href,
+            $input = $(object.elem).parent().find("input[type=text]");
 
-            $input.val(path);
-        }
-    );
+        $input.val(path);
+        return false;
+    });
 
     // Set up Date Pickers
-    $('#FieldEntry .date input').datepicker();
+    $('.date input', $parent).datepicker();
 
     // Setup CKEditors
     // Timeout needed for CK Bug
     setTimeout(function () {
-        $('#FieldEntry textarea.editor').each(function () {
+        $('textarea.editor', $parent).each(function () {
             var id = $(this).attr("id");
             var $el = $("#" + id);
 
@@ -272,7 +274,7 @@ fieldEditor_class.prototype.buildSchemaContent = function (fields) {
 
             $formContainer.append("<label>" + label + sRequiredTokend + "</label>");
             $formContainer.append("<input name='" + inputName + "' data-label='" + label + "' type='text' class='form-control " + requiredClass + "' data-id='" + cId + "' autocomplete='off' />");
-            $formContainer.append("<a href='#' class='upload secondary btn btn-primary btn-sm'><i class='fa fa-picture-o'></i> Select Image...</a>");
+            $formContainer.append("<a class='upload secondary btn btn-primary btn-sm'><i class='fa fa-picture-o'></i> Select Image...</a>");
 
             if (description.length > 0) {
                 $formContainer.append("<p class='labelDescription'>" + description + "</p>");
@@ -516,8 +518,6 @@ fieldEditor_class.prototype.syncSchemaView = function () {
                     parent: syncData.parent
                 };
 
-            console.log(data);
-
             $self.siblings('.sync-counter').first().text('Syncing ' + (pageList.indexOf(page) + 1) + ' of ' + pageList.length);
 
             $.ajax({
@@ -579,7 +579,7 @@ fieldEditor_class.prototype.initListEvents = function () {
         e.preventDefault();
         var $listContainer = $(this).prev().clone();
         $listContainer.addClass("animated zoomIn");
-        $listContainer.attr("data-id", content.generateCId());
+        $listContainer.attr("data-id", self.generateCId());
 
         $(this).before($listContainer);
 
@@ -588,7 +588,9 @@ fieldEditor_class.prototype.initListEvents = function () {
             $(".animated.zoomIn").removeClass("animated zoomIn");
         }, 400);
 
-        self.initSpecialFields();
+        console.log($(this).closest('.formContainer'));
+
+        self.initSpecialFields($(this).closest('.formContainer'));
     });
 
     $("#EditorTab").on("click", ".listContainer .remove", function (e) {
@@ -605,6 +607,19 @@ fieldEditor_class.prototype.initListEvents = function () {
             $listContainer.remove();
         }
     });
+};
+
+fieldEditor_class.prototype.generateCId = function () {
+
+    // if duplicate, increment till we find a free spot
+    var count = 0;
+    var id = "c" + count;
+    var $frame = $("#FieldEntry");
+    while ($frame.find("[data-id=" + id + "]").length > 0) {
+        id = "c" + count;
+        count++;
+    }
+    return id;
 };
 
 // Keep at the bottom
