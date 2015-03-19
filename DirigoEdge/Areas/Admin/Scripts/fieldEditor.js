@@ -505,20 +505,22 @@ fieldEditor_class.prototype.syncSchemaView = function () {
     var self = this,
         $self = $(self),
         schemaId = $self.attr('data-schema'),
-        pageId = $self.attr('data-page'),
-        pageList = [],
-        updateContentPage = function (page, syncData, callback) {
+        itemId = $self.attr('data-item'),
+        ispage = $self.attr('data-ispage'),
+        itemList = [],
+        updateContentItem = function (page, syncData, callback) {
 
             var parsedHtml = Mustache.to_html(syncData.html, JSON.parse(page.schemaValues)),
                 data = {
-                    pageId: page.id,
+                    itemId: page.id,
                     unparsedHtml: syncData.html,
                     parsedHtml: parsedHtml,
                     template: syncData.template,
-                    parent: syncData.parent
+                    parent: syncData.parent,
+                    ispage: ispage
                 };
 
-            $self.siblings('.sync-counter').first().text('Syncing ' + (pageList.indexOf(page) + 1) + ' of ' + pageList.length);
+            $self.siblings('.sync-counter').first().text('Syncing ' + (itemList.indexOf(page) + 1) + ' of ' + itemList.length);
 
             $.ajax({
                 url: "/admin/schemas/syncschemaview/",
@@ -533,10 +535,10 @@ fieldEditor_class.prototype.syncSchemaView = function () {
                         return false;
                     }
 
-                    if (pageList.indexOf(page) === pageList.length - 1 && typeof callback === 'function') {
+                    if (itemList.indexOf(page) === itemList.length - 1 && typeof callback === 'function') {
                         callback();
                     } else {
-                        updateContentPage(pageList[pageList.indexOf(page) + 1], syncData, callback);
+                        updateContentItem(itemList[itemList.indexOf(page) + 1], syncData, callback);
                     }
 
                 }
@@ -547,20 +549,20 @@ fieldEditor_class.prototype.syncSchemaView = function () {
     $self.addClass('is-syncing');
 
     $.ajax({
-        url: "/admin/schemas/getschemasyncdata/?schemaid=" + schemaId + "&pageid=" + pageId,
+        url: "/admin/schemas/getschemasyncdata/?schemaid=" + schemaId + "&itemid=" + itemId + "&ispage=" + ispage,
         type: "GET",
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
 
-            pageList = data.pages;
+            itemList = data.items;
             $self.after('<div class="sync-counter"></div>');
 
-            updateContentPage(pageList[0], data, function () {
+            updateContentItem(itemList[0], data, function () {
 
                 $self.removeClass('is-syncing');
                 $self.siblings('.sync-counter').remove();
-                noty({ text: "Pages successfully synced.", type: 'success' });
+                noty({ text: "Items successfully synced.", type: 'success' });
 
             });
 

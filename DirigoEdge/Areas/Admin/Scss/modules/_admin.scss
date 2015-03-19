@@ -863,3 +863,18 @@ table.dataTable thead th, table.dataTable thead td {
             transform: rotate(3deg);
   }
 }
+
+.sync-schema-view {
+    transition: color 0.3s ease-in-out;
+    .is-syncing {
+        color: rgba(43, 166, 203, 0.7);
+        i {
+            opacity: 1;
+        }
+    }
+    i {
+        color: #222;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+}
