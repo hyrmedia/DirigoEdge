@@ -114,7 +114,7 @@
 
             </div>
             <div class="panel container-fluid">
-                <label>Module Name</label>
+                <h3>Module Name</h3>
                 <input class=" form-control" id="ModuleName" type="text" value="@Model.TheModule.ModuleName" autocomplete="off"/>
             </div>
 
@@ -142,7 +142,17 @@
                 </div>
 
             </div>
-
+            
+            @if (Model.TheModule.SchemaId != null && Model.TheModule.SchemaId > 0 && Roles.IsUserInRole("Administrators"))
+            {
+                <div class="panel container-fluid">
+                    <h3>Sync View</h3>
+                    <a href="#" class="sync-schema-view js-sync-schema-view" data-ispage="false" data-item="@Model.TheModule.ContentModuleId" data-schema="@Model.TheModule.SchemaId">
+                        Copy View to All Modules <i class="fa fa-refresh fa-spin"></i>
+                    </a>
+                </div>
+            }
+            
             <div class="panel container-fluid reviewRevisions">
                 <h4>History</h4>
 

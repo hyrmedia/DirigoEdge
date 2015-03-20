@@ -85,16 +85,6 @@
 
 </div>
 
-@if (Model.ThePage.SchemaId != null && Model.ThePage.SchemaId > 0 && Roles.IsUserInRole("Administrators"))
-{
-    <div class="panel container-fluid">
-        <h3>Sync View</h3>
-        <a href="#" class="sync-schema-view js-sync-schema-view" data-page="@Model.ThePage.ContentPageId" data-schema="@Model.ThePage.SchemaId">
-            Copy View to All Pages <i class="fa fa-refresh fa-spin"></i>
-        </a>
-    </div>
-}
-
 
 <div class="panel container-fluid">
     <h4>Parent</h4>
@@ -110,6 +100,16 @@
         </select>
     </div>
 </div>
+
+@if (Model.ThePage.SchemaId != null && Model.ThePage.SchemaId > 0 && Roles.IsUserInRole("Administrators"))
+{
+    <div class="panel container-fluid">
+        <h3>Sync View</h3>
+        <a href="#" class="sync-schema-view js-sync-schema-view" data-ispage="true" data-item="@Model.ThePage.ContentPageId" data-schema="@Model.ThePage.SchemaId">
+            Copy View to All Pages <i class="fa fa-refresh fa-spin"></i>
+        </a>
+    </div>
+}
 
 <div class="panel container-fluid setMetaInformation">
     <h4>SEO / Meta</h4>
