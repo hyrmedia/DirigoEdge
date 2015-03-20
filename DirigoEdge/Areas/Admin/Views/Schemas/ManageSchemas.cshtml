@@ -21,28 +21,27 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @{
-                            if (Model.Schemas.Any())
+                        @if (Model.Schemas.Any())
+                        {
+                            foreach (var schema in Model.Schemas)
                             {
-                                foreach (var schema in Model.Schemas)
-                                {
-                            <tr>
-                                <td class="title">
-                                    <a href="@Url.Action("EditSchema", "Schemas", new { id = @schema.SchemaId })">@schema.DisplayName</a>
-                                </td>
-                                <td>
-                                    <a class="delete btn btn-danger btn-sm mobileMarginBottom" href="javascript:void(0);" data-id="@schema.SchemaId">Delete</a>
-                                    <a class="btn btn-primary btn-sm" href="@Url.Action("EditSchema", "Schemas", new { id = @schema.SchemaId })">Edit Schema</a>
-                                </td>
-                            </tr>
-                                }
+                                <tr>
+                                    <td class="title">
+                                        <a href="@Url.Action("EditSchema", "Schemas", new { id = @schema.SchemaId })">@schema.DisplayName</a>
+                                    </td>
+                                    <td>
+                                        <button class="delete-schema btn btn-danger btn-sm mobileMarginBottom" data-id="@schema.SchemaId">Delete</button>
+                                        <a class="btn btn-primary btn-sm" href="@Url.Action("EditSchema", "Schemas", new { id = @schema.SchemaId })">Edit Schema</a>
+                                    </td>
+                                </tr>
                             }
-                            else
-                            {
+                        }
+                        else
+                        {
                             <tr>
-                                <td colspan="2">There are no schemas.</td>
+                                <td class="title">There are no schemas.</td>
+                                <td></td>
                             </tr>
-                            }
                         }
                     </tbody>
                 </table>
@@ -72,8 +71,8 @@
                 </div>
                 <div class="modal-footer">
                     <div class="confirmCancelContainer">
-                        <a id="ConfirmSchemaDelete" class="pull-right btn btn-primary confirmButton confirmModalButton">Confirm</a>
-                        <a class="pull-right btn btn-default" onclick="$('#DeleteModal').modal('hide');">Cancel</a>
+                        <button id="ConfirmSchemaDelete" class="pull-right btn btn-danger confirmButton confirmModalButton">Delete</button>
+                        <button class="pull-right btn btn-default" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -81,23 +80,17 @@
     </div>
 }
 @section Scripts {
-    @{
-        // Only load if there is a good reason to
-        if (Model.Schemas.Count > 0)
-        {
-        <script src="/Areas/Admin/Scripts/jquery/plugins/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="/Areas/Admin/Scripts/jquery/plugins/datatables/js/jquery.dataTables.min.js"></script>
 
-        <script>
-            $(document).ready(function () {
-                $("table.manageTable").dataTable({
-                    "iDisplayLength": 25,
-                    "aoColumnDefs": [
-                        { "bSortable": false, "aTargets": ["actions"] } // No Sorting on actions
-                    ],
-                    "aaSorting": [[1, "desc"]] // Sort by Created Date on page load
-                });
+    <script>
+        $(document).ready(function () {
+            $("table.manageTable").dataTable({
+                "iDisplayLength": 25,
+                "aoColumnDefs": [
+                    { "bSortable": false, "aTargets": ["actions"] } // No Sorting on actions
+                ],
+                "aaSorting": [[0, "asc"]] // Sort by Created Date on page load
             });
-        </script>
-        }
-    }
+        });
+    </script>
 }

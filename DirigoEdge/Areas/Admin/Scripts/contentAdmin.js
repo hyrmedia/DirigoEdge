@@ -103,7 +103,10 @@ content_class.prototype.refreshTable = function(containerClass, url) {
             window.oTable = $("table.manageTable").dataTable({
                 "iDisplayLength": 25,
                 "aoColumnDefs": [
-                    { "bSortable": false, "aTargets": ["actions"] } // No Sorting on actions
+                    {
+                        "bSortable": false,
+                        "aTargets": ["actions"]
+                    } // No Sorting on actions
                 ],
                 "aaSorting": [[0, "asc"]] // Sort by module name on load
             });
@@ -146,7 +149,7 @@ content_class.prototype.initDeleteContentEvent = function() {
 
 content_class.prototype.initDeleteSchemaEvent = function () {
     var self = this;
-    $("div.manageSchemas table.manageTable td a.delete").click(function () {
+    $('body').on('click', '.delete-schema', function () {
         self.managePageId = $(this).attr("data-id");
 
         self.$managePageRow = $(this).closest('tr');
