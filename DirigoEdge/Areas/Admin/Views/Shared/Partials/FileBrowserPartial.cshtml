@@ -13,84 +13,101 @@
             <ul class="folders">
                 @foreach (var folder in Model.FolderListing)
                 {
-                    <li>
-                        <a href="/uploaded/@folder.Name" class="directory" data-directory="@folder.Name">
-                            <i class="fa fa-folder"></i>
+                    <li data-directory="@folder.Name">
+                        <div class="folder-actions">
+                            <i class="fa fa-folder js-folder"></i>
+                            <i class="fa fa-times-circle js-delete"></i>
+                        </div>
+                        <a href="/uploaded/@folder.Name" class="directory">
                             <div class="folder-name">@folder.Name</div>
                             <div class="folder-count badge">@folder.FileCount</div>
                         </a>
+                        <div class="delete-actions">
+                            <button class="delete-cancel">Cancel</button>
+                            <button class="delete-confirm">Delete</button>
+                        </div>
                     </li>
                 }
             </ul>
+            <div class="add-folder">
+                <div class="add-folder-toggle">
+                    <i class="fa fa-plus"></i>
+                    <span>Add Folder</span>
+                </div>
+                <div class="add-folder-create">
+                    <input type="text" class="create-name" placeholder="Folder name..."/>
+                    <button class="btn btn-primary create-confirm">Create</button>
+                </div>
+            </div>
             <div class="files">
-                <ul class="files__list">
-                    @{
-                        if (Model.FileListing.Count == 0)
+                @if (Model.FileListing.Count == 0)
+                {
+                    <p style="margin-left: 16px; color: #888;">This folder is empty.</p>
+                }
+                else
+                {
+                    <ul class="files__list">
+                        @foreach (var file in Model.FileListing)
                         {
-                            <p style="margin-left: 16px; color: #888;">This folder is empty.</p>
-                        }
-                    }
-
-                    @foreach (var file in Model.FileListing)
-                    {
-                        <li class="file-container" data-path="@file.WebPath" data-icon="@file.Icon">
-                            <a href="@file.WebPath" class="thumbnail" target="_blank">
-                                @if (file.Icon == "picture-o")
-                                {
-                                    <img src="/uploaded/@file.Folder/@file.Filename"/>
-                                }
-                                else
-                                {
-                                    <i class="fa fa-@file.Icon"></i>
-                                }
-                                <div class="zoom"><i class="fa fa-search"></i>
-                                </div>
-                            </a>
-                            <a href="#" class="file">
-                                <i class="fa fa-@file.Icon"></i> @file.Filename
-                                <span class="insert">
+                            <li class="file-container" data-path="@file.WebPath" data-icon="@file.Icon">
+                                <a href="@file.WebPath" class="thumbnail" target="_blank">
+                                    @if (file.Icon == "picture-o")
+                                    {
+                                        <img src="/uploaded/@file.Folder/@file.Filename" />
+                                    }
+                                    else
+                                    {
+                                        <i class="fa fa-@file.Icon"></i>
+                                    }
+                                    <div class="zoom">
+                                        <i class="fa fa-search"></i>
+                                    </div>
+                                </a>
+                                <a href="#" class="file">
+                                    <i class="fa fa-@file.Icon"></i> @file.Filename
+                                    <span class="insert">
                                         <i class="fa fa-plus"></i> Insert
                                     </span>
-                            </a>
-                            <div class="settings clearfix">
-                                @if (file.Icon != "picture-o")
-                                {
+                                </a>
+                                <div class="settings clearfix">
+                                    @if (file.Icon != "picture-o")
+                                    {
+                                        <div class="input-group">
+                                            <label>
+                                                <span class="input-label">Link Text &rsaquo;</span>
+                                                <input type="text" class="link-text">
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @{
+                                        var altLabel = file.Icon == "picture-o" ? "Alt Text" : "Title";
+                                    }
                                     <div class="input-group">
                                         <label>
-                                            <span class="input-label">Link Text &rsaquo;</span>
-                                            <input type="text" class="link-text">
+                                            <span class="input-label">@altLabel &rsaquo;</span>
+                                            <input type="text" class="alt-text">
                                         </label>
                                     </div>
-                                }
 
-                                @{
-                                    var altLabel = file.Icon == "picture-o" ? "Alt Text" : "Title";
-                                }
-                                <div class="input-group">
-                                    <label>
-                                        <span class="input-label">@altLabel &rsaquo;</span>
-                                        <input type="text" class="alt-text">
-                                    </label>
-                                </div>
+                                    @if (file.Icon == "picture-o")
+                                    {
+                                        <div class="input-group">
+                                            <label><span class="input-label">Align &rsaquo;</span></label>
+                                            <label><input class="" type="radio" name="align" value="left"> Left</label>
+                                            <label><input class="" type="radio" name="align" value="right"> Right</label>
+                                            <label><input class="" type="radio" name="align" value="auto">Auto</label>
+                                        </div>
+                                    }
 
-                                @if (file.Icon == "picture-o")
-                                {
-                                    <div class="input-group">
-                                        <label><span class="input-label">Align &rsaquo;</span></label>
-                                        <label><input class="" type="radio" name="align" value="left"> Left</label>
-                                        <label><input class="" type="radio" name="align" value="right"> Right</label>
-                                        <label><input class="" type="radio" name="align" value="auto">Auto</label>
-                                    </div>
-                                }
-
-                                <span class="insert">
+                                    <span class="insert">
                                         <i class="fa fa-plus"></i> Insert
                                     </span>
-                            </div>
-                        </li>
-                    }
-                </ul>
-
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
             </div>
 
         </div>

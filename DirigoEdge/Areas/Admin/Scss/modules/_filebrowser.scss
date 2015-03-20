@@ -20,24 +20,16 @@
             position: absolute;
             top: 0;
             left: 0;
-            bottom: 0;
+            bottom: 2em;
             width: (12 / 0.9) * 1em;
             font-size: 0.9em;    
             z-index: 9999;
             border-right: 2px solid #CCC;
 
             li {
+                @extend .clearfix;
                 display: block;
-                border-bottom: 1px solid #E6E6E6;
-            }
-
-            li a {
-                display: block;
-                padding: 0.75em;
                 border-left: 3px solid transparent;
-                overflow: hidden;    
-                text-decoration: none;
-                color: inherit;
 
                 &:hover,
                 &.active {
@@ -45,6 +37,80 @@
                     background: #f7f7f7;
                     color: #222;
                 }
+
+                .folder-actions {
+                    width: 2em;
+                    text-align: center;
+                    float: left;
+
+                    i {
+                        padding: 1em 0.5em;
+                    }
+
+                    .js-delete {
+                        display: none;
+                        cursor: pointer;
+
+                        &:hover {
+                            color: #d00;
+                        }
+                    }
+                }
+
+                &:hover {
+                    .js-delete {
+                        display: inline-block;
+                    }
+                        
+                    .js-folder {
+                        display: none;
+                    }
+                }
+
+                .delete-actions {
+                    @extend .clearfix;
+                    position: relative;
+                    width: calc(100% + 5px);
+                    height: 0;
+                    margin-left: -3px;
+                    line-height: 3;
+                    overflow: hidden;
+                    transition: height 0.1s ease-in-out;
+
+                    &.is-active {
+                        height: 3em;
+                    }
+
+                    button {
+                        display: block;
+                        width: 50%;
+                        border: none;
+                        float: left;
+
+                        &:focus {
+                            border: none;
+                            outline: none;
+                        }
+
+                        &.delete-cancel {
+                            background: #ddd;
+                        }
+
+                        &.delete-confirm {
+                            background: #b00;
+                            color: white;
+                        }
+                    }
+                }
+            }
+
+            li a {
+                display: block;
+                width: calc(100% - 2em);
+                padding: 0.75em 0.1em;
+                overflow: hidden;    
+                text-decoration: none;
+                color: inherit;
 
                 i {
                     position: relative;
@@ -70,11 +136,64 @@
                 }
             }
 
-        
-
             i {
-                margin-right: 0.5em;
                 color: #555;
+            }
+        }
+
+        .add-folder {
+            position: absolute;
+            bottom: 0;
+            width: 13.3333em;
+            height: 2em;
+            font-size: 0.9em;
+            line-height: 2;
+            text-align: center;
+            color: white;
+            cursor: pointer;
+            overflow: hidden;
+            z-index: 9999;
+            transition: height 0.1s ease-in-out;
+
+            .add-folder-toggle {
+                background: #428bca;
+                color: white;
+                transition: background 0.1s ease-in-out,
+                            color 0.1s ease-in-out;
+
+                i {
+                    position: absolute;
+                    top: 0.5em;
+                    left: 0.5em;
+                    transform: rotate(0deg);
+                    transition: transform 0.3s ease-in-out;
+                }
+            }
+
+            &.is-active {
+                height: 6.4em;
+
+                .add-folder-toggle {
+                    background: #ddd;
+                    color: black;
+
+                    i {
+                        transform: rotate(45deg);
+                    }
+                }
+            }
+
+            input {
+                width: 100%;
+                padding: 0 0.5em;
+                border: 3px solid #428bca;
+                color: black;
+            }
+
+            button {
+                width: 100%;
+                border: 0;
+                border-radius: 0;
             }
         }
     }

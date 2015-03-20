@@ -6,7 +6,7 @@
 
     var pluginName = "fileBrowser",
         defaults = {
-            direcory: null,
+            directory: null,
             isEditor: true,
             createModal: true,
             newModalId: null
@@ -81,9 +81,131 @@
             directory = directory.substr(directory.lastIndexOf('/') + 1);
 
             // Unhighlight all folders
-            $('a', '.folders').removeClass('active');
+            $('li', '.folders').removeClass('active');
 
             self.loadDirectoryFiles(directory);
+
+            return false;
+
+        });
+
+        // Click on the delete icon on a folder in the folder list
+        // Show Delete/Cancel div
+        self.$el.on('click', '.folders .js-delete', function () {
+
+            $(this).closest('li').find('.delete-actions').addClass('is-active');
+
+            return false;
+
+        });
+
+        // Click on the cancel button on a folder in the folder list
+        // Hide Delete/Cancel div
+        self.$el.on('click', '.folders .delete-cancel', function () {
+
+            $(this).closest('li').find('.delete-actions').removeClass('is-active');
+
+            return false;
+
+        });
+
+        // Click on the delete confirm button on a folder in the folder list
+        // Delete the folder
+        self.$el.on('click', '.folders .delete-confirm', function () {
+
+            var $this = $(this),
+                isActive = $this.closest('li').hasClass('active'),
+                data = {
+                    folder: $this.closest('li').data('directory')
+                };
+
+            $.ajax({
+                url: "/admin/media/deletefolder/",
+                type: "POST",
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data, null, 2),
+                success: function (res) {
+
+                    if (res && res.success) {
+                        $this.closest('li').fadeOut();
+                        if (isActive) {
+                            self.$el.find('.folders li').first().find('.directory').trigger('click');
+                        }
+                    } else {
+                        noty({ text: res.error, type: 'error', timeout: 3000 });
+                    }
+
+                }
+            });
+
+            return false;
+
+        });
+
+        // Click Add Folder in the folder list
+        // Show add folder dialog
+        self.$el.on('click', '.add-folder-toggle', function () {
+
+            var $this = $(this),
+                $parent = $this.parent('.add-folder'),
+                isActive = $parent.hasClass('is-active'),
+                text = isActive ? 'Add Folder' : 'Cancel';
+
+            $this.find('span').html(text);
+
+            $parent.toggleClass('is-active');
+
+            return false;
+
+        });
+
+        // Click on the create confirm button on a folder in the folder list
+        // Add the folder
+        self.$el.on('click', '.add-folder .create-confirm', function () {
+
+            var $newEl,
+                $this = $(this),
+                data = {
+                    folder: $this.siblings('.create-name').first().val()
+                };
+
+            $.ajax({
+                url: "/admin/media/addfolder/",
+                type: "POST",
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data, null, 2),
+                success: function (res) {
+
+                    if (res && res.success) {
+                        $this.siblings('.create-name').first().val('');
+                        $this.closest('.add-folder').toggleClass('is-active');
+
+                        $newEl = self.$el
+                            .find('.folders li')
+                            .first()
+                            .clone();
+
+                        $newEl.appendTo(self.$el.find('.folders'));
+
+                        $newEl.addClass('active');
+                        $newEl.attr('data-directory', data.folder);
+                        $newEl.find('.directory').attr('href', '/uploaded/' + data.folder);
+                        $newEl.find('.folder-name').text(data.folder);
+                        $newEl.find('.folder-count').text('0');
+
+                        // Unhighlight all folders
+                        $('li', '.folders').removeClass('active');
+
+                        self.loadDirectoryFiles(data.folder);
+
+                    } else {
+                        noty({ text: res.error, type: 'error', timeout: 3000 });
+                    }
+
+                }
+            });
 
             return false;
 
@@ -199,7 +321,7 @@
         if (this.settings.directory) {
             this.loadDirectoryFiles(this.settings.directory);
         } else {
-            this.loadDirectoryFiles($('a', '.folders').first().data('directory'));
+            this.loadDirectoryFiles($('li', '.folders').first().data('directory'));
         }
 
         this.show();
@@ -242,9 +364,9 @@
                     $('.files__list', self.$el).addClass('active');
 
                     // Unhighlight all folders
-                    $('a', '.folders').removeClass('active');
+                    $('li', '.folders').removeClass('active');
 
-                    $('a[data-directory="' + dir + '"]', '.folders').addClass('active');
+                    $('li[data-directory="' + dir + '"]', '.folders').addClass('active');
 
                     if (self.fileDropzone) {
                         self.fileDropzone.options.params.category = dir;
