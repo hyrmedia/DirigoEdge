@@ -283,7 +283,7 @@
         display: block;
         position: relative;
         width: 100%;
-        padding: 1em 1em 1em 5.5em;
+        padding: 1em 1em 1em 4.5em;
         background: white;
         text-decoration: none;
         color: inherit;
@@ -295,17 +295,16 @@
         text-align: center;
     }
 
-    .browser .files__list li > .thumbnail {
+    .browser .files__list li > .file-thumbnail {
         display: block;
         position: absolute;
-        width: 57px;
-        height: 57px;
+        width: 56px;
+        height: 56px;
         overflow: hidden;
         z-index: 1;
-        margin-left: 1em;
     }
 
-    .browser .files__list li > .thumbnail img {
+    .browser .files__list li > .file-thumbnail img {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -317,7 +316,7 @@
                 transform: translate(-50%, -50%);
     }
 
-    .browser .files__list li > .thumbnail > i {
+    .browser .files__list li > .file-thumbnail > i {
         width: 100%;
         background: #e8a17d;
         font-size: 1.5em;
@@ -326,7 +325,7 @@
         color: white;
     }
 
-    .browser .files__list li > .thumbnail .zoom {
+    .browser .files__list li > .file-thumbnail .zoom {
         position: absolute;
         top: 0;
         left: 0;
@@ -338,11 +337,11 @@
         transition: opacity 0.2s ease-in-out;
     }
 
-    .browser .files__list li > .thumbnail .zoom:hover {
+    .browser .files__list li > .file-thumbnail .zoom:hover {
         opacity: 1;
     }
 
-    .browser .files__list li > .thumbnail .zoom i {
+    .browser .files__list li > .file-thumbnail .zoom i {
         width: 100%;
         font-size: 1.5em;
         line-height: 2.3333;
@@ -357,12 +356,35 @@
         right: 0;
         width: 6em;
         margin-top: -3em;
-        padding: 2em 0.5em;
+        padding: 2.2em 0.5em;
         background: #2ba6cb;
         font-size: 14px;
         text-align: center;
         color: white;
         cursor: pointer;
+    }
+
+    .browser .files__list li .file-delete {
+        padding: 0 1em;
+        font-size: 0.8em;
+        color: #ccc;
+
+        &:hover {
+            color: #d00;
+
+            .file-delete-label {
+                display: inline;
+            }
+        }
+
+        i {
+            width: auto;
+            margin: 0;
+        }
+
+        .file-delete-label {
+            display: none;
+        }
     }
 
     .csstransforms .browser .files__list .insert {

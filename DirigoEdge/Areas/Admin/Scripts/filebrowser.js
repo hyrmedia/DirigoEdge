@@ -44,6 +44,7 @@
             $(this.element).on('click', function () {
                 self.clickedElem = this;
                 self.init();
+                return false;
             });
         } else {
             self.init();
@@ -274,6 +275,43 @@
             if (self.callback && typeof self.callback === 'function') {
                 self.callback(fileObject);
             }
+
+        });
+
+        // Click on Insert on a file
+        // Generate file object, hide modal, execute callback
+        self.$el.on('click', '.file-delete', function () {
+
+            var $this = $(this),
+                $container = $this.closest('.file-container'),
+                data = {
+                    filename: $container.data('path').replace('/uploaded/', '')
+                };
+
+            $.ajax({
+                url: "/admin/media/removefile/",
+                type: "POST",
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data, null, 2),
+                success: function (res) {
+
+                    if (res && res.success) {
+
+                        $container.fadeOut(function () {
+                            $container.remove();
+                        });
+
+                    } else {
+
+                        noty({ text: res.response, type: 'error', timeout: 3000 });
+
+                    }
+
+                }
+            });
+
+            return false;
 
         });
 

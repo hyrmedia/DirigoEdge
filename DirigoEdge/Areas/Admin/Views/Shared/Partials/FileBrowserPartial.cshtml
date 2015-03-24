@@ -50,7 +50,7 @@
                         @foreach (var file in Model.FileListing)
                         {
                             <li class="file-container" data-path="@file.WebPath" data-icon="@file.Icon">
-                                <a href="@file.WebPath" class="thumbnail" target="_blank">
+                                <a href="@file.WebPath" class="file-thumbnail" target="_blank">
                                     @if (file.Icon == "picture-o")
                                     {
                                         <img src="/uploaded/@file.Folder/@file.Filename" />
@@ -64,7 +64,12 @@
                                     </div>
                                 </a>
                                 <a href="#" class="file">
-                                    <i class="fa fa-@file.Icon"></i> @file.Filename
+                                    <i class="fa fa-@file.Icon"></i>
+                                    @file.Filename
+                                    <span class="file-delete">
+                                        <i class="fa fa-times-circle"></i>
+                                        <span class="file-delete-label">Delete</span>
+                                    </span>
                                     <span class="insert">
                                         <i class="fa fa-plus"></i> Insert
                                     </span>
