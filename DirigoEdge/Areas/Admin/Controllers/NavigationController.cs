@@ -33,7 +33,8 @@ namespace DirigoEdge.Areas.Admin.Controllers
             var navItem = new NavigationItem()
             {
                 Name = "SubNav Item",
-                ParentNavigationId = nav.NavigationId
+                ParentNavigationId = nav.NavigationId,
+                ParentNavigationItemId = -2
             };
 
             Context.NavigationItems.Add(navItem);
