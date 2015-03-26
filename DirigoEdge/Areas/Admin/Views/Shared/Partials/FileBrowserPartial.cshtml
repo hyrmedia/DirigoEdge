@@ -11,6 +11,20 @@
         </div>
         <div class="modal-body browser clearfix">
             <ul class="folders">
+                <li class="hidden clone-directory" data-directory="">
+                    <div class="folder-actions">
+                        <i class="fa fa-folder js-folder"></i>
+                        <i class="fa fa-times-circle js-delete"></i>
+                    </div>
+                    <a href="/uploaded/" class="directory">
+                        <div class="folder-name"></div>
+                        <div class="folder-count badge"></div>
+                    </a>
+                    <div class="delete-actions">
+                        <button class="delete-cancel">Cancel</button>
+                        <button class="delete-confirm">Delete</button>
+                    </div>
+                </li>
                 @foreach (var folder in Model.FolderListing)
                 {
                     <li data-directory="@folder.Name">

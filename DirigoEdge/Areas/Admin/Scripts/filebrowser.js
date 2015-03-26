@@ -77,7 +77,9 @@
             var directory = $(this).attr('href');
 
             // Abort any existing folder AJAX calls
-            self.folderAjax.abort();
+            if (self.folderAjax) {
+                self.folderAjax.abort();
+            }
 
             directory = directory.substr(directory.lastIndexOf('/') + 1);
 
@@ -181,7 +183,7 @@
 
                     if (res && res.success) {
                         $this.siblings('.create-name').first().val('');
-                        $this.closest('.add-folder').toggleClass('is-active');
+                        $this.closest('.add-folder').find('.add-folder-toggle').trigger('click');
 
                         $newEl = self.$el
                             .find('.folders li')
@@ -190,6 +192,8 @@
 
                         $newEl.appendTo(self.$el.find('.folders'));
 
+                        $newEl.removeClass('hidden');
+                        $newEl.removeClass('clone-directory');
                         $newEl.addClass('active');
                         $newEl.attr('data-directory', data.folder);
                         $newEl.find('.directory').attr('href', '/uploaded/' + data.folder);
@@ -359,7 +363,7 @@
         if (this.settings.directory) {
             this.loadDirectoryFiles(this.settings.directory);
         } else {
-            this.loadDirectoryFiles($('li', '.folders').first().data('directory'));
+            this.loadDirectoryFiles($('li', '.folders').eq(1).data('directory'));
         }
 
         this.show();
@@ -368,9 +372,11 @@
 
     Plugin.prototype.loadDirectoryFiles = function (dir) {
 
-        var self = this;
+        var self = this,
+            $container = $(".file-browser.open > div.browser");
 
-        var $container = $(".file-browser.open > div.browser");
+        if (!dir) return false;
+
         common.showAjaxLoader($container);
         self.folderAjax = $.ajax({
             url: "/admin/media/filebrowser/" + dir,
