@@ -126,68 +126,137 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
         [PermissionsFilter(Permissions = "Can Edit Schemas")]
         [HttpGet]
-        public JsonResult GetSchemaSyncData(int schemaId, int pageId)
+        public JsonResult GetSchemaSyncData(int schemaId, int itemId, bool ispage)
         {
             var result = new JsonResult
             {
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
 
-            var currentPage = Context.ContentPages.FirstOrDefault(x => x.ContentPageId == pageId);
-
-            if (currentPage == null)
+            // is this a page or a module
+            if (ispage)
             {
-                result.Data = new { error = "Content page not found." };
-                return result;
-            }
+                var currentPage = Context.ContentPages.FirstOrDefault(x => x.ContentPageId == itemId);
 
-            var viewHtml = currentPage.HTMLUnparsed;
-            var pages = Context.ContentPages.Where(x => x.SchemaId != null && x.SchemaId == schemaId && x.IsActive.Value).ToList();
-            var pagesList = new List<object>();
-
-            foreach (var page in pages)
-            {
-                pagesList.Add(new
+                if (currentPage == null)
                 {
-                    id = page.ContentPageId,
-                    schemaValues = page.SchemaEntryValues
-                });
-            }
+                    result.Data = new {error = "Content page not found."};
+                    return result;
+                }
 
-            result.Data = new
+                var viewHtml = currentPage.HTMLUnparsed;
+                var pages =
+                    Context.ContentPages.Where(x => x.SchemaId != null && x.SchemaId == schemaId && x.IsActive.Value)
+                        .ToList();
+                var pagesList = new List<object>();
+
+                foreach (var item in pages)
+                {
+                    pagesList.Add(new
+                    {
+                        id = item.ContentPageId,
+                        schemaValues = item.SchemaEntryValues
+                    });
+                }
+
+                result.Data = new
+                {
+                    schema = schemaId,
+                    items = pagesList,
+                    html = viewHtml,
+                    template = currentPage.Template,
+                    parent = currentPage.ParentNavigationItemId
+                };
+            }
+            else
             {
-                schema = schemaId,
-                pages = pagesList,
-                html = viewHtml,
-                template = currentPage.Template,
-                parent = currentPage.ParentNavigationItemId
-            };
+                var currentModule = Context.ContentModules.FirstOrDefault(x => x.ContentModuleId == itemId);
+
+                if (currentModule == null)
+                {
+                    result.Data = new { error = "Content module not found." };
+                    return result;
+                }
+
+                var viewHtml = currentModule.HTMLUnparsed;
+                var modules = Context.ContentModules.Where(x => x.SchemaId != null && x.SchemaId == schemaId && x.IsActive.Value).ToList();
+                var modulesList = new List<object>();
+
+                foreach (var item in modules)
+                {
+                    modulesList.Add(new
+                    {
+                        id = item.ContentModuleId,
+                        schemaValues = item.SchemaEntryValues
+                    });
+                }
+
+                result.Data = new
+                {
+                    schema = schemaId,
+                    items = modulesList,
+                    html = viewHtml,
+                    template = "",
+                    parent = 0
+                };
+            }
 
             return result;
         }
 
         [PermissionsFilter(Permissions = "Can Edit Schemas")]
         [HttpPost]
-        public JsonResult SyncSchemaView(int pageId, string parsedHtml, string unparsedHtml, string template, int parent)
+        public JsonResult SyncSchemaView(int itemId, string parsedHtml, string unparsedHtml, string template, int parent, bool ispage)
         {
             var result = new JsonResult();
 
-            var page = Context.ContentPages.FirstOrDefault(x => x.ContentPageId == pageId);
-
-            if (page == null)
+            // is this a content page or a module
+            if (ispage)
             {
-                result.Data = new { success = false, error = "Content page could not be found." };
-                return result;
-            }
+                var page = Context.ContentPages.FirstOrDefault(x => x.ContentPageId == itemId);
 
-            page.HTMLContent = parsedHtml;
-            page.HTMLUnparsed = unparsedHtml;
-            page.Template = template;
-            page.ParentNavigationItemId = parent;
+                if (page == null)
+                {
+                    result.Data = new {success = false, error = "Content page could not be found."};
+                    return result;
+                }
+
+                page.HTMLContent = parsedHtml;
+                page.HTMLUnparsed = unparsedHtml;
+                page.Template = template;
+                page.ParentNavigationItemId = parent;
+            }
+            else
+            {
+                var module = Context.ContentModules.FirstOrDefault(x => x.ContentModuleId == itemId);
+
+                if (module == null)
+                {
+                    result.Data = new { success = false, error = "Content module could not be found." };
+                    return result;
+                }
+
+                module.HTMLContent = parsedHtml;
+                module.HTMLUnparsed = unparsedHtml;
+            }
 
             Context.SaveChanges();
 
             result.Data = new { success = true };
+
+            return result;
+        }
+
+        [HttpGet]
+        [PermissionsFilter(Permissions = "Can Edit Modules")]
+        [AcceptVerbs(HttpVerbs.Get)]
+        public JsonResult GetListOfModulesBySchemaId(int id)
+        {
+            var result = new JsonResult { JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+
+            List<string> moduleNames = Context.ContentModules.Where(x => x.SchemaId == id).Select(x => x.ModuleName).ToList();
+
+            result.Data = new { moduleNames };
 
             return result;
         }

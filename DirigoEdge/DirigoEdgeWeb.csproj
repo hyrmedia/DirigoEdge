@@ -66,7 +66,7 @@
     </Reference>
     <Reference Include="DirigoEdgeCore, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DirigoEdgeCore.1.3.5\lib\DirigoEdgeCore.dll</HintPath>
+      <HintPath>..\packages\DirigoEdgeCore.1.4.4\lib\DirigoEdgeCore.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
@@ -1252,6 +1252,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scss\edge\alerts.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Scss\global\_utility.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Scss\modules\_redirects.scss" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

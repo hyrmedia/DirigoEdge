@@ -26,22 +26,17 @@ namespace DirigoEdge.Controllers
                 ViewBag.PageId = model.ThePage.ContentPageId;
                 ViewBag.IsPublished = model.IsPublished;
                 ViewBag.OGType = model.ThePage.OGType ?? "website";
-                ViewBag.MetaDesc = model.ThePage.MetaDescription;
+                ViewBag.MetaDesc = model.ThePage.MetaDescription ?? "";
                 ViewBag.Title = model.ThePage.Title;
-                ViewBag.OGTitle = model.ThePage.OGTitle ?? model.ThePage.Title;
+                ViewBag.OGTitle = model.ThePage.Title ?? model.ThePage.OGTitle;
+                ViewBag.OGImage = model.ThePage.OGImage ?? "";
                 model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
                 // Set the page Canonical Tag and OGURl
                 ViewBag.OGUrl = model.ThePage.OGUrl ?? GetCanonical(model.ThePage);
                 ViewBag.Canonical = GetCanonical(model.ThePage);
                 model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent, Context);
-                if (model.ThePage.NoIndex)
-                {
-                    ViewBag.NoIndex = "noindex";
-                }
-                if (model.ThePage.NoFollow)
-                {
-                    ViewBag.NoFollow = "nofollow";
-                }
+                ViewBag.Index = model.ThePage.NoIndex ? "noindex" : "index";
+                ViewBag.Follow = model.ThePage.NoFollow ? "nofollow" : "follow";
 
                 return View(model.TheTemplate.ViewLocation, model);
             }

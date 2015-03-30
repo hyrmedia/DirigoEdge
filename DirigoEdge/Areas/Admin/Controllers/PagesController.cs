@@ -168,7 +168,12 @@ namespace DirigoEdge.Areas.Admin.Controllers
             int pageId = Int32.Parse(id);
 
             var page = Context.ContentPages.FirstOrDefault(x => x.ContentPageId == pageId);
+            var revisions = Context.ContentPages.Where(x => x.ParentContentPageId == page.ContentPageId);
             Context.ContentPages.Remove(page);
+            if (revisions.Any())
+            {
+                Context.ContentPages.RemoveRange(revisions);
+            }
             var success = Context.SaveChanges();
 
             BookmarkUtil.DeleteBookmarkForUrl("/admin/pages/editcontent/" +  pageId + "/");
@@ -190,6 +195,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             if (model.ThePage != null)
             {
+                ViewBag.IsPublished = model.IsPublished;
                 return View(model.TheTemplate.ViewLocation, model);
             }
 
@@ -227,6 +233,8 @@ namespace DirigoEdge.Areas.Admin.Controllers
             editedContent.NoFollow = entity.NoFollow;
 
             Context.SaveChanges();
+
+            CachedObjects.GetCacheContentPages(true);
 
             result.Data = new { publishDate = Convert.ToDateTime(DateTime.UtcNow).ToString("MM/dd/yyyy @ hh:mm") };
 

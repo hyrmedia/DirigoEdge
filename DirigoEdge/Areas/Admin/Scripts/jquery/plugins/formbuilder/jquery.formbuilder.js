@@ -127,7 +127,10 @@
             return this;
         };
 
-        ViewFieldView.prototype.focusEditView = function () {
+        ViewFieldView.prototype.focusEditView = function (e) {
+
+            e.stopPropagation();
+
             return this.parentView.createAndShowEditView(this.model);
         };
 
@@ -379,12 +382,15 @@
 
         BuilderView.prototype.setSortable = function () {
             var _this = this;
+
             if (this.$responseFields.hasClass('ui-sortable')) {
                 this.$responseFields.sortable('destroy');
             }
+
             this.$responseFields.sortable({
                 forcePlaceholderSize: true,
                 placeholder: 'sortable-placeholder',
+                cancel: ".listingContainer",
                 stop: function (e, ui) {
                     var rf;
                     if (ui.item.data('field-type')) {
@@ -447,10 +453,14 @@
 
         BuilderView.prototype.createAndShowEditView = function (model) {
             var $newEditEl, $responseFieldEl;
+
             $responseFieldEl = this.$el.find(".fb-field-wrapper").filter(function () {
                 return $(this).data('cid') === model.cid;
             });
-            $responseFieldEl.addClass('editing').siblings('.fb-field-wrapper').removeClass('editing');
+
+            $responseFieldEl.closest(".fb-response-fields").find(".fb-field-wrapper.editing").removeClass('editing');
+            $responseFieldEl.addClass('editing');
+
             if (this.editView) {
                 if (this.editView.model.cid === model.cid) {
                     this.$el.find(".fb-tabs a[data-target=\"#editField\"]").click();
@@ -587,7 +597,8 @@
                 MAX: 'field_options.max',
                 MINLENGTH: 'field_options.minlength',
                 MAXLENGTH: 'field_options.maxlength',
-                LENGTH_UNITS: 'field_options.min_max_length_units'
+                LENGTH_UNITS: 'field_options.min_max_length_units',
+                SCHEMA_ID: 'field_options.schema_id'
             },
             dict: {
                 ALL_CHANGES_SAVED: 'All changes saved',
@@ -661,16 +672,6 @@
 }).call(this);
 
 (function () {
-    Formbuilder.registerField('image', {
-        order: 1,
-        view: "<input type='text' class='form-control rf-size-<%= rf.get(Formbuilder.options.mappings.SIZE) %>' /><a href='#'>Select Image...</a>",
-        edit: "",
-        addButton: "<span class='symbol'><span class='fa fa-picture-o'></span></span> Image"
-    });
-
-}).call(this);
-
-(function () {
     Formbuilder.registerField('paragraph', {
         order: 2,
         view: "<textarea class='form-control rf-size-<%= rf.get(Formbuilder.options.mappings.SIZE) %>'></textarea>",
@@ -680,6 +681,17 @@
             attrs.field_options.size = 'large';
             return attrs;
         }
+    });
+
+}).call(this);
+
+
+(function () {
+    Formbuilder.registerField('image', {
+        order: 1,
+        view: "<input type='text' class='form-control rf-size-<%= rf.get(Formbuilder.options.mappings.SIZE) %>' /><a href='#'>Select Image...</a>",
+        edit: "",
+        addButton: "<span class='symbol'><span class='fa fa-picture-o'></span></span> Image"
     });
 
 }).call(this);
@@ -694,17 +706,36 @@
 
 }).call(this);
 
+(function () {
+    Formbuilder.registerField('date', {
+        order: 20,
+        view: "<div class='clearfix'><input type='text' class='form-control rf-size-small datepicker' /><i class='fa fa-calendar'></i></div>",
+        edit: "",
+        addButton: "<span class='symbol'><span class='fa fa-calendar'></span></span> Date",
+    });
 
+}).call(this);
 
-//(function () {
-//    Formbuilder.registerField('address', {
-//        order: 50,
-//        view: "<div class='input-line'>\n  <span class='street'>\n    <input type='text' />\n    <label>Address</label>\n  </span>\n</div>\n\n<div class='input-line'>\n  <span class='city'>\n    <input type='text' />\n    <label>City</label>\n  </span>\n\n  <span class='state'>\n    <input type='text' />\n    <label>State / Province / Region</label>\n  </span>\n</div>\n\n<div class='input-line'>\n  <span class='zip'>\n    <input type='text' />\n    <label>Zipcode</label>\n  </span>\n\n  <span class='country'>\n    <select class='form-control'><option>United States</option></select>\n    <label>Country</label>\n  </span>\n</div>",
-//        edit: "",
-//        addButton: "<span class=\"symbol\"><span class=\"fa fa-home\"></span></span> Address"
-//    });
+(function () {
+    Formbuilder.registerField('module', {
+        order: 25,
+        view: "<select class='form-control'>\n  <% if (rf.get(Formbuilder.options.mappings.INCLUDE_BLANK)) { %>\n    <option value=''></option>\n  <% } %>\n\n  <% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>\n    <option <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].checked && 'selected' %>>\n      <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n    </option>\n  <% } %>\n</select>",
+        edit: "<%= Formbuilder.templates['edit/schema_id']() %>",
+        addButton: "<span class=\"symbol\"><span class=\"fa fa-caret-down\"></span></span> Module"
+    });
 
-//}).call(this);
+}).call(this);
+
+Formbuilder.registerField('list', {
+    order: 26,
+    view: "<div class='listingContainer' class='rf-size-<%= rf.get(Formbuilder.options.mappings.SIZE) %>'></div>",
+    edit: "<%= Formbuilder.templates['edit/size']() %>",
+    addButton: "<span class='symbol'><span class='fa fa-list'></span></span> List",
+    defaultAttributes: function (attrs) {
+        attrs.field_options.size = 'large';
+        return attrs;
+    }
+});
 
 (function () {
     Formbuilder.registerField('checkboxes', {
@@ -727,16 +758,6 @@
     });
 
 }).call(this);
-
-//(function () {
-//    Formbuilder.registerField('date', {
-//        order: 20,
-//        view: "<div class='input-line'>\n  <span class='month'>\n    <input type=\"text\" />\n    <label>MM</label>\n  </span>\n\n  <span class='above-line'>/</span>\n\n  <span class='day'>\n    <input type=\"text\" />\n    <label>DD</label>\n  </span>\n\n  <span class='above-line'>/</span>\n\n  <span class='year'>\n    <input type=\"text\" />\n    <label>YYYY</label>\n  </span>\n</div>",
-//        edit: "",
-//        addButton: "<span class=\"symbol\"><span class=\"fa fa-calendar\"></span></span> Date"
-//    });
-
-//}).call(this);
 
 (function () {
     Formbuilder.registerField('dropdown', {
@@ -761,47 +782,6 @@
 
 }).call(this);
 
-//(function () {
-//    Formbuilder.registerField('email', {
-//        order: 40,
-//        view: "<input type='text' class='form-control rf-size-<%= rf.get(Formbuilder.options.mappings.SIZE) %>' />",
-//        edit: "",
-//        addButton: "<span class=\"symbol\"><span class=\"fa fa-envelope-o\"></span></span> Email"
-//    });
-
-//}).call(this);
-
-(function () {
-
-
-}).call(this);
-
-//(function () {
-//    Formbuilder.registerField('number', {
-//        order: 30,
-//        view: "<input type='text' />\n<% if (units = rf.get(Formbuilder.options.mappings.UNITS)) { %>\n  <%= units %>\n<% } %>",
-//        edit: "<%= Formbuilder.templates['edit/min_max']() %>\n<%= Formbuilder.templates['edit/units']() %>\n<%= Formbuilder.templates['edit/integer_only']() %>",
-//        addButton: "<span class=\"symbol\"><span class=\"fa fa-number\">123</span></span> Number"
-//    });
-
-//}).call(this);
-
-
-
-
-
-//(function () {
-//    Formbuilder.registerField('price', {
-//        order: 45,
-//        view: "<div class='input-line'>\n  <span class='above-line'>$</span>\n  <span class='dolars'>\n    <input type='text' />\n    <label>Dollars</label>\n  </span>\n  <span class='above-line'>.</span>\n  <span class='cents'>\n    <input type='text' />\n    <label>Cents</label>\n  </span>\n</div>",
-//        edit: "",
-//        addButton: "<span class=\"symbol\"><span class=\"fa fa-usd\"></span></span> Price"
-//    });
-
-//}).call(this);
-
-
-
 (function () {
     Formbuilder.registerField('radio', {
         order: 15,
@@ -823,43 +803,6 @@
     });
 
 }).call(this);
-
-//(function () {
-//    Formbuilder.registerField('section_break', {
-//        order: 0,
-//        type: 'non_input',
-//        view: "<label class='section-name'><%= rf.get(Formbuilder.options.mappings.LABEL) %></label>\n<p><%= rf.get(Formbuilder.options.mappings.DESCRIPTION) %></p>",
-//        edit: "<div class='fb-edit-section-header'>Label</div>\n<input type='text' data-rv-input='model.<%= Formbuilder.options.mappings.LABEL %>' />\n<textarea data-rv-input='model.<%= Formbuilder.options.mappings.DESCRIPTION %>'\n  placeholder='Add a longer description to this field'></textarea>",
-//        addButton: "<span class='symbol'><span class='fa fa-minus'></span></span> Section Break"
-//    });
-
-//}).call(this);
-
-
-
-//(function () {
-//    Formbuilder.registerField('time', {
-//        order: 25,
-//        view: "<div class='input-line'>\n  <span class='hours'>\n    <input type=\"text\" />\n    <label>HH</label>\n  </span>\n\n  <span class='above-line'>:</span>\n\n  <span class='minutes'>\n    <input type=\"text\" />\n    <label>MM</label>\n  </span>\n\n  <span class='above-line'>:</span>\n\n  <span class='seconds'>\n    <input type=\"text\" />\n    <label>SS</label>\n  </span>\n\n  <span class='am_pm'>\n    <select class='form-control'>\n      <option>AM</option>\n      <option>PM</option>\n    </select>\n  </span>\n</div>",
-//        edit: "",
-//        addButton: "<span class=\"symbol\"><span class=\"fa fa-clock-o\"></span></span> Time"
-//    });
-
-//}).call(this);
-
-
-
-
-
-//(function () {
-//    Formbuilder.registerField('website', {
-//        order: 35,
-//        view: "<input type='text' placeholder='http://' />",
-//        edit: "",
-//        addButton: "<span class=\"symbol\"><span class=\"fa fa-link\"></span></span> Website"
-//    });
-
-//}).call(this);
 
 this["Formbuilder"] = this["Formbuilder"] || {};
 this["Formbuilder"]["templates"] = this["Formbuilder"]["templates"] || {};
@@ -970,6 +913,18 @@ this["Formbuilder"]["templates"]["edit/min_max"] = function (obj) {
         ((__t = (Formbuilder.options.mappings.MIN)) == null ? '' : __t) +
         '" style="width: 30px" />\n\n&nbsp;&nbsp;\n\nBelow\n<input type="text" data-rv-input="model.' +
         ((__t = (Formbuilder.options.mappings.MAX)) == null ? '' : __t) +
+        '" style="width: 30px" />\n';
+
+    }
+    return __p
+};
+
+this["Formbuilder"]["templates"]["edit/schema_id"] = function (obj) {
+    obj || (obj = {});
+    var __t, __p = '', __e = _.escape;
+    with (obj) {
+        __p += '<div class=\'fb-edit-section-header\'>Schema</div>\n\ID\n<input type="text" data-rv-input="model.' +
+        ((__t = (Formbuilder.options.mappings.SCHEMA_ID)) == null ? '' : __t) +
         '" style="width: 30px" />\n';
 
     }
@@ -1203,7 +1158,7 @@ this["Formbuilder"]["templates"]["view/label"] = function (obj) {
         ((__t = (Formbuilder.helpers.simple_format(rf.get(Formbuilder.options.mappings.LABEL)))) == null ? '' : __t) +
         '\n  ';
         if (rf.get(Formbuilder.options.mappings.REQUIRED)) {;
-            __p += '\n    <abbr title=\'required\'>*</abbr>\n  ';
+            __p += '\n    <abbr title=\'Required\'>*</abbr>\n  ';
         };
         __p += '\n</label>\n';
 

@@ -33,7 +33,8 @@ namespace DirigoEdge.Areas.Admin.Controllers
             var navItem = new NavigationItem()
             {
                 Name = "SubNav Item",
-                ParentNavigationId = nav.NavigationId
+                ParentNavigationId = nav.NavigationId,
+                ParentNavigationItemId = -2
             };
 
             Context.NavigationItems.Add(navItem);
@@ -164,7 +165,8 @@ namespace DirigoEdge.Areas.Admin.Controllers
             {
                 BookmarkUtil.DeleteBookmarkForUrl("/admin/navigation/editnav/" + navigationId +"/");
                 // Clear the cache of the nav on save
-                CachedObjects.GetMasterNavigationList(Context, true);
+                CachedObjects.GetMasterNavigationList(true);
+                CachedObjects.GetCacheNavigationList(true);
 
                 result.Data = new
                 {

@@ -1,0 +1,20 @@
+﻿/* Disabled States */
+a.disabled {
+    color: #999;
+    pointer-events: none;
+    cursor: default;
+}
+
+/* Button Styles */
+.btn-no-button {
+    padding: 0;
+    border: none;
+    background: transparent;
+    font-size: inherit;
+    vertical-align: inherit;
+
+    &:active,
+    &:focus {
+        outline: none;
+    }
+}

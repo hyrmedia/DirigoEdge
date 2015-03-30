@@ -20,7 +20,7 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
         public EditNavigationViewModel(int id)
         {
             // Grab Every Page and Id so we can list it in the dropdown
-            PageIdNameCollection = CachedObjects.GetPageIdNameCollection(true);
+            PageIdNameCollection = Context.ContentPages.Where(x => x.IsActive.Value && x.SchemaId != 1).Select(x => new { x.ContentPageId, x.Title }).OrderBy(x => x.Title).ToDictionary(o => o.ContentPageId, o => o.Title);
 
             //PromoModules = context.ContentModules.Where(m => m.SchemaId == 3).ToList();
 
@@ -31,20 +31,13 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
             // Grab the top level items first, then populate their children
             if (TheNav != null)
             {
-                // Winter Nav is Cached
-                if (id == 2)
-                {
-                    TopLevelNavItems = CachedObjects.GetMasterNavigationList(Context, false);
-                }
-                else
-                {
-                    TopLevelNavItems = Context.NavigationItems.Where(x => x.ParentNavigationId == TheNav.NavigationId && x.ParentNavigationItemId < 0).OrderBy(x => x.Order).ToList();
+                TopLevelNavItems = Context.NavigationItems.Where(x => x.ParentNavigationId == TheNav.NavigationId && x.ParentNavigationItemId < 0).OrderBy(x => x.Order).ToList();
 
-                    if (TopLevelNavItems.Count > 0)
-                    {
-                        TopLevelNavItems = PopulateNavList(TopLevelNavItems);
-                    }
+                if (TopLevelNavItems.Count > 0)
+                {
+                    TopLevelNavItems = PopulateNavList(TopLevelNavItems);
                 }
+
             }
         }
 

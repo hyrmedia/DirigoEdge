@@ -1,5 +1,7 @@
 # DirigoEdge
 
+[![Join the chat at https://gitter.im/dirigodev/DirigoEdge](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dirigodev/DirigoEdge?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 DirigoEdge is an Open Source development framework built on .Net that makes managing content and building websites faster and easier. It is fully responsive, built on MVC, Microsoft’s CodeFirst, and has a robust shortcode and plugin system.
 
 ## Getting Started

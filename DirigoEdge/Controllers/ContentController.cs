@@ -73,22 +73,17 @@ namespace DirigoEdge.Controllers
                 ViewBag.PageId = model.ThePage.ContentPageId;
                 ViewBag.IsPublished = model.IsPublished;
                 ViewBag.OGType = model.ThePage.OGType ?? "website";
-                ViewBag.MetaDesc = model.ThePage.MetaDescription;
+                ViewBag.MetaDesc = model.ThePage.MetaDescription ?? "";
                 ViewBag.Title = model.ThePage.Title;
-                ViewBag.OGTitle = model.ThePage.OGTitle ?? model.ThePage.Title;
+                ViewBag.OGTitle = model.ThePage.Title ?? model.ThePage.OGTitle;
+                ViewBag.OGImage = model.ThePage.OGImage ?? "";
 
                 // Set the page Canonical Tag and OGURl
                 ViewBag.Canonical = GetCanonical(model.ThePage);
                 ViewBag.OGUrl = model.ThePage.OGUrl ?? ViewBag.Canonical;
 
-                if (model.ThePage.NoIndex)
-                {
-                    ViewBag.NoIndex = "noindex";
-                }
-                if (model.ThePage.NoFollow)
-                {
-                    ViewBag.NoFollow = "nofollow";
-                }
+                ViewBag.Index = model.ThePage.NoIndex ? "noindex" : "index";
+                ViewBag.Follow = model.ThePage.NoFollow ? "nofollow" : "follow";
 
                 return View(model.TheTemplate.ViewLocation, model);
             }
@@ -116,7 +111,7 @@ namespace DirigoEdge.Controllers
 
         private ContentViewViewModel GetSubDirectoryModel(string path)
         {
-            var masterList = CachedObjects.GetMasterNavigationList(Context);
+            var masterList = CachedObjects.GetMasterNavigationList();
             var pathPieces = path.Split('/');
             var permalink = pathPieces.Last().ToLower();
 
@@ -132,7 +127,7 @@ namespace DirigoEdge.Controllers
 
             if (currentNavigation == null) return null;
 
-            var thePage = Context.ContentPages.FirstOrDefault(x => x.Permalink == permalink && x.ParentNavigationItemId == currentNavigation.NavigationItemId);
+            var thePage = CachedObjects.GetCacheContentPages().FirstOrDefault(x => x.Permalink == permalink && x.ParentNavigationItemId == currentNavigation.NavigationItemId);
 
             if (thePage != null)
             {

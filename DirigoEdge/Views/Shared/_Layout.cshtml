@@ -28,51 +28,22 @@
         
         <title>@ViewBag.Title</title>
 
-        @* ** Basic Meta Information ** *@
-        @{
-            string metaDescription = ViewBag.MetaDesc ?? "";
-        }
-        <meta name="description" content="@metaDescription">
-    
-        @{
-            var noindex = "";
-            var nofollow = "";
-            var all = "all";
-            if (ViewBag.NoFollow != null)
-            {
-                nofollow = ViewBag.NoFollow;
-                all = "";
-            }
-            if (ViewBag.NoIndex != null)
-            {
-                noindex = ViewBag.NoIndex;
-                all = "";
-            }
-            var separator = ViewBag.NoFollow != null && ViewBag.NoIndex != null ? ", " : "";
-        }
-        <meta name="robots" content="@all@noindex@separator@nofollow" />
-    
-        @* ** Facebook OG tags ** *@
-        @{
-            var oGType = ViewBag.OGType ?? "article";
-            var oGTitle = ViewBag.OGTitle ?? "";
-            var oGImage = ViewBag.OGImage ?? "";
-            var oGUrl = ViewBag.OGUrl ?? "";
-        }
-    
-        @if (!String.IsNullOrEmpty(oGTitle))
-        {
-            <meta property="og:title" content="@oGTitle" />
-            <meta property="og:type" content="@oGType" />
-            <meta property="og:image" content="@oGImage" />
-            <meta property="og:description" content="@metaDescription" />
-            <meta property="og:url" content="@oGUrl" />
-        }
-    
+        <meta name="description" content="@ViewBag.MetaDesc">
+
+        <meta name="robots" content="@ViewBag.Index, @ViewBag.Follow" />
+
+        <meta property="og:title" content="@ViewBag.OGTitle" />
+        <meta property="og:type" content="@ViewBag.OGType" />
+        <meta property="og:image" content="@ViewBag.OGImage" />
+        <meta property="og:description" content="@ViewBag.MetaDesc" />
+        <meta property="og:url" content="@ViewBag.OGUrl"/>
+
+        <link rel="canonical" href="@ViewBag.Canonical" />
+
         @RenderSection("Meta", false)
     
         @Html.DoAction("head")
-    
+
         @Html.DoAction("head_layout")
     
         @if (UserUtils.UserIsAdmin())
@@ -81,14 +52,12 @@
         }
     
         <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
-
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
         <link href='/css/main.css' rel='stylesheet' type='text/css'>
         @if (UserUtils.UserIsAdmin())
         {
             <link href='/areas/admin/css/logged-in.css' rel='stylesheet' type='text/css'>
         }
-    
-        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
         @RenderSection("Styles", false)
 
@@ -110,7 +79,7 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        @if (!String.IsNullOrEmpty(UserUtils.CurrentMembershipUsername()) && !ViewBag.IsPublished)
+        @if (UserUtils.IsLoggedIn() && ViewBag.IsPublished != null && !ViewBag.IsPublished)
         {
             <div class="alert alert-info alert-dismissible fade in edge-alert edge-alert-header" data-alert="unpublished-page" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>

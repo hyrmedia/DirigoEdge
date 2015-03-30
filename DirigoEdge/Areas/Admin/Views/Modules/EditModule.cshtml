@@ -73,7 +73,7 @@
         <div class="col-lg-3">
             
 			<div class="panel container-fluid">
-                <h3>Settings</h3>
+                <h4>Settings</h4>
 
                 @{
                     bool isActive = Convert.ToBoolean(Model.TheModule.IsActive);
@@ -114,39 +114,55 @@
 
             </div>
             <div class="panel container-fluid">
-                <label>Module Name</label>
-                <input class=" form-control" id="ModuleName" type="text" value="@Model.TheModule.ModuleName" autocomplete="off"/>
+                <h4>Module Name</h4>
+                <div class="form-group">
+                    <input class=" form-control" id="ModuleName" type="text" value="@Model.TheModule.ModuleName" autocomplete="off"/>
+                </div>
             </div>
 
             <div class="panel container-fluid">
-                <h3>Schema</h3>
+                <h4>Schema</h4>
 
-                <select class=" form-control" id="SchemaSelector" autocomplete="off">
+                <div class="form-group">
+                    <select class=" form-control" id="SchemaSelector" autocomplete="off">
 
-                    @{
-                        string noneSelected = (Model.TheModule.SchemaId == null || Model.TheModule.SchemaId <= 0) ? "selected=selected" : "";
-                    }
-
-                    <option data-id="-1" @noneSelected>None</option>
-                    @{
-                        foreach (var schema in Model.Schemas)
-                        {
-                            string selected = schema.SchemaId == Model.TheModule.SchemaId ? "selected=selected" : "";
-                        <option @selected data-id="@schema.SchemaId">@schema.DisplayName</option>
+                        @{
+                            string noneSelected = (Model.TheModule.SchemaId == null || Model.TheModule.SchemaId <= 0) ? "selected=selected" : "";
                         }
-                    }
-                </select>
 
-                <div class="panelActions">
-                    <a id="RefreshSchemaLink" href="#">Refresh <i class="fa fa-refresh"></i></a>| <a id="EditSchemaLink" href="/admin/schemas/editschema/@Model.TheModule.SchemaId" target="_blank">Edit Schema <i class="fa fa-external-link"></i></a>
+                        <option data-id="-1" @noneSelected>None</option>
+                        @{
+                            foreach (var schema in Model.Schemas)
+                            {
+                                string selected = schema.SchemaId == Model.TheModule.SchemaId ? "selected=selected" : "";
+                                <option @selected data-id="@schema.SchemaId">@schema.DisplayName</option>
+                            }
+                        }
+                    </select>
+
+                    <div class="panelActions">
+                        <a id="RefreshSchemaLink" href="#">Refresh <i class="fa fa-refresh"></i></a>| <a id="EditSchemaLink" href="/admin/schemas/editschema/@Model.TheModule.SchemaId" target="_blank">Edit Schema <i class="fa fa-external-link"></i></a>
+                    </div>
                 </div>
 
             </div>
-
+            
+            @if (Model.TheModule.SchemaId != null && Model.TheModule.SchemaId > 0 && Roles.IsUserInRole("Administrators"))
+            {
+                <div class="panel container-fluid">
+                    <h4>Sync View</h4>
+                    <div class="panelActions form-group">
+                        <a href="#" class="sync-schema-view js-sync-schema-view" data-ispage="false" data-item="@Model.TheModule.ContentModuleId" data-schema="@Model.TheModule.SchemaId">
+                            Copy View to All Modules <i class="fa fa-refresh fa-spin"></i>
+                        </a>
+                    </div>
+                </div>
+            }
+            
             <div class="panel container-fluid reviewRevisions">
                 <h4>History</h4>
 
-                <div id="RevisionsList" type="Module">
+                <div id="RevisionsList" class="form-group" type="Module">
                     @Html.Partial("~/Areas/Admin/Views/Shared/Partials/RevisionsListInnerPartial.cshtml", Model.Revisions)
                 </div>
             </div>
