@@ -7,6 +7,7 @@ using System.Web.Security;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdge.Controllers;
+using DirigoEdgeCore.Business;
 using DirigoEdgeCore.Controllers;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models.ViewModels;
@@ -114,8 +115,11 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [PermissionsFilter(Permissions = "Can Edit Pages")]
         public ActionResult EditContent(int id, string schema, string editContentHeading)
         {
-            var model = new EditContentViewModel(id);
+            var model = new EditContentViewModel();
 
+            var editContentHelper = new EditContentHelper(Context);
+            editContentHelper.LoadContentViewById(id, model);
+            
             var userName = UserUtils.CurrentMembershipUsername();
             var user = Context.Users.First(usr => usr.Username == userName);
             model.IsBookmarked = Context.Bookmarks.Any(bookmark => bookmark.Url == Request.RawUrl && bookmark.UserId == user.UserId);
@@ -140,7 +144,11 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [PermissionsFilter(Permissions = "Can Edit Pages")]
         public ActionResult EditContentBasic(int id)
         {
-            var model = new EditContentViewModel(id);
+            var model = new EditContentViewModel();
+            
+            var editContentHelper = new EditContentHelper(Context);
+            editContentHelper.LoadContentViewById(id, model);
+
             return View(model);
         }
 
@@ -181,7 +189,9 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [PermissionsFilter(Permissions = "Can Edit Pages")]
         public ActionResult PreviewContent(int id)
         {
-            var model = new ContentViewViewModel(id);
+            var model = new ContentViewViewModel {ThePage = ContentLoader.GetDetailById(id)};
+            model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
+            model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent, Context);
 
             if (model.ThePage != null)
             {

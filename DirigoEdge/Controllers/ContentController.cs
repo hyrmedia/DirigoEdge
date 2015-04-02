@@ -1,7 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using AutoMapper;
+using DirigoEdgeCore.Business;
+using DirigoEdgeCore.Business.Models;
 using DirigoEdgeCore.Controllers;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models.ViewModels;
@@ -11,6 +13,11 @@ namespace DirigoEdge.Controllers
 {
     public class ContentController : DirigoBaseController
     {
+        static ContentController()
+        {
+            Mapper.CreateMap<ContentPage, PageDetails>();
+        }
+
         public ActionResult Index()
         {
             ContentViewViewModel model = null;
@@ -31,23 +38,33 @@ namespace DirigoEdge.Controllers
             // If not a subdirectory try based on permalink / title
             if (model == null || model.ThePage == null)
             {
-                model = new ContentViewViewModel(title);
+                model = new ContentViewViewModel { ThePage = ContentLoader.GetDetailsByTitle(title) };
+                
             }
 
             // If we found a hit, return the view, otherwise 404
             if (model.ThePage != null)
             {
+                model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
+                model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent, Context);
+
                 if (UserUtils.UserIsAdmin())
                 {
 
                     var userName = UserUtils.CurrentMembershipUsername();
                     var user = Context.Users.First(usr => usr.Username == userName);
 
-                    var pageModel = new EditContentViewModel(model.ThePage.ContentPageId)
-                    {
-                        BookmarkTitle = model.ThePage.Title,
-                        IsBookmarked = Context.Bookmarks.Any(bookmark => bookmark.Title == title && bookmark.Url == Request.RawUrl && bookmark.UserId == user.UserId)
-                    };
+                    var pageModel = new EditContentViewModel();
+                    var editContentHelper = new EditContentHelper(Context);
+                    editContentHelper.LoadContentViewById(model.ThePage.ContentPageId, pageModel);
+
+                    pageModel.BookmarkTitle = model.ThePage.Title;
+                    pageModel.IsBookmarked =
+                        Context.Bookmarks.Any(
+                            bookmark =>
+                                bookmark.Title == title && bookmark.Url == Request.RawUrl &&
+                                bookmark.UserId == user.UserId);
+                    
 
                     ViewBag.PageModel = pageModel;
                 }
@@ -62,8 +79,8 @@ namespace DirigoEdge.Controllers
                 ViewBag.OGImage = model.ThePage.OGImage ?? "";
 
                 // Set the page Canonical Tag and OGURl
-                ViewBag.OGUrl = model.ThePage.OGUrl ?? GetCanonical(model.ThePage);
                 ViewBag.Canonical = GetCanonical(model.ThePage);
+                ViewBag.OGUrl = model.ThePage.OGUrl ?? ViewBag.Canonical;
 
                 ViewBag.Index = model.ThePage.NoIndex ? "noindex" : "index";
                 ViewBag.Follow = model.ThePage.NoFollow ? "nofollow" : "follow";
@@ -112,11 +129,20 @@ namespace DirigoEdge.Controllers
 
             var thePage = CachedObjects.GetCacheContentPages().FirstOrDefault(x => x.Permalink == permalink && x.ParentNavigationItemId == currentNavigation.NavigationItemId);
 
-            return thePage != null ? new ContentViewViewModel(thePage.ContentPageId) : null;
+            if (thePage != null)
+            {
+                var model = new ContentViewViewModel {ThePage = ContentLoader.GetDetailById(thePage.ContentPageId)};
+                model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
+                model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent, Context);
+                return model;
+            }
+            else
+            {
+                return null;
+            }
         }
 
-        // Helper methods
-        public string GetCanonical(ContentPage page)
+        public string GetCanonical(PageDetails page)
         {
             // If canonical is explicitly set, use that
             if (!String.IsNullOrEmpty(page.Canonical))
@@ -142,8 +168,6 @@ namespace DirigoEdge.Controllers
             }
 
             return baseUrl.TrimEnd('/') + generatedUrl;
-
-            // Otherwise use DisplayName
         }
     }
 }
