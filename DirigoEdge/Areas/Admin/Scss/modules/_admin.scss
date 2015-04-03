@@ -1,31 +1,9 @@
-﻿/** Blog Admin **/
-@font-face {
-    font-family: 'open_sans_lightregular';
-    src: url('/Fonts/opensans-light-webfont.eot');
-    src: url('/Fonts/opensans-light-webfont.eot?#iefix') format('embedded-opentype'),
-         url('/Fonts/opensans-light-webfont.woff') format('woff'),
-         url('/Fonts/opensans-light-webfont.ttf') format('truetype'),
-         url('/Fonts/opensans-light-webfont.svg#open_sans_lightregular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
-html, body {
-	height: 100%;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 16px;
-}
-h1, h2, h3, h4, h5, h6 {
+﻿h1, h2, h3, h4, h5, h6 {
 	font-weight:300;
 }
 
 h3 i {
     padding-right: 0.5em;
-}
-
-body {
-	background: #f7f7f7;
-    overflow-x: hidden;
-    overflow-y: auto;
 }
 
 table {
@@ -189,7 +167,7 @@ div.urlTip {
 #InsertContentImage {
 	position: absolute;
 	right: 15px;
-	top: 74px;
+	top: 90px;
     font-weight:normal;
 }
 
@@ -297,15 +275,12 @@ div.manageBlogs table td.actions { min-width:166px; }
 	width: 260px;
 }
 #EditorThemeContainer label {
-	display:inline;
-	font-family: 'Open Sans', sans-serif;
+	display: inline;
 }
 #EditorTheme {
-	font-family: 'Open Sans', sans-serif;
 	width: 200px;
 }
-#PreviewContentButton { float: left; }
-#SaveContentButton { margin-bottom: 12px; float: left; }
+
 #SaveSpinner { float: left;top: -7px; }
 
 /** Stock Image Holder **/
@@ -327,21 +302,19 @@ div.manageBlogs table td.actions { min-width:166px; }
 #StockImageHolder img {
 	height:54px;
 }
-#FeaturedImageModal p {
-	font-family: 'Open Sans', sans-serif;
-}
-#FeaturedImageModal p.alt {
-	margin-top:12px;
+
+#FeaturedImageModal .alt {
+	margin-top: 12px;
 }
 
-div.saveContainer a.btn {
-	margin: 5px 5px 20px 0;
+.saveContainer .btn {
+	margin: 5px 5px 10px 0;
     font-weight: normal;
 }
-a.confirmModalButton {
+.confirmModalButton {
 	margin-left: 12px;
 }
-input.modifyPasswordButton {
+.modifyPasswordButton {
 	margin-left: 20px;
 }
 #popTitle { margin-right: 4px; }
@@ -386,7 +359,6 @@ form.slideActionList {
     margin-right:8px;
     color:#555;
     font-weight:bold;
-	font-family: 'Open Sans', sans-serif;
     text-align:center;
 	font-size: 14px;
 }
@@ -533,29 +505,6 @@ div.siteSettings div.custom.dropdown {
 
 div.siteSettings div.row {
     overflow: visible;
-}
-
-/*Revisions Listing*/
-#RevisionsList {
-	max-height: 88px;
-	overflow: auto;
-}
-
-#RevisionsList ul li {
-	list-style: none;
-}
-#RevisionsList ul li a {
-	text-decoration: underline;
-	font-size: 12px;
-}
-#RevisionsList ul li span {
-	font-size: 12px;
-	color: #444;
-	margin-left: 6px;
-}
-
-#RevisionArea {
-    width: 100%;
 }
 
 /*New Page listing*/

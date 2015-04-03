@@ -1,4 +1,16 @@
-﻿.contents {
+﻿html,
+body {
+    font-size: 14px;
+}
+
+body {
+    @include font(sans-serif);
+	background: #f7f7f7;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.contents {
     height: calc(100% - 57px);
 }
 
@@ -21,9 +33,9 @@
 
 .main {
     position: relative;
-    padding: calc(2em - 20px) 2em 2em calc(220px + 2em);
+    padding: calc(3em - 20px) 3em 3em calc(220px + 3em);
 
     .collapse-menu & {
-        padding: calc(2em - 20px) 2em 2em calc(42px + 2em);
+        padding: calc(3em - 20px) 3em 3em calc(42px + 3em);
     }
 }

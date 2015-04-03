@@ -1,0 +1,21 @@
+﻿#RevisionsList {
+	max-height: 100px;
+	overflow: auto;
+}
+
+#RevisionsList ul li {
+	list-style: none;
+}
+#RevisionsList ul li a {
+	text-decoration: underline;
+	font-size: 12px;
+}
+#RevisionsList ul li span {
+	font-size: 12px;
+	color: #444;
+	margin-left: 6px;
+}
+
+#RevisionArea {
+    width: 100%;
+}

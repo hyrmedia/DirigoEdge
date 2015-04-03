@@ -1,0 +1,29 @@
+﻿@mixin font($style) {
+
+    @if $style == sans-serif {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 400;
+    }
+
+    @else if $style == sans-serif-italic {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 400;
+        font-style: italic;
+    }
+
+    @else if $style == sans-serif-bold {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 700;
+    }
+
+    @else if $style == sans-serif-bold-italic {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 700;
+        font-style: italic;
+    }
+
+    @else {
+        @warn "Font mixin supports: sans-serif, sans-serif-italic, sans-serif-bold, sans-serif-bold-italic";
+    }
+
+}
