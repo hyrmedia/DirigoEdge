@@ -74,7 +74,7 @@ namespace DirigoEdge.Controllers
             return View("~/Views/Home/Error404.cshtml");
         }
 
-        public ActionResult User(string username)
+        public new ActionResult User(string username)
         {
             var model = new BlogsByUserViewModel(username);
 

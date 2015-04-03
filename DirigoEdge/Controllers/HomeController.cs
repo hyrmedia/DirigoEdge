@@ -5,6 +5,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Web.Mvc;
 using DirigoEdge.Utils;
+using DirigoEdgeCore.Business;
 using DirigoEdgeCore.Controllers;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models.ViewModels;
@@ -17,9 +18,9 @@ namespace DirigoEdge.Controllers
 	{
 		public ActionResult Index()
 		{
-            var model = new ContentViewViewModel("home");
+		    var model = new ContentViewViewModel {ThePage = ContentLoader.GetDetailsByTitle("home")};
 
-            if (model.ThePage != null)
+		    if (model.ThePage != null)
             {
                 ViewBag.IsPage = true;
                 ViewBag.PageId = model.ThePage.ContentPageId;
@@ -29,11 +30,11 @@ namespace DirigoEdge.Controllers
                 ViewBag.Title = model.ThePage.Title;
                 ViewBag.OGTitle = model.ThePage.Title ?? model.ThePage.OGTitle;
                 ViewBag.OGImage = model.ThePage.OGImage ?? "";
-
+                model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
                 // Set the page Canonical Tag and OGURl
                 ViewBag.OGUrl = model.ThePage.OGUrl ?? GetCanonical(model.ThePage);
                 ViewBag.Canonical = GetCanonical(model.ThePage);
-
+                model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent, Context);
                 ViewBag.Index = model.ThePage.NoIndex ? "noindex" : "index";
                 ViewBag.Follow = model.ThePage.NoFollow ? "nofollow" : "follow";
 

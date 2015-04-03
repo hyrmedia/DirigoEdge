@@ -91,6 +91,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
             }
             catch (Exception err)
             {
+                Log.Error(err);
                 result.Data = new {response = "error", error = "An error occurred"};
             }
 

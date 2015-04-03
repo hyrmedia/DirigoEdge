@@ -38,7 +38,6 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
 
             if (newerVersion != null)
             {
-                IsNewerVersion = true;
                 NewerVersionId = newerVersion.ContentModuleId;
             }
 
