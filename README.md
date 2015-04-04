@@ -6,7 +6,7 @@ DirigoEdge is an Open Source development framework built on .Net that makes mana
 
 ## Getting Started
 
-1. Clone this repo with `git clone https://github.com/dirigodev/DirigoEdge.git`
+1. For the stable version, [grab the latest release](https://github.com/dirigodev/DirigoEdge/releases). For the latest (unstable) development version, clone this repo with `git clone https://github.com/dirigodev/DirigoEdge.git`
 
 2. Edit `web.config` file with your appopriate database connections.
 	
