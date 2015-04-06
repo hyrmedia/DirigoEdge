@@ -4,6 +4,20 @@
 
 DirigoEdge is an Open Source development framework built on .Net that makes managing content and building websites faster and easier. It is fully responsive, built on MVC, Microsoft’s CodeFirst, and has a robust shortcode and plugin system.
 
+## Requirements
+
+#### Node.js
+
+DirigoEdge uses `node-sass` and `gulp` to watch and compile [Sass](http://sass-lang.com/). You must have Node 0.10.x or 0.12.x installed. You can [download Node.js here](https://nodejs.org/).
+
+#### Gulp
+
+DirigoEdge will install any local Node.js module dependencies on first build, but `gulp` must also be installed globally. To install `gulp` run the following in Command Prompt:
+
+```
+npm install -g gulp
+```
+
 ## Getting Started
 
 1. For the stable version, [grab the latest release](https://github.com/dirigodev/DirigoEdge/releases). For the latest (unstable) development version, clone this repo with `git clone https://github.com/dirigodev/DirigoEdge.git`
