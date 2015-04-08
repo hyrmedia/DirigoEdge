@@ -1,5 +1,9 @@
 ﻿label {
     font-weight: inherit;
+
+    &.right {
+        float: right;
+    }
 }
 
 label > input[type="checkbox"] {
