@@ -591,7 +591,7 @@ content_class.prototype.getPageData = function() {
             Canonical: $("#Canonical").val(),
             ParentNavigationItemId: $("#PageCategory option:selected").attr("data-id"),
             SchemaId: $("#SchemaSelector option:selected").attr("data-id"),
-            SchemaEntryValues: JSON.stringify(self.getSchemaValues()),
+            SchemaEntryValues: JSON.stringify(self.getSchemaValues("#FieldEntry > ol > ", false)),
             NoIndex: $('.no-index').is(':checked'),
             NoFollow: $('.no-follow').is(':checked')
         },
@@ -604,32 +604,38 @@ content_class.prototype.getPageData = function() {
 };
 
 // Returns an object with values
-content_class.prototype.getSchemaValues = function () {
+// @forMustache -- Set to true to format data for mustache templating. This mostly effects list types in that it won't wrap in a "values" object parameter
+content_class.prototype.getSchemaValues = function (selector, forMustache) {
+    var self = this;
 
     // Key Value Pairs of labels / selected value
     var oValues = {};
 
     // Text , Image, and Paragraph / TextArea Values, DropDown
-    $("#FieldEntry div.formContainer.text input[type=text], "  +
-        "#FieldEntry div.formContainer.image input[type=text], " +
-        "#FieldEntry div.formContainer.dropdown select, " +
-        "#FieldEntry div.formContainer.paragraph textarea").each(function () {
-        
-        var label = $(this).attr("data-label");
-        var value = $(this).val();
-        oValues[label] = value;
-    });
-    
+    $(selector + "div.formContainer.text input[type=text], " +
+        selector + "div.formContainer.image input[type=text], " +
+        selector + "div.formContainer.dropdown select, " +
+        selector + "div.formContainer.module select, " +
+        selector + "div.formContainer.paragraph textarea, " +
+        selector + "div.formContainer.date input[type=text]").each(function () {
+
+            var label = $(this).attr("data-label");
+            var value = $(this).val();
+
+            oValues[label] = value;
+        });
+
     // WYSIWYG Editors
-    $("#FieldEntry div.formContainer.wysiwyg textarea").each(function () {
+    $(selector + "div.formContainer.wysiwyg textarea").each(function () {
         var id = $(this).attr("id");
         var label = $(this).attr("data-label");
         var value = CKEDITOR.instances[id].getData();
+
         oValues[label] = value;
     });
 
     // Radio Boxes
-    $("#FieldEntry div.radioContainer").each(function () {
+    $(selector + "div.radioContainer").each(function () {
         var label = $(this).attr("data-label");
         var $radioChecked = $(this).find("input[type=radio]:checked");
         var value = $(this).find("input[type=radio]:checked").attr("data-label");
@@ -637,15 +643,15 @@ content_class.prototype.getSchemaValues = function () {
         if ($radioChecked.hasClass("otherInput")) {
             value = $radioChecked.closest(".radioSingle").find("input.otherSpecifyInput").val();
         }
-        
+
         oValues[label] = value;
     });
 
     // Check Boxes
-    $("#FieldEntry div.checkContainer").each(function () {
+    $(selector + "div.checkContainer").each(function () {
         var label = $(this).attr("data-label");
         var values = [];
-        $(this).find("input[type='checkbox']:checked").each(function() {
+        $(this).find("input[type='checkbox']:checked").each(function () {
 
             var inputValue = "";
             if ($(this).hasClass("otherInput")) {
@@ -659,9 +665,71 @@ content_class.prototype.getSchemaValues = function () {
         });
 
         oValues[label] = values;
-    });    
+    });
+
+    // List items
+    $(selector + "div.formContainer.list").each(function () {
+
+        var label = $(this).attr("data-label");
+        var values = [];
+
+        var thisId = $(this).attr("id") || self.generateListId();
+        $(this).attr("id", thisId);
+
+        // Scope next iteration to children of current listing container
+        var newValues = [];
+        $("#" + thisId + " > li > .listContainer").each(function () {
+            var thisId = $(this).attr("id") || self.generateListId();
+            $(this).attr("id", thisId);
+            var newSelector = "#" + thisId + " > ";
+
+            newValues.push(self.getSchemaValues(newSelector, forMustache));
+        });
+
+        var listValues = {
+            id: thisId,
+            values: newValues
+        };
+
+        values.push(listValues);
+
+        if (forMustache) {
+            oValues[label] = newValues;
+        }
+        else {
+            oValues[label] = values;
+        }
+    });
 
     return oValues;
+};
+
+content_class.prototype.generateListId = function () {
+
+    // if duplicate, imcrement till we find a free spot
+    var count = 0;
+    var tagName = "li";
+    var id = tagName + "_" + count;
+    var $frame = $("#FieldEntry");
+    while ($frame.find("#" + id).length > 0) {
+        id = tagName + "_" + count;
+        count++;
+    }
+    return id;
+
+};
+
+content_class.prototype.generateCId = function () {
+
+    // if duplicate, increment till we find a free spot
+    var count = 0;
+    var id = "c" + count;
+    var $frame = $("#FieldEntry");
+    while ($frame.find("[data-id=" + id + "]").length > 0) {
+        id = "c" + count;
+        count++;
+    }
+    return id;
 };
 
 content_class.prototype.parseSchemaContent = function (htmlContent) {
