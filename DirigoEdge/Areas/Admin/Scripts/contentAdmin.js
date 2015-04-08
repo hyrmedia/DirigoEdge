@@ -733,9 +733,50 @@ content_class.prototype.generateCId = function () {
 };
 
 content_class.prototype.parseSchemaContent = function (htmlContent) {
-    // Use mustache to set variables to be replaced / operated on in editor
+    var jsTemplates = {},
+        $htmlContent = $.parseHTML(htmlContent),
+        htmlString = '',
+        renderedHtml,
+        $renderedHtml;
 
-    return Mustache.to_html(htmlContent, this.getSchemaValues());
+    if (!$htmlContent) {
+        return '';
+    }
+
+    // Loop through DOM nodes and find any Mustache templates.
+    // Hold onto them so we can dump that back in after
+    // schema placeholders have been rendered.
+    $.each($htmlContent, function () {
+        if ($(this).attr('type') === 'text/template') {
+            jsTemplates[$(this).attr('id')] = $(this).text();
+        }
+    });
+
+    // Render the module HTML. Replaces schema placeholders.
+    renderedHtml = Mustache.to_html(htmlContent, this.getSchemaValues("#FieldEntry > ol > ", true));
+
+    // Parse rendered HTML to DOM nodes so we can do things to it.
+    $renderedHtml = $.parseHTML(renderedHtml, document, true);
+
+    // Add the Mustache templates we stored earlier back in.
+    $.each($renderedHtml, function () {
+        if ($(this).attr('type') === 'text/template') {
+            var id = $(this).attr('id');
+            $(this).html(jsTemplates[id]);
+        }
+
+        // Rebuild renderedHtml string with new HTML.
+        // DOM nodes will have outerHTML property
+        if ($(this)[0].outerHTML) {
+            htmlString = htmlString + '\n' + $(this)[0].outerHTML;
+        }
+            // Text nodes will have data property
+        else if ($(this)[0].data) {
+            htmlString = htmlString + '\n' + $(this)[0].data;
+        }
+    });
+
+    return htmlString;
 };
 
 // Set publish button text, drop down selected
