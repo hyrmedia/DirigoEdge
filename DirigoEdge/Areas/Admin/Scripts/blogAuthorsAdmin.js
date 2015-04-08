@@ -29,6 +29,8 @@ blog_authors_class.prototype.initPageEvents = function() {
             success: function (data) {
                 // Close the dialog box
                 $('#NewAuthorModal').modal('hide');
+                $("#NewUserName").val('');
+                $("#NewUserImage").val('');
 
                 common.hideAjaxLoader($container);
 
