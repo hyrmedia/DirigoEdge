@@ -38,6 +38,8 @@ npm install -g gulp
 	- Edge will automatically combine and minify your CSS and Javascript files in this directory when you publish your solution or run in Release mode
 	- More information on SquishIt can be found at https://github.com/jetheredge/SquishIt
 
+6. Check out our video series on [YouTube](https://www.youtube.com/playlist?list=PLiL6eOib_pybUc2MNR4qvlPaMWHMRMcoK)
+
 ## DirigoEdgeCore
 
 DirigoEdge and its plugins depend on [DirigoEdgeCore](https://github.com/dirigodev/DirigoEdgeCore). Stable versions are available and will be automatically installed from NuGet. If you would like to work with the latest development build of Core you'll need to pull down the project.
