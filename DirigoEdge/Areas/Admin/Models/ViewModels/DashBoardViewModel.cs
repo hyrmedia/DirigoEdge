@@ -17,7 +17,7 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
         public List<Blog> FeaturedBlogs;
         public List<Bookmark> Bookmarks;
 
-        public Dictionary<String, String> InstalledPlugins;
+        public IEnumerable<KeyValuePair<string, string>> InstalledPlugins;
 
         public DashBoardViewModel()
         {
@@ -51,7 +51,7 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
             FeaturedBlogs = Context.Blogs.Where(x => x.IsFeatured).OrderByDescending(x => x.Date).ThenBy(x => x.Title).Take(5).ToList();
             Bookmarks = Context.Bookmarks.Where(x => x.UserId == user.UserId).OrderBy(x => x.Title).ToList();
 
-            InstalledPlugins = DirigoEdgeCore.Utils.CachedObjects.GetRegisteredPlugins();
+            InstalledPlugins = DirigoEdgeCore.Utils.CachedObjects.GetRegisteredPlugins().Take(5);
         }
     }
 }
