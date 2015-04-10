@@ -17,28 +17,41 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
         public List<Blog> FeaturedBlogs;
         public List<Bookmark> Bookmarks;
 
+        public IEnumerable<KeyValuePair<string, string>> InstalledPlugins;
+
         public DashBoardViewModel()
         {
-            string username = Membership.GetUser().UserName;
-            User user = Context.Users.FirstOrDefault(x => x.Username == username);
-            if (user != null)
+            var membershipUser = Membership.GetUser();
+
+            if (membershipUser == null)
             {
-                Blogs = Context.Blogs.OrderByDescending(x => x.Date).ThenBy(x => x.Title).Take(5).ToList();
-                Modules =
-                    Context.ContentModules.Where(module => module.ParentContentModuleId == null)
-                        .OrderByDescending(x => x.CreateDate)
-                        .Take(5)
-                        .ToList();
-                Pages =
-                    Context.ContentPages.Where(page => page.ParentContentPageId == null)
-                        .OrderByDescending(x => x.PublishDate)
-                        .Take(5)
-                        .ToList();
-                Users = Context.Users.OrderByDescending(x => x.LastLoginDate).Take(5).ToList();
-                FeaturedBlogs = Context.Blogs.Where(x => x.IsFeatured).OrderByDescending(x => x.Date).ThenBy(x => x.Title).Take(5).ToList();
-                Bookmarks =
-                    Context.Bookmarks.Where(x => x.UserId == user.UserId).OrderBy(x => x.Title).ToList();
+                return;
             }
+
+            var username = membershipUser.UserName;
+            var user = Context.Users.FirstOrDefault(x => x.Username == username);
+
+            if (user == null)
+            {
+                return;
+            }
+
+            Blogs = Context.Blogs.OrderByDescending(x => x.Date).ThenBy(x => x.Title).Take(5).ToList();
+            Modules =
+                Context.ContentModules.Where(module => module.ParentContentModuleId == null)
+                    .OrderByDescending(x => x.CreateDate)
+                    .Take(5)
+                    .ToList();
+            Pages =
+                Context.ContentPages.Where(page => page.ParentContentPageId == null)
+                    .OrderByDescending(x => x.PublishDate)
+                    .Take(5)
+                    .ToList();
+            Users = Context.Users.OrderByDescending(x => x.LastLoginDate).Take(5).ToList();
+            FeaturedBlogs = Context.Blogs.Where(x => x.IsFeatured).OrderByDescending(x => x.Date).ThenBy(x => x.Title).Take(5).ToList();
+            Bookmarks = Context.Bookmarks.Where(x => x.UserId == user.UserId).OrderBy(x => x.Title).ToList();
+
+            InstalledPlugins = DirigoEdgeCore.Utils.CachedObjects.GetRegisteredPlugins().Take(5);
         }
     }
 }
