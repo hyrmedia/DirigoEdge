@@ -37,6 +37,7 @@ save_class.prototype.initPageEvents = function () {
 
     $("a.savePageButton").click(function () {
         self.saveAdminData($(this));
+        return false;
     });
 };
 
