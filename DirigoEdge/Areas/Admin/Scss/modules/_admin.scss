@@ -682,20 +682,17 @@ ul.commonTags li { float: left; margin: 0px 5px;}
 }
 
 .dashboard-panel ul li {
-    
-}
-
-.dashboard-panel ul li:hover {
-    background-color: #428BCA;
+    padding: 5px 10px;
 }
 
 .dashboard-panel ul li a {
-    padding: 3px 10px;
     display: block;
     text-decoration: none;
 }
 
 .dashboard-panel ul li:hover a {
+    background-color: #428BCA;
+    box-shadow: 0 0 0 5px #428BCA;
     color: #fff;
 }
 
