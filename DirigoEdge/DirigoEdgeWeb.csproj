@@ -1260,6 +1260,12 @@
   <ItemGroup>
     <Content Include="Areas\Admin\Scss\modules\_redirects.scss" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Scss\atoms\_buttons.scss" />
+    <Content Include="Areas\Admin\Scss\modules\_forms.scss" />
+    <Content Include="Areas\Admin\Scss\modules\_panel.scss" />
+    <Content Include="Areas\Admin\Scss\modules\_revisions-list.scss" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

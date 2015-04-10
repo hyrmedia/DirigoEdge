@@ -75,7 +75,7 @@ category_class.prototype.initAddCategoryEvent = function() {
         if (name.length < 1) {
             return false;
         }
-
+       
         var $container = $("#AddCategoryModal").find("div.wrapper");
         common.showAjaxLoader($container);
         $.ajax({
@@ -88,7 +88,7 @@ category_class.prototype.initAddCategoryEvent = function() {
 
                 // Notify user of success
                 var noty_id = noty({ text: 'Category Successfully Created.', type: 'success', timeout: 2000 });
-
+                $("#CategoryNameInput").val('')
                 // Add the row
                 $("#CategoriesTable").append('<tr><td class="id">' + data.id + '</td><td class="name">' + name + '</td><td><a data-id="' + data.id + '" href="javascript:void(0);" class="deleteCategoryButton btn btn-danger">Delete</a></td></tr>');
 
