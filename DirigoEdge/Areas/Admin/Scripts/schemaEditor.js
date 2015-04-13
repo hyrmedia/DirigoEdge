@@ -15,6 +15,10 @@ schemaEditor_class.prototype.initPageEvents = function () {
 
     this.initFormBuilder();
 
+    $('#SchemaName').change(function () {
+        $('.js-save-form').removeAttr('disabled');
+    });
+
     // Set theme to match Foundation
     $(".js-save-form").addClass("button").text("Save Schema");
 

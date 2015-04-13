@@ -23,7 +23,7 @@
 #editField input.option-label-input { max-width: 186px; }
 
 .fb-tab-pane code { background: none; font-weight: normal; }
-.fb-button{display:inline-block;margin:0;padding:.563rem .844rem;border:0 none;color:#fff;text-align:center;text-decoration:none;font-size:12px;line-height:1.5;cursor:pointer;border-radius:.125rem;border:thin solid #2A95B2;border-bottom: 2px solid #2A95B2; }
+.fb-button{display:inline-block;margin:0;padding:.563rem .844rem;border:0 none;color:#fff;text-align:center;text-decoration:none;font-size:12px;line-height:1.5;cursor:pointer;border-radius:.125rem;border:thin solid #2A95B2;border-bottom: 2px solid #2A95B2;background: #2a95b2;}
 .fb-button:hover { color: #fff;}
 .fb-button[disabled]{background:#ddd !important;border:thin solid #ccc !important;color:#777 !important;text-shadow:none !important;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=65)";opacity:.65;cursor:default}
 .fb-clear{clear:both}
