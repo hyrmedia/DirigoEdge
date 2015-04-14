@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdgeCore.Controllers;
+using DirigoEdgeCore.Utils;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
@@ -11,7 +11,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         {
             return View( new PluginViewModel
             {
-                InstalledPlugins = DirigoEdgeCore.Utils.CachedObjects.GetRegisteredPlugins()
+                InstalledPlugins = CachedObjects.GetRegisteredPlugins()
             });
         }
     }
