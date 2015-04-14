@@ -212,6 +212,7 @@
     <Compile Include="Areas\Admin\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Admin\Controllers\SlideshowController.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\BookmarkViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\ViewModels\PluginViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\EditNavigationViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\EditSchemaViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\FileBrowserViewModel.cs" />
