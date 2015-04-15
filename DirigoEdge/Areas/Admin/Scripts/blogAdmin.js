@@ -32,13 +32,14 @@ blog_class.prototype.initPageEvents = function() {
     if ($('#CKEDITBLOG').length > 0) {
         this.CKPageEditor = CKEDITOR.replace('CKEDITBLOG', {
             // options here
-            height:412
+            height: 412
         });
     }
 
     if ($('#ShortDescription').length > 0) {
         this.CKShortDescEditor = CKEDITOR.replace('ShortDescription', {
-            toolbar: [['Source', '-', 'Bold', 'Italic']]
+            toolbar: [['Source', '-', 'Bold', 'Italic']],
+            removePlugins: 'insertimage'
         });
     }
 };

@@ -171,7 +171,7 @@
             }
 
             &.is-active {
-                height: 6.4em;
+                height: 7.1em;
 
                 .add-folder-toggle {
                     background: #ddd;
@@ -283,7 +283,7 @@
         display: block;
         position: relative;
         width: 100%;
-        padding: 1em 1em 1em 4.5em;
+        padding: 1em 1em 1em 4em;
         background: white;
         text-decoration: none;
         color: inherit;
@@ -298,8 +298,8 @@
     .browser .files__list li > .file-thumbnail {
         display: block;
         position: absolute;
-        width: 56px;
-        height: 56px;
+        width: 3.5em;
+        height: 3.5em;
         overflow: hidden;
         z-index: 1;
     }

@@ -22,13 +22,14 @@ event_class.prototype.initPageEvents = function() {
     if ($('#CKEDITEVENT').length > 0) {
         this.CKPageEditor = CKEDITOR.replace('CKEDITEVENT', {
             // options here
-            height:412
+            height: 412
         });
     }
 
     if ($('#EventShortDescription').length > 0) {
         this.CKShortDescEditor = CKEDITOR.replace('EventShortDescription', {
-            toolbar: [['Source', '-', 'Bold', 'Italic']]
+            toolbar: [['Source', '-', 'Bold', 'Italic']],
+            removePlugins : 'insertimage'
         });
     }
 };
