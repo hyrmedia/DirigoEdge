@@ -13,7 +13,6 @@
         <table class="twelve bordered manageTable" id="CategoriesTable">
             <thead>
                 <tr>
-                    <th class="hidden-xs">Id</th>
                     <th>Name</th>
                     <th>Posts</th>
                     <th class="actions">Actions</th>
@@ -32,8 +31,7 @@
                             {
                                 total = catPostItem.TotalPosts;
                             }
-                            <tr>
-                                <td class="id hidden-xs">@cat.CategoryId</td>
+                            <tr data-id="@cat.CategoryId">
                                 <td class="name">@cat.CategoryName</td>
                                 <td>@total</td>
                                 <td>
@@ -114,7 +112,7 @@
                         "aoColumnDefs": [
                             { "bSortable": false, "aTargets": ["actions"] } // No Sorting on actions
                         ],
-                        "aaSorting": [[0, "desc"]] // Sort by id
+                        "aaSorting": [[0, "asc"]] // Sort by name
                     });
                 });
             </script>

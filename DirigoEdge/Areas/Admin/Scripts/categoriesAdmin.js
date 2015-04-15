@@ -13,7 +13,7 @@ category_class.prototype.initConfirmCatDeleteEvent = function() {
 
     // Confirm deleteion of category from cat table
     $("#ConfirmDeleteCategory").click(function() {
-        var catIdToDelete = self.$catRowToDelete.find("td.id").text();
+        var catIdToDelete = self.$catRowToDelete.attr("data-id");
         
         var $container = $("#DeleteCategoryModal").find("div.wrapper");
         common.showAjaxLoader($container);
@@ -53,7 +53,7 @@ category_class.prototype.initDeleteCategoryEvent = function () {
     
 
     // Delete Category from category listing table
-    $(document).on("click", "a.deleteCategoryButton", function () {
+    $('body').on("click", "a.deleteCategoryButton", function () {
         var catId = $(this).attr("data-id");
 
         // Store the row to be removed so the dialog box can access is
@@ -64,6 +64,8 @@ category_class.prototype.initDeleteCategoryEvent = function () {
 
         // Show confirmation pop up
         $("#DeleteCategoryModal").modal();
+
+        return false;
     });
 };
 
@@ -90,7 +92,7 @@ category_class.prototype.initAddCategoryEvent = function() {
                 var noty_id = noty({ text: 'Category Successfully Created.', type: 'success', timeout: 2000 });
                 $("#CategoryNameInput").val('')
                 // Add the row
-                $("#CategoriesTable").append('<tr><td class="id">' + data.id + '</td><td class="name">' + name + '</td><td><a data-id="' + data.id + '" href="javascript:void(0);" class="deleteCategoryButton btn btn-danger">Delete</a></td></tr>');
+                $("#CategoriesTable").append('<tr><td class="name">' + name + '</td><td>0</td><td><a data-id="' + data.id + '" href="javascript:void(0);" class="deleteCategoryButton btn btn-danger btn-sm">Delete</a></td></tr>');
 
                 // Hide loader
                 common.hideAjaxLoader($container);
