@@ -97,9 +97,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PageBuilder">
-      <HintPath>..\packages\DirigoEdgePagebuilder.2.0.23.0\lib\net45\PageBuilder.dll</HintPath>
-    </Reference>
     <Reference Include="SquishIt.Framework, Version=0.8.6.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Lib\SquishIt\SquishIt.Framework.dll</HintPath>
@@ -397,9 +394,6 @@
     <Content Include="Content\Images\full-width.jpg" />
     <Content Include="Content\Images\left-rail.jpg" />
     <Content Include="Content\Images\right-rail.jpg" />
-    <Content Include="CSS\bootstrap-pagebuilder.css" />
-    <Content Include="CSS\font-awesome.css" />
-    <Content Include="CSS\fonts\fontawesome-webfont.svg" />
     <Content Include="CSS\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="CSS\images\ajaxLoader.gif" />
     <Content Include="CSS\images\ajaxLoaderTransparent.gif" />
@@ -419,12 +413,7 @@
     <Content Include="CSS\images\ui-icons_888888_256x240.png" />
     <Content Include="CSS\images\ui-icons_ffffff_256x240.png" />
     <Content Include="CSS\main.css" />
-    <Content Include="CSS\pageBuilder.css" />
     <Content Include="gulpfile.js" />
-    <Content Include="Scripts\bootstrap-pagebuilder.js" />
-    <Content Include="Scripts\isotope.pkgd.min.js" />
-    <Content Include="Scripts\jquery-pagebuilder.js" />
-    <Content Include="Scripts\liquidmetal.js" />
     <Content Include="Scripts\moment-timezone.js" />
     <Content Include="Areas\Admin\Scripts\mustache\mustache.js" />
     <Content Include="Areas\Admin\Scripts\navBuilder.js" />
@@ -467,7 +456,6 @@
     <Compile Include="Models\ViewModels\LatestBlogsViewModel.cs" />
     <Compile Include="Models\ViewModels\TagSingleViewModel.cs" />
     <Compile Include="Models\ViewModels\TweetViewModel.cs" />
-    <Compile Include="Packaging\content\App_Start\pagebuilder_plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -963,8 +951,6 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
-    <Content Include="Scripts\pagebuilder-admin.js" />
-    <Content Include="Scripts\pageBuilder.js" />
     <Content Include="Scripts\resetPassword.js" />
     <Content Include="Scripts\tzdetect.js" />
     <Content Include="Web.config">
@@ -1065,7 +1051,6 @@
     <Content Include="Views\Blog\CategoriesSingle.cshtml" />
     <Content Include="Views\Shared\Partials\BlogArticlePartial.cshtml" />
     <Content Include="Views\Shared\FacebookAPIInclude.cshtml" />
-    <Content Include="Views\Shared\Partials\SeoMetaModalPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Views\Shared\Partials\BlogAdminModules\SEOMetaModule.cshtml" />
@@ -1283,36 +1268,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Views\Plugins\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Templates\PageBuilderTemplate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\Partials\PageBuilderSettingsPartial.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\Partials\BuilderToolbarPartial.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\Partials\BuilderPageSettings.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\Partials\BuilderModalsPartial.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="StagePlugin.bat" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="CSS\fonts\fontawesome-webfont.woff" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="CSS\fonts\fontawesome-webfont.ttf" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="CSS\fonts\fontawesome-webfont.eot" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="CSS\fonts\FontAwesome.otf" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
