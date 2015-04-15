@@ -7,7 +7,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 {
     public class PluginsController : DirigoBaseAdminController
     {
-        public ActionResult Plugins()
+        public ActionResult Index()
         {
             return View( new PluginViewModel
             {

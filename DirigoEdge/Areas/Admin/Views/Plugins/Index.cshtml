@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Edge Plugins";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@model  DirigoEdge.Areas.Admin.Models.ViewModels.PluginViewModel
+
+<div class="row">
+    <div class="col-md-12">
+        <h3><i class="fa fa-plug"></i> Plugins</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <table class="manageTable twelve bordered manageTable">
+            <thead>
+            <tr>
+                <th>Plugin Name</th>
+                <th>Version</th>
+            </tr>
+            </thead>
+            <tbody id="redirectBody">
+            @foreach (var plugin in Model.InstalledPlugins)
+            {
+                <tr>
+                    <td class="source">@plugin.Key</td>
+                    <td class="destination">@plugin.Value</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="/Areas/Admin/Scripts/jquery/plugins/datatables/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("table.manageTable").dataTable({
+                "iDisplayLength": 25,
+                "aoColumnDefs": [
+                    { "bSortable": false, "aTargets": ["actions"] } // No Sorting on actions
+                ],
+                "aaSorting": [[0, "desc"]] // Sort by id
+            });
+        });
+    </script>
+}
