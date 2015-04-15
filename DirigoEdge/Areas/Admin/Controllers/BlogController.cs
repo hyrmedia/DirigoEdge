@@ -165,9 +165,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             if (cats.Any() && cats.Select(x => x.CategoryName).Any(x => x == "General"))
             {
-                blog.MainCategory = "General";
-                blog.BlogCategories = new List<BlogCategory>();
-                blog.BlogCategories.Add(cats.FirstOrDefault(x => x.CategoryName == "General"));
+                blog.Category = cats.First(x => x.CategoryName == "General");
             }
             else
             {
