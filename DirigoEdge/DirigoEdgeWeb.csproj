@@ -212,6 +212,7 @@
     <Compile Include="Areas\Admin\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Admin\Controllers\SlideshowController.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\BookmarkViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\ViewModels\PluginViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\EditNavigationViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\EditSchemaViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\FileBrowserViewModel.cs" />
@@ -1050,7 +1051,6 @@
     <Content Include="Views\Blog\CategoriesSingle.cshtml" />
     <Content Include="Views\Shared\Partials\BlogArticlePartial.cshtml" />
     <Content Include="Views\Shared\FacebookAPIInclude.cshtml" />
-    <Content Include="Views\Shared\Partials\SeoMetaModalPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Views\Shared\Partials\BlogAdminModules\SEOMetaModule.cshtml" />
@@ -1265,6 +1265,9 @@
     <Content Include="Areas\Admin\Scss\modules\_forms.scss" />
     <Content Include="Areas\Admin\Scss\modules\_panel.scss" />
     <Content Include="Areas\Admin\Scss\modules\_revisions-list.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Views\Plugins\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

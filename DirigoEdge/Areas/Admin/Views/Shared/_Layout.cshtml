@@ -37,7 +37,7 @@
     <link rel="shortcut icon" href="/favicon.ico" />
 
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,700,400' rel='stylesheet' type='text/css'>
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
     <title>@ViewBag.Title</title>
 
@@ -327,6 +327,11 @@
                                 <li>
                                     <a href="@Url.Action("Redirects", "Redirect")">
                                         <span>Manage Redirects</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Index", "Plugins")">
+                                        <span>Plugins</span>
                                     </a>
                                 </li>
                                 @Html.DoAction("admin_settings_menu_end")
