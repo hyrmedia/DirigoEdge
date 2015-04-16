@@ -163,15 +163,15 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             var cats = Context.BlogCategories.ToList();
 
-            if (cats.Any() && cats.Select(x => x.CategoryName).Any(x => x == "General"))
+            if (cats.Any() && cats.Select(x => x.CategoryName).Any(x => x == "Uncategorized"))
             {
-                blog.Category = cats.First(x => x.CategoryName == "General");
+                blog.Category = cats.First(x => x.CategoryName == "Uncategorized");
             }
             else
             {
                 var def = new BlogCategory()
                 {
-                    CategoryName = "General",
+                    CategoryName = "Uncategorized",
                     IsActive = true,
                     CreateDate = DateTime.UtcNow
                 };

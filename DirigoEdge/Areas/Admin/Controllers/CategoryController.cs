@@ -80,8 +80,13 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 // did we find a category
                 if (cat != null)
                 {
+                    var uncategorized = Context.BlogCategories.First(uncat => uncat.CategoryName == "Uncategorized");
+                    
                     // find all posts with this category and change to General category
-                    Context.Blogs.Where(x => x.MainCategory == cat.CategoryName).ForEach(x => x.MainCategory = "General");
+                    foreach (var x in Context.Blogs.Where(x => x.Category.CategoryName == cat.CategoryName))
+                    {
+                        x.Category = uncategorized;
+                    }
                 }
                 Context.BlogCategories.Remove(cat);
                 success = Context.SaveChanges();
