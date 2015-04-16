@@ -253,7 +253,7 @@ blog_class.prototype.addBlogEvents = function() {
 
     // set permalink prefix
     $("#CategoriesModule ul li.catListing input").change(function () {
-        $('.category-permalink').text($(this).val().replace(/ /g, self.blogSpaceReplacementChar).toLowerCase() + '/');
+        $('.category-permalink').text($(this).val().replace(/ /g, self.blogSpaceReplacementChar).replace(/[^a-zA-Z ]/g, "").toLowerCase() + '/');
     });
 
     // Save Blog from edit / add blog page
