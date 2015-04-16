@@ -16,7 +16,7 @@
             var authorUrl = "#";
             if (Model.TheBlogUser != null)
             {
-                user = Model.TheBlogUser.Username;
+                user = Model.TheBlogUser.DisplayName;
                 authorUrl = Model.TheBlog.BlogAuthorUrl ?? "#";
             }
         }
