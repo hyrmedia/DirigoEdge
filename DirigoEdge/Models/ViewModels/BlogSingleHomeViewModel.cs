@@ -66,7 +66,14 @@ namespace DirigoEdgeCore.Models.ViewModels
             }
 
             // Tag Listing
-            Tags = TheBlog.Tags.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).ToList();
+
+
+
+            Tags = new List<string>();
+            foreach (var tag in TheBlog.Tags)
+            {
+                Tags.Add(tag.BlogTagName);
+            }
 
             // Full Category Listing
             Categories = new List<BlogsCategoriesViewModel.BlogCatExtraData>();

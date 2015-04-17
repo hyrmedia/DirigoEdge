@@ -17,7 +17,8 @@ namespace DirigoEdgeCore.Models.ViewModels
         {
             TheTag = tag;
 
-            BlogRoll = Context.Blogs.Where(x => x.Tags.Contains(tag) && x.IsActive).OrderByDescending(x => x.Date).ToList();
+            BlogRoll = Context.Blogs.Where(x => x.Tags.Any(tg => tg.BlogTagName == tag)
+                && x.IsActive).OrderByDescending(x => x.Date).ToList();
             UserNameToDisplayName = Utils.UserUtils.GetUsernamesForBlogs(BlogRoll, Context);
            
             Categories = new List<BlogsCategoriesViewModel.BlogCatExtraData>();

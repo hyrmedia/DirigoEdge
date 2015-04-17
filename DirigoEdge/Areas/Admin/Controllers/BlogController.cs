@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -7,6 +8,7 @@ using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdgeCore.Controllers;
 using DirigoEdgeCore.Data.Entities;
+using DirigoEdgeCore.Models.ViewModels;
 using DirigoEdgeCore.Utils;
 
 namespace DirigoEdge.Areas.Admin.Controllers
@@ -21,6 +23,20 @@ namespace DirigoEdge.Areas.Admin.Controllers
             utils = new BlogUtils(Context);
         }
 
+        private JsonResult JsonErrorResult
+        {
+            get
+            {
+                return new JsonResult
+                {
+                    Data = new
+                    {
+                        success = false,
+                        message = "There was an error processing your request."
+                    }
+                };
+            }
+        }
 
         [PermissionsFilter(Permissions = "Can Edit Blogs")]
         public ActionResult ManageBlogs()
@@ -54,14 +70,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [PermissionsFilter(Permissions = "Can Edit Blog Authors")]
         public JsonResult ModifyBlogUser(BlogUser user)
         {
-            var result = new JsonResult()
-            {
-                Data = new
-                {
-                    success = false,
-                    message = "There was an error processing your request."
-                }
-            };
+            var result = JsonErrorResult;
 
             var success = 0;
 
@@ -90,15 +99,6 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [PermissionsFilter(Permissions = "Can Edit Blog Authors")]
         public JsonResult AddBlogUser(BlogUser user)
         {
-            var result = new JsonResult()
-            {
-                Data = new
-                {
-                    success = false,
-                    message = "There was an error processing your request."
-                }
-            };
-
             var success = 0;
 
             if (!String.IsNullOrEmpty(user.DisplayName))
@@ -117,28 +117,23 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             if (success > 0)
             {
-                result.Data = new
+                return new JsonResult
                 {
-                    success = true,
-                    message = "User added successfully."
+                    Data = new
+                    {
+                        success = true,
+                        message = "User added successfully."
+                    }
                 };
             }
-            return result;
+
+            return JsonErrorResult;
         }
 
 
         [PermissionsFilter(Permissions = "Can Edit Blog Authors")]
         public JsonResult DeleteBlogUser(BlogUser user)
         {
-            var result = new JsonResult()
-            {
-                Data = new
-                {
-                    success = false,
-                    message = "There was an error processing your request."
-                }
-            };
-
             var success = 0;
 
             if (!String.IsNullOrEmpty(user.UserId.ToString()))
@@ -150,14 +145,17 @@ namespace DirigoEdge.Areas.Admin.Controllers
             }
             if (success > 0)
             {
-                result.Data = new
+                return new JsonResult
                 {
-                    success = true,
-                    message = "User deleted successfully."
+                    Data = new
+                    {
+                        success = true,
+                        message = "User deleted successfully."
+                    }
                 };
             };
 
-            return result;
+            return JsonErrorResult;
         }
 
 
@@ -169,10 +167,10 @@ namespace DirigoEdge.Areas.Admin.Controllers
             // Create a new blog to be passed to the edit blog action
             Blog blog = new Blog
             {
-                IsActive = false, 
-                Title = "New Blog", 
-                Date = DateTime.UtcNow, 
-                Tags = "New Blog",
+                IsActive = false,
+                Title = "New Blog",
+                Date = DateTime.UtcNow,
+                Tags = new List<BlogTag> { utils.GetNewBlogTag() },
                 BlogAuthor = Context.BlogUsers.First(usr => usr.UserId == 1) // This is anonymous and can't be deleted
             };
 
@@ -191,67 +189,105 @@ namespace DirigoEdge.Areas.Admin.Controllers
             return RedirectToAction("EditBlog", "Blog", new { id = blogId });
         }
 
+        public class EditBlogModel
+        {
+            public int AuthorId { get; set; }
+            public int BlogId { get; set; }
+            public String Title { get; set; }
+            public String Tags { get; set; }
+            public String HtmlContent { get; set; }
+            public String Category { get; set; }
+            public String ImageUrl { get; set; }
+            public Boolean IsActive { get; set; }
+            public Boolean IsFeatured { get; set; }
+            public String PermaLink { get; set; }
+            public String ShortDesc { get; set; }
+            public DateTime Date { get; set; }
+            public String Canonical { get; set; }
+            public String OGImage { get; set; }
+            public String OGTitle { get; set; }
+            public String OGType { get; set; }
+            public String OGUrl { get; set; }
+            public String MetaDescription { get; set; }
+
+        }
+
         [HttpPost]
         [PermissionsFilter(Permissions = "Can Edit Blogs")]
         [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult ModifyBlog(Blog entity)
+        public JsonResult ModifyBlog(EditBlogModel entity)
         {
-            var result = new JsonResult()
+            if (String.IsNullOrEmpty(entity.Title))
             {
-                Data = new
+                return new JsonResult
                 {
-                    success = false,
-                    message = "There was an error processing your request."
-                }
-            };
-
-            var success = 0;
-
-            if (!String.IsNullOrEmpty(entity.Title))
-            {
-                Blog editedBlog = Context.Blogs.FirstOrDefault(x => x.BlogId == entity.BlogId);
-                
-                if (editedBlog != null)
-                {
-                    editedBlog.BlogAuthor = Context.BlogUsers.First(usr => usr.UserId == entity.AuthorId);
-                    editedBlog.AuthorId = entity.AuthorId;
-                    editedBlog.HtmlContent = entity.HtmlContent;
-                    editedBlog.ImageUrl = ContentUtils.ScrubInput(entity.ImageUrl);
-                    editedBlog.IsActive = entity.IsActive;
-                    editedBlog.IsFeatured = entity.IsFeatured;
-                    editedBlog.Title = ContentUtils.ScrubInput(entity.Title);
-                    editedBlog.PermaLink = ContentUtils.GetFormattedUrl(entity.PermaLink);
-
-                    editedBlog.Category = utils.GetCategoryOrUncategorized(entity.Category.CategoryName);
-                    editedBlog.Tags = ContentUtils.ScrubInput(entity.Tags);
-                    editedBlog.ShortDesc = entity.ShortDesc;
-                    editedBlog.Date = entity.Date;
-
-                    // Meta
-                    editedBlog.Canonical = entity.Canonical;
-                    editedBlog.OGImage = entity.OGImage;
-                    editedBlog.OGTitle = entity.OGTitle;
-                    editedBlog.OGType = entity.OGType;
-                    editedBlog.OGUrl = entity.OGUrl;
-                    editedBlog.MetaDescription = entity.MetaDescription;
-
-                    success = Context.SaveChanges();
-                    CachedObjects.GetCacheContentPages(true);
-                    BookmarkUtil.UpdateTitle("/admin/pages/editblog/" + editedBlog.BlogId + "/", entity.Title);
-                }
+                    Data = new
+                    {
+                        success = false,
+                        message = "Your post must have a title"
+                    }
+                };
             }
+
+            var editedBlog = Context.Blogs.FirstOrDefault(x => x.BlogId == entity.BlogId);
+
+            if (editedBlog == null)
+            {
+                return JsonErrorResult;
+            }
+
+            // Straight copies from the model
+            editedBlog.AuthorId = entity.AuthorId;
+            editedBlog.HtmlContent = entity.HtmlContent;
+            editedBlog.IsActive = entity.IsActive;
+            editedBlog.IsFeatured = entity.IsFeatured;
+            editedBlog.ShortDesc = entity.ShortDesc;
+            editedBlog.Date = entity.Date;
+            // Meta
+            editedBlog.Canonical = entity.Canonical;
+            editedBlog.OGImage = entity.OGImage;
+            editedBlog.OGTitle = entity.OGTitle;
+            editedBlog.OGType = entity.OGType;
+            editedBlog.OGUrl = entity.OGUrl;
+            editedBlog.MetaDescription = entity.MetaDescription;
+
+            // Cleaned inpuit
+            editedBlog.Title = ContentUtils.ScrubInput(entity.Title);
+            editedBlog.ImageUrl = ContentUtils.ScrubInput(entity.ImageUrl);
+            editedBlog.PermaLink = ContentUtils.GetFormattedUrl(entity.PermaLink);
+
+            // Database Nav property mappings
+            editedBlog.Category = utils.GetCategoryOrUncategorized(entity.Category);
+            editedBlog.BlogAuthor = Context.BlogUsers.First(usr => usr.UserId == entity.AuthorId);
+
+            if (editedBlog.Tags == null)
+            {
+                editedBlog.Tags = new List<BlogTag>();
+            }
+
+            foreach (var tag in entity.Tags.Split(','))
+            {
+                editedBlog.Tags.Add(utils.GetOrCreateTag(tag));
+            }
+            
+            var success = Context.SaveChanges();
+            CachedObjects.GetCacheContentPages(true);
+            BookmarkUtil.UpdateTitle("/admin/pages/editblog/" + editedBlog.BlogId + "/", entity.Title);
 
             if (success > 0)
             {
-                result.Data = new
+                return new JsonResult
                 {
-                    success = true,
-                    message = "Blog saved successfully.",
-                    id = entity.BlogId
+                    Data = new
+                    {
+                        success = true,
+                        message = "Blog saved successfully.",
+                        id = entity.BlogId
+                    }
                 };
-            };
+            }
 
-            return result;
+            return JsonErrorResult;
         }
 
         [HttpPost]
@@ -259,14 +295,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult AddBlog(Blog entity)
         {
-            var result = new JsonResult
-            {
-                Data = new
-                {
-                    success = false,
-                    message = "There was an error processing your request."
-                }
-            };
+            var result = JsonErrorResult;
 
             var success = 0;
 
@@ -292,14 +321,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult DeleteBlog(string id)
         {
-            var result = new JsonResult()
-            {
-                Data = new
-                {
-                    success = false,
-                    message = "There was an error processing your request."
-                }
-            };
+            var result = JsonErrorResult;
 
             if (String.IsNullOrEmpty(id))
             {
@@ -333,14 +355,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [ValidateInput(false)]
         public JsonResult SaveModules(AdminModules entity)
         {
-            var result = new JsonResult()
-            {
-                Data = new
-                {
-                    success = false,
-                    message = "There was an error processing your request."
-                }
-            };
+            var result = JsonErrorResult;
 
             var success = 0;
 

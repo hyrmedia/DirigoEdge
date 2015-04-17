@@ -275,10 +275,7 @@ blog_class.prototype.addBlogEvents = function() {
                 Author: $("#Author option:selected").text(),
                 AuthorId: $("#Author option:selected").attr("data-id"),
                 BlogID: self.blogId,
-                Category: {
-                    CategoryId: $("#CategoriesModule ul li.catListing input:checked").attr('id'),
-                    CategoryName :  $("#CategoriesModule ul li.catListing input:checked").val()
-                },
+                Category: $("#CategoriesModule ul li.catListing input:checked").val(),
                 Tags: $("#BlogTags").val(),
                 ShortDesc: featText,
                 MetaDescription: $("#MetaDescription").val(),
