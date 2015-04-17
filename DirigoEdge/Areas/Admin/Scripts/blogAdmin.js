@@ -254,8 +254,8 @@ blog_class.prototype.addBlogEvents = function() {
     $("#CategoriesModule ul li.catListing input").change(function () {
         var catName = $(this).val()
             .replace("&", "and")
-             .replace("+", "and")
-            .replace(/[^a-zA-Z ]/g, "")
+            .replace("+", "and")
+            .replace(/[^a-zA-Z0-9 ]/g, "")
             .replace(/ /g, self.blogSpaceReplacementChar).toLowerCase();
         $('.category-permalink').text(encodeURI(catName) + '/');
     });
