@@ -14,6 +14,14 @@ namespace DirigoEdge.Areas.Admin.Controllers
     public class BlogController : DirigoBaseAdminController
     {
 
+        public BlogUtils utils;
+
+        public BlogController()
+        {
+            utils = new BlogUtils(Context);
+        }
+
+
         [PermissionsFilter(Permissions = "Can Edit Blogs")]
         public ActionResult ManageBlogs()
         {
@@ -159,26 +167,17 @@ namespace DirigoEdge.Areas.Admin.Controllers
             string blogId = String.Empty;
 
             // Create a new blog to be passed to the edit blog action
-            Blog blog = new Blog() { IsActive = false, Title = "New Blog", Date = DateTime.UtcNow, Tags = "New Blog" };
-
-            var cats = Context.BlogCategories.ToList();
-
-            if (cats.Any() && cats.Select(x => x.CategoryName).Any(x => x == "Uncategorized"))
+            Blog blog = new Blog
             {
-                blog.Category = cats.First(x => x.CategoryName == "Uncategorized");
-            }
-            else
-            {
-                var def = new BlogCategory()
-                {
-                    CategoryName = "Uncategorized",
-                    IsActive = true,
-                    CreateDate = DateTime.UtcNow
-                };
+                IsActive = false, 
+                Title = "New Blog", 
+                Date = DateTime.UtcNow, 
+                Tags = "New Blog",
+                BlogAuthor = Context.BlogUsers.First(usr => usr.UserId == 1) // This is anonymous and can't be deleted
+            };
 
-                Context.BlogCategories.Add(def);
-                Context.SaveChanges();
-            }
+            var cat = utils.GetUncategorizedCategory();
+            blog.Category = cat;
 
             Context.Blogs.Add(blog);
             Context.SaveChanges();
@@ -206,23 +205,15 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 }
             };
 
-            if (String.IsNullOrEmpty(entity.MainCategory))
-            {
-                result.Data = new
-                {
-                    success = false,
-                    message = "Please select a category."
-                };
-            };
-
             var success = 0;
 
             if (!String.IsNullOrEmpty(entity.Title))
             {
                 Blog editedBlog = Context.Blogs.FirstOrDefault(x => x.BlogId == entity.BlogId);
+                
                 if (editedBlog != null)
                 {
-                    editedBlog.Author = ContentUtils.ScrubInput(entity.Author);
+                    editedBlog.BlogAuthor = Context.BlogUsers.First(usr => usr.UserId == entity.AuthorId);
                     editedBlog.AuthorId = entity.AuthorId;
                     editedBlog.HtmlContent = entity.HtmlContent;
                     editedBlog.ImageUrl = ContentUtils.ScrubInput(entity.ImageUrl);
@@ -231,7 +222,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
                     editedBlog.Title = ContentUtils.ScrubInput(entity.Title);
                     editedBlog.PermaLink = ContentUtils.GetFormattedUrl(entity.PermaLink);
 
-                    editedBlog.MainCategory = ContentUtils.ScrubInput(entity.MainCategory);
+                    editedBlog.Category = utils.GetCategoryOrUncategorized(entity.Category.CategoryName);
                     editedBlog.Tags = ContentUtils.ScrubInput(entity.Tags);
                     editedBlog.ShortDesc = entity.ShortDesc;
                     editedBlog.Date = entity.Date;
@@ -268,7 +259,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult AddBlog(Blog entity)
         {
-            var result = new JsonResult()
+            var result = new JsonResult
             {
                 Data = new
                 {

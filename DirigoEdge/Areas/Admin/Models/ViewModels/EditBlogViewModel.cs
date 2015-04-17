@@ -27,11 +27,17 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
 
         public EditBlogViewModel(string blogId)
         {
+            var utils = new BlogUtils(Context);
             BlogId = Int32.Parse(blogId);
             _memUser = Membership.GetUser(HttpContext.Current.User.Identity.Name);
             SiteUrl = HTTPUtils.GetFullyQualifiedApplicationPath() + "blog/";
 
             ThisBlog = Context.Blogs.FirstOrDefault(x => x.BlogId == BlogId);
+
+            if (ThisBlog.Category == null)
+            {
+                ThisBlog.Category = utils.GetUncategorizedCategory();
+            }
 
             // Make sure we have a permalink set
             if (String.IsNullOrEmpty(ThisBlog.PermaLink))

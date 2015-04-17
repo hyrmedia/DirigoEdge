@@ -36,7 +36,7 @@ namespace DirigoEdgeCore.Models.ViewModels
             if (TheBlog != null && TheBlog.Tags != null)
             {
                 List<string> tags = TheBlog.Tags.Split(',').ToList();
-                RelatedPosts = Context.Blogs.Where(x => x.BlogId != TheBlog.BlogId && tags.Contains(x.Tags) && x.MainCategory == TheBlog.MainCategory)
+                RelatedPosts = Context.Blogs.Where(x => x.BlogId != TheBlog.BlogId && tags.Contains(x.Tags) && x.Category.CategoryId == TheBlog.Category.CategoryId)
                                 .OrderByDescending(blog => blog.Date)
                                 .Take(MaxBlogCount)
                                 .ToList();

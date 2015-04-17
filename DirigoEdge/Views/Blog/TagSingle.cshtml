@@ -30,15 +30,10 @@
         @{
             foreach (var blog in Model.BlogRoll)
             {
-                var userName = "anonymous";
-                if (Model.UserNameToDisplayName.ContainsKey(blog.Author))
-                {
-                    userName = Model.UserNameToDisplayName[blog.Author];
-                }
                 
                 <article>
-                    <h2><a href="/blog/@ContentUtils.GetFormattedUrl(blog.MainCategory)/@ContentUtils.GetFormattedUrl(blog.PermaLink)/">@blog.Title</a></h2>
-                    <h6>Written by <a href="@blog.BlogAuthorUrl">@userName</a> on @blog.Date.ToLongDateString()</h6>
+                    <h2><a href="/blog/@ContentUtils.GetFormattedUrl(blog.Category.CategoryName)/@ContentUtils.GetFormattedUrl(blog.PermaLink)/">@blog.Title</a></h2>
+                    <h6>Written by <a href="@blog.BlogAuthorUrl">@blog.BlogAuthor.DisplayName</a> on @blog.Date.ToLongDateString()</h6>
 
                     <div class="row">
                         <div class="userBlogContent col-lg-12">

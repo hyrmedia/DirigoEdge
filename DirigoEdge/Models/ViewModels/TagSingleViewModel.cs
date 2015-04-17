@@ -25,7 +25,7 @@ namespace DirigoEdgeCore.Models.ViewModels
             var cats = Context.BlogCategories.Where(x => x.IsActive).ToList();
             foreach (var cat in cats)
             {
-                int count = Context.Blogs.Count(x => x.MainCategory == cat.CategoryName);
+                int count = Context.Blogs.Count(x => x.Category.CategoryId == cat.CategoryId);
                 Categories.Add(new BlogsCategoriesViewModel.BlogCatExtraData() { TheCategory = cat, BlogCount = count });
             }
         }

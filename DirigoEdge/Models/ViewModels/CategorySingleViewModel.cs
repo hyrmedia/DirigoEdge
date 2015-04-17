@@ -35,7 +35,7 @@ namespace DirigoEdgeCore.Models.ViewModels
             category = formatCategoryString(category);
 
 
-            AllBlogsInCategory = Context.Blogs.Where(x => x.MainCategory.ToLower() == category && x.IsActive)
+            AllBlogsInCategory = Context.Blogs.Where(x => x.Category.CategoryName.ToLower() == category && x.IsActive)
                         .OrderByDescending(blog => blog.Date)
                         .ToList();
 

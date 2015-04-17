@@ -13,12 +13,10 @@
             <article data-id="@post.BlogId">
                 @* Blog Author *@
                 @{
-                    var relatedUser = "Anonymous";
                     var relatedAuthorUrl = "#";
                     var image = "/Content/StockFeaturedImages/recordsPlayer.jpg";
                     if (post.Author != "")
                     {
-                        relatedUser = post.Author;
                         relatedAuthorUrl = post.BlogAuthorUrl ?? "#";
                     }
                     if (post.ImageUrl != "")
@@ -33,7 +31,7 @@
                     </p>
                 </div>
                 <p>
-                    Written by <a href="@relatedAuthorUrl">@ContentUtils.GetBlogUserDisplayName(relatedUser)</a>
+                    Written by <a href="@relatedAuthorUrl" @post.BlogAuthor.DisplayName</a>
                     <span class="dateLine">@post.Date.ToLongDateString()</span>
                 </p>
     

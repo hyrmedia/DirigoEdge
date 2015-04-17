@@ -17,7 +17,7 @@
             blogAuthorUrl = blog.BlogAuthorUrl ?? "#";
         }
 
-        var blogUrl = "/blog/" + ContentUtils.GetFormattedUrl(blog.MainCategory) + "/" + ContentUtils.GetFormattedUrl(blog.PermaLink) + "/";
+        var blogUrl = "/blog/" + ContentUtils.GetFormattedUrl(blog.Category.CategoryName) + "/" + ContentUtils.GetFormattedUrl(blog.PermaLink) + "/";
 
         
         <li class="blogItem relative" data-id="@blog.BlogId">
@@ -25,9 +25,9 @@
             <a href="@blogUrl">@blog.Title</a>
             
             @{
-                string inCategoryLanguage = String.IsNullOrEmpty(blog.MainCategory) ? "" : " in <a class='categoryLink' href='/blog/" + ContentUtils.GetFormattedUrl(blog.MainCategory) + "'/>" + blog.MainCategory + "</a>";
+        string inCategoryLanguage = String.IsNullOrEmpty(blog.Category.CategoryName) ? "" : " in <a class='categoryLink' href='/blog/" + ContentUtils.GetFormattedUrl(blog.MainCategory) + "'/>" + blog.MainCategory + "</a>";
             }
-            <p class="byLine">Written by <a href="@blogAuthorUrl">@ContentUtils.GetBlogUserDisplayName(user)</a>@Html.Raw(inCategoryLanguage)</p>
+            <p class="byLine">Written by <a href="@blogAuthorUrl">@blog.BlogAuthor.DisplayName</a>@Html.Raw(inCategoryLanguage)</p>
                 
             <p class="dateLine">@blog.Date.ToLongDateString()</p>
            

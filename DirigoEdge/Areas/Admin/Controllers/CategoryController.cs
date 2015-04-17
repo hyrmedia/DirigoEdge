@@ -7,12 +7,20 @@ using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Controllers;
 using DirigoEdgeCore.Controllers;
 using DirigoEdgeCore.Data.Entities;
+using DirigoEdgeCore.Utils;
 using WebGrease.Css.Extensions;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
     public class CategoryController : DirigoBaseAdminController
     {
+        private BlogUtils utils;
+
+        public CategoryController()
+        {
+            utils = new BlogUtils(Context);
+        }
+
         [HttpPost]
         [PermissionsFilter(Permissions = "Can Edit Blog Categories")]
         [AcceptVerbs(HttpVerbs.Post)]
@@ -80,12 +88,10 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 // did we find a category
                 if (cat != null)
                 {
-                    var uncategorized = Context.BlogCategories.First(uncat => uncat.CategoryName == "Uncategorized");
-                    
-                    // find all posts with this category and change to General category
+                    // find all posts with this category and change to Uncategorized
                     foreach (var x in Context.Blogs.Where(x => x.Category.CategoryName == cat.CategoryName))
                     {
-                        x.Category = uncategorized;
+                        x.Category = utils.GetUncategorizedCategory() ;
                     }
                 }
                 Context.BlogCategories.Remove(cat);

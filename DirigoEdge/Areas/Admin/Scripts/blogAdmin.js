@@ -110,7 +110,6 @@ blog_class.prototype.saveModulePositions = function() {
             AdminModulesColumn2: AdminModulesColumn2
         }
     };
-
     self.xhr = $.ajax({
         url: "/admin/blog/savemodules/",
         type: "POST",
@@ -263,9 +262,9 @@ blog_class.prototype.addBlogEvents = function() {
 
     // Save Blog from edit / add blog page
     $("#SaveBlog").click(function() {
-        var mainCategory = $("#CategoriesModule ul li.catListing input:checked").val();
         var content = CKEDITOR.instances.CKEDITBLOG.getData();
         var featText = CKEDITOR.instances.ShortDescription.getData();
+
         var data = {
             entity: {
                 Title: $("#BlogTitle").val(),
@@ -276,7 +275,10 @@ blog_class.prototype.addBlogEvents = function() {
                 Author: $("#Author option:selected").text(),
                 AuthorId: $("#Author option:selected").attr("data-id"),
                 BlogID: self.blogId,
-                MainCategory: mainCategory,
+                Category: {
+                    CategoryId: $("#CategoriesModule ul li.catListing input:checked").attr('id'),
+                    CategoryName :  $("#CategoriesModule ul li.catListing input:checked").val()
+                },
                 Tags: $("#BlogTags").val(),
                 ShortDesc: featText,
                 MetaDescription: $("#MetaDescription").val(),
@@ -298,6 +300,7 @@ blog_class.prototype.addBlogEvents = function() {
         
         $("#SaveSpinner").show();
         var postUrl = self.blogIsSaved ? "/admin/blog/modifyblog" : "/admin/blog/addblog";
+        
         $.ajax({
             url: postUrl,
             type: "POST",
