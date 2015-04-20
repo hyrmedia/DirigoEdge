@@ -265,11 +265,14 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 editedBlog.Tags = new List<BlogTag>();
             }
 
-            foreach (var tag in entity.Tags.Split(','))
+            if (!String.IsNullOrEmpty(entity.Tags))
             {
-                editedBlog.Tags.Add(utils.GetOrCreateTag(tag));
+                foreach (var tag in entity.Tags.Split(','))
+                {
+                    editedBlog.Tags.Add(utils.GetOrCreateTag(tag));
+                }
             }
-            
+
             var success = Context.SaveChanges();
             CachedObjects.GetCacheContentPages(true);
             BookmarkUtil.UpdateTitle("/admin/pages/editblog/" + editedBlog.BlogId + "/", entity.Title);
