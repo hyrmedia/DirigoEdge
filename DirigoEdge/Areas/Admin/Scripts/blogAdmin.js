@@ -168,7 +168,7 @@ blog_class.prototype.formatBlogLink = function (value) {
     value = value.replace(/ /g, this.blogSpaceReplacementChar);
 
     // Strip bad characters
-    return value.replace(/[^a-zA-Z0-9-_]/g, '');
+    return value.replace(/[^a-zA-Z0-9-_ ]/g, '');
 };
 
 blog_class.prototype.initPublishDateEvents = function() {
@@ -252,9 +252,9 @@ blog_class.prototype.addBlogEvents = function() {
 
     // set permalink prefix
     $("#CategoriesModule ul li.catListing input").change(function () {
+       
         var catName = $(this).val()
-            .replace("&", "and")
-            .replace("+", "and")
+            .replace(/&+/g, "and")
             .replace(/[^a-zA-Z0-9 ]/g, "")
             .replace(/ /g, self.blogSpaceReplacementChar).toLowerCase();
         $('.category-permalink').text(encodeURI(catName) + '/');
