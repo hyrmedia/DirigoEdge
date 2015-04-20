@@ -32,7 +32,7 @@
             {
                 
                 <article>
-                    <h2><a href="/blog/@ContentUtils.GetFormattedUrl(blog.Category.CategoryName)/@ContentUtils.GetFormattedUrl(blog.PermaLink)/">@blog.Title</a></h2>
+                    <h2><a href="/blog/@blog.Category.CategoryNameFormatted/@ContentUtils.GetFormattedUrl(blog.PermaLink)/">@blog.Title</a></h2>
                     <h6>Written by <a href="@blog.BlogAuthorUrl">@blog.BlogAuthor.DisplayName</a> on @blog.Date.ToLongDateString()</h6>
 
                     <div class="row">
@@ -56,16 +56,13 @@
                 else
                 {
                     <ul class="side-nav">
-                        @{
-                    foreach (var cat in Model.Categories)
+                     
+                    @foreach (var cat in Model.Categories)
                     {
-                        string catName = cat.TheCategory.CategoryName;
-
                         <li>
-                            <a href="/blog/@ContentUtils.GetFormattedUrl(catName)/">@catName (@cat.BlogCount)</a>
+                            <a href="/blog/@cat.TheCategory.CategoryNameFormatted/">@cat.TheCategory.CategoryName (@cat.BlogCount)</a>
                         </li>
                     }
-                        }
                     </ul>
                 }
             }

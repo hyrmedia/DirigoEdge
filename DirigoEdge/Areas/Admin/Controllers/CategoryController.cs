@@ -44,7 +44,8 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 {
                     CategoryName = name,
                     CreateDate = DateTime.UtcNow,
-                    IsActive = true
+                    IsActive = true,
+                    CategoryNameFormatted = ContentUtils.FormatCategory(name)
                 };
 
                 Context.BlogCategories.Add(newCategory);
@@ -84,6 +85,8 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 int catId = Int32.Parse(id);
 
                 var cat = Context.BlogCategories.FirstOrDefault(x => x.CategoryId == catId);
+                var uncat = utils.GetUncategorizedCategory();
+                Context.SaveChanges();
 
                 // did we find a category
                 if (cat != null)
@@ -91,13 +94,14 @@ namespace DirigoEdge.Areas.Admin.Controllers
                     // find all posts with this category and change to Uncategorized
                     foreach (var x in Context.Blogs.Where(x => x.Category.CategoryName == cat.CategoryName))
                     {
-                        x.Category = utils.GetUncategorizedCategory() ;
+                        x.Category = uncat;
                     }
-                }
-                Context.BlogCategories.Remove(cat);
-                success = Context.SaveChanges();
 
+                    Context.BlogCategories.Remove(cat);
+                    success = Context.SaveChanges();
+                }
             }
+
             if (success > 0)
             {
                 result.Data = new

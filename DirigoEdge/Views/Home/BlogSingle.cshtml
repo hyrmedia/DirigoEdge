@@ -21,12 +21,12 @@
                     <a href="/blog/">Blog</a>
                 </li>
                 <li>
-                    <a href="/blog/@ContentUtils.GetFormattedUrl(Model.TheBlog.Category.CategoryName)/">
+                    <a href="/blog/@Model.TheBlog.Category.CategoryNameFormatted/">
                         @Model.TheBlog.Category.CategoryName
                     </a>
                 </li>
                 <li class="active">
-                    <a href="/blog/@ContentUtils.GetFormattedUrl(Model.TheBlog.Category.CategoryName)/@Model.TheBlog.PermaLink">@Model.TheBlog.Title</a>
+                    <a href="/blog/@Model.TheBlog.Category.CategoryNameFormatted/@Model.TheBlog.PermaLink">@Model.TheBlog.Title</a>
                 </li>
             </ol>
         </div>
@@ -80,10 +80,8 @@
             @{
                 // Category Display
                     <div class="categories">
-                        @{
-                            string catLink = Model.TheBlog.Category.CategoryName.ToLower();
-                        }
-                        <p>Category : <a href="/blog/@ContentUtils.GetFormattedUrl(catLink)/">@Model.TheBlog.Category.CategoryName</a></p>
+                       
+                        <p>Category : <a href="/blog/@Model.TheBlog.Category.CategoryNameFormatted/">@Model.TheBlog.Category.CategoryName</a></p>
                     </div>
             }
             

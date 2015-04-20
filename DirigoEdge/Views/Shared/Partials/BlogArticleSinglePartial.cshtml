@@ -28,11 +28,11 @@
          
             }
             <h4>
-                <a href="/blog/@ContentUtils.GetFormattedUrl(blog.Category.CategoryName)/@blog.PermaLink">@blog.Title</a>
+                <a href="/blog/@blog.Category.CategoryNameFormatted/@blog.PermaLink">@blog.Title</a>
             </h4>
             
             @{
-        string inCategoryLanguage = String.IsNullOrEmpty(blog.Category.CategoryName) ? "" : " in <a class='categoryLink' href='/blog/" + ContentUtils.GetFormattedUrl(blog.Category.CategoryName) + "'/>" + blog.Category.CategoryName + "</a>";
+        string inCategoryLanguage = String.IsNullOrEmpty(blog.Category.CategoryName) ? "" : " in <a class='categoryLink' href='/blog/" + blog.Category.CategoryNameFormatted + "'/>" + blog.Category.CategoryName + "</a>";
             }
             <p class="byLine">Written by <a href="@blogAuthorUrl">@blog.BlogAuthor.DisplayName</a>@Html.Raw(inCategoryLanguage)</p>
             <p class="dateLine">@blog.Date.ToLongDateString()</p>
