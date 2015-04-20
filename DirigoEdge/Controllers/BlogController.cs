@@ -30,7 +30,8 @@ namespace DirigoEdge.Controllers
                 return View("~/Views/Home/Blog.cshtml", model);
             }
             // Category
-            else if (String.IsNullOrEmpty(title))
+            
+            if (String.IsNullOrEmpty(title))
             {
                 
                 // Category

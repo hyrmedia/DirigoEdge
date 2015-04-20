@@ -32,10 +32,10 @@ namespace DirigoEdgeCore.Models.ViewModels
         {
             _server = server;
 
-            category = formatCategoryString(category);
+            category = ContentUtils.GetFormattedUrl(category);
 
 
-            AllBlogsInCategory = Context.Blogs.Where(x => x.MainCategory.ToLower() == category && x.IsActive)
+            AllBlogsInCategory = Context.Blogs.Where(x => x.Category.CategoryNameFormatted == category && x.IsActive)
                         .OrderByDescending(blog => blog.Date)
                         .ToList();
 
@@ -44,7 +44,7 @@ namespace DirigoEdgeCore.Models.ViewModels
                 .ToList();
 
 
-            TheCategory = Context.BlogCategories.FirstOrDefault(x => x.CategoryName.ToLower() == category);
+            TheCategory = Context.BlogCategories.FirstOrDefault(x => x.CategoryNameFormatted == category);
             var model = new BlogListModel(Context);
             MaxBlogCount = model.GetBlogSettings().MaxBlogsOnHomepageBeforeLoad;
             SkipBlogs = MaxBlogCount;
@@ -53,19 +53,6 @@ namespace DirigoEdgeCore.Models.ViewModels
             BlogsByCat = AllBlogsInCategory
                         .Take(MaxBlogCount)
                         .ToList();
-        }
-
-        private string formatCategoryString(string category)
-        {
-            category = category.Replace(ContentGlobals.BLOGDELIMMETER, " ");
-
-            // E-Commerce should not have it's dash removed
-            if (category.ToLower() != "e-commerce")
-            {
-                category = category.Replace(ContentGlobals.BLOGDELIMMETER, " ");
-            }
-
-            return category;
         }
     }
 

@@ -22,7 +22,7 @@ namespace DirigoEdgeCore.Models.ViewModels
         {
             _server = server;
 
-            category = formatCategoryString(category);
+            category = GetFormattedUrlString(category);
 
             //ImageList = getImageList();
 
@@ -68,7 +68,7 @@ namespace DirigoEdgeCore.Models.ViewModels
             return imageList;
 
         }
-        private string formatCategoryString(string category)
+        private string GetFormattedUrlString(string category)
         {
             // Handle edge case on ampersand:
             // ex : branding-&-strategy, development-&-execution
