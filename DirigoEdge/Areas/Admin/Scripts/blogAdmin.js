@@ -251,7 +251,7 @@ blog_class.prototype.addBlogEvents = function() {
     $("#BlogTitle").trigger("keyup");
 
     // set permalink prefix
-    $("#CategoriesModule ul li.catListing input").change(function () {
+    $("#CategoriesModule select").change(function () {
        
         var catName = $(this).val()
             .replace(/&+/g, "and")
@@ -275,7 +275,7 @@ blog_class.prototype.addBlogEvents = function() {
                 Author: $("#Author option:selected").text(),
                 AuthorId: $("#Author option:selected").attr("data-id"),
                 BlogID: self.blogId,
-                Category: $("#CategoriesModule ul li.catListing input:checked").val(),
+                Category: $("#CategoriesModule select option:selected").val(),
                 Tags: $("#BlogTags").val(),
                 ShortDesc: featText,
                 MetaDescription: $("#MetaDescription").val(),
