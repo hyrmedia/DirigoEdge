@@ -32,7 +32,7 @@ namespace DirigoEdgeCore.Models.ViewModels
         {
             _server = server;
 
-            category = formatCategoryString(category);
+            category = ContentUtils.GetFormattedUrl(category);
 
 
             AllBlogsInCategory = Context.Blogs.Where(x => x.Category.CategoryNameFormatted == category && x.IsActive)
@@ -53,19 +53,6 @@ namespace DirigoEdgeCore.Models.ViewModels
             BlogsByCat = AllBlogsInCategory
                         .Take(MaxBlogCount)
                         .ToList();
-        }
-
-        private string formatCategoryString(string category)
-        {
-            category = category.Replace(ContentGlobals.BLOGDELIMMETER, " ");
-
-            // E-Commerce should not have it's dash removed
-            if (category.ToLower() != "e-commerce")
-            {
-                category = category.Replace(ContentGlobals.BLOGDELIMMETER, " ");
-            }
-
-            return category;
         }
     }
 

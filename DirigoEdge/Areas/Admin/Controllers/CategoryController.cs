@@ -45,7 +45,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
                     CategoryName = name,
                     CreateDate = DateTime.UtcNow,
                     IsActive = true,
-                    CategoryNameFormatted = ContentUtils.FormatCategory(name)
+                    CategoryNameFormatted = ContentUtils.GetFormattedUrl(name)
                 };
 
                 Context.BlogCategories.Add(newCategory);

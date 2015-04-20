@@ -35,7 +35,7 @@ namespace DirigoEdge.Controllers
             {
                 
                 // Category
-                var cats = Context.BlogCategories.ToList().Select(x => ContentUtils.FormatCategory(x.CategoryName));
+                var cats = Context.BlogCategories.ToList().Select(x => ContentUtils.GetFormattedUrl(x.CategoryName));
 
                 if (cats.Contains(category))
                 {
