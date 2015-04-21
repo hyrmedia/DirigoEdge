@@ -180,16 +180,19 @@ namespace DirigoEdge.Areas.Admin.Controllers
         public JsonResult GetRevisionList(int id)
         {
             var result = new JsonResult { JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-            string html;
 
-            var drafts = Context.ContentModules.Where(x => x.ParentContentModuleId == id || x.ContentModuleId == id).OrderByDescending(x => x.CreateDate).ToList().Select(rev => new RevisionViewModel
+            var module = Context.ContentModules.First(mod => mod.ContentModuleId == id);
+            var parentId = module.ParentContentModuleId ?? module.ContentModuleId;
+
+            var drafts = Context.ContentModules.Where(x => x.ParentContentModuleId == parentId || x.ContentModuleId == parentId).OrderByDescending(x => x.CreateDate).ToList().Select(rev => new RevisionViewModel
             {
                 Date = rev.CreateDate,
                 ContentId = rev.ContentModuleId,
                 AuthorName = rev.DraftAuthorName,
                 WasPublished = rev.WasPublished
             }).ToList();
-            html = ContentUtils.RenderPartialViewToString("/Areas/Admin/Views/Shared/Partials/RevisionsListInnerPartial.cshtml", drafts, ControllerContext, ViewData, TempData);
+            
+            var html = ContentUtils.RenderPartialViewToString("/Areas/Admin/Views/Shared/Partials/RevisionsListInnerPartial.cshtml", drafts, ControllerContext, ViewData, TempData);
 
             result.Data = new { html };
 
@@ -245,7 +248,8 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 result.Data = new
                 {
                     success = true,
-                    message = "Content saved successfully."
+                    message = "Content saved successfully.",
+                    date = editedContent.CreateDate.Value.ToString("dd/MM/yyy @ h:mm tt")
                 };
             }
 
