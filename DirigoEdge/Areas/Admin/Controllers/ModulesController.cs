@@ -129,6 +129,8 @@ namespace DirigoEdge.Areas.Admin.Controllers
         {
             var draft = SetContentModuleData(entity, false, publishDate);
 
+            var originalModule = Context.ContentModules.First(module => module.ContentModuleId == entity.ContentModuleId);
+            draft.ParentContentModuleId = originalModule.ParentContentModuleId ?? originalModule.ContentModuleId;
 
             Context.ContentModules.Add(draft);
             Context.SaveChanges();

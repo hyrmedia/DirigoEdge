@@ -430,6 +430,7 @@ content_class.prototype.manageContentAdminEvents = function() {
             success: function (result) {
                 noty({ text: result.message, type: result.success ? 'success' : 'alert', timeout: 1200 });
                 $("#SaveSpinner").hide();
+                $("#StatusLabel").text("Published");
             },
             error: function (data) {
                 noty({ text: 'There was an error processing your request.', type: 'error', timeout: 5000 });
@@ -820,7 +821,7 @@ content_class.prototype.initRevisionEvents = function () {
 
         var editContentUrl;
         if (type == "Module") {
-            editContentUrl =   isBasic ? "/admin/modules/editmoudebasic/" : "/admin/pages/editmodule/";
+            editContentUrl = isBasic ? "/admin/modules/editmoudebasic/" : "/admin/modules/editmodule/";
         }
         else {
             editContentUrl = isBasic ? "/admin/pages/editcontentbasic/" : "/admin/pages/editcontent/";
