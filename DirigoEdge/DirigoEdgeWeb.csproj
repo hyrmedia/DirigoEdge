@@ -220,6 +220,7 @@
     <Compile Include="Areas\Admin\Models\DataModels\DefaultAdminModules.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\ManageNavigationViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\RedirectViewModel.cs" />
+    <Compile Include="Business\BlogLoader.cs" />
     <Compile Include="Controllers\ImagesController.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\ManageSchemasViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\BlogSettingsViewModel.cs" />
@@ -447,7 +448,6 @@
     <Compile Include="Models\ViewModels\BlogRelatedViewModel.cs" />
     <Compile Include="Models\ViewModels\BlogsByUserViewModel.cs" />
     <Compile Include="Models\ViewModels\BlogSingleHomeViewModel.cs" />
-    <Compile Include="Models\ViewModels\CategoryHomeViewModel.cs" />
     <Compile Include="Models\ViewModels\CategorySingleViewModel.cs" />
     <Compile Include="Models\ViewModels\EventCategoryHomeViewModel.cs" />
     <Compile Include="Models\ViewModels\EventCategorySingleViewModel.cs" />

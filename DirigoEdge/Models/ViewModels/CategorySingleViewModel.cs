@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using DirigoEdgeCore.Data.Entities;
+using DirigoEdgeCore.Models;
 using DirigoEdgeCore.Utils;
 
-namespace DirigoEdgeCore.Models.ViewModels
+namespace DirigoEdge.Models.ViewModels
 {
     public class CategorySingleViewModel : DirigoBaseModel
     {
@@ -18,20 +17,12 @@ namespace DirigoEdgeCore.Models.ViewModels
         public int MaxBlogCount = 10;
         public int LastBlogId = 0;
         public bool ReachedMaxBlogs;
-        public int SkipBlogs = 0;
-
+        public int SkipBlogs;
         public List<string> ImageList;
-
-        private static readonly Random random = new Random();
-        private static readonly object syncLock = new object();
-        private HttpServerUtilityBase _server;
-
         public string BlogTitle;
 
-        public CategorySingleViewModel(string category, HttpServerUtilityBase server)
+        public CategorySingleViewModel(string category)
         {
-            _server = server;
-
             category = ContentUtils.GetFormattedUrl(category);
 
 
