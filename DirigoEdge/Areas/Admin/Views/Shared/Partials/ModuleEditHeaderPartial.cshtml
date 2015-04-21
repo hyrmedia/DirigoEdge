@@ -1,0 +1,30 @@
+﻿@model DirigoEdgeCore.Models.ViewModels.DraftableModel
+
+@* Check to see if the user is editing the newest version *@
+@if (Model.IsNewerVersion)
+{
+    string message = Model.ParentId() == Model.NewerVersionId
+        ? "You are currently editing a draft that is outdated. The published version is newer."
+        : "There is a newer draft of this module available.";
+
+    string editUrl = Request.Url.ToString().Contains("editmodulebasic") ? "/admin/modules/editmodulebasic/" : "/admin/modules/editmodule/";
+    editUrl += Model.NewerVersionId + "/";
+            
+    <div id="VersionInfoContainer" class="row">
+        <div class="col-lg-12">
+            <div class="alert alert-info alert-dismissible topAlert" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                @message 
+                Would you like to <a href="@editUrl">edit it</a> instead?
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h3><i class="fa fa-file-text-o"></i> @Model.Heading @Html.Partial("Partials/BookmarkButtonPartial")</h3>
+    </div>
+</div>
