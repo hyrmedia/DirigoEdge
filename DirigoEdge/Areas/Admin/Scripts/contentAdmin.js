@@ -81,7 +81,7 @@ content_class.prototype.initDeleteModuleEvent = function() {
             },
             success: function(data) {
                 var noty_id = noty({ text: 'Module Successfully Deleted.', type: 'success', timeout: 2000 });
-                self.refreshTable('#contentModuleListingWrapper', '/admin/modules/managemodules/');
+                self.$managePageRow.remove();
                 $('#DeleteModal').modal('hide');
             },
             error: function(data) {
@@ -169,7 +169,7 @@ content_class.prototype.initDeleteSchemaEvent = function () {
             },
             success: function (data) {
                 var noty_id = noty({ text: 'Schema Successfully Deleted.', type: 'success', timeout: 2000 });
-                self.refreshTable('#schemaListingWrapper', '/admin/schemas/manageschemas/');
+                self.$managePageRow.remove();
                 $('#DeleteModal').modal('hide');
             },
             error: function (data) {
