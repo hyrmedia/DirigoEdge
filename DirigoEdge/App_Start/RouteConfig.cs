@@ -186,14 +186,26 @@ namespace DirigoEdge
             routes.MapRoute(
                 name: "DynamicImagesSmall",
                 url: "images/small/{*path}",
-                defaults: new { controller = "Images", action = "RenderWithResize", width = 480, height = 320, directory = "small", }
+                defaults: new { controller = "Images", action = "RenderWithResize", width = 480, height = 0, directory = "small", }
             );
 
             routes.MapRoute(
-                name: "DynamicImagesMed",
+                name: "DynamicImagesMedium",
                 url: "images/medium/{*path}",
-                defaults: new { controller = "Images", action = "RenderWithResize", width = 1024, height = 800, directory = "medium" }
-            );           
+                defaults: new { controller = "Images", action = "RenderWithResize", width = 1024, height = 0, directory = "medium" }
+            );
+
+            routes.MapRoute(
+                name: "DynamicImagesLarge",
+                url: "images/large/{*path}",
+                defaults: new { controller = "Images", action = "RenderWithResize", width = 1920, height = 0, directory = "large" }
+            );
+
+            routes.MapRoute(
+                name: "DynamicImagesExtreme",
+                url: "images/extreme/{*path}",
+                defaults: new { controller = "Images", action = "RenderWithResize", width = 2560, height = 0, directory = "extreme" }
+            );   
 
             #endregion
 

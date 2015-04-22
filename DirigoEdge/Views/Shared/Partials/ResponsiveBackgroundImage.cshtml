@@ -1,7 +1,12 @@
 ﻿@model DirigoEdgeCore.Models.ImageResizing.ResponsiveBackgroundImageViewModel
 
 <style class="@Model.ClassName">
-    @foreach (var image in Model.Images)
+    @if (Model.Width != 0 && Model.AspectRatio != 0)
+    {
+        @Html.Raw("#" + Model.RandomId + " { width: " + Model.Width + "px; max-width: 100%; background-size: cover; background-position: center; background-repeat: no-repeat }\n");
+        @Html.Raw("#" + Model.RandomId + ":after { content: ''; display: block; padding-bottom: " + (Model.AspectRatio * 100) + "%; }\n");
+    }
+     @foreach (var image in Model.Images)
     {
         if (image.Width.GetValueOrDefault() == 0)
         {
@@ -13,8 +18,8 @@
 
             @Html.Raw(mediaQuery)
         }
-        
+
     }
 </style>
 
-<div id="@Model.RandomId" class="@Model.ClassName" data-bgimage="@Model.Images[0].Filepath"></div>
+<div id="@Model.RandomId" class="@Model.ClassName" data-bgimage="@Model.Images[0].Filepath" title="@Model.AltText"></div>
