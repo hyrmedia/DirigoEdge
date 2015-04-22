@@ -12,7 +12,7 @@
         <div class="col-lg-12">
             <h3><i class="fa fa-pencil"></i> Manage Posts @Html.Partial("Partials/BookmarkButtonPartial")</h3>
             <a id="NewBlogPage" class="btn btn-primary mobileBlockStatic mobileMarginBottom" href="@Url.Action("AddBlog", "Blog")">New Post +</a>
-            <table class="twelve bordered manageTable" width="100%">
+            <table class="bordered manageTable">
                 <thead>
                     <tr>
                         <th>Title</th>
@@ -37,8 +37,8 @@
                                 <td class="hidden-xs">@active</td>
                                 <td class="hidden-xs">@isFeatured</td>
                                 <td class="actions">
+                                    <a class="btn btn-primary btn-sm mobileTop" href="/blog/blog.Category.CategoryNameFormatted/@ContentUtils.GetFormattedUrl(blog.PermaLink)" target=_blank>Preview</a>
                                     <a class="delete btn btn-danger btn-sm" href="javascript:void(0);" data-id="@blog.BlogId">Delete</a>
-                                    <a class="btn btn-info btn-sm mobileTop" href="/blog/blog.Category.CategoryNameFormatted/@ContentUtils.GetFormattedUrl(blog.PermaLink)" target=_blank>Preview</a>
                                 </td>
                             </tr>
 					    }

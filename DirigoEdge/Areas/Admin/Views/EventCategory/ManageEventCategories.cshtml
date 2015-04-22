@@ -12,7 +12,7 @@
         <a id="NewEventPage" class="btn btn-primary newManageButton mobileBlockStatic mobileMarginBottom" data-toggle="modal" data-target="#AddEventCategoryModal" href="#">New Event Category +</a>
         
         <div id="event-categories-wrapper">
-            <table class="table table-bordered manageTable" id="EventCategoriesTable">
+            <table class="bordered manageTable" id="EventCategoriesTable">
                 <thead>
                     <tr>
                         <th class="hidden-xs">Id</th>
@@ -20,23 +20,23 @@
                         <th class="actions">Actions</th>
                     </tr>
                 </thead>
-            
+
                 <tbody>
                     @{
                         if (Model.EventCategories.Any())
                         {
                             foreach (var cat in Model.EventCategories)
                             {
-                            <tr>
-                                <td class="id hidden-xs">@cat.EventCategoryId</td>
-                                <td class="name">@cat.CategoryName</td>
-                                <td>
-                                    <a class="deleteCategoryButton btn btn-sm" href="#" data-id="@cat.EventCategoryId">Delete</a>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td class="id hidden-xs">@cat.EventCategoryId</td>
+                                    <td class="name">@cat.CategoryName</td>
+                                    <td>
+                                        <a class="deleteCategoryButton btn btn-danger btn-sm" href="#" data-id="@cat.EventCategoryId">Delete</a>
+                                    </td>
+                                </tr>
                             }
                         }
-                        
+
                     }
                 </tbody>
             </table>

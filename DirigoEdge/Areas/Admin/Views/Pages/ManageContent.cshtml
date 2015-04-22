@@ -26,14 +26,12 @@
 
             <a id="NewContentPage" class="btn btn-primary mobileMarginBottom mobileBlockStatic @templateSelectorClass" href="@newButtonUrl">@Model.NewButtonText</a>
 
-            <table class="manageTable twelve bordered manageTable @Model.Sort" data-url="/admin/pages/updatepagesort/" data-list="true" data-saveMessage="Sort Order Updated!">
+            <table class="manageTable bordered manageTable @Model.Sort" data-url="/admin/pages/updatepagesort/" data-list="true" data-saveMessage="Sort Order Updated!">
                 <thead>
                     <tr>
-                        @{
-                            if (!string.IsNullOrEmpty(Model.Sort))
-                            {
+                        @if (!string.IsNullOrEmpty(Model.Sort))
+                        {
                             <th class="no-sort">Sort</th>
-                            }
                         }
                         <th>Title</th>
                         <th class="hidden-xs">Created</th>
@@ -60,8 +58,7 @@
                             }
 
                         <tr class="altered">
-                            @{
-                            if (!string.IsNullOrEmpty(Model.Sort))
+                            @if (!string.IsNullOrEmpty(Model.Sort))
                             {
                                 <td class="sort">
                                     <span>@sortOrder</span>
@@ -69,32 +66,17 @@
                                     <input type="hidden" class="saveField" value="@page.ContentPageId" data-field="ContentPageId"/>
                                 </td>
                             }
-                            }
                             <td class="title"><a href="@codeEditUrl">@page.Title</a></td>
                             <td class="hidden-xs">@Convert.ToDateTime(page.CreateDate).ToString("MM/dd/yyyy")</td>
-
-                            @{
-                            string published = Convert.ToBoolean(page.IsActive) ? "Published" : "Draft";
-                            }
-
-                            <td class="hidden-xs">@published</td>
-
+                            <td class="hidden-xs">@(Convert.ToBoolean(page.IsActive) ? "Published" : "Draft")</td>
                             <td>
-                                <a class="delete btn btn-danger btn-sm" href="javascript:void(0);" data-id="@page.ContentPageId">Delete</a>
-                                @{
-                            string url = "/" + page.Permalink + "/";
-                                }
-                                <a class="btn btn-info btn-sm" href="@url" target=_blank>Preview</a>
-
-                                @{
-                            // Don't show WYSIWYG for schema editors
-                            if (!hasSchema)
-                            {
-                                    <a class="btn btn-primary btn-sm" href="@Url.Action("EditContentBasic", "Pages", new { id = @page.ContentPageId })">WYSIWYG Edit</a>
-                            }
-                                }
-
                                 <a class="btn btn-primary btn-sm" href="@codeEditUrl">Code Edit { }</a>
+                                @if (!hasSchema)
+                                {
+                                    <a class="btn btn-primary btn-sm" href="@Url.Action("EditContentBasic", "Pages", new {id = @page.ContentPageId})">WYSIWYG Edit</a>
+                                }
+                                <a class="btn btn-info btn-sm" href="/@page.Permalink/" target=_blank>Preview</a>
+                                <a class="delete btn btn-danger btn-sm" href="javascript:void(0);" data-id="@page.ContentPageId">Delete</a>
                             </td>
                         </tr>
                         }
