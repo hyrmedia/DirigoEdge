@@ -4,7 +4,7 @@
 
 DirigoEdge is an Open Source CMS development framework built on ASP.Net C# that makes managing content and building websites faster and easier. It is fully responsive, built on MVC, Microsoft’s CodeFirst, and has a robust shortcode and plugin system.
 
-Explore DirigoEdge functions on our YouTube chanel: https://www.youtube.com/channel/UCf2zaGBp4ifFMeu0tetutYw
+Explore DirigoEdge functions on our [YouTube channel](https://www.youtube.com/channel/UCf2zaGBp4ifFMeu0tetutYw)
 
 ## Requirements
 
@@ -22,7 +22,7 @@ npm install -g gulp
 
 ## Getting Started
 
-Don't want to read?  Try our Installing DirigoEdge v2.0 video: https://www.youtube.com/playlist?list=PLiL6eOib_pybqV22XV5ePGib1zUTaiMv0 
+Don't want to read?  Try our [Installing DirigoEdge v2.0 video](https://www.youtube.com/playlist?list=PLiL6eOib_pybqV22XV5ePGib1zUTaiMv0)
 
 1. For the stable version, [grab the latest release](https://github.com/dirigodev/DirigoEdge/releases). For the latest (unstable) development version, clone this repo with `git clone https://github.com/dirigodev/DirigoEdge.git`
 
