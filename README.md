@@ -20,6 +20,8 @@ npm install -g gulp
 
 ## Getting Started
 
+Don't want to read?  Try our Installing DirigoEdge v2.0 video: https://www.youtube.com/playlist?list=PLiL6eOib_pybqV22XV5ePGib1zUTaiMv0 
+
 1. For the stable version, [grab the latest release](https://github.com/dirigodev/DirigoEdge/releases). For the latest (unstable) development version, clone this repo with `git clone https://github.com/dirigodev/DirigoEdge.git`
 
 2. Edit `web.config` file with your appopriate database connections.
