@@ -2,10 +2,10 @@
 using System.Web.Mvc;
 using System.Web.Routing;
 using DirigoEdge.Data.Context;
+using DirigoEdge.Models.Shortcodes;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.PluginFramework;
 using DirigoEdgeCore.Utils;
-using DirigoEdgeCore.Utils.Extensions;
 using DirigoEdgeCore.Utils.Logging;
 
 namespace DirigoEdge
@@ -37,6 +37,9 @@ namespace DirigoEdge
 
             // Add the new View Engine for our plugins to use
             ViewEngines.Engines.Add(new PluginRazorViewEngine());
+
+            // Register new dynamic modules/shortcodes
+            DynamicModules.Instance.AddDynamicModule("responsive_image", new ResponsiveImageShortcode());
         }
 
         // May need to store host in distributed or multi-tenant applications
