@@ -129,6 +129,8 @@ namespace DirigoEdge.Areas.Admin.Controllers
         {
             var draft = SetContentModuleData(entity, false, publishDate);
 
+            var originalModule = Context.ContentModules.First(module => module.ContentModuleId == entity.ContentModuleId);
+            draft.ParentContentModuleId = originalModule.ParentContentModuleId ?? originalModule.ContentModuleId;
 
             Context.ContentModules.Add(draft);
             Context.SaveChanges();
@@ -178,16 +180,19 @@ namespace DirigoEdge.Areas.Admin.Controllers
         public JsonResult GetRevisionList(int id)
         {
             var result = new JsonResult { JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-            string html;
 
-            var drafts = Context.ContentModules.Where(x => x.ParentContentModuleId == id || x.ContentModuleId == id).OrderByDescending(x => x.CreateDate).ToList().Select(rev => new RevisionViewModel
+            var module = Context.ContentModules.First(mod => mod.ContentModuleId == id);
+            var parentId = module.ParentContentModuleId ?? module.ContentModuleId;
+
+            var drafts = Context.ContentModules.Where(x => x.ParentContentModuleId == parentId || x.ContentModuleId == parentId).OrderByDescending(x => x.CreateDate).ToList().Select(rev => new RevisionViewModel
             {
                 Date = rev.CreateDate,
                 ContentId = rev.ContentModuleId,
                 AuthorName = rev.DraftAuthorName,
                 WasPublished = rev.WasPublished
             }).ToList();
-            html = ContentUtils.RenderPartialViewToString("/Areas/Admin/Views/Shared/Partials/RevisionsListInnerPartial.cshtml", drafts, ControllerContext, ViewData, TempData);
+            
+            var html = ContentUtils.RenderPartialViewToString("/Areas/Admin/Views/Shared/Partials/RevisionsListInnerPartial.cshtml", drafts, ControllerContext, ViewData, TempData);
 
             result.Data = new { html };
 
@@ -222,6 +227,15 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 return result;
             }
 
+            if (editedContent.ParentContentModuleId.HasValue)
+            {
+                editedContent = Context.ContentModules.FirstOrDefault(x => x.ContentModuleId == editedContent.ParentContentModuleId.Value);
+                if (editedContent == null)
+                {
+                    return result;
+                }
+            }
+
             SaveDraft(editedContent, editedContent.CreateDate);
 
             editedContent.DraftAuthorName = UserUtils.CurrentMembershipUsername();
@@ -243,7 +257,8 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 result.Data = new
                 {
                     success = true,
-                    message = "Content saved successfully."
+                    message = "Content saved successfully.",
+                    date = editedContent.CreateDate.Value.ToString("dd/MM/yyy @ h:mm tt")
                 };
             }
 
