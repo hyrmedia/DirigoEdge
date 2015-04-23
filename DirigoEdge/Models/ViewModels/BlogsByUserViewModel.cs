@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DirigoEdgeCore.Data.Entities;
+using DirigoEdgeCore.Models;
 using DirigoEdgeCore.Utils;
 
-namespace DirigoEdgeCore.Models.ViewModels
+namespace DirigoEdge.Models.ViewModels
 {
     public class BlogsByUserViewModel : DirigoBaseModel
     {
@@ -20,29 +21,9 @@ namespace DirigoEdgeCore.Models.ViewModels
 
         public string BlogTitle;
 
-        public BlogsByUserViewModel(string username)
+        public BlogsByUserViewModel()
         {
-            // Get back to the original name before url conversion
-            BlogUsername = username.Replace(ContentGlobals.BLOGDELIMMETER, " ");
-
-            // Get User based on authorid
-            TheBlogUser = Context.BlogUsers.FirstOrDefault(x => x.Username == BlogUsername);
             
-            var model = new BlogListModel(Context);
-            MaxBlogCount = model.GetBlogSettings().MaxBlogsOnHomepageBeforeLoad;
-            SkipBlogs = MaxBlogCount;
-            BlogTitle = model.GetBlogSettings().BlogTitle;
-
-            AllBlogs = Context.Blogs.Where(x => x.BlogAuthor.Username == BlogUsername && x.IsActive).ToList();
-
-            BlogsByUser = AllBlogs
-                        .OrderByDescending(blog => blog.Date)
-                        .Take(MaxBlogCount)
-                        .ToList();
-
-            // Try permalink first
-            TheBlog = BlogsByUser.FirstOrDefault(x => x.BlogAuthor.Username == BlogUsername);
-
         }
     }
 }

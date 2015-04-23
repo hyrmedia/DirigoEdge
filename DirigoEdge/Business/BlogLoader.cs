@@ -5,6 +5,7 @@ using System.Web;
 using DirigoEdge.Models.ViewModels;
 using DirigoEdgeCore.Data.Context;
 using DirigoEdgeCore.Data.Entities;
+using DirigoEdgeCore.Models;
 using DirigoEdgeCore.Models.ViewModels;
 using DirigoEdgeCore.Utils;
 
@@ -23,7 +24,7 @@ namespace DirigoEdge.Business
             SettingsUtils = new SiteSettingsUtils(Context);
         }
 
-        public BlogSingleHomeViewModel PopulateBlogModel(String title)
+        public BlogSingleHomeViewModel PopulateSingleBlogModel(String title)
         {
             var model = new BlogSingleHomeViewModel
             {
@@ -66,6 +67,64 @@ namespace DirigoEdge.Business
 
             return model;
         }
+
+        public CategorySingleViewModel LoadBlogsByCategory(String category)
+        {
+            var catModel = new CategorySingleViewModel();
+
+            category = ContentUtils.GetFormattedUrl(category);
+
+
+            catModel.AllBlogsInCategory = Context.Blogs.Where(x => x.Category.CategoryNameFormatted == category && x.IsActive)
+                        .OrderByDescending(blog => blog.Date)
+                        .ToList();
+
+            catModel.BlogRoll = catModel.AllBlogsInCategory
+                .Take(catModel.MaxBlogCount)
+                .ToList();
+
+
+            catModel.TheCategory = Context.BlogCategories.FirstOrDefault(x => x.CategoryNameFormatted == category);
+            var model = new BlogListModel(Context);
+            catModel.MaxBlogCount = model.GetBlogSettings().MaxBlogsOnHomepageBeforeLoad;
+            catModel.SkipBlogs = catModel.MaxBlogCount;
+            catModel.BlogTitle = model.GetBlogSettings().BlogTitle;
+
+            catModel.BlogsByCat = catModel.AllBlogsInCategory
+                        .Take(catModel.MaxBlogCount)
+                        .ToList();
+
+            return catModel;
+        }
+
+        public BlogsByUserViewModel PopulateBlogsByUser(String userName)
+        {
+            var blogModel = new BlogsByUserViewModel
+            {
+                BlogUsername = userName.Replace(ContentGlobals.BLOGDELIMMETER, " ")
+            };
+
+            // Get User based on authorid
+            blogModel.TheBlogUser = Context.BlogUsers.FirstOrDefault(x => x.Username == blogModel.BlogUsername);
+
+            var model = new BlogListModel(Context);
+            blogModel.MaxBlogCount = model.GetBlogSettings().MaxBlogsOnHomepageBeforeLoad;
+            blogModel.SkipBlogs = blogModel.MaxBlogCount;
+            blogModel.BlogTitle = model.GetBlogSettings().BlogTitle;
+
+            blogModel.AllBlogs = Context.Blogs.Where(x => x.BlogAuthor.Username == blogModel.BlogUsername && x.IsActive).ToList();
+
+            blogModel.BlogsByUser = blogModel.AllBlogs
+                        .OrderByDescending(blog => blog.Date)
+                        .Take(blogModel.MaxBlogCount)
+                        .ToList();
+
+            // Try permalink first
+            blogModel.TheBlog = blogModel.BlogsByUser.FirstOrDefault(x => x.BlogAuthor.Username == blogModel.BlogUsername);
+
+            return blogModel;
+        }
+
 
         public List<BlogsCategoriesViewModel.BlogCatExtraData> GetActiveBlogCategories()
         {

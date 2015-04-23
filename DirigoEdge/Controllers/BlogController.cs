@@ -40,7 +40,6 @@ namespace DirigoEdge.Controllers
 
             if (String.IsNullOrEmpty(title))
             {
-
                 return GetBlogByTitle(category);
             }
 
@@ -74,13 +73,13 @@ namespace DirigoEdge.Controllers
 
         private ActionResult GetSingleBlogByTitle(string title)
         {
-            var theModel = Loader.PopulateBlogModel(title);
+            var theModel = Loader.PopulateSingleBlogModel(title);
             return View("~/Views/Home/BlogSingle.cshtml", theModel);
         }
 
-        private ActionResult GetBlogsByUser(string title)
+        private ActionResult GetBlogsByUser(string username)
         {
-            var model = new BlogsByUserViewModel(title);
+            var model = Loader.PopulateBlogsByUser(username);
             return View("~/Views/Blog/BlogsByUser.cshtml", model);
         }
 
@@ -97,20 +96,19 @@ namespace DirigoEdge.Controllers
                 return GetBlog404();
             }
 
-            var model = new CategorySingleViewModel(category);
+            var model = Loader.LoadBlogsByCategory(category);
             return View("~/Views/Blog/CategoriesSingle.cshtml", model);
         }
 
         public ActionResult User(string username)
         {
-            var model = new BlogsByUserViewModel(username);
-
+            var model = Loader.PopulateBlogsByUser(username);
             return View("~/Views/Blog/BlogsByUser.cshtml", model);
         }
 
         public ActionResult Categories(string category)
         {
-            var model = new CategorySingleViewModel(category);
+            var model = Loader.LoadBlogsByCategory(category);
             return View("~/Views/Blog/CategoriesSingle.cshtml", model);
         }
 
