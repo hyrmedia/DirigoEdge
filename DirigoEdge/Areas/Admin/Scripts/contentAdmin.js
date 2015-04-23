@@ -430,6 +430,12 @@ content_class.prototype.manageContentAdminEvents = function() {
             success: function (result) {
                 noty({ text: result.message, type: result.success ? 'success' : 'alert', timeout: 1200 });
                 $("#SaveSpinner").hide();
+                $("#StatusLabel").text("Published");
+                $("#PublishedDate").text(result.date);
+                self.setPublishedStatusState(true);
+                // Refresh Revisions list
+                self.refreshRevisionListing();
+
             },
             error: function (data) {
                 noty({ text: 'There was an error processing your request.', type: 'error', timeout: 5000 });
@@ -820,7 +826,7 @@ content_class.prototype.initRevisionEvents = function () {
 
         var editContentUrl;
         if (type == "Module") {
-            editContentUrl =   isBasic ? "/admin/modules/editmoudebasic/" : "/admin/pages/editmodule/";
+            editContentUrl = isBasic ? "/admin/modules/editmoudebasic/" : "/admin/modules/editmodule/";
         }
         else {
             editContentUrl = isBasic ? "/admin/pages/editcontentbasic/" : "/admin/pages/editcontent/";
@@ -832,10 +838,10 @@ content_class.prototype.initRevisionEvents = function () {
     });
 };
 
-content_class.prototype.refreshRevisionListing = function() {
+content_class.prototype.refreshRevisionListing = function () {
     var $listContainer = $("#RevisionsList");
     var pageId = $("#Main div.editContent").attr("data-id");
-
+    var self = this;
     if ($listContainer.length < 1 || pageId < 1) { return; }
 
     common.showAjaxLoader($listContainer);
@@ -853,6 +859,7 @@ content_class.prototype.refreshRevisionListing = function() {
     $.get(url + pageId + '/', function (data) {
         $listContainer.html(data.html);
         common.hideAjaxLoader($listContainer);
+        self.initRevisionEvents();
     });
 };
 

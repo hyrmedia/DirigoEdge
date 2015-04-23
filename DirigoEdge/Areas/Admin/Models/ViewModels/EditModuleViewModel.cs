@@ -24,7 +24,12 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
             EditURL = "editmodule";
 
             TheModule = Context.ContentModules.FirstOrDefault(x => x.ContentModuleId == id);
-           
+
+            if (TheModule == null)
+            {
+                return;
+            }
+
             BookmarkTitle = TheModule.ModuleName;
             // Set Unparsed Html on Legacy Modules
             if (String.IsNullOrEmpty(TheModule.HTMLUnparsed) && !String.IsNullOrEmpty(TheModule.HTMLContent))
@@ -41,7 +46,9 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
                 NewerVersionId = newerVersion.ContentModuleId;
             }
 
-            Revisions = Context.ContentModules.Where(x => x.ParentContentModuleId == id || x.ContentModuleId == id).OrderByDescending(x => x.CreateDate).ToList().Select(rev => new RevisionViewModel
+            var parentId = TheModule.ParentContentModuleId ?? TheModule.ContentModuleId;
+
+            Revisions = Context.ContentModules.Where(x => x.ParentContentModuleId == parentId || x.ContentModuleId == parentId).OrderByDescending(x => x.CreateDate).ToList().Select(rev => new RevisionViewModel
             {
                 Date = rev.CreateDate,
                 ContentId = rev.ContentModuleId,
