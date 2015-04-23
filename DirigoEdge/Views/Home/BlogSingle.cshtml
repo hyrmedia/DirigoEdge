@@ -1,14 +1,6 @@
 ﻿@using DirigoEdgeCore.Models.ViewModels
 @using DirigoEdgeCore.Utils
 @model DirigoEdge.Models.ViewModels.BlogSingleHomeViewModel
-@{
-    ViewBag.Title = Model.TheBlog.Title;
-    ViewBag.MetaDesc = Model.TheBlog.MetaDescription;
-    ViewBag.OGType = Model.TheBlog.OGType ?? "article";
-    ViewBag.OGTitle = Model.TheBlog.OGTitle ?? Model.TheBlog.Title;
-    ViewBag.OGImage = Model.TheBlog.OGImage ?? Model.TheBlog.OGImage;
-    ViewBag.OGUrl = Model.TheBlog.OGUrl;
-}
 
 <div class="singleBlogModule module">
     

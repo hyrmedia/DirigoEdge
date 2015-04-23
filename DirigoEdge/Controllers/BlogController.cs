@@ -1,18 +1,26 @@
 ﻿using System;
 using System.Linq;
+using System.ServiceModel.Security;
 using System.ServiceModel.Syndication;
 using System.Web.Mvc;
+using System.Web.UI;
 using DirigoEdge.Business;
-using DirigoEdge.Models.ViewModels;
 using DirigoEdgeCore.Controllers;
 using DirigoEdgeCore.Models.DataModels;
-using DirigoEdgeCore.Models.ViewModels;
-using DirigoEdgeCore.Utils;
 
 namespace DirigoEdge.Controllers
 {
     public class BlogController : DirigoBaseController
     {
+        private String BaseUrl
+        {
+            get
+            {
+                var generatedBaseUrl = System.Web.HttpContext.Current.Request.Url.Scheme + "://" + System.Web.HttpContext.Current.Request.Url.Authority + System.Web.HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/"; // Fallback if site settings isn't in place
+                return SettingsUtils.GetSiteBaseUrl() ?? generatedBaseUrl;
+            }
+        }
+
         private BlogLoader _loader;
         private BlogLoader Loader
         {
@@ -30,17 +38,18 @@ namespace DirigoEdge.Controllers
         /// <returns>View</returns>
         public ActionResult Index(string title, string category, string date)
         {
+            ViewBag.OGType = "article";
+
             // Blog Listing Homepage
             if (String.IsNullOrEmpty(title) && String.IsNullOrEmpty(category))
             {
-                var model = Loader.LoadBlogHome(date);
-                return View("~/Views/Home/Blog.cshtml", model);
+                return GetBlogHome(date);
             }
             // Category
 
             if (String.IsNullOrEmpty(title))
             {
-                return GetBlogByTitle(category);
+                return GetBlogByCategory(category);
             }
 
             // Tag
@@ -62,39 +71,72 @@ namespace DirigoEdge.Controllers
             }
 
             // Not a blog category or a blog
-            return GetBlog404();
+            return NotFound;
         }
 
-        private ActionResult GetBlog404()
+        private ActionResult GetBlogHome(string date)
         {
-            HttpContext.Response.StatusCode = 404;
-            return View("~/Views/Home/Error404.cshtml");
+            var model = Loader.LoadBlogHome(date);
+            ViewBag.OGTitle = model.BlogTitle;
+            ViewBag.OGUrl = BaseUrl + "blog";
+
+            return View("~/Views/Home/Blog.cshtml", model);
+        }
+
+        private ActionResult NotFound
+        {
+            get
+            {
+                HttpContext.Response.StatusCode = 404;
+                return View("~/Views/Home/Error404.cshtml");
+            }
         }
 
         private ActionResult GetSingleBlogByTitle(string title)
         {
             var theModel = Loader.LoadSingleBlog(title);
+
+            ViewBag.OGTitle = theModel.TheBlog.Title;
+            ViewBag.OGImage = theModel.TheBlog.OGImage;
+            ViewBag.MetaDesc = theModel.TheBlog.MetaDescription;
+            ViewBag.OGUrl = theModel.BlogAbsoluteUrl;
+            ViewBag.OGType = !String.IsNullOrEmpty(theModel.TheBlog.OGType)
+                ? theModel.TheBlog.OGType
+                : "article";
+
+
             return View("~/Views/Home/BlogSingle.cshtml", theModel);
         }
 
         private ActionResult GetBlogsByUser(string username)
         {
             var model = Loader.LoadBlogsByUser(username);
+            ViewBag.OGTitle = "Blogs by : " + username;
+            ViewBag.OGUrl = BaseUrl + "blog/user/" + username ;
+
             return View("~/Views/Blog/BlogsByUser.cshtml", model);
         }
 
-        private ActionResult GetBlogsByTag(string title)
+        private ActionResult GetBlogsByTag(string tag)
         {
-            var model = Loader.LoadBlogsByTag(title);
+            var model = Loader.LoadBlogsByTag(tag);
+            ViewBag.OGUrl = BaseUrl + "blog/" + tag;
+            ViewBag.OGTitle = tag;
+            ViewBag.Robots = "NOINDEX, NOFOLLOW";
             return View("~/Views/Blog/TagSingle.cshtml", model);
         }
 
-        private ActionResult GetBlogByTitle(string category)
+        private ActionResult GetBlogByCategory(string category)
         {
             if (!Context.BlogCategories.Any(cat => cat.CategoryNameFormatted == category))
             {
-                return GetBlog404();
+                return NotFound;
             }
+
+            ViewBag.OGTitle = category;
+            ViewBag.Robots = "NOINDEX, NOFOLLOW";
+            ViewBag.OGUrl = BaseUrl + "blog/" + category;
+
 
             var model = Loader.LoadBlogsByCategory(category);
             return View("~/Views/Blog/CategoriesSingle.cshtml", model);
@@ -109,15 +151,17 @@ namespace DirigoEdge.Controllers
         public ActionResult Categories(string category)
         {
             var model = Loader.LoadBlogsByCategory(category);
+            ViewBag.Robots = "NOINDEX, NOFOLLOW";
             return View("~/Views/Blog/CategoriesSingle.cshtml", model);
         }
 
         public ActionResult NewPosts()
         {
             var blog = Context.Blogs.FirstOrDefault(x => x.IsActive);
+
             if (HttpContext.Request.Url == null || blog == null)
             {
-                return GetBlog404();
+                return NotFound;
             }
 
             var blogUrl = "http://" + HttpContext.Request.Url.Host + "/blog/";
