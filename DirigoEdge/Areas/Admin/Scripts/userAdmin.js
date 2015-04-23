@@ -120,11 +120,11 @@ user_class.prototype.manageUserAdminEvents = function () {
         var $row = $(this).parent().parent();
         var $el = $(this);
         self.EditUserId = $(this).attr("data-id");
-        self.EditUserDisplayName = $row.find("td.displayName").text();
-        self.EditUserDisplayFirstName = $row.find("td.displayFirstName").text();
-        self.EditUserDisplayLastName = $row.find("td.displayLastName").text();
-        self.EditUserDisplayEmail = $row.find("td.displayEmail").text();
-        self.EditUserIsActive = $row.find("td.isActive").text();
+        self.EditUserDisplayName = $row.find("td.displayName").text().trim();
+        self.EditUserDisplayFirstName = $row.find("td.displayFirstName").text().trim();
+        self.EditUserDisplayLastName = $row.find("td.displayLastName").text().trim();
+        self.EditUserDisplayEmail = $row.find("td.displayEmail").text().trim();
+        self.EditUserIsActive = $row.find("td.isActive").text().trim();
         self.EditUserImageLoc = $row.find("td.imageLocation img").attr("src");
         $('#ModifyUserModal .user-error').text('').addClass('hide');
 

@@ -30,8 +30,8 @@
                                         <a href="@Url.Action("EditSchema", "Schemas", new { id = @schema.SchemaId })">@schema.DisplayName</a>
                                     </td>
                                     <td>
-                                        <button class="delete-schema btn btn-danger btn-sm mobileMarginBottom" data-id="@schema.SchemaId">Delete</button>
                                         <a class="btn btn-primary btn-sm" href="@Url.Action("EditSchema", "Schemas", new { id = @schema.SchemaId })">Edit Schema</a>
+                                        <button class="delete-schema btn btn-danger btn-sm mobileMarginBottom" data-id="@schema.SchemaId">Delete</button>
                                     </td>
                                 </tr>
                             }

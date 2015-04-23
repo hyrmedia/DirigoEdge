@@ -9,17 +9,12 @@
 
     string editUrl = Request.Url.ToString().Contains("editmodulebasic") ? "/admin/modules/editmodulebasic/" : "/admin/modules/editmodule/";
     editUrl += Model.NewerVersionId + "/";
-            
-    <div id="VersionInfoContainer" class="row">
-        <div class="col-lg-12">
-            <div class="alert alert-info alert-dismissible topAlert" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                @message 
-                Would you like to <a href="@editUrl">edit it</a> instead?
-            </div>
-        </div>
+
+    <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Heads up!</strong>
+        @message
+        Would you like to <a href="@editUrl" class="alert-link">edit it</a> instead?
     </div>
 }
 
