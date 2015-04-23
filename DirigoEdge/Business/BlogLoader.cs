@@ -97,6 +97,29 @@ namespace DirigoEdge.Business
             return catModel;
         }
 
+        public TagSingleViewModel LoadBlogsByTag(String tag)
+        {
+            var model = new TagSingleViewModel
+            {
+                TheTag = tag,
+                BlogRoll = Context.Blogs.Where(x => x.Tags.Any(tg => tg.BlogTagName == tag)
+                                                    && x.IsActive).OrderByDescending(x => x.Date).ToList()
+            };
+
+            model.UserNameToDisplayName = UserUtils.GetUsernamesForBlogs(model.BlogRoll, Context);
+
+            model.Categories = new List<BlogsCategoriesViewModel.BlogCatExtraData>();
+
+            var cats = Context.BlogCategories.Where(x => x.IsActive).ToList();
+            foreach (var cat in cats)
+            {
+                int count = Context.Blogs.Count(x => x.Category.CategoryId == cat.CategoryId);
+                model.Categories.Add(new BlogsCategoriesViewModel.BlogCatExtraData() { TheCategory = cat, BlogCount = count });
+            }
+
+            return model;
+        }
+
         public BlogsByUserViewModel PopulateBlogsByUser(String userName)
         {
             var blogModel = new BlogsByUserViewModel

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using DirigoEdgeCore.Data.Entities;
+using DirigoEdgeCore.Models;
+using DirigoEdgeCore.Models.ViewModels;
 
-namespace DirigoEdgeCore.Models.ViewModels
+namespace DirigoEdge.Models.ViewModels
 {
     public class TagSingleViewModel : DirigoBaseModel
     {
@@ -12,23 +13,5 @@ namespace DirigoEdgeCore.Models.ViewModels
         public string TheTag;
 
         public List<BlogsCategoriesViewModel.BlogCatExtraData> Categories;
-
-        public TagSingleViewModel(string tag)
-        {
-            TheTag = tag;
-
-            BlogRoll = Context.Blogs.Where(x => x.Tags.Any(tg => tg.BlogTagName == tag)
-                && x.IsActive).OrderByDescending(x => x.Date).ToList();
-            UserNameToDisplayName = Utils.UserUtils.GetUsernamesForBlogs(BlogRoll, Context);
-           
-            Categories = new List<BlogsCategoriesViewModel.BlogCatExtraData>();
-
-            var cats = Context.BlogCategories.Where(x => x.IsActive).ToList();
-            foreach (var cat in cats)
-            {
-                int count = Context.Blogs.Count(x => x.Category.CategoryId == cat.CategoryId);
-                Categories.Add(new BlogsCategoriesViewModel.BlogCatExtraData() { TheCategory = cat, BlogCount = count });
-            }
-        }
     }
 }
