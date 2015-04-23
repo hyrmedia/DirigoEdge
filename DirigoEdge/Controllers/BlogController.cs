@@ -33,7 +33,7 @@ namespace DirigoEdge.Controllers
             // Blog Listing Homepage
             if (String.IsNullOrEmpty(title) && String.IsNullOrEmpty(category))
             {
-                var model = new BlogHomeViewModel(date);
+                var model = Loader.LoadBlogHome(date);
                 return View("~/Views/Home/Blog.cshtml", model);
             }
             // Category
@@ -73,19 +73,19 @@ namespace DirigoEdge.Controllers
 
         private ActionResult GetSingleBlogByTitle(string title)
         {
-            var theModel = Loader.PopulateSingleBlogModel(title);
+            var theModel = Loader.LoadSingleBlog(title);
             return View("~/Views/Home/BlogSingle.cshtml", theModel);
         }
 
         private ActionResult GetBlogsByUser(string username)
         {
-            var model = Loader.PopulateBlogsByUser(username);
+            var model = Loader.LoadBlogsByUser(username);
             return View("~/Views/Blog/BlogsByUser.cshtml", model);
         }
 
         private ActionResult GetBlogsByTag(string title)
         {
-            var model = new TagSingleViewModel(title);
+            var model = Loader.LoadBlogsByTag(title);
             return View("~/Views/Blog/TagSingle.cshtml", model);
         }
 
@@ -102,7 +102,7 @@ namespace DirigoEdge.Controllers
 
         public ActionResult User(string username)
         {
-            var model = Loader.PopulateBlogsByUser(username);
+            var model = Loader.LoadBlogsByUser(username);
             return View("~/Views/Blog/BlogsByUser.cshtml", model);
         }
 
@@ -145,8 +145,7 @@ namespace DirigoEdge.Controllers
                 tag = "";
             }
 
-            var model = new TagSingleViewModel(tag);
-
+            var model = Loader.LoadBlogsByTag(tag);
             return View("~/Views/Blog/TagSingle.cshtml", model);
         }
     }

@@ -24,45 +24,5 @@ namespace DirigoEdge.Models.ViewModels
         public string CurrentMonth;
 
         public string BlogTitle;
-
-        public BlogHomeViewModel(string date = "")
-        {
-            var model = new BlogListModel(Context);
-            MaxBlogCount = model.GetBlogSettings().MaxBlogsOnHomepageBeforeLoad;
-            SkipBlogs = MaxBlogCount;
-
-            BlogTitle = model.GetBlogSettings().BlogTitle;
-
-            FeaturedBlog = Context.Blogs.FirstOrDefault(x => x.IsFeatured);
-
-            CurrentMonth = "";
-
-            AllBlogs = Context.Blogs.Where(x => x.IsActive).ToList();
-
-            BlogRoll = AllBlogs.Where(x => x.IsActive)
-                        .OrderByDescending(x => x.Date)
-                        .Take(MaxBlogCount)
-                        .ToList();
-
-            BlogCats = new BlogsCategoriesViewModel("");
-
-            if (!String.IsNullOrEmpty(date))
-            {
-                DateTime startDate = Convert.ToDateTime(date);
-
-                CurrentMonth = startDate.ToString("MM/yyyy");
-
-                BlogRoll =
-                    Context.Blogs.Where(
-                        x => x.IsActive
-                             && (x.Date.Month == startDate.Month)
-                             && (x.Date.Year == startDate.Year)
-                        )
-                           .OrderByDescending(x => x.Date)
-                           .Take(MaxBlogCount)
-                           .ToList();
-            }
-
-        }
     }
 }
