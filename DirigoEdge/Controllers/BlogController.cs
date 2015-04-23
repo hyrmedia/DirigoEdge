@@ -141,20 +141,7 @@ namespace DirigoEdge.Controllers
             var model = Loader.LoadBlogsByCategory(category);
             return View("~/Views/Blog/CategoriesSingle.cshtml", model);
         }
-
-        public ActionResult User(string username)
-        {
-            var model = Loader.LoadBlogsByUser(username);
-            return View("~/Views/Blog/BlogsByUser.cshtml", model);
-        }
-
-        public ActionResult Categories(string category)
-        {
-            var model = Loader.LoadBlogsByCategory(category);
-            ViewBag.Robots = "NOINDEX, NOFOLLOW";
-            return View("~/Views/Blog/CategoriesSingle.cshtml", model);
-        }
-
+        
         public ActionResult NewPosts()
         {
             var blog = Context.Blogs.FirstOrDefault(x => x.IsActive);
@@ -176,21 +163,6 @@ namespace DirigoEdge.Controllers
             };
 
             return new FeedResult(new Rss20FeedFormatter(feed));
-        }
-
-        public ActionResult Tags(string tag)
-        {
-            // Don't index blog tag pages
-            ViewBag.Robots = "NOINDEX, NOFOLLOW";
-
-            // Blog Listing Homepage
-            if (String.IsNullOrEmpty(tag))
-            {
-                tag = "";
-            }
-
-            var model = Loader.LoadBlogsByTag(tag);
-            return View("~/Views/Blog/TagSingle.cshtml", model);
         }
     }
 }
