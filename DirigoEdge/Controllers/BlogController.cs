@@ -97,7 +97,7 @@ namespace DirigoEdge.Controllers
                 return GetBlog404();
             }
 
-            var model = new CategorySingleViewModel(category, Server);
+            var model = new CategorySingleViewModel(category);
             return View("~/Views/Blog/CategoriesSingle.cshtml", model);
         }
 
@@ -110,7 +110,7 @@ namespace DirigoEdge.Controllers
 
         public ActionResult Categories(string category)
         {
-            var model = new CategorySingleViewModel(category, Server);
+            var model = new CategorySingleViewModel(category);
             return View("~/Views/Blog/CategoriesSingle.cshtml", model);
         }
 
