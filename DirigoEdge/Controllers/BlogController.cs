@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.ServiceModel.Security;
 using System.ServiceModel.Syndication;
 using System.Web.Mvc;
-using System.Web.UI;
 using DirigoEdge.Business;
 using DirigoEdgeCore.Controllers;
 using DirigoEdgeCore.Models.DataModels;
