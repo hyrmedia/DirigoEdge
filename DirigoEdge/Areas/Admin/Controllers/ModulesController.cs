@@ -227,6 +227,15 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 return result;
             }
 
+            if (editedContent.ParentContentModuleId.HasValue)
+            {
+                editedContent = Context.ContentModules.FirstOrDefault(x => x.ContentModuleId == editedContent.ParentContentModuleId.Value);
+                if (editedContent == null)
+                {
+                    return result;
+                }
+            }
+
             SaveDraft(editedContent, editedContent.CreateDate);
 
             editedContent.DraftAuthorName = UserUtils.CurrentMembershipUsername();
