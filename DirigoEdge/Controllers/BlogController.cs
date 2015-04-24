@@ -77,6 +77,7 @@ namespace DirigoEdge.Controllers
             var model = Loader.LoadBlogHome(date);
             ViewBag.OGTitle = model.BlogTitle;
             ViewBag.OGUrl = BaseUrl + "blog";
+            ViewBag.Canonical = ViewBag.OGUrl;
 
             return View("~/Views/Home/Blog.cshtml", model);
         }
@@ -98,6 +99,7 @@ namespace DirigoEdge.Controllers
             ViewBag.OGImage = theModel.TheBlog.OGImage;
             ViewBag.MetaDesc = theModel.TheBlog.MetaDescription;
             ViewBag.OGUrl = theModel.BlogAbsoluteUrl;
+            ViewBag.Canonical = ViewBag.OGUrl;
             ViewBag.OGType = !String.IsNullOrEmpty(theModel.TheBlog.OGType)
                 ? theModel.TheBlog.OGType
                 : "article";
@@ -111,6 +113,8 @@ namespace DirigoEdge.Controllers
             var model = Loader.LoadBlogsByUser(username);
             ViewBag.OGTitle = "Blogs by : " + username;
             ViewBag.OGUrl = BaseUrl + "blog/user/" + username ;
+            ViewBag.Canonical = ViewBag.OGUrl;
+
 
             return View("~/Views/Blog/BlogsByUser.cshtml", model);
         }
@@ -119,6 +123,7 @@ namespace DirigoEdge.Controllers
         {
             var model = Loader.LoadBlogsByTag(tag);
             ViewBag.OGUrl = BaseUrl + "blog/" + tag;
+            ViewBag.Canonical = ViewBag.OGUrl;
             ViewBag.OGTitle = tag;
             ViewBag.Robots = "NOINDEX, NOFOLLOW";
             return View("~/Views/Blog/TagSingle.cshtml", model);
@@ -134,6 +139,7 @@ namespace DirigoEdge.Controllers
             ViewBag.OGTitle = category;
             ViewBag.Robots = "NOINDEX, NOFOLLOW";
             ViewBag.OGUrl = BaseUrl + "blog/" + category;
+            ViewBag.Canonical = ViewBag.OGUrl;
 
 
             var model = Loader.LoadBlogsByCategory(category);
@@ -150,6 +156,7 @@ namespace DirigoEdge.Controllers
             }
 
             var blogUrl = "http://" + HttpContext.Request.Url.Host + "/blog/";
+            ViewBag.Canonical = ViewBag.OGUrl;
             var postItems = Context.Blogs.Where(p => p.IsActive).OrderByDescending(p => p.Date).Take(25).ToList()
                 .Select(p => new SyndicationItem(p.Title, p.HtmlContent, new Uri(blogUrl + p.Title)));
 
