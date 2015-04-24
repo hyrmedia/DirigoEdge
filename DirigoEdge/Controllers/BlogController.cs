@@ -156,7 +156,7 @@ namespace DirigoEdge.Controllers
             }
 
             var blogUrl = "http://" + HttpContext.Request.Url.Host + "/blog/";
-            ViewBag.Canonical = ViewBag.OGUrl;
+            
             var postItems = Context.Blogs.Where(p => p.IsActive).OrderByDescending(p => p.Date).Take(25).ToList()
                 .Select(p => new SyndicationItem(p.Title, p.HtmlContent, new Uri(blogUrl + p.Title)));
 
