@@ -415,6 +415,7 @@
     <Content Include="CSS\images\ui-icons_ffffff_256x240.png" />
     <Content Include="CSS\main.css" />
     <Content Include="gulpfile.js" />
+    <Content Include="Scripts\ajax-service.js" />
     <Content Include="Scripts\moment-timezone.js" />
     <Content Include="Areas\Admin\Scripts\mustache\mustache.js" />
     <Content Include="Areas\Admin\Scripts\navBuilder.js" />

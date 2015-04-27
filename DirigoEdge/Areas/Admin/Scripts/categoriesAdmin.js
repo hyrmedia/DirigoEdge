@@ -62,6 +62,9 @@ category_class.prototype.initDeleteCategoryEvent = function () {
         // Set the dialog's box's text to give the user some context
         $("#popTitle").text("'" + self.$catRowToDelete.find("td.name").text() + "'");
 
+
+
+
         // Show confirmation pop up
         $("#DeleteCategoryModal").modal();
 
