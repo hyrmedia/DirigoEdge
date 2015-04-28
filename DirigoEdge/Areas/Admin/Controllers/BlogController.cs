@@ -1,29 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
-using DirigoEdge.Models.ViewModels;
 using DirigoEdgeCore.Controllers;
 using DirigoEdgeCore.Data.Entities;
-using DirigoEdgeCore.Models.ViewModels;
 using DirigoEdgeCore.Utils;
-using ImageResizer.Util;
 using Newtonsoft.Json;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
     public class BlogController : DirigoBaseAdminController
     {
-
-        public BlogUtils utils;
+        public BlogUtils Utils;
 
         public BlogController()
         {
-            utils = new BlogUtils(Context);
+            Utils = new BlogUtils(Context);
         }
 
         private JsonResult JsonErrorResult
@@ -202,11 +197,11 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 IsActive = false,
                 Title = "New Blog",
                 Date = DateTime.UtcNow,
-                Tags = new List<BlogTag> { utils.GetNewBlogTag() },
+                Tags = new List<BlogTag> { Utils.GetNewBlogTag() },
                 BlogAuthor = Context.BlogUsers.First(usr => usr.UserId == 1) // This is anonymous and can't be deleted
             };
 
-            var cat = utils.GetUncategorizedCategory();
+            var cat = Utils.GetUncategorizedCategory();
             blog.Category = cat;
 
             Context.Blogs.Add(blog);
@@ -289,7 +284,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
             editedBlog.PermaLink = ContentUtils.GetFormattedUrl(entity.PermaLink);
 
             // Database Nav property mappings
-            editedBlog.Category = utils.GetCategoryOrUncategorized(entity.Category);
+            editedBlog.Category = Utils.GetCategoryOrUncategorized(entity.Category);
             editedBlog.BlogAuthor = Context.BlogUsers.First(usr => usr.UserId == entity.AuthorId);
 
             if (editedBlog.Tags == null)
@@ -301,7 +296,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
             {
                 foreach (var tag in entity.Tags.Split(','))
                 {
-                    editedBlog.Tags.Add(utils.GetOrCreateTag(tag));
+                    editedBlog.Tags.Add(Utils.GetOrCreateTag(tag));
                 }
             }
 
