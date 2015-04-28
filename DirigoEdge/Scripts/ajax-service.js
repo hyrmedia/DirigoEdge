@@ -16,16 +16,27 @@
     };
 
     ajax.Get = function (data, url, successCallback, errorCallback) {
-        var payload = JSON.stringify(data)
 
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: payload,
-            contentType: 'application/json; charset=utf-8',
-            success: successCallback,
-            error: errorCallback
-        });
+        if (data == null) {
+            $.ajax({
+                url: url,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: successCallback,
+                error: errorCallback
+            });
+        } else {
+            var payload = JSON.stringify(data);
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: payload,
+                contentType: 'application/json; charset=utf-8',
+                success: successCallback,
+                error: errorCallback
+            });
+        }
     };
 
     return ajax;
