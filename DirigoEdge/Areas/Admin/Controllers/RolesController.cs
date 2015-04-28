@@ -111,7 +111,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
                     if (success > 0)
                     {
-                        result.Data = new { success = true, message = "The page has been successfully deleted." };
+                        result.Data = new { success = true, message = "The role has been successfully deleted." };
                     }
                 }
                 catch (Exception err)
