@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using DirigoEdge.Areas.Admin.Models;
@@ -11,14 +10,7 @@ using Newtonsoft.Json;
 namespace DirigoEdge.Areas.Admin.Controllers
 {
     public class CategoryController : DirigoBaseAdminController
-    {
-        private readonly BlogUtils _utils;
-
-        public CategoryController()
-        {
-            _utils = new BlogUtils(Context);
-        }
-
+    { 
         public class Category
         {
             public int Id { get; set; }
