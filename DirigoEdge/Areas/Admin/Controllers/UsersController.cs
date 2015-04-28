@@ -51,7 +51,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 {
                     // Modify the user roles
                     // First delete existing roles
-                    foreach (var role in editUser.Roles)
+                    foreach (var role in editUser.Roles.ToList())
                     {
                         // get current role for comparison
                         var rolesList = user.Roles.Select(a => a.RoleName).ToList();
