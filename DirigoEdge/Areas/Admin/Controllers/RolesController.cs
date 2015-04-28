@@ -84,35 +84,40 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 Data = new { success = false, message = "There was an error processing your request." }
             };
 
-            if (!String.IsNullOrEmpty(role.RoleId.ToString()))
+            if (String.IsNullOrEmpty(role.RoleId.ToString())) return result;
+
+            var roleToDelete = Context.Roles.FirstOrDefault(x => x.RoleId == role.RoleId);
+            
+            if (roleToDelete == null) return result;
+            
+            var roleName = roleToDelete.RoleName;
+
+            // Disallow deletion of administrators role
+            if (roleName == "Administrators")
             {
-                // Delete from CodeFirst
+                result.Data = new { success = false, message = "The administrator role cannot be deleted." };
+                return result;
+            }
 
-                var RoleToDelete = Context.Roles.FirstOrDefault(x => x.RoleId == role.RoleId);
-                
-                if (RoleToDelete != null)
+            // Now Check WebSecurity
+            if (!String.IsNullOrEmpty(roleName))
+            {
+                // Delete from WebSecurity
+                try
                 {
-                    // Disallow deletion of administrators role
-                    if (RoleToDelete.RoleName == "Administrators")
-                    {
-                        return result;
-                    }
-
-                    role.RoleName = RoleToDelete.RoleName;
-                    Context.Roles.Remove(RoleToDelete);
+                    Roles.DeleteRole(roleName);
+                    Context.Roles.Remove(roleToDelete);
                     var success = Context.SaveChanges();
 
                     if (success > 0)
                     {
-                        result.Data = new { success = true, message = "The role has been successfully deleted." };
+                        result.Data = new { success = true, message = "The page has been successfully deleted." };
                     }
                 }
-
-                // Now Check WebSecurity
-                if (!String.IsNullOrEmpty(role.RoleName) && role.RoleName != "Administrators")
+                catch (Exception err)
                 {
-                    // Delete from WebSecurity
-                    Roles.DeleteRole(role.RoleName);
+                    result.Data = new { success = false, message = err.Message };
+                    return result;
                 }
             }
 

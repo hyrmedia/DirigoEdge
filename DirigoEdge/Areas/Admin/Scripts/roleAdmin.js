@@ -111,7 +111,11 @@ role_class.prototype.manageUserRoleAdminEvents = function () {
                 common.hideAjaxLoader($container);
                 $('#DeleteUserRoleModal').modal('hide');
 
-                self.refreshUserRoleTable(noty({ text: 'Role Successfully Deleted.', type: 'success', timeout: 3000 }));
+                if (data.success) {
+                    self.refreshUserRoleTable(noty({ text: 'Role Successfully Deleted.', type: 'success', timeout: 3000 }));
+                } else {
+                    noty({ text: data.message, type: 'error' });
+                }
             },
             error: function (data) {
                 common.hideAjaxLoader($container);
