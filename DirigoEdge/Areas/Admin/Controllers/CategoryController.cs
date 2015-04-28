@@ -17,7 +17,6 @@ namespace DirigoEdge.Areas.Admin.Controllers
             public String Name { get; set; }
         }
 
-
         public JsonResult All()
         {
             var categories = Context.BlogCategories.ToList()
