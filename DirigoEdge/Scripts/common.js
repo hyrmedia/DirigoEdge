@@ -100,4 +100,5 @@ $(document).ready(function () {
         var formatTime = time.format(format);
         self.text(formatTime);
     });
+    EDGE = new EDGE();
 });

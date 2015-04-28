@@ -93,8 +93,6 @@ namespace DirigoEdge.Areas.Admin.Controllers
             };
 
             var success = 0;
-
-
             var cat = Context.BlogCategories.FirstOrDefault(x => x.CategoryId == id);
             var newCat = Context.BlogCategories.First(x => x.CategoryId == newId);
             Context.SaveChanges();
@@ -114,11 +112,12 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             if (success > 0)
             {
+                var newCount = Context.Blogs.Count(x => x.Category.CategoryId == newId);
                 result.Data = new
                 {
                     success = true,
-                    newCount = Context.Blogs.Count(x => x.Category.CategoryId == newId),
-                    message = "Category removed successfully. Blog posts changed: " + (success - 1)
+                    newCount,
+                    message = "Category removed successfully. Blog posts changed: " + newCount
                 };
             }
             return result;

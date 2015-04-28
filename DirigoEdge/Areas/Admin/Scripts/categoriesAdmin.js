@@ -1,5 +1,4 @@
 ﻿category_class = function () {
-    this.ajax = new AjaxService();
 };
 
 category_class.prototype.initPageEvents = function () {
@@ -41,7 +40,7 @@ category_class.prototype.initConfirmCatDeleteEvent = function () {
             newId: newId
         };
 
-        self.ajax.Post(data, "/admin/category/deletecategory", success, error);
+        EDGE.ajaxPost(data, "/admin/category/deletecategory", success, error);
     });
 };
 
@@ -68,7 +67,7 @@ category_class.prototype.initDeleteCategoryEvent = function () {
         }
 
         $("#DeleteCategoryModal").modal();
-        self.ajax.Get({}, "/admin/category/all", success);
+        EDGE.ajaxGet({}, "/admin/category/all", success);
 
         return false;
     });
@@ -103,7 +102,7 @@ category_class.prototype.initAddCategoryEvent = function () {
         };
 
         common.showAjaxLoader($container);
-        self.ajax.Post({ name: name }, "/admin/category/addcategory", success, error);
+        EDGE.ajaxPost({ name: name }, "/admin/category/addcategory", success, error);
 
         return false;
     });
