@@ -1,24 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using DirigoEdge.Areas.Admin.Models;
-using DirigoEdge.Controllers;
 using DirigoEdgeCore.Controllers;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Utils;
-using WebGrease.Css.Extensions;
+using Newtonsoft.Json;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
     public class CategoryController : DirigoBaseAdminController
-    {
-        private BlogUtils utils;
-
-        public CategoryController()
+    { 
+        public class Category
         {
-            utils = new BlogUtils(Context);
+            public int Id { get; set; }
+            public String Name { get; set; }
+        }
+
+        public JsonResult All()
+        {
+            var categories = Context.BlogCategories.ToList()
+                .Select(
+                    cat => new Category
+                    {
+                        Id = cat.CategoryId,
+                        Name = cat.CategoryName
+                    }
+                 ).ToList();
+
+            return new JsonResult
+            {
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                Data = JsonConvert.SerializeObject(categories)
+            };
         }
 
         [HttpPost]
@@ -26,7 +40,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult AddCategory(string name)
         {
-            var result = new JsonResult()
+            var result = new JsonResult
             {
                 Data = new
                 {
@@ -67,9 +81,9 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [HttpPost]
         [PermissionsFilter(Permissions = "Can Edit Blog Categories")]
         [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult DeleteCategory(string id)
+        public JsonResult DeleteCategory(int id, int newId)
         {
-            var result = new JsonResult()
+            var result = new JsonResult
             {
                 Data = new
                 {
@@ -79,35 +93,31 @@ namespace DirigoEdge.Areas.Admin.Controllers
             };
 
             var success = 0;
+            var cat = Context.BlogCategories.FirstOrDefault(x => x.CategoryId == id);
+            var newCat = Context.BlogCategories.First(x => x.CategoryId == newId);
+            Context.SaveChanges();
 
-            if (!String.IsNullOrEmpty(id))
+            // did we find a category
+            if (cat != null)
             {
-                int catId = Int32.Parse(id);
-
-                var cat = Context.BlogCategories.FirstOrDefault(x => x.CategoryId == catId);
-                var uncat = utils.GetUncategorizedCategory();
-                Context.SaveChanges();
-
-                // did we find a category
-                if (cat != null)
+                // find all posts with this category and change to Uncategorized
+                foreach (var x in Context.Blogs.Where(x => x.Category.CategoryName == cat.CategoryName))
                 {
-                    // find all posts with this category and change to Uncategorized
-                    foreach (var x in Context.Blogs.Where(x => x.Category.CategoryName == cat.CategoryName))
-                    {
-                        x.Category = uncat;
-                    }
-
-                    Context.BlogCategories.Remove(cat);
-                    success = Context.SaveChanges();
+                    x.Category = newCat;
                 }
+
+                Context.BlogCategories.Remove(cat);
+                success = Context.SaveChanges();
             }
 
             if (success > 0)
             {
+                var newCount = Context.Blogs.Count(x => x.Category.CategoryId == newId);
                 result.Data = new
                 {
                     success = true,
-                    message = "Category removed successfully. Blog posts changed: " + (success - 1)
+                    newCount,
+                    message = "Category removed successfully. Blog posts changed: " + newCount
                 };
             }
             return result;

@@ -33,9 +33,13 @@
                             }
                             <tr data-id="@cat.CategoryId">
                                 <td class="name">@cat.CategoryName</td>
-                                <td>@total</td>
+                                <td class="total" value="@total">@total</td>
                                 <td>
-                                    <a class="deleteCategoryButton btn btn-danger btn-sm" href="#" data-id="@cat.CategoryId">Delete</a>
+
+                                    @if (cat.CategoryName != "Uncategorized")
+                                    {
+                                        <a class="deleteCategoryButton btn btn-danger btn-sm" href="#" data-id="@cat.CategoryId">Delete</a>
+                                    }
                                 </td>
                             </tr>
                         }
@@ -81,8 +85,10 @@
                         <span class="sr-only">Close</span>
                     </button>
                     <h2>Delete Category</h2>
-                    <p class="lead">Are you sure you want to delete this category?</p>
-                    <div class="alert alert-danger">All blog posts with this category will change to the default category!</div>
+                    <p>Please choose a new category for existing blog posts.</p>
+                     <select id="allCategories">
+                        <option>Loading . . .</option>
+                    </select>
                 </div>
                 <div class="modal-body">
                     <div class="content container-fluid">
