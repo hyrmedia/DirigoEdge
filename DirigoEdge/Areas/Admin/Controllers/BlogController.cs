@@ -8,6 +8,7 @@ using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdgeCore.Controllers;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Utils;
+using Newtonsoft.Json;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
@@ -70,6 +71,31 @@ namespace DirigoEdge.Areas.Admin.Controllers
             return View(model);
         }
 
+        public class BlogAuthor
+        {
+            public String Username;
+            public String DisplayName;
+            public int Id;
+        }
+
+        public JsonResult GetAllBlogAuthors()
+        {
+            var users = Context.BlogUsers.ToList()
+                        .Select(
+                            user => new BlogAuthor
+                            {
+                                Id = user.UserId,
+                                Username = user.Username,
+                                DisplayName = user.DisplayName
+                            }
+                         ).ToList();
+
+            return new JsonResult
+            {
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                Data = JsonConvert.SerializeObject(users)
+            };
+        }
 
         [PermissionsFilter(Permissions = "Can Edit Blog Authors")]
         public JsonResult ModifyBlogUser(BlogUser user)
@@ -143,10 +169,14 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
 
         [PermissionsFilter(Permissions = "Can Edit Blog Authors")]
-        public JsonResult DeleteBlogUser(int userId)
+        public JsonResult DeleteBlogUser(BlogUser user)
         {
-            var userToDelete = Context.BlogUsers.FirstOrDefault(x => x.UserId == userId);
+            var newUser = Context.BlogUsers.First(usr => usr.UserId == newUserId);
+            foreach (var blog in Context.Blogs.Where(x => x.BlogAuthor.UserId == userId))
+                blog.BlogAuthor = newUser;
+            }
 
+            var userToDelete = Context.BlogUsers.FirstOrDefault(x => x.UserId == userId);
             Context.BlogUsers.Remove(userToDelete);
             var success = Context.SaveChanges();
 

@@ -20,29 +20,25 @@ blog_authors_class.prototype.initPageEvents = function() {
 
         var $container = $("#NewAuthorModal div.content");
         common.showAjaxLoader($container);
-        $.ajax({
-            url: "/admin/blog/addbloguser",
-            type: "POST",
-            dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify(data, null, 2),
-            success: function (data) {
-                // Close the dialog box
-                $('#NewAuthorModal').modal('hide');
-                $("#NewUserName").val('');
-                $("#NewUserImage").val('');
 
-                common.hideAjaxLoader($container);
+        var success = function () {
+            $('#NewAuthorModal').modal('hide');
+            $("#NewUserName").val('');
+            $("#NewUserImage").val('');
 
-                //Refresh the inner content to show the new user
-                self.refreshAuthorTable(noty({ text: 'Author Successfully Created.', type: 'success', timeout: 3000 }));
-            },
-            error: function (data) {
-                $('#NewAuthorModal').modal('hide');
-                common.hideAjaxLoader($container);
-                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error' });
-            }
-        });
+            common.hideAjaxLoader($container);
+
+            //Refresh the inner content to show the new user
+            self.refreshAuthorTable(noty({ text: 'Author Successfully Created.', type: 'success', timeout: 3000 }));
+        };
+
+        var error = function() {
+            $('#NewAuthorModal').modal('hide');
+            common.hideAjaxLoader($container);
+            noty({ text: 'There was an error processing your request.', type: 'error' });
+        };
+
+        EDGE.ajaxPost(data, "/admin/blog/addbloguser", success, error);
     });
 
     // Manage Users Edit User
@@ -82,28 +78,20 @@ blog_authors_class.prototype.initPageEvents = function() {
 
         var $container = $("#ModifyAuthorModal > div.content");
         common.showAjaxLoader($container);
-        $.ajax({
-            url: "/admin/blog/modifybloguser",
-            type: "POST",
-            dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify(data, null, 2),
-            success: function (data) {
 
-                common.hideAjaxLoader($container);
+        var success = function() {
+            common.hideAjaxLoader($container);
+            $('#ModifyAuthorModal').modal('hide');
+            self.refreshAuthorTable(noty({ text: 'User Successfully Modified.', type: 'success', timeout: 3000 }));
+        };
 
-                // Close the dialog box
-                $('#ModifyAuthorModal').modal('hide');
+        var error = function() {
+            common.hideAjaxLoader($container);
+            $('#ModifyAuthorModal').modal('hide');
+            noty({ text: 'There was an error processing your request.', type: 'error' });
+        };
 
-                //Refresh the inner content to show the new user
-                self.refreshAuthorTable(noty({ text: 'User Successfully Modified.', type: 'success', timeout: 3000 }));
-            },
-            error: function (data) {
-                common.hideAjaxLoader($container);
-                $('#ModifyAuthorModal').modal('hide');
-                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error' });
-            }
-        });
+        EDGE.ajaxPost(data, "/admin/blog/modifybloguser", success, error);
     });
 
     // Delete author and confirmation
@@ -113,30 +101,39 @@ blog_authors_class.prototype.initPageEvents = function() {
         self.EditUserId = $(this).attr("data-id");
         self.EditUserDisplayName = $row.find("td.displayName").text();
         $("#DelUserName").text(self.EditUserDisplayName);
+
+        var success = function (data) {
+
+            $('#allAuthors').empty();
+            $.each($.parseJSON(data), function (index, value) {
+                console.log(value);
+                if (value.Id != self.EditUserId) {
+                    var option = $('<option></option>').attr("value", value.Id).text(value.DisplayName);
+                    $('#allAuthors').append(option);
+                }
+            });
+        }
+
+        $("#DeleteCategoryModal").modal();
+        EDGE.ajaxGet({}, "/admin/blog/GetAllBlogAuthors", success);
+
         $("#DeleteAuthorModal").modal();
     });
 
     // Submit Delete Author
     $("#DeleteAuthorButton").click(function () {
-        var data = { userId: self.EditUserId };
+        var newId = $('#allAuthors option:selected').val();
+        var data = { user: { UserID: self.EditUserId } };
+        var success = function() {
+            $('#DeleteAuthorModal').modal('hide');
+            blog_authors.refreshAuthorTable(noty({ text: 'Author Successfully Deleted.', type: 'success', timeout: 3000 }));
+        };
+        var error = function() {
+            $('#ModifyUserModal').modal('hide');
+            noty({ text: 'There was an error processing your request.', type: 'error' });
+        };
 
-        $.ajax({
-            url: "/admin/blog/deletebloguser",
-            type: "POST",
-            dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify(data, null, 2),
-            success: function (data) {
-                // Close the dialog box
-                $('#DeleteAuthorModal').modal('hide');
-
-                blog_authors.refreshAuthorTable(noty({ text: 'Author Successfully Deleted.', type: 'success', timeout: 3000 }));
-            },
-            error: function (data) {
-                $('#ModifyUserModal').modal('hide');
-                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error' });
-            }
-        });
+        EDGE.ajaxPost(data, "/admin/blog/deletebloguser", success, error);
     });
 
     // Close Delete User Modal
