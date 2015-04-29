@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
 using DirigoEdgeCore.Controllers;
@@ -138,41 +139,42 @@ namespace DirigoEdge.Controllers
         public ActionResult ResetPassword(ResetPasswordModel model)
         {
             var errorMessage = String.Empty;
-            if (ModelState.IsValid)
+            
+            if (!ModelState.IsValid)
             {
-                // Try sending reset
-                try
-                {
-                    var question = WebSecurity.GetSecretQuestion(model.Email);
-                }
-                catch (MembershipPasswordException e)
-                {
-                    errorMessage = e.Message;
-                }
-
-                if (String.IsNullOrEmpty(errorMessage))
-                {
-                    var success = WebSecurity.SendResetPassword(Request.Url.Host, model.Email, model.Answer);
-
-                    if (success)
-                    {
-                        return RedirectToAction("ResetPasswordSuccess");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "The answer did not match our records");
-                        return View(model);
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError("", errorMessage);
-                    return View(model);
-                }
+                return View(model);
             }
 
-            return View(model);
+            // Try sending reset
+            try
+            {
+                var question = WebSecurity.GetSecretQuestion(model.Email);
+            }
+            catch (MembershipPasswordException e)
+            {
+                errorMessage = e.Message;
+            }
 
+            if (String.IsNullOrEmpty(errorMessage))
+            {
+                var success = WebSecurity.SendResetPassword(Request.Url.Host, model.Email, model.Answer);
+
+                if (success)
+                {
+                    var user = Context.Users.First(usr => usr.Email == model.Email);
+                    user.IsLockedOut = false;
+                    Context.SaveChanges();
+
+                    return RedirectToAction("ResetPasswordSuccess");
+                }
+
+                ModelState.AddModelError("", "The answer did not match our records");
+
+                return View(model);
+            }
+                
+            ModelState.AddModelError("", errorMessage);
+            return View(model);
         }
 
         [AllowAnonymous]

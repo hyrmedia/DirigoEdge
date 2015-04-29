@@ -34,7 +34,7 @@
                 </div>
             </div>
             
-            @foreach (var module in Model.AdminModulesColumn1)
+            @foreach (var module in Model.AdminModulesColumn1.OrderBy(x => x.OrderNumber))
             {
                 string collapsed = module.IsCollapsed ? "collapsed" : "";
                 <div id="@module.ModuleName" class="panel sortable @collapsed">
@@ -44,7 +44,7 @@
         </div>
 
         <div id="Sortable2" class="col-lg-4 connectedSortable">                                    
-            @foreach (var module in Model.AdminModulesColumn2)
+            @foreach (var module in Model.AdminModulesColumn2.OrderBy(x => x.OrderNumber))
             {
                 string collapsed = module.IsCollapsed ? "collapsed" : "";
                 <div id="@module.ModuleName" class="panel sortable @collapsed">

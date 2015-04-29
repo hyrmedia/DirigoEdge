@@ -54,7 +54,7 @@ blog_class.prototype.initBlogAdminModuleEvents = function () {
         items: ".sortable", // Don't Sort editor
         handle: "h4",
         helper: 'clone', // Prevents click event on h4 after drag
-        stop: function(event, ui) {
+        stop: function (event, ui) {
             // fire off save event after drop is complete
             self.saveModulePositions();
         }
@@ -71,7 +71,6 @@ blog_class.prototype.initBlogAdminModuleEvents = function () {
 
 blog_class.prototype.saveModulePositions = function() {
     var self = this;
-
     // Cancel any previos ajax requests
     if (self.xhr != null) {
         self.xhr.abort();
@@ -106,7 +105,7 @@ blog_class.prototype.saveModulePositions = function() {
     });
 
     var data = {
-        entity: {
+        moduleLists: {
             AdminModulesColumn1: AdminModulesColumn1,
             AdminModulesColumn2: AdminModulesColumn2
         }

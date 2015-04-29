@@ -123,7 +123,7 @@ blog_authors_class.prototype.initPageEvents = function() {
     // Submit Delete Author
     $("#DeleteAuthorButton").click(function () {
         var newId = $('#allAuthors option:selected').val();
-        var data = { userId : self.EditUserId, newUserId: newId } ;
+        var data = { user: { UserID: self.EditUserId } };
         var success = function() {
             $('#DeleteAuthorModal').modal('hide');
             blog_authors.refreshAuthorTable(noty({ text: 'Author Successfully Deleted.', type: 'success', timeout: 3000 }));
