@@ -129,13 +129,19 @@
                         <span class="sr-only">Close</span>
                     </button>
                     <h2>Delete Author.</h2>
-                    <p class="lead">Do you want to <em>permanently</em> delete <span id="DelUserName"></span>?</p>
+                    <p class="lead">Do you want to <em>permanently</em> delete <span id="DelUserName"></span>?
+                    </p>
+                    <p>Please choose a new author for existing blog posts.</p>
+                    <select id="allAuthors">
+                        <option>Loading . . .</option>
+                    </select>
                 </div>
                 <div class="modal-body">
                     <div class="content container-fluid">
                         <p>Note : User Uploaded Images will need to be manually removed from the file system.</p>
                     </div>
                 </div>
+
                 <div class="modal-footer">
                     <a id="DeleteAuthorButton" class="btn btn-danger pull-right confirmModalButton">Delete</a>
                     <a id="CancelDeleteButton" class="btn btn-default pull-right" data-dismiss="modal">Cancel</a>

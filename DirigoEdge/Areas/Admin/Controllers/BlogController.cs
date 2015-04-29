@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -8,19 +7,18 @@ using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdgeCore.Controllers;
 using DirigoEdgeCore.Data.Entities;
-using DirigoEdgeCore.Models.ViewModels;
 using DirigoEdgeCore.Utils;
+using Newtonsoft.Json;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
     public class BlogController : DirigoBaseAdminController
     {
-
-        public BlogUtils utils;
+        public BlogUtils Utils;
 
         public BlogController()
         {
-            utils = new BlogUtils(Context);
+            Utils = new BlogUtils(Context);
         }
 
         private JsonResult JsonErrorResult
@@ -66,6 +64,31 @@ namespace DirigoEdge.Areas.Admin.Controllers
             return View(model);
         }
 
+        public class BlogAuthor
+        {
+            public String Username;
+            public String DisplayName;
+            public int Id;
+        }
+
+        public JsonResult GetAllBlogAuthors()
+        {
+            var users = Context.BlogUsers.ToList()
+                        .Select(
+                            user => new BlogAuthor
+                            {
+                                Id = user.UserId,
+                                Username = user.Username,
+                                DisplayName = user.DisplayName
+                            }
+                         ).ToList();
+
+            return new JsonResult
+            {
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                Data = JsonConvert.SerializeObject(users)
+            };
+        }
 
         [PermissionsFilter(Permissions = "Can Edit Blog Authors")]
         public JsonResult ModifyBlogUser(BlogUser user)
@@ -132,17 +155,21 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
 
         [PermissionsFilter(Permissions = "Can Edit Blog Authors")]
-        public JsonResult DeleteBlogUser(BlogUser user)
+        public JsonResult DeleteBlogUser(int userId, int newUserId)
         {
             var success = 0;
 
-            if (!String.IsNullOrEmpty(user.UserId.ToString()))
-            {
-                var UserToDelete = Context.BlogUsers.FirstOrDefault(x => x.UserId == user.UserId);
+            var newUser = Context.BlogUsers.First(usr => usr.UserId == newUserId);
 
-                Context.BlogUsers.Remove(UserToDelete);
-                success = Context.SaveChanges();
+            foreach (var blog in Context.Blogs.Where(x => x.BlogAuthor.UserId == userId))
+            {
+                blog.BlogAuthor = newUser;
             }
+
+            var userToDelete = Context.BlogUsers.FirstOrDefault(x => x.UserId == userId);
+            Context.BlogUsers.Remove(userToDelete);
+            success = Context.SaveChanges();
+
             if (success > 0)
             {
                 return new JsonResult
@@ -170,11 +197,11 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 IsActive = false,
                 Title = "New Blog",
                 Date = DateTime.UtcNow,
-                Tags = new List<BlogTag> { utils.GetNewBlogTag() },
+                Tags = new List<BlogTag> { Utils.GetNewBlogTag() },
                 BlogAuthor = Context.BlogUsers.First(usr => usr.UserId == 1) // This is anonymous and can't be deleted
             };
 
-            var cat = utils.GetUncategorizedCategory();
+            var cat = Utils.GetUncategorizedCategory();
             blog.Category = cat;
 
             Context.Blogs.Add(blog);
@@ -257,7 +284,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
             editedBlog.PermaLink = ContentUtils.GetFormattedUrl(entity.PermaLink);
 
             // Database Nav property mappings
-            editedBlog.Category = utils.GetCategoryOrUncategorized(entity.Category);
+            editedBlog.Category = Utils.GetCategoryOrUncategorized(entity.Category);
             editedBlog.BlogAuthor = Context.BlogUsers.First(usr => usr.UserId == entity.AuthorId);
 
             if (editedBlog.Tags == null)
@@ -269,7 +296,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
             {
                 foreach (var tag in entity.Tags.Split(','))
                 {
-                    editedBlog.Tags.Add(utils.GetOrCreateTag(tag));
+                    editedBlog.Tags.Add(Utils.GetOrCreateTag(tag));
                 }
             }
 
