@@ -55,7 +55,6 @@ blog_class.prototype.initBlogAdminModuleEvents = function () {
         handle: "h4",
         helper: 'clone', // Prevents click event on h4 after drag
         stop: function (event, ui) {
-            console.log('stopping');
             // fire off save event after drop is complete
             self.saveModulePositions();
         }
