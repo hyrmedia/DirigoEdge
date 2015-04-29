@@ -72,7 +72,6 @@ blog_class.prototype.initBlogAdminModuleEvents = function () {
 
 blog_class.prototype.saveModulePositions = function() {
     var self = this;
-    debugger;
     // Cancel any previos ajax requests
     if (self.xhr != null) {
         self.xhr.abort();
@@ -107,7 +106,7 @@ blog_class.prototype.saveModulePositions = function() {
     });
 
     var data = {
-        entity: {
+        moduleLists: {
             AdminModulesColumn1: AdminModulesColumn1,
             AdminModulesColumn2: AdminModulesColumn2
         }

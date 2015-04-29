@@ -169,10 +169,11 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
 
         [PermissionsFilter(Permissions = "Can Edit Blog Authors")]
-        public JsonResult DeleteBlogUser(BlogUser user)
+        public JsonResult DeleteBlogUser(int userId, int newUserId)
         {
             var newUser = Context.BlogUsers.First(usr => usr.UserId == newUserId);
             foreach (var blog in Context.Blogs.Where(x => x.BlogAuthor.UserId == userId))
+            {
                 blog.BlogAuthor = newUser;
             }
 
