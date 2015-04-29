@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -8,19 +7,17 @@ using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdgeCore.Controllers;
 using DirigoEdgeCore.Data.Entities;
-using DirigoEdgeCore.Models.ViewModels;
 using DirigoEdgeCore.Utils;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
     public class BlogController : DirigoBaseAdminController
     {
-
-        public BlogUtils utils;
+        public BlogUtils Utils;
 
         public BlogController()
         {
-            utils = new BlogUtils(Context);
+            Utils = new BlogUtils(Context);
         }
 
         private JsonResult JsonErrorResult
@@ -55,8 +52,15 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [PermissionsFilter(Permissions = "Can Edit Blogs")]
         public ActionResult EditBlog(string id)
         {
-            var model = new EditBlogViewModel(id);
-            return View(model);
+            try
+            {
+                var model = new EditBlogViewModel(id);
+                return View(model);
+            }
+            catch (Exception)
+            {
+                return Redirect("/admin/blog/manageblogs/");
+            }
         }
 
         [PermissionsFilter(Permissions = "Can Edit Blog Categories")]
@@ -70,13 +74,16 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [PermissionsFilter(Permissions = "Can Edit Blog Authors")]
         public JsonResult ModifyBlogUser(BlogUser user)
         {
-            var result = JsonErrorResult;
-
             var success = 0;
 
             if (!String.IsNullOrEmpty(user.UserId.ToString()))
             {
                 var editUser = Context.BlogUsers.FirstOrDefault(x => x.UserId == user.UserId);
+
+                if (editUser == null)
+                {
+                    return JsonErrorResult;
+                }
 
                 editUser.DisplayName = user.DisplayName;
                 editUser.UserImageLocation = user.UserImageLocation;
@@ -87,13 +94,17 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             if (success > 0)
             {
-                result.Data = new
+                return new JsonResult
                 {
-                    success = true,
-                    message = "Changes saved successfully."
-                };
+                    Data = new
+                    {
+                        success = true,
+                        message = "Changes saved successfully."
+                    }
+                }
+                ;
             }
-            return result;
+            return JsonErrorResult;
         }
 
         [PermissionsFilter(Permissions = "Can Edit Blog Authors")]
@@ -132,17 +143,13 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
 
         [PermissionsFilter(Permissions = "Can Edit Blog Authors")]
-        public JsonResult DeleteBlogUser(BlogUser user)
+        public JsonResult DeleteBlogUser(int userId)
         {
-            var success = 0;
+            var userToDelete = Context.BlogUsers.FirstOrDefault(x => x.UserId == userId);
 
-            if (!String.IsNullOrEmpty(user.UserId.ToString()))
-            {
-                var UserToDelete = Context.BlogUsers.FirstOrDefault(x => x.UserId == user.UserId);
+            Context.BlogUsers.Remove(userToDelete);
+            var success = Context.SaveChanges();
 
-                Context.BlogUsers.Remove(UserToDelete);
-                success = Context.SaveChanges();
-            }
             if (success > 0)
             {
                 return new JsonResult
@@ -153,7 +160,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
                         message = "User deleted successfully."
                     }
                 };
-            };
+            }
 
             return JsonErrorResult;
         }
@@ -162,26 +169,24 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [PermissionsFilter(Permissions = "Can Edit Blogs")]
         public ActionResult AddBlog()
         {
-            string blogId = String.Empty;
-
             // Create a new blog to be passed to the edit blog action
             Blog blog = new Blog
             {
                 IsActive = false,
                 Title = "New Blog",
                 Date = DateTime.UtcNow,
-                Tags = new List<BlogTag> { utils.GetNewBlogTag() },
+                Tags = new List<BlogTag> { Utils.GetNewBlogTag() },
                 BlogAuthor = Context.BlogUsers.First(usr => usr.UserId == 1) // This is anonymous and can't be deleted
             };
 
-            var cat = utils.GetUncategorizedCategory();
+            var cat = Utils.GetUncategorizedCategory();
             blog.Category = cat;
 
             Context.Blogs.Add(blog);
             Context.SaveChanges();
 
             // Update the blog title / permalink with the new id we now have
-            blogId = blog.BlogId.ToString();
+            var blogId = blog.BlogId.ToString();
 
             blog.Title = blog.Title + " " + blogId;
             Context.SaveChanges();
@@ -257,7 +262,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
             editedBlog.PermaLink = ContentUtils.GetFormattedUrl(entity.PermaLink);
 
             // Database Nav property mappings
-            editedBlog.Category = utils.GetCategoryOrUncategorized(entity.Category);
+            editedBlog.Category = Utils.GetCategoryOrUncategorized(entity.Category);
             editedBlog.BlogAuthor = Context.BlogUsers.First(usr => usr.UserId == entity.AuthorId);
 
             if (editedBlog.Tags == null)
@@ -269,7 +274,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
             {
                 foreach (var tag in entity.Tags.Split(','))
                 {
-                    editedBlog.Tags.Add(utils.GetOrCreateTag(tag));
+                    editedBlog.Tags.Add(Utils.GetOrCreateTag(tag));
                 }
             }
 
@@ -315,7 +320,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
                     message = "Blog created successfully.",
                     id = entity.BlogId
                 };
-            };
+            }
             return result;
         }
 
@@ -356,67 +361,58 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [PermissionsFilter(Permissions = "Can Edit Modules")]
         [AcceptVerbs(HttpVerbs.Post)]
         [ValidateInput(false)]
-        public JsonResult SaveModules(AdminModules entity)
+        public JsonResult SaveModules(AdminModules moduleLists)
         {
-            var result = JsonErrorResult;
+            var user = Membership.GetUser(HttpContext.User.Identity.Name);
 
-            var success = 0;
-
-            if (entity != null)
+            if (moduleLists == null || user == null)
             {
-                var user = Membership.GetUser(HttpContext.User.Identity.Name);
-                string userName = user.UserName;
-
-                // First delete all entries for user
-                var modules = Context.BlogAdminModules.Where(x => x.User.Username == userName);
-                foreach (var mod in modules)
-                {
-                    Context.BlogAdminModules.Remove(mod);
-                }
-
-                // Then add the new modules to the user
-                if (entity.AdminModulesColumn1 != null)
-                {
-                    foreach (var module in entity.AdminModulesColumn1)
-                    {
-                        var thisUser = Context.Users.FirstOrDefault(x => x.Username == userName);
-
-                        // Make sure modules exist
-                        checkNullUserModules(thisUser);
-
-                        thisUser.BlogAdminModules.Add(module);
-                    }
-                }
-
-                if (entity.AdminModulesColumn2 != null)
-                {
-                    foreach (var module in entity.AdminModulesColumn2)
-                    {
-                        var thisUser = Context.Users.FirstOrDefault(x => x.Username == userName);
-
-                        // Make sure modules exist
-                        checkNullUserModules(thisUser);
-
-                        thisUser.BlogAdminModules.Add(module);
-                    }
-                }
-
-                success = Context.SaveChanges();
+                return JsonErrorResult;
             }
+
+            var userName = user.UserName;
+            Context.BlogAdminModules.RemoveRange(Context.BlogAdminModules.Where(x => x.User.Username == userName));
+
+            var thisUser = Context.Users.FirstOrDefault(x => x.Username == userName);
+            CheckNullUserModules(thisUser);
+
+            UpdateModulesUser(moduleLists.AdminModulesColumn1, thisUser);
+            UpdateModulesUser(moduleLists.AdminModulesColumn2, thisUser);
+
+            var success = Context.SaveChanges();
+
             if (success > 0)
             {
-                result.Data = new
+                return new JsonResult
                 {
-                    success = true,
-                    message = "Modules updated successfully."
+                    Data = new
+                    {
+                        success = true,
+                        message = "Modules updated successfully."
+                    }
                 };
-            };
-            return result;
+            }
+
+            return JsonErrorResult;
+        }
+
+        private void UpdateModulesUser(List<BlogAdminModule> modules, User thisUser)
+        {
+            if (modules == null)
+            {
+                return;
+            }
+
+            foreach (var module in modules)
+            {
+                module.User = thisUser;
+                Context.BlogAdminModules.Add(module);
+            }
         }
 
         #region Helper Methods
 
-        private void checkNullUserModules(User thisUser)
+        private static void CheckNullUserModules(User thisUser)
         {
             if (thisUser.BlogAdminModules == null)
             {

@@ -34,6 +34,11 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
 
             ThisBlog = Context.Blogs.FirstOrDefault(x => x.BlogId == BlogId);
 
+            if (ThisBlog == null)
+            {
+               throw new KeyNotFoundException();
+            }
+
             if (ThisBlog.Category == null)
             {
                 ThisBlog.Category = utils.GetUncategorizedCategory();

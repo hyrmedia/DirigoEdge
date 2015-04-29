@@ -118,7 +118,7 @@ blog_authors_class.prototype.initPageEvents = function() {
 
     // Submit Delete Author
     $("#DeleteAuthorButton").click(function () {
-        var data = { user: { UserID: self.EditUserId } };
+        var data = { userId: self.EditUserId };
 
         $.ajax({
             url: "/admin/blog/deletebloguser",
