@@ -28,19 +28,41 @@ namespace DirigoEdge.Controllers
         {
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, model.RememberMe))
             {
-                LoginLog loginLog = new LoginLog();
-                loginLog.UserName = model.UserName;
-                loginLog.IPAddress = WebUtils.ClientIPAddress();
-                loginLog.Date = DateTime.UtcNow;
-                Context.LoginLog.Add(loginLog);
+                Context.LoginLog.Add(new LoginLog
+                {
+                    UserName = model.UserName,
+                    IPAddress = WebUtils.ClientIPAddress(),
+                    Date = DateTime.UtcNow
+                });
+
                 Context.SaveChanges();
 
                 return RedirectToLocal(returnUrl);
             }
 
+            var message = GetLoginError(model);
+
             // If we got this far, something failed, redisplay form
-            ModelState.AddModelError("", "The user name or password provided is incorrect.");
+            ModelState.AddModelError("", message);
             return View(model);
+        }
+
+        private string GetLoginError(LoginModel model)
+        {
+            String message;
+            var user = Context.Users.FirstOrDefault(usr => usr.Username == model.UserName);
+
+
+            if (user != null && user.IsLockedOut)
+            {
+                message =
+                    "Your account is locked from too many invalid attemptes.\r\n Please use 'Forgot Password' to reset it.";
+            }
+            else
+            {
+                message = "The user name or password provided is incorrect.";
+            }
+            return message;
         }
 
         public ActionResult LogOff()
@@ -161,10 +183,6 @@ namespace DirigoEdge.Controllers
 
                 if (success)
                 {
-                    var user = Context.Users.First(usr => usr.Email == model.Email);
-                    user.IsLockedOut = false;
-                    Context.SaveChanges();
-
                     return RedirectToAction("ResetPasswordSuccess");
                 }
 
@@ -218,13 +236,14 @@ namespace DirigoEdge.Controllers
         [AllowAnonymous]
         public ActionResult ChangePassword(string key)
         {
-
             var model = new ChangePasswordModel(key);
 
-            if (model.Key != null) return View(model);
+            if (model.Key != null)
+            {
+                return View(model);
+            }
 
             return RedirectToAction("Login", new { returnUrl = "/" });
-
         }
 
         [HttpPost]
@@ -232,20 +251,27 @@ namespace DirigoEdge.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(ChangePasswordModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = WebSecurity.GetUserFromKey(model.Key);
-                if (user != null)
-                {
-                    MembershipUser u = Membership.GetUser(user.Username);
-                    WebSecurity.ChangePassword(u.UserName, model.Password);
-                    WebSecurity.ClearResetKey(u.UserName);
-                }
-
-                return RedirectToAction("Login", new { returnUrl = "/app/" });
+                return View(model);
             }
 
-            return View(model);
+            var user = WebSecurity.GetUserFromKey(model.Key);
+            if (user == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var u = Membership.GetUser(user.Username);
+            if (u == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            WebSecurity.ChangePassword(u.UserName, model.Password);
+            WebSecurity.ClearResetKey(u.UserName);
+
+            return RedirectToAction("Login");
         }
 
 
