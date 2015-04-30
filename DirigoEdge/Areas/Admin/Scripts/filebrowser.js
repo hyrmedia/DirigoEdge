@@ -268,7 +268,7 @@
                     type: 'document',
                     href: media.path,
                     title: media.alt,
-                    text: media.align,
+                    text: media.linkText,
                     elem: self.clickedElem
                 };
             }

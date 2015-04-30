@@ -331,15 +331,20 @@ content_class.prototype.initContentImageUploadEvents = function() {
     var self = this;
 
     $('#InsertContentImage').fileBrowser(function (object) {
-        if (object.type === 'image' && object.src) {
+        var tag;
 
-            var imgTag = "<img src='" + object.src + "' alt='' />";
-            // Insert an img tag into the editor
-            self.htmlEditor.insert(imgTag);
-
-            // Highlight the newly placed tag
-            self.htmlEditor.find(imgTag, { backwards: true, });
+        if (object.type === 'image') {
+            tag = '<img src="' + object.src + '" alt="' + object.alt + '" />';
+            
+        } else {
+            tag = '<a href="' + object.href + '" title="' + object.title + '" >' + object.text + '</a>';
         }
+
+        // Insert the tag into the editor
+        self.htmlEditor.insert(tag);
+
+        // Highlight the newly placed tag
+        self.htmlEditor.find(tag, { backwards: true, });
     });
 };
 
@@ -347,7 +352,6 @@ content_class.prototype.initModuleUploadEvents = function () {
 
     $('#ChangeImageThumbnail').fileBrowser(function (object) {
         if (object.type === 'image' && object.src) {
-                
             $("#ModuleThumbnail").val(object.src);
             $("#ImageModuleThumbnail").attr("src", object.src);
         }
