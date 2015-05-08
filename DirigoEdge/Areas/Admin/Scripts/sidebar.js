@@ -36,10 +36,11 @@ sidebar_class.prototype.initPageEvents = function () {
 
         $("body").removeClass("sidebarOpen");
 
-        $('.sidebar .collapse').collapse('hide');
+        if ($('body').hasClass('collapse-menu')) {
+            $('.sidebar .collapse').collapse('hide');
+        }
 
     });
-
 
     // Avoid event propagation issues with anchors. Should
     // be clickable when sidebar is open, should open sidebar

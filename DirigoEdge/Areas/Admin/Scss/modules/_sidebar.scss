@@ -5,7 +5,7 @@
     left: 0;
     width: 220px;
     padding: 33px 0;
-    background: #222;
+    background: #eee;
     font-size: 16px;
     overflow: auto;
 
@@ -18,22 +18,6 @@
 
         > li {
             border-left: 3px solid #16bed4;
-        }
-
-        > li.has-dropdown.active {
-            border: none;
-
-            > a {
-                background: #f4f4f4;
-                color: #666;
-                position: relative;
-                border-left: 3px solid #2BA6CB;
-            }
-
-            > a:hover {
-                background: #f2f2f2;
-                color: #666;
-            }
         }
 
         .toggle-sidebar {
@@ -63,31 +47,32 @@
             @extend .clearfix;
             padding: 10px 0 10px 15px;
             font-size: 0.9em;
-            color: white;
+            color: #222;
 
             &:hover {
+                background: #ddd;
                 color: #222;
             }
 
             &[data-toggle="collapse"] {
-                background: #eee;
+                background: #ddd;
                 color: #222;
             }
 
             &[data-toggle="collapse"].collapsed {
-                background: #222;
-                color: white;
+                background: #eee;
+                color: #222;
             }
 
             &[data-toggle="collapse"].collapsed:hover {
-                background: #eee;
+                background: #ddd;
                 color: #222;
             }
 
             > i {
                 position: relative;
                 top: 1px;
-                width: 47px;
+                width: 43px;
                 font-size: 1.25em;
                 text-align: center;
                 float: right;
@@ -99,10 +84,11 @@
             background: #eee;
 
             a {
+                padding-left: 30px;
                 color: #222;
 
                 &:hover {
-                    background: #e7e7e7
+                    background: #ddd
                 }
             }
         }
