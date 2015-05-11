@@ -19,6 +19,8 @@ sidebar_class.prototype.initPageEvents = function () {
                 $(this).parent().removeClass("active");
             }
         });
+
+        return false;
     });
 
     // Keep sidebar open if on manage page
