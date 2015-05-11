@@ -416,6 +416,7 @@
     <Content Include="CSS\images\ui-icons_ffffff_256x240.png" />
     <Content Include="CSS\main.css" />
     <Content Include="gulpfile.js" />
+    <Content Include="Scripts\ckeditor\plugins\removeresponsiveimage\plugin.js" />
     <Content Include="Scripts\Edge\ajax-service.js" />
     <Content Include="Scripts\Edge\Edge.js" />
     <Content Include="Scripts\moment-timezone.js" />
@@ -985,6 +986,7 @@
     <Folder Include="Areas\Admin\Scss\sass\" />
     <Folder Include="Data\Entities\" />
     <Folder Include="Scripts\ckeditor\plugins\image\images\" />
+    <Folder Include="Scripts\ckeditor\plugins\removeresponsiveimage\dialogs\" />
     <Folder Include="Scss\sass\" />
     <Folder Include="Uploaded\" />
   </ItemGroup>
