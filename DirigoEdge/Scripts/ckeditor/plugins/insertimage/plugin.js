@@ -17,12 +17,19 @@
 
             $button.off('click');
 
-            $button.fileBrowser(function (data) {
-                if (data.type === 'image' && data.src) {
-                    editor.insertHtml('<img src="' + data.src + '" alt="' + data.alt + '" class="' + data.align + '">');
+            $button.fileBrowser(function (object) {
+                var tag;
+
+                if (object.type === 'image') {
+                    tag = object.responsive
+                            ? '[responsive_image src="' + object.src + '" alt="' + object.alt + '" width="' + object.width + '" height="' + object.height + '"]'
+                            : '<img src="' + object.src + '" alt="' + object.alt + '" />';
                 } else {
-                    editor.insertHtml('<a href="' + data.href + '" title="' + data.title + '">' + data.text + '</a>');
+                    tag = '<a href="' + object.href + '" title="' + object.title + '" >' + object.text + '</a>';
                 }
+
+                // Insert the tag into the editor
+                editor.insertHtml(tag);
             });
         }, 200);
 

@@ -244,7 +244,9 @@
                     path: $file.data('path'),
                     alt: $file.find('.alt-text').val(),
                     align: $('input[name=align]:checked', $file).val(),
-                    linkText: $file.find('.link-text').val()
+                    linkText: $file.find('.link-text').val(),
+                    width: $file.data('width'),
+                    height: $file.data('height')
                 };
 
             // Warn if user tries to insert a document without link text
@@ -261,7 +263,11 @@
                     src: media.path,
                     alt: media.alt,
                     align: media.align,
-                    elem: self.clickedElem
+                    width: media.width,
+                    height: media.height,
+                    elem: self.clickedElem,
+                    // todo: This should be based on a checkbox
+                    responsive: true
                 };
             } else {
                 fileObject = {
