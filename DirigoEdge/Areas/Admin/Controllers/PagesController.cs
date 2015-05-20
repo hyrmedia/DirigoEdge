@@ -100,7 +100,9 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             // Update the page title / permalink with the new id we now have
             page.DisplayName = "Page " + page.ContentPageId;
+            ContentUtils.ReplacePageParametersInHtmlContent(page);
             Context.SaveChanges();
+            CachedObjects.GetCacheContentPages(true);
 
             // Pass content Heading along if it exists
             object routeParameters = new { id = page.ContentPageId };
@@ -191,7 +193,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         {
             var model = new ContentViewViewModel {ThePage = ContentLoader.GetDetailById(id)};
             model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
-            model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent, Context);
+            model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent);
 
             if (model.ThePage != null)
             {
@@ -459,6 +461,8 @@ namespace DirigoEdge.Areas.Admin.Controllers
             editedContent.NoFollow = entity.NoFollow;
 
             editedContent.ParentNavigationItemId = entity.ParentNavigationItemId;
+
+            ContentUtils.ReplacePageParametersInHtmlContent(editedContent);
         }
 
         #endregion
