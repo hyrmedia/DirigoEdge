@@ -100,7 +100,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             // Update the page title / permalink with the new id we now have
             page.DisplayName = "Page " + page.ContentPageId;
-            ContentUtils.ReplacePageParametersInHtmlContent(page);
+            page.HTMLContent = ContentUtils.ReplacePageParametersInHtmlContent(page.HTMLUnparsed, page);
             Context.SaveChanges();
             CachedObjects.GetCacheContentPages(true);
 
@@ -462,7 +462,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             editedContent.ParentNavigationItemId = entity.ParentNavigationItemId;
 
-            ContentUtils.ReplacePageParametersInHtmlContent(editedContent);
+            editedContent.HTMLContent = ContentUtils.ReplacePageParametersInHtmlContent(editedContent.HTMLUnparsed, entity);
         }
 
         #endregion
