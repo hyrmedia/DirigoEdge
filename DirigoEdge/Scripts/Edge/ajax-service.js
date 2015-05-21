@@ -1,10 +1,10 @@
 ﻿EDGE.prototype.ajaxPost = function (data, url, success, error) {
 
     if (data && typeof data === 'object') {
-        data = data.data;
         url = data.url;
         success = data.success;
         error = data.error;
+        data = data.data;
     }
 
     return $.ajax({

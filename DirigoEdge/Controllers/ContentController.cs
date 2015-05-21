@@ -98,10 +98,22 @@ namespace DirigoEdge.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult GetResponsiveImage(ResponsiveImageUtils.ResponsiveImageObject imageObject)
         {
-            return
-                Content(ContentUtils.RenderPartialViewToString(
+            var result = new JsonResult();
+
+            try
+            {
+                var html = ContentUtils.RenderPartialViewToString(
                     "~/Views/Shared/Partials/_ResponsiveImagePartial.cshtml", imageObject, ControllerContext, ViewData,
-                    TempData));
+                    TempData);
+
+                result.Data = new { success = true, html };
+            }
+            catch (Exception err)
+            {
+                result.Data = new { success = false, error = err };
+            }
+
+            return result;
         }
 
         private static string GetPageTitle(Uri thisUri)

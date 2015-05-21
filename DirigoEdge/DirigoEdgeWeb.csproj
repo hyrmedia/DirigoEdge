@@ -62,9 +62,9 @@
     <Reference Include="AutoMapper.Net4">
       <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
-    <Reference Include="DirigoEdgeCore, Version=1.4.15.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DirigoEdgeCore, Version=1.4.16.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DirigoEdgeCore.1.4.15.0\lib\net45\DirigoEdgeCore.dll</HintPath>
+      <HintPath>..\packages\DirigoEdgeCore.1.4.16.0\lib\net45\DirigoEdgeCore.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -424,7 +424,6 @@
     <Content Include="CSS\pageBuilder.css" />
     <Content Include="gulpfile.js" />
     <Content Include="Scripts\bootstrap-pagebuilder.js" />
-    <Content Include="Scripts\ckeditor\plugins\removeresponsiveimage\plugin.js" />
     <Content Include="Scripts\Edge\ajax-service.js" />
     <Content Include="Scripts\Edge\Edge.js" />
     <Content Include="Scripts\isotope.pkgd.min.js" />
@@ -971,6 +970,7 @@
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\pagebuilder-admin.js" />
     <Content Include="Scripts\pageBuilder.js" />
+    <Content Include="Scripts\picturefill.js" />
     <Content Include="Scripts\resetPassword.js" />
     <Content Include="Scripts\tzdetect.js" />
     <Content Include="Web.config">
@@ -1001,7 +1001,6 @@
     <Folder Include="Areas\Admin\Scss\sass\" />
     <Folder Include="Data\Entities\" />
     <Folder Include="Scripts\ckeditor\plugins\image\images\" />
-    <Folder Include="Scripts\ckeditor\plugins\removeresponsiveimage\dialogs\" />
     <Folder Include="Scss\sass\" />
     <Folder Include="Uploaded\" />
   </ItemGroup>

@@ -10,8 +10,6 @@
 
         function renderResponsiveTag(object, isPagebuilder, cb) {
 
-            var shortcodeString = 'responsive_image src=&quot;' + object.src + '&quot; alt=&quot' + object.alt + ';&quot; width=&quot;' + object.width + '&quot; height=&quot;' + object.height + '&quot;" data-tag="responsive_image src=&quot;' + object.src + '&quot; alt=&quot' + object.alt + ';&quot; width=&quot;' + object.width + '&quot; height=&quot;' + object.height + '&quot;';
-
             var dataObject = {
                 imageObject : {
                     ClassName : object.align,
@@ -28,11 +26,17 @@
                 cb('[responsive_image src="' + object.src + '" alt="' + object.alt + '" width="' + object.width + '" height="' + object.height + '"]');
             } else {
                 EDGE.ajaxPost({
-                    data: dataObject,
-                    url: '/content/getresponsiveimage/',
-                    success: function (data) {
-                        console.log(data);
-                        cb('<div class="dynamicCodeInsert sortableModule responsive-image" data-name="' + shortcodeString + '">' + data + '<div class="dynamicModuleEditBar editBar editor-removable"><span class="title">' + shortcodeString + '</span></div></div>');
+                    data : dataObject,
+                    url : '/content/getresponsiveimage/',
+                    success : function (res) {
+                        if (res && res.success) {
+                            cb(null, res.html);
+                        } else {
+                            cb(res.error);
+                        }
+                    },
+                    error : function (xhr, message, error) {
+                        cb(error);
                     }
                 });
             }
@@ -51,7 +55,12 @@
             $button.fileBrowser(function (object) {
                 var tag;
 
-                renderResponsiveTag(object, $('body').hasClass('pageBuilder'), function (responsiveShortcode) {
+                renderResponsiveTag(object, $('body').hasClass('pageBuilder'), function (error, responsiveShortcode) {
+                    if (error) {
+                        console.warn(error);
+                        return false;
+                    }
+
                     if (object.type === 'image') {
                         tag = object.responsive
                                 ? responsiveShortcode

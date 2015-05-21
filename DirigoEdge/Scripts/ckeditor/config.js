@@ -28,7 +28,7 @@ CKEDITOR.editorConfig = function( config ) {
 	config.removeButtons = 'Underline,Subscript,Superscript,Image,Flash,Smiley,PageBreak,Iframe,ShowBlocks,Save,NewPage,Preview,Print,Templates,CreateDiv,Font,FontSize';
 	config.removeDialogTabs = 'link:advanced';
 	config.removePlugins = 'magicline';
-	config.extraPlugins = 'codemirror,insertimage,removeresponsiveimage';
+	config.extraPlugins = 'codemirror,insertimage';
 	config.disableNativeSpellChecker = false;
     config.allowedContent = true;
 };
