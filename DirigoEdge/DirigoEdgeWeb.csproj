@@ -440,6 +440,9 @@
     <Compile Include="CustomUtils\WebUtils.cs" />
     <Compile Include="Data\Context\WebDataContext.cs" />
     <Compile Include="Data\Context\WebDataContextInitializer.cs" />
+    <Compile Include="Data\Entities\Extensibility\ContentPage.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -985,7 +988,6 @@
   <ItemGroup>
     <Folder Include="App_Data\OutputCache\" />
     <Folder Include="Areas\Admin\Scss\sass\" />
-    <Folder Include="Data\Entities\Extensibility\" />
     <Folder Include="Scripts\ckeditor\plugins\image\images\" />
     <Folder Include="Scss\sass\" />
     <Folder Include="Uploaded\" />
