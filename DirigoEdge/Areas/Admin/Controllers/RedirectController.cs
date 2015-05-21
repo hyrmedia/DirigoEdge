@@ -4,13 +4,13 @@ using System.Linq;
 using System.Web.Mvc;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Controllers;
-using DirigoEdgeCore.Controllers;
+using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Utils;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
-    public class RedirectController : DirigoBaseAdminController
+    public class RedirectController : WebBaseAdminController
     {
         [PermissionsFilter(Permissions = "Can Edit Settings")]
         public ActionResult Redirects()

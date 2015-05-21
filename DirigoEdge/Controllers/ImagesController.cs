@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Web.Mvc;
-using DirigoEdgeCore.Controllers;
+using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Utils;
 
 namespace DirigoEdge.Controllers
 {
-    public class ImagesController : DirigoBaseController
+    public class ImagesController : WebBaseController
     {
         public ActionResult RenderWithResize(string path, int width, int height, string directory)
         {

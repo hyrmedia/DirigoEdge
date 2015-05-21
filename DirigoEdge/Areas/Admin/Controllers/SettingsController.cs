@@ -3,12 +3,12 @@ using System.Web.Mvc;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdge.Controllers;
-using DirigoEdgeCore.Controllers;
+using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
-    public class SettingsController : DirigoBaseAdminController
+    public class SettingsController : WebBaseAdminController
     {
         [PermissionsFilter(Permissions = "Can Edit Settings")]
         public ActionResult SiteSettings()

@@ -4,12 +4,12 @@ using System.Web.Mvc;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdge.Controllers;
-using DirigoEdgeCore.Controllers;
+using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
-    public class SlideshowController : DirigoBaseAdminController
+    public class SlideshowController : WebBaseAdminController
     {
         [PermissionsFilter(Permissions = "Can Edit Pages")]
         public ActionResult EditSlideShow(int id)

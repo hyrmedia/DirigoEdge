@@ -10,14 +10,14 @@ using System.Web.Security;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdge.Controllers;
-using DirigoEdgeCore.Controllers;
+using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models.ViewModels;
 using DirigoEdgeCore.Utils;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
-    public class ModulesController : DirigoBaseAdminController
+    public class ModulesController : WebBaseAdminController
     {
         [PermissionsFilter(Permissions = "Can Edit Modules")]
         public ActionResult ManageModules()

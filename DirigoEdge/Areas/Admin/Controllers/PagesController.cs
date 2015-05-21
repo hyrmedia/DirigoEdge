@@ -6,16 +6,15 @@ using System.Web.Mvc;
 using System.Web.Security;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
-using DirigoEdge.Controllers;
 using DirigoEdgeCore.Business;
-using DirigoEdgeCore.Controllers;
+using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models.ViewModels;
 using DirigoEdgeCore.Utils;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
-    public class PagesController : DirigoBaseAdminController
+    public class PagesController : WebBaseAdminController
     {
         [PermissionsFilter(Permissions = "Can Edit Pages")]
         public ActionResult ManageContent()
@@ -53,19 +52,21 @@ namespace DirigoEdge.Areas.Admin.Controllers
         {
             var result = new JsonResult();
 
-            if (entities != null)
+            if (entities == null)
             {
-                foreach (var entity in entities)
-                {
-                    ContentPage editedPage = Context.ContentPages.FirstOrDefault(x => x.ContentPageId == entity.ContentPageId);
-                    if (editedPage != null)
-                    {
-                        editedPage.SortOrder = entity.SortOrder;
-                    }
-                }
-
-                result.Data = Context.SaveChanges();
+                return result;
             }
+
+            foreach (var entity in entities)
+            {
+                var editedPage = Context.ContentPages.FirstOrDefault(x => x.ContentPageId == entity.ContentPageId);
+                if (editedPage != null)
+                {
+                    editedPage.SortOrder = entity.SortOrder;
+                }
+            }
+
+            result.Data = Context.SaveChanges();
             return result;
         }
 
@@ -73,27 +74,11 @@ namespace DirigoEdge.Areas.Admin.Controllers
         public ActionResult NewContentPage(string schemaId, string editContentHeading)
         {
             // Create a new Content Page to be passed to the edit content action
-            ContentPage page = GetDefaultContentPage();
+            var page = GetDefaultContentPage();
 
             // If a schema was passed in, we will want to assign that schema id to the newly created page
             // We will also want to copy over html from an existing page that uses that html. That way the user has a consistent editor.
-            int iSchemaId = !string.IsNullOrEmpty(schemaId) ? Int32.Parse(schemaId) : 0;
-            if (iSchemaId > 0)
-            {
-                page.SchemaId = iSchemaId;
-
-                var pageToCloneFrom = Context.ContentPages.FirstOrDefault(x => x.SchemaId == iSchemaId);
-                if (pageToCloneFrom != null)
-                {
-                    page.HTMLContent = pageToCloneFrom.HTMLContent;
-                    page.HTMLUnparsed = pageToCloneFrom.HTMLUnparsed;
-                    page.JSContent = pageToCloneFrom.JSContent;
-                    page.CSSContent = pageToCloneFrom.CSSContent;
-                    page.Template = pageToCloneFrom.Template;
-                    page.ParentNavigationItemId = pageToCloneFrom.ParentNavigationItemId;
-                    page.SortOrder = Context.ContentPages.Where(x => x.SchemaId == iSchemaId).Max(x => x.SortOrder) + 1;
-                }
-            }
+            ApplySchema(page, schemaId);
 
             Context.ContentPages.Add(page);
             Context.SaveChanges();
@@ -112,6 +97,34 @@ namespace DirigoEdge.Areas.Admin.Controllers
             return RedirectToAction("EditContent", "Pages", routeParameters);
         }
 
+        private void ApplySchema(ContentPage page, String schemaId)
+        {
+            var iSchemaId = !string.IsNullOrEmpty(schemaId)
+                ? Int32.Parse(schemaId)
+                : 0;
+
+            if (iSchemaId == 0)
+            {
+                return;
+            }
+
+            page.SchemaId = iSchemaId;
+
+            var pageToCloneFrom = Context.ContentPages.FirstOrDefault(x => x.SchemaId == iSchemaId);
+            if (pageToCloneFrom == null)
+            {
+                return;
+            }
+
+            page.HTMLContent = pageToCloneFrom.HTMLContent;
+            page.HTMLUnparsed = pageToCloneFrom.HTMLUnparsed;
+            page.JSContent = pageToCloneFrom.JSContent;
+            page.CSSContent = pageToCloneFrom.CSSContent;
+            page.Template = pageToCloneFrom.Template;
+            page.ParentNavigationItemId = pageToCloneFrom.ParentNavigationItemId;
+            page.SortOrder = Context.ContentPages.Where(x => x.SchemaId == iSchemaId).Max(x => x.SortOrder) + 1;
+        }
+
         [PermissionsFilter(Permissions = "Can Edit Pages")]
         public ActionResult EditContent(int id, string schema, string editContentHeading)
         {
@@ -119,7 +132,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             var editContentHelper = new EditContentHelper(Context);
             editContentHelper.LoadContentViewById(id, model);
-            
+
             var userName = UserUtils.CurrentMembershipUsername();
             var user = Context.Users.First(usr => usr.Username == userName);
             model.IsBookmarked = Context.Bookmarks.Any(bookmark => bookmark.Url == Request.RawUrl && bookmark.UserId == user.UserId);
@@ -145,7 +158,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         public ActionResult EditContentBasic(int id)
         {
             var model = new EditContentViewModel();
-            
+
             var editContentHelper = new EditContentHelper(Context);
             editContentHelper.LoadContentViewById(id, model);
 
@@ -169,14 +182,17 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             var page = Context.ContentPages.FirstOrDefault(x => x.ContentPageId == pageId);
             var revisions = Context.ContentPages.Where(x => x.ParentContentPageId == page.ContentPageId);
+
             Context.ContentPages.Remove(page);
+
             if (revisions.Any())
             {
                 Context.ContentPages.RemoveRange(revisions);
             }
+
             var success = Context.SaveChanges();
 
-            BookmarkUtil.DeleteBookmarkForUrl("/admin/pages/editcontent/" +  pageId + "/");
+            BookmarkUtil.DeleteBookmarkForUrl("/admin/pages/editcontent/" + pageId + "/");
 
             if (success > 0)
             {
@@ -189,7 +205,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [PermissionsFilter(Permissions = "Can Edit Pages")]
         public ActionResult PreviewContent(int id)
         {
-            var model = new ContentViewViewModel {ThePage = ContentLoader.GetDetailById(id)};
+            var model = new ContentViewViewModel { ThePage = ContentLoader.GetDetailById(id) };
             model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
             model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent, Context);
 
@@ -268,7 +284,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         {
             var result = new JsonResult();
 
-            ContentPage editedContent = Context.ContentPages.FirstOrDefault(x => x.ContentPageId == entity.ContentPageId);
+            var editedContent = Context.ContentPages.FirstOrDefault(x => x.ContentPageId == entity.ContentPageId);
             if (editedContent != null)
             {
                 editedContent.IsActive = entity.IsActive;
@@ -277,7 +293,11 @@ namespace DirigoEdge.Areas.Admin.Controllers
             // Return last publish date if we just changed to publish
             if (Convert.ToBoolean(entity.IsActive))
             {
-                editedContent.PublishDate = DateTime.UtcNow;
+                if (editedContent != null)
+                {
+                    editedContent.PublishDate = DateTime.UtcNow;
+                }
+
                 result.Data = new { publishDate = Convert.ToDateTime(DateTime.UtcNow).ToString("MM/dd/yyyy @ hh:mm") };
             }
 
@@ -323,8 +343,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [PermissionsFilter(Permissions = "Can Edit Pages")]
         public JsonResult GetRevisionList(int id)
         {
-            JsonResult result = new JsonResult() { JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-            string html = "";
+            JsonResult result = new JsonResult{ JsonRequestBehavior = JsonRequestBehavior.AllowGet };
 
             var drafts = Context.ContentPages.Where(x => x.ParentContentPageId == id || x.ContentPageId == id).OrderByDescending(x => x.PublishDate).ToList().Select(rev => new RevisionViewModel
             {
@@ -333,9 +352,10 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 AuthorName = rev.DraftAuthorName,
                 WasPublished = rev.WasPublished
             }).ToList();
-            html = ContentUtils.RenderPartialViewToString("/Areas/Admin/Views/Shared/Partials/RevisionsListInnerPartial.cshtml", drafts, ControllerContext, ViewData, TempData);
+            
+            var html = ContentUtils.RenderPartialViewToString("/Areas/Admin/Views/Shared/Partials/RevisionsListInnerPartial.cshtml", drafts, ControllerContext, ViewData, TempData);
 
-            result.Data = new { html = html };
+            result.Data = new {html };
 
             return result;
         }
@@ -363,8 +383,8 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 return result;
             }
 
-            var success = 0;
             var urlLink = "";
+            
             var page = new ContentPage
             {
                 Title = title,
@@ -378,7 +398,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
             };
 
             Context.ContentPages.Add(page);
-            success = Context.SaveChanges();
+            var success = Context.SaveChanges();
 
             var parentHref = NavigationUtils.GetNavItemUrl(parent);
 

@@ -221,6 +221,8 @@
     <Compile Include="Areas\Admin\Models\ViewModels\ManageNavigationViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\RedirectViewModel.cs" />
     <Compile Include="Business\BlogLoader.cs" />
+    <Compile Include="Controllers\Base\WebBaseAdminController.cs" />
+    <Compile Include="Controllers\Base\WebBaseController.cs" />
     <Compile Include="Controllers\ImagesController.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\ManageSchemasViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\BlogSettingsViewModel.cs" />
@@ -983,7 +985,7 @@
   <ItemGroup>
     <Folder Include="App_Data\OutputCache\" />
     <Folder Include="Areas\Admin\Scss\sass\" />
-    <Folder Include="Data\Entities\" />
+    <Folder Include="Data\Entities\Extensibility\" />
     <Folder Include="Scripts\ckeditor\plugins\image\images\" />
     <Folder Include="Scss\sass\" />
     <Folder Include="Uploaded\" />

@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DirigoEdgeCore.Data.Context;
+using DirigoEdge.Data.Context;
 using DirigoEdgeCore.Data.Entities;
+using DirigoEdgeCore.Models;
 
-namespace DirigoEdgeCore.Models.ViewModels
+namespace DirigoEdge.Models.ViewModels
 {
     public class LatestBlogsViewModel : DirigoBaseModel
     {
@@ -11,7 +12,7 @@ namespace DirigoEdgeCore.Models.ViewModels
 
         public LatestBlogsViewModel(int blogCount = 10)
         {
-            Context = new DataContext();
+            Context = new WebDataContext();
             Blogs = Context.Blogs.OrderByDescending(x => x.Date).Take(blogCount).ToList();
         }
     }

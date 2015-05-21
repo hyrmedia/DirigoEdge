@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using DirigoEdge.Data.Context;
 using DirigoEdge.Models.ViewModels;
 using DirigoEdgeCore.Data.Context;
 using DirigoEdgeCore.Models;
@@ -12,12 +13,12 @@ namespace DirigoEdge.Business
 {
     public class BlogLoader
     {
-        private readonly DataContext _context;
+        private readonly WebDataContext _context;
         private readonly SiteSettingsUtils _settingsUtils;
 
-        public BlogLoader(DataContext context = null)
+        public BlogLoader(WebDataContext context = null)
         {
-            _context = context ?? new DataContext();
+            _context = context ?? new WebDataContext();
             _settingsUtils = new SiteSettingsUtils(_context);
         }
 

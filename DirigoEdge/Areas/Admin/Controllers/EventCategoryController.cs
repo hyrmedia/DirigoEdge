@@ -4,12 +4,12 @@ using System.Web.Mvc;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdge.Controllers;
-using DirigoEdgeCore.Controllers;
+using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
-    public class EventCategoryController : DirigoBaseAdminController
+    public class EventCategoryController : WebBaseAdminController
     {
         [PermissionsFilter(Permissions = "Can Edit Events")]
         public ActionResult ManageEventCategories()

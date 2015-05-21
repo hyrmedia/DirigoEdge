@@ -7,13 +7,13 @@ using System.Web.Mvc;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdge.Controllers;
-using DirigoEdgeCore.Controllers;
+using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Utils;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
-    public class EventsController : DirigoBaseAdminController
+    public class EventsController : WebBaseAdminController
     {
         [PermissionsFilter(Permissions = "Can Edit Events")]
         public ActionResult EditEvent(string id)

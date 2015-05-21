@@ -3,12 +3,13 @@ using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Web.Mvc;
 using DirigoEdge.Business;
-using DirigoEdgeCore.Controllers;
+using DirigoEdge.Data.Context;
+using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Models.DataModels;
 
 namespace DirigoEdge.Controllers
 {
-    public class BlogController : DirigoBaseController
+    public class BlogController : WebBaseController
     {
         private String BaseUrl
         {
@@ -22,7 +23,7 @@ namespace DirigoEdge.Controllers
         private BlogLoader _loader;
         private BlogLoader Loader
         {
-            get { return _loader ?? (_loader = new BlogLoader(Context)); }
+            get { return _loader ?? (_loader = new BlogLoader()); }
         }
 
         /// <summary>

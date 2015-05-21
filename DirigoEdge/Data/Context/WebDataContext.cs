@@ -10,5 +10,7 @@ namespace DirigoEdge.Data.Context
         {
             Database.SetInitializer(new WebDataContextInitializer());
         }
+
+  //      public DbSet<ContentPageExtension> ContentPageExtensions { get; set; }
     }
 }

@@ -4,12 +4,12 @@ using System.Linq;
 using System.Web.Mvc;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
-using DirigoEdgeCore.Controllers;
+using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
-    public class SchemasController : DirigoBaseAdminController
+    public class SchemasController : WebBaseAdminController
     {
         [PermissionsFilter(Permissions = "Can Edit Schemas")]
         public ActionResult ManageSchemas()

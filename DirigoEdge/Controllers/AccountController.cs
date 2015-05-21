@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
-using DirigoEdgeCore.Controllers;
+using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Membership;
 using DirigoEdgeCore.Models;
 using DirigoEdgeCore.Utils;
@@ -13,7 +13,7 @@ using DirigoEdge.CustomUtils;
 namespace DirigoEdge.Controllers
 {
     [Authorize]
-    public class AccountController : DirigoBaseController
+    public class AccountController : WebBaseController
     {
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)

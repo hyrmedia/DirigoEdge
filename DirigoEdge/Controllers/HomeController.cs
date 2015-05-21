@@ -6,7 +6,7 @@ using System.Text;
 using System.Web.Mvc;
 using DirigoEdge.Utils;
 using DirigoEdgeCore.Business;
-using DirigoEdgeCore.Controllers;
+using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models.ViewModels;
 using DirigoEdgeCore.Utils;
@@ -14,7 +14,7 @@ using DirigoEdgeCore.Utils;
 
 namespace DirigoEdge.Controllers
 {
-	public class HomeController : DirigoBaseController
+	public class HomeController : WebBaseController
 	{
 		public ActionResult Index()
 		{

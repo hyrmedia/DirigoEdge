@@ -5,14 +5,14 @@ using System.Web.Mvc;
 using System.Web.Security;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
-using DirigoEdgeCore.Controllers;
+using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Utils;
 using Newtonsoft.Json;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
-    public class BlogController : DirigoBaseAdminController
+    public class BlogController : WebBaseAdminController
     {
         public BlogUtils Utils;
 
