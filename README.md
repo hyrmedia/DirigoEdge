@@ -6,43 +6,9 @@ DirigoEdge is an Open Source CMS development framework built on ASP.Net C# that 
 
 Explore DirigoEdge functions on our [YouTube channel](https://www.youtube.com/channel/UCf2zaGBp4ifFMeu0tetutYw)
 
-## Requirements
-
-#### Node.js
-
-DirigoEdge uses `node-sass` and `gulp` to watch and compile [Sass](http://sass-lang.com/). You must have Node 0.10.x or 0.12.x installed. You can [download Node.js here](https://nodejs.org/).
-
-#### Gulp
-
-DirigoEdge will install any local Node.js module dependencies on first build, but `gulp` must also be installed globally. To install `gulp` run the following in Command Prompt:
-
-```
-npm install -g gulp
-```
-
 ## Getting Started
 
-Don't want to read?  Try our [Installing DirigoEdge v2.0 video](https://www.youtube.com/playlist?list=PLiL6eOib_pybqV22XV5ePGib1zUTaiMv0)
-
-1. For the stable version, [grab the latest release](https://github.com/dirigodev/DirigoEdge/releases). For the latest (unstable) development version, clone this repo with `git clone https://github.com/dirigodev/DirigoEdge.git`
-
-2. Edit `web.config` file with your appopriate database connections.
-	
-3. Set Up Membership provider on your SQL Database:	
-	- Run `aspnet_regsql.exe` on your database and follow the on screen instruction. This program installs various sql tables and stored procedures required by the .Net Membership provider.
-		- The reg sql program is typically found: C:\Windows\Microsoft.NET\Framework\v4.0.30319    (your .Net version may vary)
-	- If you're unfamiliar with `aspnet_regsql.exe` [refer to this walkthrough](http://runtingsproper.blogspot.com/2009/08/using-aspnetregsql-via-command-line-to.html)
-	
-4. Run the application and create a new user.
-	- Running the application for the first time will seed the database and provide you with some initial content to play around with.
-	- When you register a new user, you will be added as an Administrator.
-	- After you create a user and have successfully logged in, you may add a registration code under Users > Roles.
-
-5. You may need to set permissions on the folders `uploaded` and `scripts` so that the 'IISUSR' and 'ISUR' has full permission
-	- Edge will automatically combine and minify your CSS and Javascript files in this directory when you publish your solution or run in Release mode
-	- More information on SquishIt can be found at https://github.com/jetheredge/SquishIt
-
-6. Check out our video series on [YouTube](https://www.youtube.com/playlist?list=PLiL6eOib_pybUc2MNR4qvlPaMWHMRMcoK)
+See the **[getting started guide](https://github.com/dirigodev/DirigoEdge/wiki/Getting-Started)** in the Wiki.
 
 ## DirigoEdgeCore
 
