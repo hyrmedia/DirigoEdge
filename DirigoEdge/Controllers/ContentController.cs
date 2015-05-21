@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
+using DirigoEdge.CustomUtils;
 using DirigoEdgeCore.Business;
 using DirigoEdgeCore.Business.Models;
 using DirigoEdgeCore.Controllers;
@@ -91,6 +92,16 @@ namespace DirigoEdge.Controllers
             HttpContext.Response.StatusCode = 404;
             Response.TrySkipIisCustomErrors = true;
             return View("~/Views/Home/Error404.cshtml");
+        }
+
+        [HttpPost]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult GetResponsiveImage(ResponsiveImageUtils.ResponsiveImageObject imageObject)
+        {
+            return
+                Content(ContentUtils.RenderPartialViewToString(
+                    "~/Views/Shared/Partials/_ResponsiveImagePartial.cshtml", imageObject, ControllerContext, ViewData,
+                    TempData));
         }
 
         private static string GetPageTitle(Uri thisUri)

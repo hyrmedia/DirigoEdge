@@ -1,0 +1,45 @@
+﻿@using DirigoEdgeCore.Utils
+@model DirigoEdgeCore.Models.ViewModels.EditContentViewModel
+
+<div class="settings">
+    <h3 class="heading">Settings <a target="_blank" title="Open in Admin" href="/admin/pages/editcontent/@Model.ThePage.ContentPageId" id="ExternalEditUrlLink"><i class="pb pb-external-link"></i></a></h3>
+</div>
+
+@{
+    string permaLinkModded = !String.IsNullOrEmpty(Model.ThePage.Permalink) ? "True" : "False";
+}
+
+<div class="pb-panel titleParams">
+    
+    <h4>Page Title</h4>    
+    <input id="PageTitle" class="required" type="text" value="@Model.ThePage.Title" autocomplete=off />
+
+    <h4>URL</h4>    
+    <input id="PageUrl" class="required" type="text" value="@Model.ThePage.Permalink" autocomplete=off />
+    <span data-url="@Model.SiteUrl" id="SiteUrl">@Model.SiteUrl</span><span id="PermaLinkEnd" data-modified="@permaLinkModded">@ContentUtils.GetFormattedUrl(Model.ThePage.Permalink)</span>
+    
+</div>
+
+
+<div class="pb-panel setMetaInformation">
+    <h4>Parent</h4>
+    
+    <select id="PageCategory">
+        <option data-id="-2">Root</option>
+        @{
+            foreach (var kvp in Model.NavList)
+            {
+                string disabled = Model.ParentNavIdsToDisable.Any(x => x == kvp.Key) ? "disabled=disabled" : "";
+                string selected = Model.ThePage.ParentNavigationItemId == kvp.Key ? "selected=selected" : "";
+                <option data-id="@kvp.Key" @disabled @selected>@Html.Raw(kvp.Value)</option>    
+            }
+        }
+    </select>
+</div> 
+
+<div class="pb-panel setMetaInformation">
+    <h4>SEO / Meta</h4>
+    <a href="javascript:void(0);" data-toggle="pb-modal" data-target="#SEOMetaModal">Set Meta Information</a>
+</div>
+
+<a id="SaveBuilderPageSettings" class="pb-btn pb-btn-primary pb-btn-block light mobileMarginBottom">Save Settings</a>
