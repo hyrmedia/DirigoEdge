@@ -65,5 +65,11 @@ namespace DirigoEdge.Models.Shortcodes
         {
             return false;
         }
+
+
+        public bool IsCacheable
+        {
+            get { return false; }
+        }
     }
 }

@@ -34,7 +34,7 @@ namespace DirigoEdge.Controllers
                 // Set the page Canonical Tag and OGURl
                 ViewBag.OGUrl = model.ThePage.OGUrl ?? GetCanonical(model.ThePage);
                 ViewBag.Canonical = GetCanonical(model.ThePage);
-                model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent, Context);
+                model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent);
                 ViewBag.Index = model.ThePage.NoIndex ? "noindex" : "index";
                 ViewBag.Follow = model.ThePage.NoFollow ? "nofollow" : "follow";
 
