@@ -390,6 +390,7 @@ content_class.prototype.manageContentAdminEvents = function() {
         var data = self.getPageData();
 
         $("#SaveSpinner").show();
+        debugger;
         var url = $(this).attr("data-url") || 'ModifyContent';
         $.ajax({
             url: "/admin/pages/" + url,
@@ -421,9 +422,10 @@ content_class.prototype.manageContentAdminEvents = function() {
     // Save Module Button
     $("#SaveModuleButton").click(function () {
 
-        var data = self.getPageData();
+        var data = self.getModuleData();
 
         $("#SaveSpinner").show();
+        debugger;
         var url = $(this).attr("data-url") || 'modifycontent';
         $.ajax({
             url: "/admin/modules/" + url,
@@ -554,6 +556,46 @@ content_class.prototype.manageContentAdminEvents = function() {
     });
 };
 
+
+content_class.prototype.getModuleData = function () {
+    var self = this;
+
+    var htmlContent;
+    var cssContent;
+    var jsContent;
+    var isBasic;
+
+    // basic editor
+    if (typeof (self.htmlEditor) == "undefined") {
+        htmlContent = CKEDITOR.instances.CKEDITCONTENT.getData();
+        isBasic = true;
+    }
+    else {
+        // advanced editor
+        htmlContent = self.htmlEditor.getValue();
+        cssContent = self.cssEditor.getValue();
+        jsContent = self.jsEditor.getValue();
+        isBasic = false;
+    }
+    var htmlFormatted = self.parseSchemaContent(htmlContent);
+
+    var data = {
+        entity: {
+            ContentModuleId: $("div.editContent").attr("data-id"),
+            ModuleName: $("#ModuleName").val(),
+            HTMLContent: htmlFormatted,
+            HTMLUnparsed: isBasic ? htmlFormatted : self.htmlEditor.getValue(),
+            JSContent: jsContent,
+            CSSContent: cssContent,
+            SchemaId: $("#SchemaSelector option:selected").attr("data-id"),
+            SchemaEntryValues: JSON.stringify(self.getSchemaValues("#FieldEntry > ol > ", false))
+        },
+        isBasic: isBasic
+    };
+
+    return data;
+};
+
 content_class.prototype.getPageData = function() {
     var self = this;
     
@@ -578,32 +620,33 @@ content_class.prototype.getPageData = function() {
     var htmlFormatted = self.parseSchemaContent(htmlContent);
 
     var data = {
-        entity: {
-            ContentModuleId: $("div.editContent").attr("data-id"),
-            ContentPageId: $("div.editContent").attr("data-id"),
-            DisplayName: $("#ContentName").val(),
-            Permalink: $("#PermaLinkEnd").text().toLowerCase(),
-            ModuleName: $("#ModuleName").val(),
-            Description: $("#ModuleDescription").val(),
-            ThumbnailLocation: $("#ModuleThumbnail").val(),
-            HTMLContent: htmlFormatted,
-            HTMLUnparsed: isBasic ? htmlFormatted : self.htmlEditor.getValue(),
-            JSContent: jsContent,
-            CSSContent: cssContent,
-            Template: template,
-            PublishDate: $("#PublishDate").val(),
-            Title: $("#PageTitle").val(),
-            MetaDescription: $("#MetaDescription").val(),
-            OGTitle: $("#OGTitle").val(),
-            OGImage: $("#OGImage").val(),
-            OGType: $("#OGType").val(),
-            OGUrl: $("#OGUrl").val(),
-            Canonical: $("#Canonical").val(),
-            ParentNavigationItemId: $("#PageCategory option:selected").attr("data-id"),
-            SchemaId: $("#SchemaSelector option:selected").attr("data-id"),
-            SchemaEntryValues: JSON.stringify(self.getSchemaValues("#FieldEntry > ol > ", false)),
-            NoIndex: $('.no-index').is(':checked'),
-            NoFollow: $('.no-follow').is(':checked')
+        page:
+        {
+            details: {
+                ContentPageId: $("div.editContent").attr("data-id"),
+                DisplayName: $("#ContentName").val(),
+                Permalink: $("#PermaLinkEnd").text().toLowerCase(),
+                Description: $("#ModuleDescription").val(),
+                ThumbnailLocation: $("#ModuleThumbnail").val(),
+                HTMLContent: htmlFormatted,
+                HTMLUnparsed: isBasic ? htmlFormatted : self.htmlEditor.getValue(),
+                JSContent: jsContent,
+                CSSContent: cssContent,
+                Template: template,
+                PublishDate: $("#PublishDate").val(),
+                Title: $("#PageTitle").val(),
+                MetaDescription: $("#MetaDescription").val(),
+                OGTitle: $("#OGTitle").val(),
+                OGImage: $("#OGImage").val(),
+                OGType: $("#OGType").val(),
+                OGUrl: $("#OGUrl").val(),
+                Canonical: $("#Canonical").val(),
+                ParentNavigationItemId: $("#PageCategory option:selected").attr("data-id"),
+                SchemaId: $("#SchemaSelector option:selected").attr("data-id"),
+                SchemaEntryValues: JSON.stringify(self.getSchemaValues("#FieldEntry > ol > ", false)),
+                NoIndex: $('.no-index').is(':checked'),
+                NoFollow: $('.no-follow').is(':checked')
+            }
         },
         // Let Ajax handler know if we're using an advanced editor or basic editor
         // Basic editor does not send over JS / CSS rules so we should leave the content as is in the controller

@@ -440,12 +440,13 @@
     <Compile Include="CustomUtils\WebUtils.cs" />
     <Compile Include="Data\Context\WebDataContext.cs" />
     <Compile Include="Data\Context\WebDataContextInitializer.cs" />
-    <Compile Include="Data\Entities\Extensibility\ContentPage.cs">
+    <Compile Include="Data\Entities\Extensibility\ContentPageExtension.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mapping.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Shortcodes\ResponsiveImageShortcode.cs" />
     <Compile Include="Models\ViewModels\BlogArchiveViewModel.cs" />
@@ -457,6 +458,7 @@
     <Compile Include="Models\ViewModels\BlogsByUserViewModel.cs" />
     <Compile Include="Models\ViewModels\BlogSingleHomeViewModel.cs" />
     <Compile Include="Models\ViewModels\CategorySingleViewModel.cs" />
+    <Compile Include="Models\ViewModels\ContentPageComplete.cs" />
     <Compile Include="Models\ViewModels\EventCategoryHomeViewModel.cs" />
     <Compile Include="Models\ViewModels\EventCategorySingleViewModel.cs" />
     <Compile Include="Models\ViewModels\EventHomeViewModel.cs" />

@@ -13,11 +13,6 @@ namespace DirigoEdge.Controllers
 {
     public class ContentController : WebBaseController
     {
-        static ContentController()
-        {
-            Mapper.CreateMap<ContentPage, PageDetails>();
-        }
-
         public ActionResult Index()
         {
             ContentViewViewModel model = null;

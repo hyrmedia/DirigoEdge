@@ -1,13 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Common.CommandTrees;
 using System.IO;
 using System.Linq;
+using System.ServiceModel.XamlIntegration;
+using System.Web.Instrumentation;
 using System.Web.Mvc;
 using System.Web.Security;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdgeCore.Business;
 using DirigoEdge.Controllers.Base;
+using DirigoEdge.Data.Entities.Extensibility;
+using DirigoEdge.Models.ViewModels;
+using DirigoEdgeCore.Business.Models;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models.ViewModels;
 using DirigoEdgeCore.Utils;
@@ -86,6 +92,10 @@ namespace DirigoEdge.Areas.Admin.Controllers
             // Update the page title / permalink with the new id we now have
             page.DisplayName = "Page " + page.ContentPageId;
             page.HTMLContent = ContentUtils.ReplacePageParametersInHtmlContent(page.HTMLUnparsed, page);
+
+            AddNewPageExtension(page);
+
+
             Context.SaveChanges();
             CachedObjects.GetCacheContentPages(true);
 
@@ -97,34 +107,6 @@ namespace DirigoEdge.Areas.Admin.Controllers
             }
 
             return RedirectToAction("EditContent", "Pages", routeParameters);
-        }
-
-        private void ApplySchema(ContentPage page, String schemaId)
-        {
-            var iSchemaId = !string.IsNullOrEmpty(schemaId)
-                ? Int32.Parse(schemaId)
-                : 0;
-
-            if (iSchemaId == 0)
-            {
-                return;
-            }
-
-            page.SchemaId = iSchemaId;
-
-            var pageToCloneFrom = Context.ContentPages.FirstOrDefault(x => x.SchemaId == iSchemaId);
-            if (pageToCloneFrom == null)
-            {
-                return;
-            }
-
-            page.HTMLContent = pageToCloneFrom.HTMLContent;
-            page.HTMLUnparsed = pageToCloneFrom.HTMLUnparsed;
-            page.JSContent = pageToCloneFrom.JSContent;
-            page.CSSContent = pageToCloneFrom.CSSContent;
-            page.Template = pageToCloneFrom.Template;
-            page.ParentNavigationItemId = pageToCloneFrom.ParentNavigationItemId;
-            page.SortOrder = Context.ContentPages.Where(x => x.SchemaId == iSchemaId).Max(x => x.SortOrder) + 1;
         }
 
         [PermissionsFilter(Permissions = "Can Edit Pages")]
@@ -224,31 +206,32 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [HttpPost]
         [PermissionsFilter(Permissions = "Can Edit Pages")]
         [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult ModifyContent(ContentPage entity, bool isBasic)
+        public JsonResult ModifyContent(ContentPageComplete page, bool isBasic)
         {
             var result = new JsonResult();
 
-            if (String.IsNullOrEmpty(entity.Title))
+            if (page.Details == null || String.IsNullOrEmpty(page.Details.Title))
             {
                 return result;
             }
 
-            if (String.IsNullOrEmpty(entity.Title)) return result;
+            if (String.IsNullOrEmpty(page.Details.Title)) return result;
 
-            ContentPage editedContent =
-                Context.ContentPages.FirstOrDefault(x => x.ContentPageId == entity.ContentPageId);
+            var editedContent =
+                Context.ContentPages.FirstOrDefault(x => x.ContentPageId == page.Details.ContentPageId);
             if (editedContent == null)
             {
                 return result;
             }
 
-            SaveDraft(editedContent, editedContent.PublishDate);
-            BookmarkUtil.UpdateTitle("/admin/pages/editcontent/" + editedContent.ContentPageId + "/", entity.Title);
+            SaveDraftInDb(page, editedContent.PublishDate);
+            BookmarkUtil.UpdateTitle("/admin/pages/editcontent/" + editedContent.ContentPageId + "/", page.Details.Title);
 
-            SetContentPageData(ref editedContent, entity, false, isBasic, null);
+            SetContentPageData(editedContent, page.Details, false, isBasic, null);
+            UpdatePageExtenstion(page);
             editedContent.IsActive = true; // Saving / Publishing content sets this to true.
-            editedContent.NoIndex = entity.NoIndex;
-            editedContent.NoFollow = entity.NoFollow;
+            editedContent.NoIndex = page.Details.NoIndex;
+            editedContent.NoFollow = page.Details.NoFollow;
 
             Context.SaveChanges();
 
@@ -263,37 +246,40 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [HttpPost]
         [PermissionsFilter(Permissions = "Can Edit Pages")]
         [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult SaveDraft(ContentPage entity, DateTime? publishDate)
+        public JsonResult SaveDraft(ContentPageComplete page, DateTime? publishDate)
         {
-            var result = new JsonResult();
+            var id = SaveDraftInDb(page, publishDate);
+
+            return new JsonResult { Data = new { id } };
+        }
+
+        private int SaveDraftInDb(ContentPageComplete page, DateTime? publishDate)
+        {
             var draft = new ContentPage();
 
-            SetContentPageData(ref draft, entity, true, false, publishDate);
+            SetContentPageData(draft, page.Details, true, false, publishDate);
 
             Context.ContentPages.Add(draft);
             Context.SaveChanges();
-
-            result.Data = new { id = draft.ContentPageId };
-
-            return result;
+            return draft.ContentPageId;
         }
 
 
         [HttpPost]
         [PermissionsFilter(Permissions = "Can Edit Pages")]
         [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult ChangeDraftStatus(ContentPage entity)
+        public JsonResult ChangeDraftStatus(ContentPageComplete page)
         {
             var result = new JsonResult();
 
-            var editedContent = Context.ContentPages.FirstOrDefault(x => x.ContentPageId == entity.ContentPageId);
+            var editedContent = Context.ContentPages.FirstOrDefault(x => x.ContentPageId == page.Details.ContentPageId);
             if (editedContent != null)
             {
-                editedContent.IsActive = entity.IsActive;
+                editedContent.IsActive = page.Details.IsActive;
             }
 
             // Return last publish date if we just changed to publish
-            if (Convert.ToBoolean(entity.IsActive))
+            if (Convert.ToBoolean(page.Details.IsActive))
             {
                 if (editedContent != null)
                 {
@@ -345,7 +331,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [PermissionsFilter(Permissions = "Can Edit Pages")]
         public JsonResult GetRevisionList(int id)
         {
-            JsonResult result = new JsonResult{ JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            JsonResult result = new JsonResult { JsonRequestBehavior = JsonRequestBehavior.AllowGet };
 
             var drafts = Context.ContentPages.Where(x => x.ParentContentPageId == id || x.ContentPageId == id).OrderByDescending(x => x.PublishDate).ToList().Select(rev => new RevisionViewModel
             {
@@ -354,10 +340,10 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 AuthorName = rev.DraftAuthorName,
                 WasPublished = rev.WasPublished
             }).ToList();
-            
+
             var html = ContentUtils.RenderPartialViewToString("/Areas/Admin/Views/Shared/Partials/RevisionsListInnerPartial.cshtml", drafts, ControllerContext, ViewData, TempData);
 
-            result.Data = new {html };
+            result.Data = new { html };
 
             return result;
         }
@@ -386,7 +372,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
             }
 
             var urlLink = "";
-            
+
             var page = new ContentPage
             {
                 Title = title,
@@ -427,7 +413,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
         private static ContentPage GetDefaultContentPage()
         {
-            return new ContentPage()
+            return new ContentPage
             {
                 DisplayName = "PlaceHolder",
                 IsActive = false,
@@ -440,8 +426,10 @@ namespace DirigoEdge.Areas.Admin.Controllers
             };
         }
 
-        protected void SetContentPageData(ref ContentPage editedContent, ContentPage entity, bool isRevision, bool isBasic, DateTime? publishDate)
+        protected void SetContentPageData(ContentPage editedContent, PageDetails entity, bool isRevision, bool isBasic, DateTime? publishDate)
         {
+            AutoMapper.Mapper.Map<PageDetails, ContentPage>(entity, editedContent);
+
             if (isRevision)
             {
                 editedContent.IsRevision = true;
@@ -450,39 +438,68 @@ namespace DirigoEdge.Areas.Admin.Controllers
             else
             {
                 editedContent.IsRevision = false;
-            }
-
-            if (!isBasic)
-            {
-                editedContent.JSContent = entity.JSContent;
-                editedContent.CSSContent = entity.CSSContent;
+                editedContent.ParentContentPageId = null;
             }
 
             editedContent.DraftAuthorName = UserUtils.CurrentMembershipUsername();
-            editedContent.DisplayName = ContentUtils.ScrubInput(entity.DisplayName);
-            editedContent.Permalink = ContentUtils.GetFormattedUrl(entity.Permalink);
-            editedContent.HTMLContent = entity.HTMLContent;
-            editedContent.HTMLUnparsed = entity.HTMLUnparsed;
-            editedContent.SchemaId = entity.SchemaId;
-            editedContent.SchemaEntryValues = entity.SchemaEntryValues;
-            editedContent.Template = entity.Template;
-            editedContent.Title = entity.Title;
             editedContent.WasPublished = publishDate.HasValue;
             editedContent.PublishDate = publishDate ?? DateTime.UtcNow;
-
-            // SEO Related Info
-            editedContent.MetaDescription = entity.MetaDescription;
-            editedContent.OGTitle = entity.OGTitle;
-            editedContent.OGImage = entity.OGImage;
-            editedContent.OGType = entity.OGType;
-            editedContent.OGUrl = entity.OGUrl;
-            editedContent.Canonical = entity.Canonical;
-            editedContent.NoIndex = entity.NoIndex;
-            editedContent.NoFollow = entity.NoFollow;
-
-            editedContent.ParentNavigationItemId = entity.ParentNavigationItemId;
-
             editedContent.HTMLContent = ContentUtils.ReplacePageParametersInHtmlContent(editedContent.HTMLUnparsed, entity);
+        }
+
+
+        private void AddNewPageExtension(ContentPage page)
+        {
+            var extension = new ContentPageExtension { ContentPage = page };
+
+            // add any custom init code here
+
+            Context.ContentPageExtensions.Add(extension);
+        }
+
+        private void UpdatePageExtenstion(ContentPageComplete page)
+        {
+            var ext = Context.ContentPageExtensions.FirstOrDefault(x => x.ContentPageId == page.Details.ContentPageId);
+            if(ext == null)
+            {
+                ext = new ContentPageExtension
+                {
+                    ContentPageId = page.Details.ContentPageId
+                };
+                
+                Context.ContentPageExtensions.Add(ext);
+            }
+
+            AutoMapper.Mapper.Map<ContentPageComplete, ContentPageExtension>(page, ext);
+            Context.SaveChanges();
+        }
+
+        private void ApplySchema(ContentPage page, String schemaId)
+        {
+            var iSchemaId = !string.IsNullOrEmpty(schemaId)
+                ? Int32.Parse(schemaId)
+                : 0;
+
+            if (iSchemaId == 0)
+            {
+                return;
+            }
+
+            page.SchemaId = iSchemaId;
+
+            var pageToCloneFrom = Context.ContentPages.FirstOrDefault(x => x.SchemaId == iSchemaId);
+            if (pageToCloneFrom == null)
+            {
+                return;
+            }
+
+            page.HTMLContent = pageToCloneFrom.HTMLContent;
+            page.HTMLUnparsed = pageToCloneFrom.HTMLUnparsed;
+            page.JSContent = pageToCloneFrom.JSContent;
+            page.CSSContent = pageToCloneFrom.CSSContent;
+            page.Template = pageToCloneFrom.Template;
+            page.ParentNavigationItemId = pageToCloneFrom.ParentNavigationItemId;
+            page.SortOrder = Context.ContentPages.Where(x => x.SchemaId == iSchemaId).Max(x => x.SortOrder) + 1;
         }
 
         #endregion
