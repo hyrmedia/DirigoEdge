@@ -23,7 +23,7 @@
             cb = typeof cb === 'function' ? cb : function () { };
 
             if (!isPagebuilder) {
-                cb('[responsive_image src="' + object.src + '" alt="' + object.alt + '" width="' + object.width + '" height="' + object.height + '"]');
+                cb(null, '[responsive_image src="' + object.src + '" alt="' + object.alt + '" width="' + object.width + '" height="' + object.height + '"]');
             } else {
                 EDGE.ajaxPost({
                     data : dataObject,
