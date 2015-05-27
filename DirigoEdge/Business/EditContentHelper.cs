@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Security;
+using DirigoEdge.Data.Context;
+using DirigoEdge.Data.Entities.Extensibility;
+using DirigoEdge.Models.ViewModels;
 using DirigoEdgeCore.Business;
 using DirigoEdgeCore.Data.Context;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models.ViewModels;
 using DirigoEdgeCore.Utils;
+using Microsoft.Ajax.Utilities;
 using EditContentViewModel = DirigoEdge.Areas.Admin.Models.ViewModels.EditContentViewModel;
 
 namespace DirigoEdge.Business
@@ -14,9 +18,9 @@ namespace DirigoEdge.Business
     public class EditContentHelper
     {
         private readonly AdminNavigationUtils _navigationUtils;
-        private readonly DataContext _context;
+        private readonly WebDataContext _context;
 
-        public EditContentHelper(DataContext context)
+        public EditContentHelper(WebDataContext context)
         {
             _context = context;
             _navigationUtils = new AdminNavigationUtils(context);
@@ -29,6 +33,9 @@ namespace DirigoEdge.Business
 
             var contentLoader = new ContentLoader();
             model.ContentPage.Details = contentLoader.GetDetailById(id);
+
+            var ext = _context.ContentPageExtensions.FirstOrDefault(ex => ex.ContentPageId == id);
+            AutoMapper.Mapper.Map(ext, model.ContentPage);
 
             model.ShowFieldEditor = model.ContentPage.Details.SchemaId > -1;
 
@@ -61,6 +68,7 @@ namespace DirigoEdge.Business
 
             model.ParentNavIdsToDisable = contentLoader.GetNavItemsForContentPage(model.ContentPage.Details.ContentPageId);
             model.BookmarkTitle = model.ContentPage.Details.Title;
+
         }
 
         private int GetNewerVersionId(int basePageId, DateTime? publishDate, int contentPageId)

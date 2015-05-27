@@ -66,7 +66,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 BookmarkUtil.UpdateUserBookmark(id, userId, url, title);
                 result.Data = new { response = "success", data = new { BookmarkId = id, Title = title, Url = url } };
             }
-            catch (Exception err)
+            catch (Exception)
             {
                 result.Data = new { response = "error", error = "An error occurred" };
             }

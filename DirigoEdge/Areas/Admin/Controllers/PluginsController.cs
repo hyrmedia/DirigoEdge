@@ -1,7 +1,6 @@
 ﻿using System.Web.Mvc;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdge.Controllers.Base;
-using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Utils;
 
 namespace DirigoEdge.Areas.Admin.Controllers
