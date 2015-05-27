@@ -17,6 +17,7 @@ using DirigoEdgeCore.Business.Models;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models.ViewModels;
 using DirigoEdgeCore.Utils;
+using EditContentViewModel = DirigoEdge.Areas.Admin.Models.ViewModels.EditContentViewModel;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
@@ -114,7 +115,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         {
             var model = new EditContentViewModel();
 
-            var editContentHelper = new EditContentHelper(Context);
+            var editContentHelper = new DirigoEdge.Business.EditContentHelper(Context);
             editContentHelper.LoadContentViewById(id, model);
 
             var userName = UserUtils.CurrentMembershipUsername();
@@ -143,7 +144,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         {
             var model = new EditContentViewModel();
 
-            var editContentHelper = new EditContentHelper(Context);
+            var editContentHelper = new Business.EditContentHelper(Context);
             editContentHelper.LoadContentViewById(id, model);
 
             return View(model);

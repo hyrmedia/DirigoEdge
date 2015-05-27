@@ -1,11 +1,11 @@
-﻿@model DirigoEdgeCore.Models.ViewModels.EditContentViewModel
+﻿@model DirigoEdge.Areas.Admin.Models.ViewModels.EditContentViewModel
 
 <div class="panel container-fluid settings">
     <h4>Settings</h4>
     
     @{
-        bool isActive = Convert.ToBoolean(Model.ThePage.IsActive);
-        string formattedDate = isActive ? Convert.ToDateTime(Model.ThePage.PublishDate).ToString("MM/dd/yyyy @ hh:mm") : "(Draft)" ;
+        bool isActive = Convert.ToBoolean(Model.ContentPage.Details.IsActive);
+        string formattedDate = isActive ? Convert.ToDateTime(Model.ContentPage.Details.PublishDate).ToString("MM/dd/yyyy @ hh:mm") : "(Draft)";
         string publishedLabel = isActive ? "Update" : "Publish";
         string statLabel = isActive ? "Published" : "Draft";
     }
@@ -13,7 +13,7 @@
     <div class="saveContainer">
         <a id="SaveContentButton" class="btn btn-primary mobileMarginBottom">@publishedLabel</a>
         <a id="SaveDraftButton" class="btn btn-default">Save Draft</a>
-        <a id="PreviewContentButton" href="/admin/pages/previewcontent/?id=@Model.ThePage.ContentPageId" class="btn btn-default mobileMarginBottom" target="_blank">Preview</a>
+        <a id="PreviewContentButton" href="/admin/pages/previewcontent/?id=@Model.ContentPage.Details.ContentPageId" class="btn btn-default mobileMarginBottom" target="_blank">Preview</a>
         <div id="SaveSpinner" class="standaloneSpinner"></div>
     </div>
     
@@ -40,7 +40,7 @@
     </div>
 
     <div class="publishContainer clearfix">
-        Last Published : <span id="PublishedDate" date="@Model.ThePage.PublishDate" timezone="@Model.TimeZone"  format="MM/DD/YYYY &#64; h:mm" class="convertTime">@formattedDate</span>
+        Last Published : <span id="PublishedDate" date="@Model.ContentPage.Details.PublishDate" timezone="@Model.TimeZone"  format="MM/DD/YYYY &#64; h:mm" class="convertTime">@formattedDate</span>
     </div>
 
 </div>
@@ -52,7 +52,7 @@
             @foreach (var template in Model.Templates)
             {
                 string templateName = template.Value.TemplateName;
-                string selected = template.Key == Model.ThePage.Template ? "selected = selected" : "";
+                string selected = template.Key == Model.ContentPage.Details.Template ? "selected = selected" : "";
 
                 <option @selected value="@template.Key">@templateName</option>
             }
@@ -69,18 +69,18 @@
     <select class="form-control" id="SchemaSelector" autocomplete="off">
                     
         @{
-            string noneSelected = (Model.ThePage.SchemaId == null || Model.ThePage.SchemaId <= 0) ? "selected=selected" : "";
+            string noneSelected = (Model.ContentPage.Details.SchemaId == null || Model.ContentPage.Details.SchemaId <= 0) ? "selected=selected" : "";
         }
         <option data-id="-1" @noneSelected>None</option>
         @foreach (var schema in Model.Schemas)
         {
-            string selected = schema.SchemaId == Model.ThePage.SchemaId ? "selected=selected" : "";
+            string selected = schema.SchemaId == Model.ContentPage.Details.SchemaId ? "selected=selected" : "";
             <option @selected data-id="@schema.SchemaId">@schema.DisplayName</option>
         }
     </select>
             
     <div class="panelActions">
-        <a id="RefreshSchemaLink" href="#">Refresh <i class="fa fa-refresh"></i></a> | <a id="EditSchemaLink" href="/admin/schemas/editschema/@Model.ThePage.SchemaId" target="_blank">Edit Schema <i class="fa fa-external-link"></i></a>
+        <a id="RefreshSchemaLink" href="#">Refresh <i class="fa fa-refresh"></i></a> | <a id="EditSchemaLink" href="/admin/schemas/editschema/@Model.ContentPage.Details.SchemaId" target="_blank">Edit Schema <i class="fa fa-external-link"></i></a>
     </div>
 
 </div>
@@ -94,18 +94,18 @@
             @foreach (var kvp in Model.NavList)
             {
                 string disabled = Model.ParentNavIdsToDisable.Any(x => x == kvp.Key) ? "disabled=disabled" : "";
-                string selected = Model.ThePage.ParentNavigationItemId == kvp.Key ? "selected=selected" : "";
+                string selected = Model.ContentPage.Details.ParentNavigationItemId == kvp.Key ? "selected=selected" : "";
                 <option @disabled data-id="@kvp.Key" @selected>@Html.Raw(kvp.Value)</option>
             }
         </select>
     </div>
 </div>
 
-@if (Model.ThePage.SchemaId > 0 && Roles.IsUserInRole("Administrators"))
+@if (Model.ContentPage.Details.SchemaId > 0 && Roles.IsUserInRole("Administrators"))
 {
     <div class="panel container-fluid">
         <h3>Sync View</h3>
-        <a href="#" class="sync-schema-view js-sync-schema-view" data-ispage="true" data-item="@Model.ThePage.ContentPageId" data-schema="@Model.ThePage.SchemaId">
+        <a href="#" class="sync-schema-view js-sync-schema-view" data-ispage="true" data-item="@Model.ContentPage.Details.ContentPageId" data-schema="@Model.ContentPage.Details.SchemaId">
             Copy View to All Pages <i class="fa fa-refresh fa-spin"></i>
         </a>
     </div>
@@ -115,7 +115,7 @@
     <h4>SEO / Meta</h4>
     <div class="form-group">
         @{
-            var indexChecked = @Model.ThePage.NoIndex ? "checked=checked" : "";
+            var indexChecked = @Model.ContentPage.Details.NoIndex ? "checked=checked" : "";
         }
         <label>
             <input type="checkbox" class="no-index" @indexChecked/> No Index
@@ -123,7 +123,7 @@
     </div>
     <div class="form-group">
         @{
-            var followChecked = @Model.ThePage.NoFollow ? "checked=checked" : "";
+            var followChecked = @Model.ContentPage.Details.NoFollow ? "checked=checked" : "";
         }
         <label>
             <input type="checkbox" class="no-follow" @followChecked/> No Follow
@@ -131,11 +131,11 @@
     </div>
     <div class="form-group">
         <label class="" data-toggle="tooltip" data-placement="top" title="Commonly used by search engines to display preview snippets for a given page.">Meta Description</label>
-        <input id="MetaDescription" class=" form-control" type="text" placeholder="" autocomplete=off value="@Model.ThePage.MetaDescription">
+        <input id="MetaDescription" class=" form-control" type="text" placeholder="" autocomplete=off value="@Model.ContentPage.Details.MetaDescription">
     </div>
     <div class="form-group">
         <label class="" data-toggle="tooltip" data-placement="top" title="Open Graph : An image URL which should represent your object within the graph.">OGImage</label>
-        <input class=" form-control" id="OGImage" type="text" placeholder="" autocomplete=off value="@Model.ThePage.OGImage">
+        <input class=" form-control" id="OGImage" type="text" placeholder="" autocomplete=off value="@Model.ContentPage.Details.OGImage">
         @*<a href="javascript:void(0);" data-toggle="modal" data-target="#SEOMetaModal">Set Meta Information</a>*@
     </div>
 </div>

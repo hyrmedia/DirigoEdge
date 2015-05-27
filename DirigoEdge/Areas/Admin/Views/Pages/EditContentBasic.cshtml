@@ -3,11 +3,11 @@
 	Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-@model DirigoEdgeCore.Models.ViewModels.EditContentViewModel
+@model DirigoEdge.Areas.Admin.Models.ViewModels.EditContentViewModel
 @using DirigoEdgeCore.Utils
 
 
-<div class="editContent" data-id="@Model.ThePage.ContentPageId">
+<div class="editContent" data-id="@Model.ContentPage.Details.ContentPageId">
     
     @Html.Partial("Partials/PageEditHeaderPartial")
 
@@ -15,18 +15,18 @@
         <div id="ContentRow" class="col-lg-9">
             
             @{
-                string permaLinkModded = !String.IsNullOrEmpty(@Model.ThePage.Permalink) ? "True" : "False";
+                string permaLinkModded = !String.IsNullOrEmpty(@Model.ContentPage.Details.Permalink) ? "True" : "False";
             }
 
             <div class="contentTitle">
-                <input id="PageTitle" class="required form-control input-lg" type="text" value="@Model.ThePage.Title" autocomplete=off />
+                <input id="PageTitle" class="required form-control input-lg" type="text" value="@Model.ContentPage.Details.Title" autocomplete=off />
                 <span class="permHint">Permalink: </span>
-                <span data-url="@Model.SiteUrl" id="SiteUrl">@Model.SiteUrl</span><span id="PermaLinkEnd" data-modified="@permaLinkModded">@ContentUtils.GetFormattedUrl(Model.ThePage.Permalink)</span><input id="PermaLinkEditPane" type="text" class="hide autogrow" autocomplete="off" /><span>/</span>
+                <span data-url="@Model.SiteUrl" id="SiteUrl">@Model.SiteUrl</span><span id="PermaLinkEnd" data-modified="@permaLinkModded">@ContentUtils.GetFormattedUrl(Model.ContentPage.Details.Permalink)</span><input id="PermaLinkEditPane" type="text" class="hide autogrow" autocomplete="off" /><span>/</span>
                 <a id="EditPermaLink" href="javascript:void(0);">edit</a>
-                <a id="ViewPermaLink" href="@Model.SiteUrl@Model.ThePage.Permalink" target="_blank">view live page</a>
+                <a id="ViewPermaLink" href="@Model.SiteUrl@Model.ContentPage.Details.Permalink" target="_blank">view live page</a>
             </div>
 
-            <textarea id="CKEDITCONTENT" cols="40" rows="20" autocomplete="off">@Model.ThePage.HTMLContent</textarea>            
+            <textarea id="CKEDITCONTENT" cols="40" rows="20" autocomplete="off">@Model.ContentPage.Details.HTMLContent</textarea>            
         </div>
 
         <div class="col-lg-3">

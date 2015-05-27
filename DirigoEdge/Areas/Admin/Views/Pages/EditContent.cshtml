@@ -3,7 +3,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-@model DirigoEdgeCore.Models.ViewModels.EditContentViewModel
+@model DirigoEdge.Areas.Admin.Models.ViewModels.EditContentViewModel
 @using System
 @using System
 @using DirigoEdgeCore.Utils
@@ -16,21 +16,21 @@
         <div id="ContentRow" class="col-md-9">
 
             @{
-                string permaLinkModded = !String.IsNullOrEmpty(Model.ThePage.Permalink) ? "True" : "False";
+                string permaLinkModded = !String.IsNullOrEmpty(Model.ContentPage.Details.Permalink) ? "True" : "False";
                
             }
 
             <div class="contentTitle">
-                <input id="PageTitle" class="required form-control input-lg" type="text" value="@Model.ThePage.Title" autocomplete=off />
+                <input id="PageTitle" class="required form-control input-lg" type="text" value="@Model.ContentPage.Details.Title" autocomplete=off />
                 <span class="permHint">Permalink: </span>
-                <span data-url="@Model.SiteUrl" id="SiteUrl">@Model.SiteUrl</span><span id="PermaLinkEnd" data-modified="@permaLinkModded">@ContentUtils.GetFormattedUrl(Model.ThePage.Permalink)</span><input id="PermaLinkEditPane" type="text" class="hide autogrow" autocomplete="off" /><span>/</span>
+                <span data-url="@Model.SiteUrl" id="SiteUrl">@Model.SiteUrl</span><span id="PermaLinkEnd" data-modified="@permaLinkModded">@ContentUtils.GetFormattedUrl(Model.ContentPage.Details.Permalink)</span><input id="PermaLinkEditPane" type="text" class="hide autogrow" autocomplete="off" /><span>/</span>
                 <a id="EditPermaLink" href="javascript:void(0);">edit</a>
-                <a id="ViewPermaLink" href="@Model.SiteUrl@Model.ThePage.Permalink" target="_blank">view live page</a>
+                <a id="ViewPermaLink" href="@Model.SiteUrl@Model.ContentPage.Details.Permalink" target="_blank">view live page</a>
             </div>
 
             @{
                 // If no schema is assigned, show the html tab by default
-                bool hasSchema = Model.ThePage.SchemaId != null && Model.ThePage.SchemaId > 0;
+                bool hasSchema = Model.ContentPage.Details.SchemaId != null && Model.ContentPage.Details.SchemaId > 0;
                 string fieldEditorActive = (hasSchema && Model.ShowFieldEditor) ? "active" : "";
                 string htmlEditorActive = (!hasSchema || !Model.ShowFieldEditor) ? "active" : "";
                 string hideFieldEditorClass = !Model.ShowFieldEditor ? "hide" : "";
@@ -56,9 +56,9 @@
             <ul class="tab-content">
 
                 @*Schema Editor*@
-                <li class="relative tab-pane editTabArea @fieldEditorActive" id="EditorTab" data-schemaid="@Model.ThePage.SchemaId">
+                <li class="relative tab-pane editTabArea @fieldEditorActive" id="EditorTab" data-schemaid="@Model.ContentPage.Details.SchemaId">
                     @{
-                        if (Model.ThePage.SchemaId == null || Model.ThePage.SchemaId < 1)
+                        if (Model.ContentPage.Details.SchemaId == null || Model.ContentPage.Details.SchemaId < 1)
                         {
                         <p>No Schema assigned.</p>
                         }
@@ -67,18 +67,18 @@
 
                 @*HTML*@
                 <li class="relative tab-pane editTabArea @htmlEditorActive" id="HtmlTab">
-                    <div class="aceEditArea" id="HTMLContent">@Model.ThePage.HTMLUnparsed</div>
+                    <div class="aceEditArea" id="HTMLContent">@Model.ContentPage.Details.HTMLUnparsed</div>
                 </li>
 
                 @*CSS*@
                 <li class="relative tab-pane editTabArea" id="CSSTab">
-                    <div class="aceEditArea" id="CSSContent">@Model.ThePage.CSSContent</div>
+                    <div class="aceEditArea" id="CSSContent">@Model.ContentPage.Details.CSSContent</div>
 
                 </li>
 
                 @*Javascript*@
                 <li class="relative tab-pane editTabArea" id="JSTab">
-                    <div class="aceEditArea" id="JSContent">@Model.ThePage.JSContent</div>
+                    <div class="aceEditArea" id="JSContent">@Model.ContentPage.Details.JSContent</div>
                 </li>
             </ul>
 
