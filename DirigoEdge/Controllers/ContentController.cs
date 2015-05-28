@@ -47,7 +47,7 @@ namespace DirigoEdge.Controllers
             if (model.ThePage != null)
             {
                 model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
-                model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent, Context);
+                model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent);
 
                 if (UserUtils.UserIsAdmin())
                 {
@@ -155,8 +155,6 @@ namespace DirigoEdge.Controllers
             if (thePage != null)
             {
                 var model = new ContentViewViewModel {ThePage = ContentLoader.GetDetailById(thePage.ContentPageId)};
-                model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
-                model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent, Context);
                 return model;
             }
             else

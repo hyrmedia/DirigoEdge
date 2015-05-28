@@ -120,6 +120,8 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             Context.SaveChanges();
 
+            CachedObjects.GetCacheContentModules(true);
+
             return RedirectToAction("EditModule", "Modules", new { id = ModuleId });
         }
 
@@ -157,6 +159,8 @@ namespace DirigoEdge.Areas.Admin.Controllers
             }
 
             Context.SaveChanges();
+
+            CachedObjects.GetCacheContentModules(true);
 
             return result;
         }
@@ -253,6 +257,8 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             if (success > 0)
             {
+                CachedObjects.GetCacheContentModules(true);
+
                 BookmarkUtil.UpdateTitle("/admin/modules/" + editedContent.ContentModuleId + "/", editedContent.ModuleName);
                 result.Data = new
                 {
