@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using DirigoEdgeCore.Utils.Logging;
+using DirigoEdge.CustomUtils;
 
 namespace DirigoEdge
 {
@@ -92,6 +93,12 @@ namespace DirigoEdge
                 "Event Categories View", // Route name
                 "event/categories/{category}", // URL with parameters
                 new { controller = "Event", action = "Categories", category = UrlParameter.Optional } // Parameter defaults
+            );
+
+            routes.MapRoute(
+                name: "Get Responsive Image",
+                url: "content/responsiveimagetemplate",
+                defaults: new { controller = "Content", action = "ResponsiveImageTemplate" }
             );
 
 			routes.MapRoute(
@@ -183,29 +190,21 @@ namespace DirigoEdge
 
             #region DynamicImageResizing
 
-            routes.MapRoute(
-                name: "DynamicImagesSmall",
-                url: "images/small/{*path}",
-                defaults: new { controller = "Images", action = "RenderWithResize", width = 480, height = 0, directory = "small", }
-            );
-
-            routes.MapRoute(
-                name: "DynamicImagesMedium",
-                url: "images/medium/{*path}",
-                defaults: new { controller = "Images", action = "RenderWithResize", width = 1024, height = 0, directory = "medium" }
-            );
-
-            routes.MapRoute(
-                name: "DynamicImagesLarge",
-                url: "images/large/{*path}",
-                defaults: new { controller = "Images", action = "RenderWithResize", width = 1920, height = 0, directory = "large" }
-            );
-
-            routes.MapRoute(
-                name: "DynamicImagesExtreme",
-                url: "images/extreme/{*path}",
-                defaults: new { controller = "Images", action = "RenderWithResize", width = 2560, height = 0, directory = "extreme" }
-            );   
+            foreach (var route in ResponsiveImageUtils.ResponsiveImageRoutes)
+		    {
+                routes.MapRoute(
+                    name: route.Name,
+                    url: route.Path + "/{*path}",
+                    defaults: new
+                    {
+                        controller = "Images",
+                        action = "RenderWithResize",
+                        width = route.Width,
+                        height = 0,
+                        directory = route.Path.ToLower()
+                    }
+                );
+		    }
 
             #endregion
 

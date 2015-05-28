@@ -62,6 +62,9 @@
     <Reference Include="AutoMapper.Net4">
       <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
+    <Reference Include="DirigoEdgeCore, Version=1.4.20.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DirigoEdgeCore.1.4.20.0\lib\net45\DirigoEdgeCore.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
@@ -431,6 +434,7 @@
     <Compile Include="Controllers\ContentController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="CustomUtils\ResponsiveImageUtils.cs" />
     <Compile Include="CustomUtils\WebUtils.cs" />
     <Compile Include="Data\Context\WebDataContext.cs" />
     <Compile Include="Data\Context\WebDataContextInitializer.cs" />
@@ -951,6 +955,7 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\picturefill.js" />
     <Content Include="Scripts\resetPassword.js" />
     <Content Include="Scripts\tzdetect.js" />
     <Content Include="Web.config">
@@ -1274,6 +1279,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Partials\_ResponsiveImagePartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Scss\client\_base.scss" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

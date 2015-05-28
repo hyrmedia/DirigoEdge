@@ -1,37 +1,38 @@
-﻿EDGE.prototype.ajaxPost = function (data, url, successCallback, errorCallback) {
+﻿EDGE.prototype.ajaxPost = function (data, url, success, error) {
 
-    var payload = JSON.stringify(data);
+    if (data && typeof data === 'object') {
+        url = data.url;
+        success = data.success;
+        error = data.error;
+        data = data.data;
+    }
+
     return $.ajax({
         url: url,
         type: 'POST',
-        data: payload,
+        data: data ? JSON.stringify(data, null, 2) : null,
         dataType: 'JSON',
         contentType: 'application/json; charset=utf-8',
-        success: successCallback,
-        error: errorCallback
+        success: success,
+        error: error
     });
 };
 
-EDGE.prototype.ajaxGet = function (data, url, successCallback, errorCallback) {
+EDGE.prototype.ajaxGet = function (data, url, success, error) {
 
-    if (data == null) {
-        return $.ajax({
-            url: url,
-            type: 'GET',
-            contentType: 'application/json; charset=utf-8',
-            success: successCallback,
-            error: errorCallback
-        });
-    } else {
-        var payload = JSON.stringify(data);
-
-        return $.ajax({
-            url: url,
-            type: 'GET',
-            data: payload,
-            contentType: 'application/json; charset=utf-8',
-            success: successCallback,
-            error: errorCallback
-        });
+    if (data && !url && typeof data === 'object') {
+        url = data.url;
+        success = data.success;
+        error = data.error;
+        data = data.data;
     }
+
+    return $.ajax({
+        url: url,
+        type: 'GET',
+        data: data ? JSON.stringify(data, null, 2) : null,
+        contentType: 'application/json; charset=utf-8',
+        success: success,
+        error: error
+    });
 };

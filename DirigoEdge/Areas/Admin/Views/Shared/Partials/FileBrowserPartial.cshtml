@@ -63,7 +63,7 @@
                     <ul class="files__list">
                         @foreach (var file in Model.FileListing)
                         {
-                            <li class="file-container" data-path="@file.WebPath" data-icon="@file.Icon">
+                            <li class="file-container" data-path="@file.WebPath" data-icon="@file.Icon" data-width="@file.Width" data-height="@file.Height">
                                 <a href="@file.WebPath" class="file-thumbnail" target="_blank">
                                     @if (file.Icon == "picture-o")
                                     {
