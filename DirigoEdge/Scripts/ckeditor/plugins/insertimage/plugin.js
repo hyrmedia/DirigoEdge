@@ -27,7 +27,7 @@
             } else {
                 EDGE.ajaxPost({
                     data : dataObject,
-                    url : '/content/getresponsiveimage/',
+                    url : '/content/responsiveimagetemplate/',
                     success : function (res) {
                         if (res && res.success) {
                             cb(null, res.html);

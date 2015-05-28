@@ -97,8 +97,8 @@ namespace DirigoEdge
 
             routes.MapRoute(
                 name: "Get Responsive Image",
-                url: "content/getresponsiveimage",
-                defaults: new { controller = "Content", action = "GetResponsiveImage" }
+                url: "content/responsiveimagetemplate",
+                defaults: new { controller = "Content", action = "ResponsiveImageTemplate" }
             );
 
 			routes.MapRoute(

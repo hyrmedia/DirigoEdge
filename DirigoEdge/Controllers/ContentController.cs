@@ -96,7 +96,7 @@ namespace DirigoEdge.Controllers
 
         [HttpPost]
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult GetResponsiveImage(ResponsiveImageUtils.ResponsiveImageObject imageObject)
+        public ActionResult ResponsiveImageTemplate(ResponsiveImageUtils.ResponsiveImageObject imageObject)
         {
             var result = new JsonResult();
 
