@@ -376,8 +376,11 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 DisplayName = permalink,
                 ParentNavigationItemId = parent,
                 Template = !String.IsNullOrEmpty(viewTemplate) ? viewTemplate.ToLower() : "blank",
-                HTMLContent = ContentUtils.RenderPartialViewToString(templatePath, null, ControllerContext, ViewData, TempData),
+                HTMLUnparsed = ContentUtils.RenderPartialViewToString(templatePath, null, ControllerContext, ViewData, TempData),
+                HTMLContent = ContentUtils.RenderPartialViewToString(templatePath, null, ControllerContext, ViewData, TempData)
             };
+
+            page.HTMLContent = ContentUtils.ReplacePageParametersInHtmlContent(page.HTMLUnparsed, page);
 
             Context.ContentPages.Add(page);
             success = Context.SaveChanges();
