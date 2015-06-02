@@ -9,16 +9,8 @@
     font-size: 16px;
     overflow: auto;
 
-    .collapse-menu & {
-        left: -178px;
-    }
-
     > ul {
         margin: 0;
-
-        > li {
-            border-left: 3px solid #16bed4;
-        }
 
         .toggle-sidebar {
             position: relative;
@@ -45,7 +37,7 @@
 
         a {
             @extend .clearfix;
-            padding: 10px 0 10px 15px;
+            padding: 10px 0;
             font-size: 0.9em;
             color: #222;
 
@@ -75,7 +67,6 @@
                 width: 43px;
                 font-size: 1.25em;
                 text-align: center;
-                float: right;
             }
         }
 
