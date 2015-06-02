@@ -1,11 +1,11 @@
 ﻿.sidebar {
     position: absolute;
-    top: 0;
+    top: $navbar-height;
     bottom: 0;
     left: 0;
-    width: 220px;
+    width: $sidebar-width-expanded;
     padding: 33px 0;
-    background: #eee;
+    background: $color-gray;
     font-size: 16px;
     overflow: auto;
 
@@ -39,32 +39,32 @@
             @extend .clearfix;
             padding: 10px 0;
             font-size: 0.9em;
-            color: #222;
+            color: $color-black;
 
             &:hover {
                 background: #ddd;
-                color: #222;
+                color: $color-black;
             }
 
             &[data-toggle="collapse"] {
                 background: #ddd;
-                color: #222;
+                color: $color-black;
             }
 
             &[data-toggle="collapse"].collapsed {
-                background: #eee;
-                color: #222;
+                background: $color-gray;
+                color: $color-black;
             }
 
             &[data-toggle="collapse"].collapsed:hover {
                 background: #ddd;
-                color: #222;
+                color: $color-black;
             }
 
             > i {
                 position: relative;
                 top: 1px;
-                width: 43px;
+                width: $sidebar-width-collapsed;
                 font-size: 1.25em;
                 text-align: center;
             }
@@ -72,11 +72,11 @@
 
         .collapse,
         .collapsing {
-            background: #eee;
+            background: $color-gray;
 
             a {
                 padding-left: 30px;
-                color: #222;
+                color: $color-black;
 
                 &:hover {
                     background: #ddd

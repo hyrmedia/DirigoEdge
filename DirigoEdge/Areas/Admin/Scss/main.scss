@@ -1,6 +1,9 @@
 ﻿// Stylesheet Variables
 $hasMediaQueries : true;
 
+// Variables
+@import 'sass/variables';
+
 // Mixins
 @import 'sass/mixins/breakpoint';
 @import 'sass/mixins/fonts';

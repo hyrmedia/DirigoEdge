@@ -5,36 +5,36 @@ body {
 
 body {
     @include font(sans-serif);
-	background: #f7f7f7;
+	background: $color-light-gray;
     overflow-x: hidden;
     overflow-y: auto;
 }
 
 .contents {
-    height: calc(100% - 57px);
+    height: calc(100% - #{$navbar-height});
 }
 
 .outer-wrapper {
     position: relative;
-    min-height: 100%;
-}
-
-.main {
-    position: relative;
-    width: calc(100% - 220px);
-    padding: calc(3em - 20px) 3em 3em;
-    background: #f7f7f7;
+    width: calc(100% - #{$sidebar-width-expanded});
+    height: calc(100% - #{$navbar-height});
+    background: $color-light-gray;
     z-index: 10;
-    transform: translate3d(220px, 0, 0);
+    transform: translate3d($sidebar-width-expanded, 0, 0);
 
     .collapse-menu & {
-        width: calc(100% - 42px);
-        padding: calc(3em - 20px) 3em 3em;
-        transform: translate3d(42px, 0, 0);
+        width: calc(100% - #{$sidebar-width-collapsed});
+        transform: translate3d($sidebar-width-collapsed, 0, 0);
         transition: transform 0.3s ease-in-out;
     }
 
     .sidebarOpen.collapse-menu & {
-        transform: translate3d(220px, 0, 0);
+        transform: translate3d($sidebar-width-expanded, 0, 0);
     }
+}
+
+.main {
+    position: relative;
+    width: 100%;
+    padding: calc(3em - 20px) 3em 3em;
 }

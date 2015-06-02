@@ -983,7 +983,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\OutputCache\" />
-    <Folder Include="Areas\Admin\Scss\sass\" />
     <Folder Include="Data\Entities\" />
     <Folder Include="Scripts\ckeditor\plugins\image\images\" />
     <Folder Include="Scss\sass\" />
@@ -1282,6 +1281,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Scss\client\_base.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Scss\sass\mixins\_breakpoint.scss" />
+    <Content Include="Areas\Admin\Scss\sass\mixins\_fonts.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Scss\sass\_variables.scss" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

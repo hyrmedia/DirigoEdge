@@ -133,224 +133,226 @@
                 @RenderBody()
             </section>
 
-            <section role="complementary" class="sidebar">
-                <!-- New Nav Structure -->
-                <ul class="nav nav-stacked" role="tablist">
-                    <li class="toggle-sidebar">
-                        <a href="#" class="js-toggle-sidebar">
-                            <i class="fa fa-navicon"></i>
-                            <span>Toggle Sidebar</span>
-                        </a>
-                    </li>
+
+        </div>
+
+        <section role="complementary" class="sidebar">
+            <!-- New Nav Structure -->
+            <ul class="nav nav-stacked" role="tablist">
+                <li class="toggle-sidebar">
+                    <a href="#" class="js-toggle-sidebar">
+                        <i class="fa fa-navicon"></i>
+                        <span>Toggle Sidebar</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Index", "Admin")">
+                        <i class="fa fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                @if (UserRoleUtilities.UserHasPermission("Can Manage Media"))
+                {
                     <li>
-                        <a href="@Url.Action("Index", "Admin")">
-                            <i class="fa fa-home"></i>
-                            <span>Dashboard</span>
+                        <a href="@Url.Action("ManageMedia", "Media")">
+                            <i class="fa fa-picture-o"></i>
+                            <span>Media</span>
                         </a>
                     </li>
-                    @if (UserRoleUtilities.UserHasPermission("Can Manage Media"))
-                    {
-                        <li>
-                            <a href="@Url.Action("ManageMedia", "Media")">
-                                <i class="fa fa-picture-o"></i>
-                                <span>Media</span>
-                            </a>
-                        </li>
-                    }
+                }
 
-                    @if (UserRoleUtilities.UserHasPermission("Can Edit Blogs") || UserRoleUtilities.UserHasPermission("Can Edit Blog Categories") || UserRoleUtilities.UserHasPermission("Can Edit Blog Authors"))
-                    {
-                        <li>
-                            <a data-toggle="collapse" data-target="#blogDropdown" class="collapsed" href="#">
-                                <i class="fa fa-pencil"></i>
-                                <span>Blog</span>
-                                <span class="caret"></span>
-                            </a>
-                            <ul id="blogDropdown" class="collapse nav nav-stacked">
-                                @if (UserRoleUtilities.UserHasPermission("Can Edit Blogs"))
-                                {
-                                    <li>
-                                        <a href="@Url.Action("ManageBlogs", "Blog")">
-                                            <span>Manage Posts</span>
-                                        </a>
-                                    </li>
-                                }
-
-                                @if (UserRoleUtilities.UserHasPermission("Can Edit Blog Categories"))
-                                {
-                                    <li>
-                                        <a href="@Url.Action("ManageCategories", "Blog")">
-                                            <span>Categories</span>
-                                        </a>
-                                    </li>
-                                }
-
-                                @if (UserRoleUtilities.UserHasPermission("Can Edit Blog Authors"))
-                                {
-                                    <li>
-                                        <a href="@Url.Action("ManageBlogAuthors", "Blog")"><span>Authors</span></a>
-                                    </li>
-                                }
-                                    
-                                @Html.DoAction("admin_blog_menu_end")
-                            </ul>
-                        </li>
-                    }
-
-                    @if (UserRoleUtilities.UserHasPermission("Can Edit Navigation"))
-                    {
-                        <li class="separated">
-                            <a href="@Url.Action("ManageNavigation", "Navigation")">
-                                <i class="fa fa-compass"></i>
-                                <span>Navigation</span>
-                            </a>
-                        </li>
-                    }
-
-                    @if (UserRoleUtilities.UserHasPermission("Can Edit Pages") || UserRoleUtilities.UserHasPermission("Can Edit Modules"))
-                    {
-                        <li>
-                            <a data-toggle="collapse" data-target="#contentDropdown" class="collapsed" href="#">
-                                <i class="fa fa-file-text-o"></i>
-                                <span>Content</span>
-                                <span class="caret"></span>
-                            </a>
-                            <ul id="contentDropdown" class="collapse nav nav-stacked">
-                                @if (UserRoleUtilities.UserHasPermission("Can Edit Pages"))
-                                {
-                                    <li>
-                                        <a href="@Url.Action("ManageContent", "Pages")">
-                                            <span>Pages</span>
-                                        </a>
-                                    </li>
-                                }
-
-                                @if (UserRoleUtilities.UserHasPermission("Can Edit Modules"))
-                                {
-                                    <li>
-                                        <a href="@Url.Action("ManageModules", "Modules")">
-                                            <span>Modules</span>
-                                        </a>
-                                    </li>
-                                }
-
-                                @if (UserRoleUtilities.UserHasPermission("Can Edit Schemas"))
-                                {
-                                    <li>
-                                        <a href="@Url.Action("ManageSchemas", "Schemas")">
-                                            <span>Schemas</span>
-                                        </a>
-                                    </li>
-                                }
-                                    
-                                @Html.DoAction("admin_content_menu_end")
-                            </ul>
-                        </li>
-                    }
-
-                    @if (new SiteSettingsUtils().EventsEnabled() && UserRoleUtilities.UserHasPermission("Can Edit Events"))
-                    {
-                        <li>
-                            <a data-toggle="collapse" data-target="#eventsDropdown" class="collapsed" href="#">
-                                <i class="fa fa-calendar"></i>
-                                <span>Events</span>
-                                <span class="caret"></span>
-                            </a>
-                            <ul id="eventsDropdown" class="collapse nav nav-stacked">
+                @if (UserRoleUtilities.UserHasPermission("Can Edit Blogs") || UserRoleUtilities.UserHasPermission("Can Edit Blog Categories") || UserRoleUtilities.UserHasPermission("Can Edit Blog Authors"))
+                {
+                    <li>
+                        <a data-toggle="collapse" data-target="#blogDropdown" class="collapsed" href="#">
+                            <i class="fa fa-pencil"></i>
+                            <span>Blog</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul id="blogDropdown" class="collapse nav nav-stacked">
+                            @if (UserRoleUtilities.UserHasPermission("Can Edit Blogs"))
+                            {
                                 <li>
-                                    <a href="@Url.Action("ManageEvents", "Events")">
-                                        <span>Manage Events</span>
+                                    <a href="@Url.Action("ManageBlogs", "Blog")">
+                                        <span>Manage Posts</span>
                                     </a>
                                 </li>
+                            }
+
+                            @if (UserRoleUtilities.UserHasPermission("Can Edit Blog Categories"))
+                            {
                                 <li>
-                                    <a href="@Url.Action("ManageEventCategories", "EventCategory")">
+                                    <a href="@Url.Action("ManageCategories", "Blog")">
                                         <span>Categories</span>
                                     </a>
                                 </li>
+                            }
 
-                                @Html.DoAction("admin_events_menu_end")
-                            </ul>
-                        </li>
-                    }
+                            @if (UserRoleUtilities.UserHasPermission("Can Edit Blog Authors"))
+                            {
+                                <li>
+                                    <a href="@Url.Action("ManageBlogAuthors", "Blog")"><span>Authors</span></a>
+                                </li>
+                            }
 
-                    @if (UserRoleUtilities.UserHasPermission("Can Edit Users"))
-                    {
-                        <li>
-                            <a data-toggle="collapse" data-target="#usersDropdown" class="collapsed" href="#">
-                                <i class="fa fa-users"></i>
-                                <span>Users</span>
-                                <span class="caret"></span>
-                            </a>
-                            <ul id="usersDropdown" class="collapse nav nav-stacked">
-                                <li>
-                                    <a href="@Url.Action("ManageUsers", "Users")">
-                                        <span>Users</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="@Url.Action("ManageUserRoles", "Roles")">
-                                        <span>Roles</span>
-                                    </a>
-                                </li>
+                            @Html.DoAction("admin_blog_menu_end")
+                        </ul>
+                    </li>
+                }
 
-                                @Html.DoAction("admin_users_menu_end")
-                            </ul>
-                        </li>
-                    }
+                @if (UserRoleUtilities.UserHasPermission("Can Edit Navigation"))
+                {
+                    <li class="separated">
+                        <a href="@Url.Action("ManageNavigation", "Navigation")">
+                            <i class="fa fa-compass"></i>
+                            <span>Navigation</span>
+                        </a>
+                    </li>
+                }
 
-                    @if (UserRoleUtilities.UserHasPermission("Can Edit Settings"))
-                    {
-                        <li>
-                            <a data-toggle="collapse" data-target="#settingsDropdown" class="collapsed" href="#">
-                                <i class="fa fa-wrench"></i>
-                                <span>Settings</span>
-                                <span class="caret"></span>
-                            </a>
-                            <ul id="settingsDropdown" class="collapse nav nav-stacked">
+                @if (UserRoleUtilities.UserHasPermission("Can Edit Pages") || UserRoleUtilities.UserHasPermission("Can Edit Modules"))
+                {
+                    <li>
+                        <a data-toggle="collapse" data-target="#contentDropdown" class="collapsed" href="#">
+                            <i class="fa fa-file-text-o"></i>
+                            <span>Content</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul id="contentDropdown" class="collapse nav nav-stacked">
+                            @if (UserRoleUtilities.UserHasPermission("Can Edit Pages"))
+                            {
                                 <li>
-                                    <a href="@Url.Action("SiteSettings", "Settings")">
-                                        <span>Site Settings</span>
+                                    <a href="@Url.Action("ManageContent", "Pages")">
+                                        <span>Pages</span>
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="@Url.Action("BlogSettings", "Settings")">
-                                        <span>Blog Settings</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="@Url.Action("FeatureSettings", "Settings")">
-                                        <span>Enable Features</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="@Url.Action("Redirects", "Redirect")">
-                                        <span>Manage Redirects</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="@Url.Action("Index", "Plugins")">
-                                        <span>Plugins</span>
-                                    </a>
-                                </li>
-                                @Html.DoAction("admin_settings_menu_end")
-                            </ul>
-                        </li>
-                    }
+                            }
 
-                    @if (Request.UrlReferrer != null)
-                    {
-                        <li class="back-sidebar">
-                            <a href="@Request.UrlReferrer">
-                                <i class="fa fa-arrow-left"></i>
-                                <span>Back</span>
-                            </a>
-                        </li>
-                    }
+                            @if (UserRoleUtilities.UserHasPermission("Can Edit Modules"))
+                            {
+                                <li>
+                                    <a href="@Url.Action("ManageModules", "Modules")">
+                                        <span>Modules</span>
+                                    </a>
+                                </li>
+                            }
 
-                    @Html.DoAction("the_plugin_menu")
-                </ul>
-            </section>
-        </div>
+                            @if (UserRoleUtilities.UserHasPermission("Can Edit Schemas"))
+                            {
+                                <li>
+                                    <a href="@Url.Action("ManageSchemas", "Schemas")">
+                                        <span>Schemas</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @Html.DoAction("admin_content_menu_end")
+                        </ul>
+                    </li>
+                }
+
+                @if (new SiteSettingsUtils().EventsEnabled() && UserRoleUtilities.UserHasPermission("Can Edit Events"))
+                {
+                    <li>
+                        <a data-toggle="collapse" data-target="#eventsDropdown" class="collapsed" href="#">
+                            <i class="fa fa-calendar"></i>
+                            <span>Events</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul id="eventsDropdown" class="collapse nav nav-stacked">
+                            <li>
+                                <a href="@Url.Action("ManageEvents", "Events")">
+                                    <span>Manage Events</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("ManageEventCategories", "EventCategory")">
+                                    <span>Categories</span>
+                                </a>
+                            </li>
+
+                            @Html.DoAction("admin_events_menu_end")
+                        </ul>
+                    </li>
+                }
+
+                @if (UserRoleUtilities.UserHasPermission("Can Edit Users"))
+                {
+                    <li>
+                        <a data-toggle="collapse" data-target="#usersDropdown" class="collapsed" href="#">
+                            <i class="fa fa-users"></i>
+                            <span>Users</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul id="usersDropdown" class="collapse nav nav-stacked">
+                            <li>
+                                <a href="@Url.Action("ManageUsers", "Users")">
+                                    <span>Users</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("ManageUserRoles", "Roles")">
+                                    <span>Roles</span>
+                                </a>
+                            </li>
+
+                            @Html.DoAction("admin_users_menu_end")
+                        </ul>
+                    </li>
+                }
+
+                @if (UserRoleUtilities.UserHasPermission("Can Edit Settings"))
+                {
+                    <li>
+                        <a data-toggle="collapse" data-target="#settingsDropdown" class="collapsed" href="#">
+                            <i class="fa fa-wrench"></i>
+                            <span>Settings</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul id="settingsDropdown" class="collapse nav nav-stacked">
+                            <li>
+                                <a href="@Url.Action("SiteSettings", "Settings")">
+                                    <span>Site Settings</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("BlogSettings", "Settings")">
+                                    <span>Blog Settings</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("FeatureSettings", "Settings")">
+                                    <span>Enable Features</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Redirects", "Redirect")">
+                                    <span>Manage Redirects</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index", "Plugins")">
+                                    <span>Plugins</span>
+                                </a>
+                            </li>
+                            @Html.DoAction("admin_settings_menu_end")
+                        </ul>
+                    </li>
+                }
+
+                @if (Request.UrlReferrer != null)
+                {
+                    <li class="back-sidebar">
+                        <a href="@Request.UrlReferrer">
+                            <i class="fa fa-arrow-left"></i>
+                            <span>Back</span>
+                        </a>
+                    </li>
+                }
+
+                @Html.DoAction("the_plugin_menu")
+            </ul>
+        </section>
 
     </div>
 
