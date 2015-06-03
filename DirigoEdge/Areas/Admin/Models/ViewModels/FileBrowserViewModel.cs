@@ -43,11 +43,22 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
                 foreach (var file in files.Where(file => Path.GetFileName(file) != "ph"))
                 {
                     var extension = Path.GetExtension(file);
+                    var width = 0;
+                    var height = 0;
                     string icon;
 
                     if (extension != null && imageExtensions.Contains(extension))
                     {
                         icon = "picture-o";
+                        try
+                        {
+                            width = System.Drawing.Image.FromFile(file).Width;
+                            height = System.Drawing.Image.FromFile(file).Height;
+                        }
+                        catch (Exception err)
+                        {
+                            
+                        }
                     }
                     else if (extension != null && documentExtensions.Contains(extension))
                     {
@@ -63,7 +74,9 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
                             Folder = folder.Split('\\').Last(),
                             Filename = file.Split('\\').Last(),
                             WebPath = ContentGlobals.IMAGEUPLOADDIRECTORY + folder.Split('\\').Last() + "/" + file.Split('\\').Last(),
-                            Icon = icon
+                            Icon = icon,
+                            Width = width,
+                            Height = height
                         });
                 }
             }
@@ -82,5 +95,7 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
         public String Filename { get; set; }
         public String WebPath { get; set; }
         public String Icon { get; set; }
+        public Int32 Width { get; set; }
+        public Int32 Height { get; set; }
     } 
 }

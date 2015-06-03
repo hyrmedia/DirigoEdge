@@ -62,9 +62,9 @@
     <Reference Include="AutoMapper.Net4">
       <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
-    <Reference Include="DirigoEdgeCore, Version=1.4.19.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DirigoEdgeCore, Version=1.4.21.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DirigoEdgeCore.1.4.19.0\lib\net45\DirigoEdgeCore.dll</HintPath>
+      <HintPath>..\packages\DirigoEdgeCore.1.4.21.0\lib\net45\DirigoEdgeCore.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -439,6 +439,7 @@
     <Compile Include="Controllers\ContentController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="CustomUtils\ResponsiveImageUtils.cs" />
     <Compile Include="CustomUtils\WebUtils.cs" />
     <Compile Include="Data\Context\WebDataContext.cs" />
     <Compile Include="Data\Context\WebDataContextInitializer.cs" />
@@ -964,6 +965,7 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\picturefill.js" />
     <Content Include="Scripts\resetPassword.js" />
     <Content Include="Scripts\tzdetect.js" />
     <Content Include="Web.config">
@@ -991,7 +993,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\OutputCache\" />
-    <Folder Include="Areas\Admin\Scss\sass\" />
     <Folder Include="Scripts\ckeditor\plugins\image\images\" />
     <Folder Include="Scss\sass\" />
     <Folder Include="Uploaded\" />
@@ -1292,6 +1293,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Views\Shared\Partials\ContentSettingsExtended.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Scss\client\_base.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Scss\sass\mixins\_breakpoint.scss" />
+    <Content Include="Areas\Admin\Scss\sass\mixins\_fonts.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Scss\sass\_variables.scss" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

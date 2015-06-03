@@ -1,4 +1,4 @@
-﻿category_class = function () {
+category_class = function () {
 };
 
 category_class.prototype.initPageEvents = function () {
@@ -12,9 +12,9 @@ category_class.prototype.initConfirmCatDeleteEvent = function () {
 
     // Confirm deleteion ofself category from cat table
     $("#ConfirmDeleteCategory").click(function () {
-        var catIdToDelete = self.$catRowToDelete.attr("data-id");
+        var catIdToDelete = self.catIdToDelete;
 
-        var $container = $("#DeleteCategoryModal").find("div.wrapper");
+        var $container = $("#DeleteCategoryModal");
         common.showAjaxLoader($container);
 
         var newId = $('#allCategories option:selected').val();
@@ -50,7 +50,7 @@ category_class.prototype.initDeleteCategoryEvent = function () {
     $('body').on("click", "a.deleteCategoryButton", function () {
         // Store the row to be removed so the dialog box can access is
         self.$catRowToDelete = $(this).closest("tr");
-        var catIdToDelete = self.$catRowToDelete.attr("data-id");
+        self.catIdToDelete = $(this).attr("data-id");
 
         $("#popTitle").text("'" + self.$catRowToDelete.find("td.name").text() + "'");
 
@@ -58,8 +58,7 @@ category_class.prototype.initDeleteCategoryEvent = function () {
 
             $('#allCategories').empty();
             $.each($.parseJSON(data), function (index, value) {
-                console.log(value);
-                if (value.Id != catIdToDelete) {
+                if (value.Id != self.catIdToDelete) {
                     var option = $('<option></option>').attr("value", value.Id).text(value.Name);
                     $('#allCategories').append(option);
                 }
@@ -78,13 +77,12 @@ category_class.prototype.initAddCategoryEvent = function () {
 
     // Add Category Button
     $("#ConfirmAddCategory").click(function () {
-
         var name = $("#CategoryNameInput").val();
         if (name.length < 1) {
             return false;
         }
 
-        var $container = $("#AddCategoryModal").find("div.wrapper");
+        var $container = $("#AddCategoryModal");
 
         var success = function (data) {
 
@@ -102,7 +100,7 @@ category_class.prototype.initAddCategoryEvent = function () {
         };
 
         common.showAjaxLoader($container);
-        EDGE.ajaxPost({ name: name }, "/admin/category/addcategory", success, error);
+        EDGE.ajaxPost({ name: name }, "/admin/category/addcategory/", success, error);
 
         return false;
     });

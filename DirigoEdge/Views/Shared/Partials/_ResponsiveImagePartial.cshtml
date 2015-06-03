@@ -1,4 +1,18 @@
-﻿@using DirigoEdgeCore.Utils.Extensions
-@model DirigoEdge.Models.Shortcodes.ResponsiveImageShortcode
+﻿@using DirigoEdge.CustomUtils
+@model ResponsiveImageUtils.ResponsiveImageObject
 
-@Html.RenderBackgroundImage(Model.ClassName, Model.ImagePath, Model.AltText, Model.Width, Model.Height)
+@{
+    var sources = new List<string>();
+
+    foreach (var route in ResponsiveImageUtils.ResponsiveImageRoutes)
+    {
+        sources.Add(String.Format("/{0}{1} {2}w", route.Path, Model.ImagePath.Replace(" ", "%20"), route.Width));
+    }
+    
+    sources.Add(String.Format("{0} {1}w", Model.ImagePath, Model.Width));
+}
+
+<img sizes="@ResponsiveImageUtils.ResponsiveImageSizes"
+     srcset="@String.Join(", ", sources)"
+     class="@Model.ClassName"
+     alt="@Model.AltText">

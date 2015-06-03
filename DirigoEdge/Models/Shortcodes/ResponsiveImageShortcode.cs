@@ -2,17 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using DirigoEdge.CustomUtils;
 using DirigoEdgeCore.Utils;
 
 namespace DirigoEdge.Models.Shortcodes
 {
     public class ResponsiveImageShortcode : IShortcode
     {
-        public string ClassName = "responsive-image";
-        public string ImagePath = "";
-        public string AltText = "";
-        public int Width = 0;
-        public int Height = 0;
+        private const string ClassName = "responsive-image";
 
         public string GetDisplayName()
         {
@@ -26,29 +23,38 @@ namespace DirigoEdge.Models.Shortcodes
 
         public string GetHtml(Dictionary<string, string> parameters)
         {
-            ClassName = parameters != null && parameters.ContainsKey("class") ? parameters["class"] : "responsive-image";
+            var model = new ResponsiveImageUtils.ResponsiveImageObject
+            {
+                ClassName = ClassName,
+                ImagePath = "",
+                AltText = "",
+                Width = 0,
+                Height = 0
+            };
+
+            model.ClassName = parameters != null && parameters.ContainsKey("class") ? parameters["class"] : "responsive-image";
 
             if (parameters != null && parameters.ContainsKey("src") && !String.IsNullOrEmpty(parameters["src"]))
             {
-                ImagePath = parameters["src"];
+                model.ImagePath = parameters["src"];
             }
 
             if (parameters != null && parameters.ContainsKey("alt") && !String.IsNullOrEmpty(parameters["alt"]))
             {
-                AltText = parameters["alt"];
+                model.AltText = parameters["alt"];
             }
 
             if (parameters != null && parameters.ContainsKey("width") && !String.IsNullOrEmpty(parameters["width"]))
             {
-                Width = Convert.ToInt16(parameters["width"]);
+                model.Width = Convert.ToInt16(parameters["width"]);
             }
 
             if (parameters != null && parameters.ContainsKey("height") && !String.IsNullOrEmpty(parameters["height"]))
             {
-                Height = Convert.ToInt16(parameters["height"]);
+                model.Height = Convert.ToInt16(parameters["height"]);
             }
 
-            return DynamicModules.GetViewHtml("Partials/_ResponsiveImagePartial", this);
+            return DynamicModules.GetViewHtml("Partials/_ResponsiveImagePartial", model);
         }
 
         public object GetViewModel()

@@ -334,8 +334,9 @@ content_class.prototype.initContentImageUploadEvents = function() {
         var tag;
 
         if (object.type === 'image') {
-            tag = '<img src="' + object.src + '" alt="' + object.alt + '" />';
-            
+            tag = object.responsive
+                    ? '[responsive_image src="' + object.src + '" alt="' + object.alt + '" width="' + object.width + '" height="' + object.height + '"]'
+                    : '<img src="' + object.src + '" alt="' + object.alt + '" />';
         } else {
             tag = '<a href="' + object.href + '" title="' + object.title + '" >' + object.text + '</a>';
         }
