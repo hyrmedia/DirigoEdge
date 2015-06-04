@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Web;
 using System.Web.Mvc;
-using DirigoEdgeCore.Controllers;
+using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Models.ViewModels;
 
 namespace DirigoEdge.Controllers
 {
-    public class EventController : DirigoBaseController
+    public class EventController : WebBaseController
     {
         public ActionResult Index(string title)
         {

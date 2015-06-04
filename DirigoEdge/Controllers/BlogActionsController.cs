@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using DirigoEdgeCore.Controllers;
+using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models;
 using DirigoEdgeCore.Utils;
 
 namespace DirigoEdge.Controllers
 {
-    public class BlogActionsController : DirigoBaseController
+    public class BlogActionsController : WebBaseController
     {
         protected BlogListModel model { get; set; }
 

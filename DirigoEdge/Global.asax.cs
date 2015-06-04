@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using DirigoEdge.Data.Context;
@@ -7,22 +8,20 @@ using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.PluginFramework;
 using DirigoEdgeCore.Utils;
 using DirigoEdgeCore.Utils.Logging;
+using log4net.Config;
 
 namespace DirigoEdge
 {
-    // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
-    // visit http://go.microsoft.com/?LinkId=9394801
-
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
         protected void Application_Start()
         {
-            log4net.Config.XmlConfigurator.Configure();
-            ILog log = LogFactory.GetLog(typeof(MvcApplication));
+            XmlConfigurator.Configure();
+            var log = LogFactory.GetLog(typeof(MvcApplication));
             log.Debug("Starting edge");
 
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteCollection rc = RouteTable.Routes;
+            var rc = RouteTable.Routes;
 
             using (var context = new WebDataContext())
             {
@@ -40,6 +39,7 @@ namespace DirigoEdge
 
             // Register new dynamic modules/shortcodes
             DynamicModules.Instance.AddDynamicModule("responsive_image", new ResponsiveImageShortcode());
+            Mapping.SetAutomapperMappings();
         }
 
         // May need to store host in distributed or multi-tenant applications
@@ -61,28 +61,26 @@ namespace DirigoEdge
                          || (x.RootMatching && Request.Path.StartsWith(x.Source) && !Request.Path.StartsWith(x.Destination)));
 
             // Check whether the browser remains connected to the server.
-            if (Response.IsClientConnected)
-            {
-                if (redirect == null)
-                {
-                    return;
-                }
-
-                if (redirect.IsPermanent)
-                {
-
-                    Response.RedirectPermanent(redirect.Destination);
-                }
-                else
-                {
-                    // If still connected, redirect to another page.
-                    Response.Redirect(redirect.Destination);
-                }
-            }
-            else
+            if (!Response.IsClientConnected)
             {
                 // If the browser is not connected stop all response processing.
                 Response.End();
+                return;
+            }
+            
+            if (redirect == null)
+            {
+                return;
+            }
+
+            if (redirect.IsPermanent)
+            {
+                Response.RedirectPermanent(redirect.Destination);
+            }
+            else
+            {
+                // If still connected, redirect to another page.
+                Response.Redirect(redirect.Destination);
             }
         }
     }

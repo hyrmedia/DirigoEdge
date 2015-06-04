@@ -5,20 +5,15 @@ using AutoMapper;
 using DirigoEdge.CustomUtils;
 using DirigoEdgeCore.Business;
 using DirigoEdgeCore.Business.Models;
-using DirigoEdgeCore.Controllers;
+using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models.ViewModels;
 using DirigoEdgeCore.Utils;
 
 namespace DirigoEdge.Controllers
 {
-    public class ContentController : DirigoBaseController
+    public class ContentController : WebBaseController
     {
-        static ContentController()
-        {
-            Mapper.CreateMap<ContentPage, PageDetails>();
-        }
-
         public ActionResult Index()
         {
             ContentViewViewModel model = null;

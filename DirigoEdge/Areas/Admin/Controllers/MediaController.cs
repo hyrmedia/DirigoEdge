@@ -8,13 +8,13 @@ using System.Web.Mvc;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdge.Controllers;
-using DirigoEdgeCore.Controllers;
+using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Utils;
 using DirigoEdgeCore.Utils.Extensions;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
-    public class MediaController : DirigoBaseAdminController
+    public class MediaController : WebBaseAdminController
     {
         [PermissionsFilter(Permissions = "Can Manage Media")]
         public ActionResult ManageMedia(string id)

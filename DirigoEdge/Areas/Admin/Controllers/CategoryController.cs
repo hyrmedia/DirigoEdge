@@ -2,14 +2,14 @@
 using System.Linq;
 using System.Web.Mvc;
 using DirigoEdge.Areas.Admin.Models;
-using DirigoEdgeCore.Controllers;
+using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Utils;
 using Newtonsoft.Json;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
-    public class CategoryController : DirigoBaseAdminController
+    public class CategoryController : WebBaseAdminController
     { 
         public class Category
         {

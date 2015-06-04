@@ -6,13 +6,13 @@ using System.Web.Security;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdge.Controllers;
-using DirigoEdgeCore.Controllers;
+using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Membership;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
-    public class UsersController : DirigoBaseAdminController
+    public class UsersController : WebBaseAdminController
     {
         [PermissionsFilter(Permissions = "Can Edit Users")]
         public ActionResult ManageUsers()

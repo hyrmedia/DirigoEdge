@@ -123,7 +123,7 @@ content_modal_class.prototype.manageContentAdminEvents = function () {
         isBasic = false;
       
         var data = {
-            entity: {
+            ContentPageComplete: {
                 ContentModuleId: id,
                 ContentPageId: id,
                 DisplayName: contentName,
@@ -145,7 +145,7 @@ content_modal_class.prototype.manageContentAdminEvents = function () {
             // Basic editor does not send over JS / CSS rules so we should leave the content as is in the controller
             isBasic: isBasic
         };
-
+        debugger;
         var url = $(this).attr("data-url") || 'modifycontent';
         $.ajax({
             url: "/admin/pages/" + url,

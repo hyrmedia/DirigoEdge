@@ -4,13 +4,13 @@ using System.Web.Mvc;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdge.Controllers;
-using DirigoEdgeCore.Controllers;
+using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Utils;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
-    public class NavigationController : DirigoBaseAdminController
+    public class NavigationController : WebBaseAdminController
     {
         [PermissionsFilter(Permissions = "Can Edit Navigation")]
         public ActionResult ManageNavigation()

@@ -3,14 +3,14 @@ using System.Linq;
 using System.Web.Mvc;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdge.Controllers;
-using DirigoEdgeCore.Controllers;
+using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Utils;
 using Microsoft.Win32;
 using Delete = Microsoft.Ajax.Utilities.Delete;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
-    public class BookmarkController : DirigoBaseAdminController
+    public class BookmarkController : WebBaseAdminController
     {
         public ActionResult Index()
         {
@@ -66,7 +66,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 BookmarkUtil.UpdateUserBookmark(id, userId, url, title);
                 result.Data = new { response = "success", data = new { BookmarkId = id, Title = title, Url = url } };
             }
-            catch (Exception err)
+            catch (Exception)
             {
                 result.Data = new { response = "error", error = "An error occurred" };
             }

@@ -2,11 +2,11 @@
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdge.Controllers;
-using DirigoEdgeCore.Controllers;
+using DirigoEdge.Controllers.Base;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
-    public class AdminController : DirigoBaseAdminController 
+    public class AdminController : WebBaseAdminController 
     {
         // Not authorized to view this page
         public ActionResult NotAuthorized()

@@ -62,8 +62,9 @@
     <Reference Include="AutoMapper.Net4">
       <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
-    <Reference Include="DirigoEdgeCore, Version=1.4.20.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DirigoEdgeCore.1.4.20.0\lib\net45\DirigoEdgeCore.dll</HintPath>
+    <Reference Include="DirigoEdgeCore, Version=1.4.21.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DirigoEdgeCore.1.4.21.0\lib\net45\DirigoEdgeCore.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -212,6 +213,7 @@
     <Compile Include="Areas\Admin\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Admin\Controllers\SlideshowController.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\BookmarkViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\ViewModels\EditContentViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\PluginViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\EditNavigationViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\EditSchemaViewModel.cs" />
@@ -220,6 +222,9 @@
     <Compile Include="Areas\Admin\Models\ViewModels\ManageNavigationViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\RedirectViewModel.cs" />
     <Compile Include="Business\BlogLoader.cs" />
+    <Compile Include="Business\EditContentHelper.cs" />
+    <Compile Include="Controllers\Base\WebBaseAdminController.cs" />
+    <Compile Include="Controllers\Base\WebBaseController.cs" />
     <Compile Include="Controllers\ImagesController.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\ManageSchemasViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\BlogSettingsViewModel.cs" />
@@ -438,9 +443,13 @@
     <Compile Include="CustomUtils\WebUtils.cs" />
     <Compile Include="Data\Context\WebDataContext.cs" />
     <Compile Include="Data\Context\WebDataContextInitializer.cs" />
+    <Compile Include="Data\Entities\Extensibility\ContentPageExtension.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mapping.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Shortcodes\ResponsiveImageShortcode.cs" />
     <Compile Include="Models\ViewModels\BlogArchiveViewModel.cs" />
@@ -452,6 +461,7 @@
     <Compile Include="Models\ViewModels\BlogsByUserViewModel.cs" />
     <Compile Include="Models\ViewModels\BlogSingleHomeViewModel.cs" />
     <Compile Include="Models\ViewModels\CategorySingleViewModel.cs" />
+    <Compile Include="Models\ViewModels\ContentPageComplete.cs" />
     <Compile Include="Models\ViewModels\EventCategoryHomeViewModel.cs" />
     <Compile Include="Models\ViewModels\EventCategorySingleViewModel.cs" />
     <Compile Include="Models\ViewModels\EventHomeViewModel.cs" />
@@ -983,7 +993,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\OutputCache\" />
-    <Folder Include="Data\Entities\" />
     <Folder Include="Scripts\ckeditor\plugins\image\images\" />
     <Folder Include="Scss\sass\" />
     <Folder Include="Uploaded\" />
@@ -1278,6 +1287,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Partials\_ResponsiveImagePartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Views\Shared\Partials\ContentSettingsExtended.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Scss\client\_base.scss" />
