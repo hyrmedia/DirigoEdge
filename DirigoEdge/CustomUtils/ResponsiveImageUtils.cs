@@ -12,6 +12,12 @@ namespace DirigoEdge.CustomUtils
         {
             new ResponsiveImageRoute
             {
+                Name = "Thumbnail",
+                Width = 100,
+                Path = "images/thumbnail"
+            },
+            new ResponsiveImageRoute
+            {
                 Name = "Small",
                 Width = 480,
                 Path = "images/small"
