@@ -1,12 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Security;
-using DirigoEdge.Data.Context;
-using DirigoEdge.Utils;
-using DirigoEdge.Utils.Logging;
-using DirigoEdgeCore.Data.Context;
+﻿using DirigoEdge.Data.Context;
 using DirigoEdgeCore.Models;
 using DirigoEdgeCore.Utils.Logging;
 
