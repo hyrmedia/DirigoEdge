@@ -39,6 +39,8 @@ namespace DirigoEdge
 
             // Register new dynamic modules/shortcodes
             DynamicModules.Instance.AddDynamicModule("responsive_image", new ResponsiveImageShortcode());
+            DynamicModules.Instance.AddDynamicModule("featured_events", new EventsModule());
+
             Mapping.SetAutomapperMappings();
         }
 

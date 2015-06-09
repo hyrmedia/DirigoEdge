@@ -9,7 +9,6 @@ using System.Web.Mvc;
 using System.Web.Security;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
-using DirigoEdge.Controllers;
 using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models.ViewModels;
@@ -27,9 +26,15 @@ namespace DirigoEdge.Areas.Admin.Controllers
         }
 
         [PermissionsFilter(Permissions = "Can Edit Modules")]
-        public ActionResult EditModule(int id)
+        public ActionResult EditModule(int id, string editContentHeading)
         {
             var model = new EditModuleViewModel(id);
+
+            if (!String.IsNullOrEmpty(editContentHeading))
+            {
+                model.Heading = editContentHeading;
+            }
+
             return View(model);
         }
 
@@ -102,18 +107,35 @@ namespace DirigoEdge.Areas.Admin.Controllers
         }
 
         [PermissionsFilter(Permissions = "Can Edit Modules")]
-        public ActionResult NewContentModule()
+        public ActionResult NewContentModule(string schemaId, string editContentHeading)
         {
             int ModuleId = 0;
 
-            // Create a new Content Page to be passed to the edit content action
+            // Create a new Content Module to be passed to the edit content action
 
             ContentModule module = GetDefaultContentModule();
+
+            // If a schema was passed in, we will want to assign that schema id to the newly created module
+            // We will also want to copy over html from an existing module that uses that html. That way the user has a consistent editor.
+            int iSchemaId = !string.IsNullOrEmpty(schemaId) ? Int32.Parse(schemaId) : 0;
+            if (iSchemaId > 0)
+            {
+                module.SchemaId = iSchemaId;
+
+                var moduleToCloneFrom = Context.ContentModules.FirstOrDefault(x => x.SchemaId == iSchemaId);
+                if (moduleToCloneFrom != null)
+                {
+                    module.HTMLContent = moduleToCloneFrom.HTMLContent;
+                    module.HTMLUnparsed = moduleToCloneFrom.HTMLUnparsed;
+                    module.JSContent = moduleToCloneFrom.JSContent;
+                    module.CSSContent = moduleToCloneFrom.CSSContent;
+                }
+            }
 
             Context.ContentModules.Add(module);
             Context.SaveChanges();
 
-            // Update the page title / permalink with the new id we now have
+            // Update the module name
             ModuleId = module.ContentModuleId;
             module.ModuleName = "Module " + ModuleId;
             module.DraftAuthorName = UserUtils.CurrentMembershipUsername();
@@ -122,7 +144,13 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             CachedObjects.GetCacheContentModules(true);
 
-            return RedirectToAction("EditModule", "Modules", new { id = ModuleId });
+            object routeParameters = new { id = ModuleId };
+            if (!String.IsNullOrEmpty(editContentHeading))
+            {
+                routeParameters = new { id = ModuleId, editContentHeading };
+            }
+
+            return RedirectToAction("EditModule", "Modules", routeParameters);
         }
 
         [HttpPost]
@@ -195,7 +223,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 AuthorName = rev.DraftAuthorName,
                 WasPublished = rev.WasPublished
             }).ToList();
-            
+
             var html = ContentUtils.RenderPartialViewToString("/Areas/Admin/Views/Shared/Partials/RevisionsListInnerPartial.cshtml", drafts, ControllerContext, ViewData, TempData);
 
             result.Data = new { html };
@@ -354,6 +382,20 @@ namespace DirigoEdge.Areas.Admin.Controllers
             };
 
             return result;
+        }
+
+        [PermissionsFilter(Permissions = "Can Edit Modules")]
+        public ActionResult ManageEntity(string heading, string buttonText, string editHeading, int schemaId, string sort = "")
+        {
+            var model = new ManageModulesViewModel(schemaId)
+            {
+                Heading = heading,
+                NewButtonText = buttonText,
+                EditContentHeading = editHeading,
+                Sort = sort
+            };
+
+            return View("ManageModules", model);
         }
 
         #region Helper Methods

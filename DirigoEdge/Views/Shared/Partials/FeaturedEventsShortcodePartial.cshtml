@@ -1,0 +1,38 @@
+﻿@using DirigoEdgeCore.Utils.Extensions
+@model DirigoEdge.Models.Shortcodes.EventsModule
+
+@if (Model.ShowHeading)
+{
+    <div class="title">Featured Events</div>
+}
+
+@foreach (var _event in Model.TheEvents)
+{
+    var startDate = Convert.ToDateTime(_event.StartDate);
+    var endDate = Convert.ToDateTime(_event.EndDate);
+    var end = " - " + endDate.Day + Html.RenderDateSuffix(endDate.Day.ToString());
+
+    var theDay = startDate.Day.ToString();
+
+    if (endDate.Month != startDate.Month)
+    {
+        end = " - " + endDate.ToString("MMMM d") + Html.RenderDateSuffix(endDate.Day.ToString());
+    }
+
+    if (startDate.Day == endDate.Day)
+    {
+        end = "";
+    }
+
+    <div class="event-date">@startDate.ToString("MMMM d")@Html.RenderDateSuffix(startDate.Day.ToString()) @end</div>
+
+    <a class="event-title" href="/events/calendar/@_event.PermaLink" title="@_event.Title">@_event.Title</a>
+
+    <div class="event-short">
+        @Html.Raw(_event.ShortDesc)
+    </div>
+}
+
+<div>
+    <a href="/events/calendar/" class="button light">Upcoming Events</a>
+</div>

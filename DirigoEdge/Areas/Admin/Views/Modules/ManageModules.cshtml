@@ -1,6 +1,7 @@
 ﻿@{
-    ViewBag.Title = "Manage Modules";
+    ViewBag.Title = Model.Heading;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    bool hasSchema = Model.SchemaId > 0;
 }
 
 @model DirigoEdge.Areas.Admin.Models.ViewModels.ManageModulesViewModel
@@ -9,8 +10,16 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <h3>Content Modules @Html.Partial("Partials/BookmarkButtonPartial")</h3>
-            <a id="NewContentModule" class="btn btn-primary mobileBlockStatic mobileMarginBottom" href="@Url.Action("NewContentModule", "Modules")">New Module +</a>
+            <h3>@Model.Heading @Html.Partial("Partials/BookmarkButtonPartial")</h3>
+            @{
+                string newButtonUrl = Url.Action("NewContentModule", "Modules");
+                // If a schema is assigned, pass the variable along
+                if (hasSchema)
+                {
+                    newButtonUrl = Url.Action("NewContentModule", "Modules", new { schemaId = Model.SchemaId, editContentHeading = Model.EditContentHeading });
+                }
+            }
+            <a id="NewContentModule" class="btn btn-primary mobileBlockStatic mobileMarginBottom" href="@newButtonUrl">@Model.NewButtonText</a>
             <div id="contentModuleListingWrapper">
                 <table class="manageTable twelve bordered">
                     <thead>
@@ -23,13 +32,25 @@
                     <tbody>
                         @foreach (var module in Model.Modules)
                         {
+                            string codeEditUrl;
+                            if (hasSchema)
+                            {
+                                codeEditUrl = Url.Action("EditModule", "Modules", new { id = module.ContentModuleId, editContentHeading = Model.EditContentHeading });
+                            }
+                            else
+                            {
+                                codeEditUrl = Url.Action("EditModule", "Modules", new { id = module.ContentModuleId });
+                            }
                             <tr>
-                                <td class="title"><a href="@Url.Action("EditModule", "Modules", new {id = @module.ContentModuleId})">@module.ModuleName</a></td>
+                                <td class="title"><a href="@codeEditUrl">@module.ModuleName</a></td>
                                 <td class="hidden-xs">@Convert.ToDateTime(module.CreateDate).ToString("MM/dd/yyyy")</td>
                                 <td>
                                     <div class="">
-                                        <a class="btn btn-primary btn-sm mobileTop" href="@Url.Action("EditModule", "Modules", new {id = @module.ContentModuleId})">Code Edit <span class="hidden-xs">{ }</span></a>
-                                        <a class="btn btn-primary btn-sm" href="@Url.Action("EditModuleBasic", "Modules", new {id = @module.ContentModuleId})">WYSIWYG Edit</a>
+                                        <a class="btn btn-primary btn-sm mobileTop" href="@codeEditUrl">Code Edit <span class="hidden-xs">{ }</span></a>
+                                        @if (!hasSchema)
+                                        {
+                                            <a class="btn btn-primary btn-sm" href="@Url.Action("EditModuleBasic", "Modules", new {id = @module.ContentModuleId})">WYSIWYG Edit</a>
+                                        }
                                         <a class="btn btn-sm btn-warning" href="@Url.Action("CloneModule", "Modules", new {id = @module.ContentModuleId})"><i class="fa fa-copy"></i> Clone</a>
                                         <a class="delete btn btn-danger btn-sm mobileMarginBottom" href="javascript:void(0);" data-id="@module.ContentModuleId">Delete</a>
                                     </div>
@@ -74,19 +95,19 @@
         // Only load if there is a good reason to
         if (Model.Modules.Count > 0)
         {
-        <script src="/Areas/Admin/Scripts/jquery/plugins/datatables/js/jquery.dataTables.min.js"></script>
+            <script src="/Areas/Admin/Scripts/jquery/plugins/datatables/js/jquery.dataTables.min.js"></script>
 
-        <script>
-            $(document).ready(function () {
-                $("table.manageTable").dataTable({
-                    "iDisplayLength": 25,
-                    "aoColumnDefs": [
-                        { "bSortable": false, "aTargets": ["actions"] } // No Sorting on actions
-                    ],
-                    "aaSorting": [[0, "asc"]] // Sort by module name on load
+            <script>
+                $(document).ready(function () {
+                    $("table.manageTable").dataTable({
+                        "iDisplayLength": 25,
+                        "aoColumnDefs": [
+                            { "bSortable": false, "aTargets": ["actions"] } // No Sorting on actions
+                        ],
+                        "aaSorting": [[0, "asc"]] // Sort by module name on load
+                    });
                 });
-            });
-        </script>
+            </script>
         }
     }
 }
