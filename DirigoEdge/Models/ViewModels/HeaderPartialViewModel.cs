@@ -10,7 +10,7 @@ namespace DirigoEdgeCore.Models.ViewModels
  
         public HeaderPartialViewModel()
         {
-            MainNav = CachedObjects.GetMasterNavigationList(false);
+            MainNav = CachedObjects.GetCacheNavigationList(1, false);
 		}
     }
 }

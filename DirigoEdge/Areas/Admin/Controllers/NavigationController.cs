@@ -164,8 +164,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
             if (success > 0)
             {
                 // Clear the cache of the nav on save
-                CachedObjects.GetCacheNavigationList(true);
-                CachedObjects.GetMasterNavigationList(true);        
+                CachedObjects.GetCacheNavigationList(0, true);      
 
                 BookmarkUtil.DeleteBookmarkForUrl("/admin/navigation/editnav/" + navigationId +"/");
 
