@@ -85,25 +85,24 @@ namespace DirigoEdge.Models.Shortcodes
             }
         }
 
+        public object GetViewModel()
+        {
+            return null;
+        }
 
         public string GetPartialView()
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        public object GetViewModel()
+        public bool PageBuilderEnabled()
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public bool IsCacheable
         {
             get { return false; }
-        }
-
-        public bool PageBuilderEnabled()
-        {
-            throw new NotImplementedException();
         }
     }
 }
