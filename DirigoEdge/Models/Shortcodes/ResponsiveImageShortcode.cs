@@ -9,8 +9,6 @@ namespace DirigoEdge.Models.Shortcodes
 {
     public class ResponsiveImageShortcode : IShortcode
     {
-        private const string ClassName = "responsive-image";
-
         public string GetDisplayName()
         {
             return "Responsive Image";
@@ -18,21 +16,25 @@ namespace DirigoEdge.Models.Shortcodes
 
         public string GetCSSClass()
         {
-            return ClassName;
+            return "responsive-image-wrapper";
         }
 
         public string GetHtml(Dictionary<string, string> parameters)
         {
             var model = new ResponsiveImageUtils.ResponsiveImageObject
             {
-                ClassName = ClassName,
+                ClassName = parameters != null && parameters.ContainsKey("class") ? parameters["class"] : "responsive-image",
+                Sizes = ResponsiveImageUtils.ResponsiveImageSizes,
                 ImagePath = "",
                 AltText = "",
                 Width = 0,
                 Height = 0
             };
 
-            model.ClassName = parameters != null && parameters.ContainsKey("class") ? parameters["class"] : "responsive-image";
+            if (parameters != null && parameters.ContainsKey("sizes") && !String.IsNullOrEmpty(parameters["sizes"]))
+            {
+                model.Sizes = parameters["sizes"];
+            }
 
             if (parameters != null && parameters.ContainsKey("src") && !String.IsNullOrEmpty(parameters["src"]))
             {
