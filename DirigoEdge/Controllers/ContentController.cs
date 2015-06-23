@@ -84,9 +84,11 @@ namespace DirigoEdge.Controllers
                 return View(model.TheTemplate.ViewLocation, model);
             }
 
+            model = new ContentViewViewModel { ThePage = ContentLoader.GetDetailById(1) };
+
             HttpContext.Response.StatusCode = 404;
             Response.TrySkipIisCustomErrors = true;
-            return View("~/Views/Home/Error404.cshtml");
+            return View(model.TheTemplate.ViewLocation, model);
         }
 
         [HttpPost]
