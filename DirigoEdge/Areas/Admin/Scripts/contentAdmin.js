@@ -391,7 +391,6 @@ content_class.prototype.manageContentAdminEvents = function() {
         var data = self.getPageData();
 
         $("#SaveSpinner").show();
-        debugger;
         var url = $(this).attr("data-url") || 'ModifyContent';
         $.ajax({
             url: "/admin/pages/" + url,
@@ -426,7 +425,6 @@ content_class.prototype.manageContentAdminEvents = function() {
         var data = self.getModuleData();
 
         $("#SaveSpinner").show();
-        debugger;
         var url = $(this).attr("data-url") || 'modifycontent';
         $.ajax({
             url: "/admin/modules/" + url,
