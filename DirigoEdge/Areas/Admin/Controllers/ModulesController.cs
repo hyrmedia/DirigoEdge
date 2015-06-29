@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdge.Controllers.Base;
@@ -83,7 +80,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         {
             var newModule = new ContentModule();
 
-            var moduleToClone = Context.ContentModules.FirstOrDefault(x => x.ContentModuleId == id);
+            var moduleToClone = Context.ContentModules.First(x => x.ContentModuleId == id);
 
             newModule.CreateDate = DateTime.Today;
             newModule.HTMLContent = moduleToClone.HTMLContent;
@@ -109,8 +106,6 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [PermissionsFilter(Permissions = "Can Edit Modules")]
         public ActionResult NewContentModule(string schemaId, string editContentHeading)
         {
-            int ModuleId = 0;
-
             // Create a new Content Module to be passed to the edit content action
 
             ContentModule module = GetDefaultContentModule();
@@ -136,22 +131,23 @@ namespace DirigoEdge.Areas.Admin.Controllers
             Context.SaveChanges();
 
             // Update the module name
-            ModuleId = module.ContentModuleId;
-            module.ModuleName = "Module " + ModuleId;
+            var moduleId = module.ContentModuleId;
+            module.ModuleName = "Module " + moduleId;
             module.DraftAuthorName = UserUtils.CurrentMembershipUsername();
 
             Context.SaveChanges();
 
             CachedObjects.GetCacheContentModules(true);
 
-            object routeParameters = new { id = ModuleId };
+            object routeParameters = new { id = moduleId };
             if (!String.IsNullOrEmpty(editContentHeading))
             {
-                routeParameters = new { id = ModuleId, editContentHeading };
+                routeParameters = new { id = moduleId, editContentHeading };
             }
 
             return RedirectToAction("EditModule", "Modules", routeParameters);
         }
+        
 
         [HttpPost]
         [Authorize(Roles = "Administrators")]
@@ -245,8 +241,6 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 }
             };
 
-            var success = 0;
-
             if (String.IsNullOrEmpty(entity.ModuleName))
             {
                 return result;
@@ -281,7 +275,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
             editedContent.SchemaEntryValues = entity.SchemaEntryValues;
             editedContent.IsActive = true;
 
-            success = Context.SaveChanges();
+            var success = Context.SaveChanges();
 
             if (success > 0)
             {
@@ -307,7 +301,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             int moduleId = Int32.Parse(id);
 
-            var editorData = Context.ContentModules.FirstOrDefault(x => x.ContentModuleId == moduleId);
+            var editorData = Context.ContentModules.First(x => x.ContentModuleId == moduleId);
             result.Data = new
             {
                 html = editorData.HTMLContent,
@@ -317,6 +311,29 @@ namespace DirigoEdge.Areas.Admin.Controllers
             };
 
             return result;
+        }
+
+        [HttpPost]
+        public JsonResult UploadModule(ContentModule module)
+        {
+            return new JsonResult
+            {
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                Data = module
+            };
+        }
+
+        [HttpGet]
+        [UserIsLoggedIn]
+        public JsonResult GetModule(int id)
+        {
+            var module = Context.ContentModules.First(x => x.ContentModuleId == id);
+
+            return new JsonResult
+            {
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                Data = module
+            };
         }
 
         [PermissionsFilter(Permissions = "Can Edit Modules")]
