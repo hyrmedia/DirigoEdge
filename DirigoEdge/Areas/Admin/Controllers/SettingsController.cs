@@ -105,6 +105,8 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             if (success > 0)
             {
+            	// refresh the cache
+            	SettingsUtils.GetSiteSettings(true);
                 result.Data = new
                 {
                     success = true,
