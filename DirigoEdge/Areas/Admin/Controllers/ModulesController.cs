@@ -318,42 +318,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             return result;
         }
-
-        [HttpPost]
-        public JsonResult UploadModules(List<Module> modules)
-        {
-            try
-            {
-                var moduleIds = new List<int>();
-                
-                foreach (var module in modules)
-                {
-                    var contentModuleId = ImportTools.AddContentModule(module);
-                    moduleIds.Add(contentModuleId);
-                }
-
-                return new JsonResult
-                {
-                    Data = new
-                    {
-                        ModuleId = moduleIds,
-                        Success = true
-                    }
-                };
-            }
-            catch (Exception ex)
-            {
-                return new JsonResult
-                {
-                    Data = new
-                    {
-                        Success = false,
-                        Error = ex.Message
-                    }
-                };
-            }
-        }
-
+        
         [HttpGet]
         [UserIsLoggedIn]
         public JsonResult GetModule(int id)
@@ -364,7 +329,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 {
                     JsonRequestBehavior = JsonRequestBehavior.AllowGet,
                     Data = new {
-						Modules = new List<Object>(){Mapper.Map<ContentModule, Module>(
+						Modules = new List<Object>{Mapper.Map<ContentModule, Module>(
                             Context.ContentModules.First(x => x.ContentModuleId == id))}}
 
                 };

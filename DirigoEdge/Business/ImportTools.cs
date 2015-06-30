@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using DirigoEdge.Business.Models;
@@ -18,7 +19,7 @@ namespace DirigoEdge.Business
             _context = context;
         }
 
-        public int AddContentModule(Module module)
+        public int AddModule(Module module)
         {
             var user = _context.Users.FirstOrDefault(usr => usr.Username == module.DraftAuthorName) ??
                        UserUtils.GetCurrentUser(_context);
@@ -41,6 +42,20 @@ namespace DirigoEdge.Business
             return mod.ContentModuleId;
         }
 
+
+        public List<int> AddModules(List<Module> modules)
+        {
+            var moduleIds = new List<int>();
+
+            foreach (var module in modules)
+            {
+                var contentModuleId = AddModule(module);
+                moduleIds.Add(contentModuleId);
+            }
+
+            return moduleIds;
+        }
+
         public int AddSchema(Schema schemaModel)
         {
             var schema = Mapper.Map<Schema, DirigoEdgeCore.Data.Entities.Schema>(schemaModel);
@@ -55,6 +70,19 @@ namespace DirigoEdge.Business
 
             var schemaId = schema.SchemaId;
             return schemaId;
+        }
+
+        public List<int> AddSchemas(List<Schema> schemas)
+        {
+            var schemaIds = new List<int>();
+
+            foreach (var schema in schemas)
+            {
+                var schemaId = AddSchema(schema);
+                schemaIds.Add(schemaId);
+            }
+
+            return schemaIds;
         }
     }
 }

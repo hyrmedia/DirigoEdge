@@ -8,7 +8,6 @@ using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
-
 namespace DirigoEdge.Areas.Admin.Controllers
 {
     public class SchemasController : WebBaseAdminController
@@ -101,11 +100,10 @@ namespace DirigoEdge.Areas.Admin.Controllers
         public JsonResult GetSchemaHtml(int schemaId, int moduleId, bool isPage = false)
         {
             var result = new JsonResult();
-            Schema theSchema;
 
-            string entryValues = String.Empty;
+            string entryValues;
 
-            theSchema = Context.Schemas.FirstOrDefault(x => x.SchemaId == schemaId);
+            var theSchema = Context.Schemas.FirstOrDefault(x => x.SchemaId == schemaId);
 
             if (isPage)
             {
@@ -142,7 +140,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
                 if (currentPage == null)
                 {
-                    result.Data = new {error = "Content page not found."};
+                    result.Data = new { error = "Content page not found." };
                     return result;
                 }
 
@@ -219,7 +217,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
                 if (page == null)
                 {
-                    result.Data = new {success = false, error = "Content page could not be found."};
+                    result.Data = new { success = false, error = "Content page could not be found." };
                     return result;
                 }
 
@@ -263,35 +261,6 @@ namespace DirigoEdge.Areas.Admin.Controllers
             return result;
         }
 
-        [HttpPost]
-        [UserIsLoggedIn]
-        public JsonResult UploadSchema(DirigoEdgeCore.Business.Models.Schema schemaModel)
-        {
-            try
-            {
-                var schemaId = ImportTools.AddSchema(schemaModel);
-                return new JsonResult
-                {
-                    Data = new
-                    {
-                        schemaId,
-                        Success = true
-                    }
-                };
-            }
-            catch (Exception ex)
-            {
-                return new JsonResult
-                {
-                    Data = new
-                    {
-                        Success = false,
-                        Error = ex.Message
-                    }
-                };
-            }
-        }
-
         [HttpGet]
         [UserIsLoggedIn]
         public JsonResult GetSchema(int id)
@@ -301,9 +270,12 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 return new JsonResult
                 {
                     JsonRequestBehavior = JsonRequestBehavior.AllowGet,
-                    Data =
-                        Mapper.Map<Schema, DirigoEdgeCore.Business.Models.Schema>(
-                            Context.Schemas.First(x => x.SchemaId == id))
+                    Data = new
+                    {
+                        Schemas = new List<Object>
+                        {Mapper.Map<Schema, DirigoEdgeCore.Business.Models.Schema>(
+                            Context.Schemas.First(x => x.SchemaId == id))}
+                    }
                 };
             }
             catch (Exception ex)
