@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using AutoMapper;
-using DirigoEdge.Areas.Admin.Controllers;
 using DirigoEdge.Business.Models;
 using DirigoEdge.Data.Context;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Utils;
+using Schema = DirigoEdgeCore.Business.Models.Schema;
 
 namespace DirigoEdge.Business
 {
@@ -41,9 +41,9 @@ namespace DirigoEdge.Business
             return mod.ContentModuleId;
         }
 
-        public int AddSchema(DirigoEdgeCore.Business.Models.Schema schemaModel)
+        public int AddSchema(Schema schemaModel)
         {
-            var schema = Mapper.Map<DirigoEdgeCore.Business.Models.Schema, Schema>(schemaModel);
+            var schema = Mapper.Map<Schema, DirigoEdgeCore.Data.Entities.Schema>(schemaModel);
             var existingSchema = _context.Schemas.FirstOrDefault(s => s.DisplayName == schemaModel.DisplayName);
             _context.Schemas.Add(schema);
             _context.SaveChanges();
