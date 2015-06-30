@@ -95,7 +95,7 @@
                         </div>
                         <input class="form-control form-group redirect-destination hidden" id="DestinationInput" type="text" autocomplete="off" placeholder="/destination/path"/>
                         <select class="form-control redirect-destination" id="DestinationSelect">
-                            @foreach (var page in Model.Pages)
+                            @foreach (var page in Model.Pages.OrderBy(x => x))
                             {
                                 <option>@(page == "/home/" ? "/" : page)</option>
                             }
@@ -151,7 +151,7 @@
                     </div>
                     <input class=" form-control form-group redirect-destination hidden" id="EditDestinationInput" type="text" autocomplete="off" placeholder="/destination/path" />
                     <select class="form-control redirect-destination" id="EditDestinationSelect">
-                        @foreach (var page in Model.Pages)
+                        @foreach (var page in Model.Pages.OrderBy(x => x))
                         {
                             <option>@(page == "/home/" ? "/" : page)</option>
                         }
