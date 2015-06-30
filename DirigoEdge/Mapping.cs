@@ -23,7 +23,7 @@ namespace DirigoEdge
                 .ForAllMembers(p => p.Condition(c => !c.IsSourceValueNull)
                 );
 
-            Mapper.CreateMap<ModulesController.ContentModuleModel, ContentModule>().ReverseMap();
+            Mapper.CreateMap<Business.Models.Module, ContentModule>().ReverseMap();
          }
     }
 }

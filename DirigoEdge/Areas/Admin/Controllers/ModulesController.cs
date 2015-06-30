@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -319,6 +320,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         }
 
 
+
         [HttpPost]
         public JsonResult UploadModule(Module module)
         {
@@ -356,9 +358,10 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 return new JsonResult
                 {
                     JsonRequestBehavior = JsonRequestBehavior.AllowGet,
-                    Data =
-                        Mapper.Map<ContentModule, Module>(
-                            Context.ContentModules.First(x => x.ContentModuleId == id))
+                    Data = new {
+						Modules = new List<Object>(){Mapper.Map<ContentModule, Module>(
+                            Context.ContentModules.First(x => x.ContentModuleId == id))}}
+
                 };
             }
             catch(Exception ex)
