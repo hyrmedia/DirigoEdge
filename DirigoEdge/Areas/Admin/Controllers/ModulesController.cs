@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
@@ -10,6 +12,9 @@ using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models.ViewModels;
 using DirigoEdgeCore.Utils;
+using AutoMapper;
+using DirigoEdge.Business.Models;
+using Module = DirigoEdge.Business.Models.Module;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
@@ -313,27 +318,58 @@ namespace DirigoEdge.Areas.Admin.Controllers
             return result;
         }
 
+
         [HttpPost]
-        public JsonResult UploadModule(ContentModule module)
+        public JsonResult UploadModule(Module module)
         {
-            return new JsonResult
+            try
             {
-                JsonRequestBehavior = JsonRequestBehavior.AllowGet,
-                Data = module
-            };
+                var contentModuleId = ImportTools.AddContentModule(module);
+                return new JsonResult
+                {
+                    Data =  new 
+                    {
+                        ModuleId = contentModuleId,
+                        Success = true
+                    }
+                };
+            }
+            catch(Exception ex)
+            {
+                return new JsonResult
+                {
+                    Data = new
+                    {
+                        Success = false,
+                        Error = ex.Message
+                    }
+                };
+            }
         }
 
         [HttpGet]
         [UserIsLoggedIn]
         public JsonResult GetModule(int id)
         {
-            var module = Context.ContentModules.First(x => x.ContentModuleId == id);
-
-            return new JsonResult
+            try
             {
-                JsonRequestBehavior = JsonRequestBehavior.AllowGet,
-                Data = module
-            };
+                return new JsonResult
+                {
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                    Data =
+                        Mapper.Map<ContentModule, Module>(
+                            Context.ContentModules.First(x => x.ContentModuleId == id))
+                };
+            }
+            catch(Exception ex)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return new JsonResult
+                {
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                    Data = ex.Message
+                };
+            }
         }
 
         [PermissionsFilter(Permissions = "Can Edit Modules")]

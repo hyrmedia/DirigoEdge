@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
+using AutoMapper;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdge.Controllers.Base;
@@ -259,6 +261,60 @@ namespace DirigoEdge.Areas.Admin.Controllers
             result.Data = new { moduleNames };
 
             return result;
+        }
+
+        [HttpPost]
+        [UserIsLoggedIn]
+        public JsonResult UploadSchema(DirigoEdgeCore.Business.Models.Schema schemaModel)
+        {
+            try
+            {
+                var schemaId = ImportTools.AddSchema(schemaModel);
+                return new JsonResult
+                {
+                    Data = new
+                    {
+                        schemaId,
+                        Success = true
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult
+                {
+                    Data = new
+                    {
+                        Success = false,
+                        Error = ex.Message
+                    }
+                };
+            }
+        }
+
+        [HttpGet]
+        [UserIsLoggedIn]
+        public JsonResult GetSchema(int id)
+        {
+            try
+            {
+                return new JsonResult
+                {
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                    Data =
+                        Mapper.Map<Schema, DirigoEdgeCore.Business.Models.Schema>(
+                            Context.Schemas.First(x => x.SchemaId == id))
+                };
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return new JsonResult
+                {
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                    Data = ex.Message
+                };
+            }
         }
     }
 }

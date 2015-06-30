@@ -1,4 +1,5 @@
 using AutoMapper;
+using DirigoEdge.Areas.Admin.Controllers;
 using DirigoEdge.Data.Entities.Extensibility;
 using DirigoEdge.Models.ViewModels;
 using DirigoEdgeCore.Business.Models;
@@ -21,6 +22,8 @@ namespace DirigoEdge
             Mapper.CreateMap<ContentPageExtension, ContentPageComplete>()
                 .ForAllMembers(p => p.Condition(c => !c.IsSourceValueNull)
                 );
-        }
+
+            Mapper.CreateMap<ModulesController.ContentModuleModel, ContentModule>().ReverseMap();
+         }
     }
 }
