@@ -1,5 +1,5 @@
 using AutoMapper;
-using DirigoEdge.Areas.Admin.Controllers;
+using DirigoEdge.Business.Models;
 using DirigoEdge.Data.Entities.Extensibility;
 using DirigoEdge.Models.ViewModels;
 using DirigoEdgeCore.Business.Models;
@@ -23,7 +23,7 @@ namespace DirigoEdge
                 .ForAllMembers(p => p.Condition(c => !c.IsSourceValueNull)
                 );
 
-            Mapper.CreateMap<Business.Models.Module, ContentModule>().ReverseMap();
+            Mapper.CreateMap<Module, ContentModule>().ReverseMap();
          }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Business;
@@ -19,17 +20,20 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [UserIsLoggedIn]
         public JsonResult Content(ImportData data)
         {
+            var moduleResults = new List<ImportTools.ImportResult>();
+            var schemaResults = new List<ImportTools.ImportResult>();
+
             try
             {
-                var moduleIds = ImportTools.AddModules(data.Modules);
-                var schemaIds = ImportTools.AddSchemas(data.Schemas);
+                moduleResults = ImportTools.AddModules(data.Modules);
+                schemaResults = ImportTools.AddSchemas(data.Schemas);
 
                 return new JsonResult
                 {
                     Data = new
                     {
-                        schemaIds,
-                        moduleIds,
+                        schemaResults,
+                        moduleResults,
                         Success = true
                     }
                 };
@@ -40,6 +44,8 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 {
                     Data = new
                     {
+                        schemaResults,
+                        moduleResults,
                         Success = false,
                         Error = ex.Message
                     }

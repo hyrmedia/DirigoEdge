@@ -6,12 +6,15 @@ using DirigoEdge.Business.Models;
 using DirigoEdge.Data.Context;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Utils;
+using DirigoEdgeCore.Utils.Logging;
 using Schema = DirigoEdgeCore.Business.Models.Schema;
 
 namespace DirigoEdge.Business
 {
     public class ImportTools
     {
+        private readonly ILog Log = LogFactory.GetLog(typeof(ImportTools));
+
         private readonly WebDataContext _context;
 
         public ImportTools(WebDataContext context)
@@ -19,33 +22,58 @@ namespace DirigoEdge.Business
             _context = context;
         }
 
-        public int AddModule(Module module)
+        public class ImportResult
         {
-            var user = _context.Users.FirstOrDefault(usr => usr.Username == module.DraftAuthorName) ??
-                       UserUtils.GetCurrentUser(_context);
+            public String Name { get; set; }
+            public int? Id { get; set; }
+            public String Message { get; set; }
+        }
 
-            var mod = Mapper.Map<Module, ContentModule>(module);
-            mod.DraftAuthorName = user.Username;
-            mod.CreateDate = DateTime.UtcNow;
-
-            if (!String.IsNullOrEmpty(module.SchemaName))
+        public ImportResult AddModule(Module module)
+        {
+            try
             {
-                var schema = _context.Schemas.FirstOrDefault(s => s.DisplayName == module.SchemaName);
-                if (schema != null)
-                {
-                    mod.SchemaId = schema.SchemaId;
-                }
-            }
+                var user = _context.Users.FirstOrDefault(usr => usr.Username == module.DraftAuthorName) ??
+                           UserUtils.GetCurrentUser(_context);
 
-            _context.ContentModules.Add(mod);
-            _context.SaveChanges();
-            return mod.ContentModuleId;
+                var mod = Mapper.Map<Module, ContentModule>(module);
+                mod.DraftAuthorName = user.Username;
+                mod.CreateDate = DateTime.UtcNow;
+
+                if (!String.IsNullOrEmpty(module.SchemaName))
+                {
+                    var schema = _context.Schemas.FirstOrDefault(s => s.DisplayName == module.SchemaName);
+                    if (schema != null)
+                    {
+                        mod.SchemaId = schema.SchemaId;
+                    }
+                }
+
+                _context.ContentModules.Add(mod);
+                _context.SaveChanges();
+               
+                return new ImportResult
+                {
+                    Id = mod.ContentModuleId,
+                    Name = mod.ModuleName,
+                    Message = "Success"
+                };
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Error Importing Module named " + module.ModuleName, ex);
+                return new ImportResult
+                {
+                    Name = module.ModuleName,
+                    Message = "Error: " + ex.Message
+                };
+            }
         }
 
 
-        public List<int> AddModules(List<Module> modules)
+        public List<ImportResult> AddModules(List<Module> modules)
         {
-            var moduleIds = new List<int>();
+            var moduleIds = new List<ImportResult>();
 
             foreach (var module in modules)
             {
@@ -54,27 +82,44 @@ namespace DirigoEdge.Business
             }
 
             return moduleIds;
+
         }
 
-        public int AddSchema(Schema schemaModel)
+        public ImportResult AddSchema(Schema schemaModel)
         {
-            var schema = Mapper.Map<Schema, DirigoEdgeCore.Data.Entities.Schema>(schemaModel);
-            var existingSchema = _context.Schemas.FirstOrDefault(s => s.DisplayName == schemaModel.DisplayName);
-            _context.Schemas.Add(schema);
-            _context.SaveChanges();
-
-            if (existingSchema != null)
+            try
             {
-                schema.DisplayName = schema.DisplayName + " " + schema.SchemaId;
-            }
+                var schema = Mapper.Map<Schema, DirigoEdgeCore.Data.Entities.Schema>(schemaModel);
+                var existingSchema = _context.Schemas.FirstOrDefault(s => s.DisplayName == schemaModel.DisplayName);
+                _context.Schemas.Add(schema);
+                _context.SaveChanges();
 
-            var schemaId = schema.SchemaId;
-            return schemaId;
+                if (existingSchema != null)
+                {
+                    schema.DisplayName = schema.DisplayName + " " + schema.SchemaId;
+                }
+
+                return new ImportResult
+                {
+                    Id = schema.SchemaId,
+                    Name = schema.DisplayName,
+                    Message = "Success"
+                };
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Error Importing Schema named " + schemaModel.DisplayName, ex);
+                return new ImportResult
+                {
+                    Name = schemaModel.DisplayName,
+                    Message = "Error: " + ex.Message
+                };
+            }
         }
 
-        public List<int> AddSchemas(List<Schema> schemas)
+        public List<ImportResult> AddSchemas(List<Schema> schemas)
         {
-            var schemaIds = new List<int>();
+            var schemaIds = new List<ImportResult>();
 
             foreach (var schema in schemas)
             {
