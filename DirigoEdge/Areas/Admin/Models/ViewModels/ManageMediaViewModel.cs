@@ -14,7 +14,7 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
 	{
 		public List<Media> MediaListing;
 	    public string Category;
-		public const string supportedExtensions = "*.jpg,*.gif,*.png,*.bmp,*.jpe,*.jpeg,*.svg,*.wmf,*.emf,*.xbm,*.ico,*.eps,*.tif,*.tiff,*.pdf,*.doc,*.docx";
+        public const string supportedExtensions = "*.jpg,*.gif,*.png,*.bmp,*.jpe,*.jpeg,*.svg,*.wmf,*.emf,*.xbm,*.ico,*.eps,*.tif,*.tiff,*.pdf,*.doc,*.docx,*.xls,*.xlsx";
 
 		public ManageMediaViewModel(string directory)
 		{
