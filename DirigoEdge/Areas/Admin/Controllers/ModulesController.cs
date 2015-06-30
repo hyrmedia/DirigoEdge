@@ -319,24 +319,29 @@ namespace DirigoEdge.Areas.Admin.Controllers
             return result;
         }
 
-
-
         [HttpPost]
-        public JsonResult UploadModule(Module module)
+        public JsonResult UploadModules(List<Module> modules)
         {
             try
             {
-                var contentModuleId = ImportTools.AddContentModule(module);
+                var moduleIds = new List<int>();
+                
+                foreach (var module in modules)
+                {
+                    var contentModuleId = ImportTools.AddContentModule(module);
+                    moduleIds.Add(contentModuleId);
+                }
+
                 return new JsonResult
                 {
-                    Data =  new 
+                    Data = new
                     {
-                        ModuleId = contentModuleId,
+                        ModuleId = moduleIds,
                         Success = true
                     }
                 };
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new JsonResult
                 {
