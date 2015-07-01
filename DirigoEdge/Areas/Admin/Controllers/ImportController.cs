@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Web;
 using System.Web.Mvc;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Business;
@@ -20,20 +20,41 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [UserIsLoggedIn]
         public JsonResult Content(ImportData data)
         {
-            var moduleResults = new List<ImportTools.ImportResult>();
-            var schemaResults = new List<ImportTools.ImportResult>();
+            return TryImportContent(data);
+        }
 
+        [HttpPost]
+        [UserIsLoggedIn]
+        public JsonResult ContentFile(HttpPostedFileBase file)
+        {
+            var data = ImportTools.TryPaseFileAsImportData(file);
+
+            if (data == null)
+            {
+                return new JsonResult
+                {
+                    Data = new
+                    {
+                        Success = false,
+                        Error = "Unable to parse file"
+                    }
+                };
+            }
+
+            return TryImportContent(data);
+        }
+
+        public JsonResult TryImportContent(ImportData data)
+        {
             try
             {
-                moduleResults = ImportTools.AddModules(data.Modules);
-                schemaResults = ImportTools.AddSchemas(data.Schemas);
+                var results = ImportTools.AddContent(data);
 
                 return new JsonResult
                 {
                     Data = new
                     {
-                        schemaResults,
-                        moduleResults,
+                        results,
                         Success = true
                     }
                 };
@@ -44,13 +65,16 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 {
                     Data = new
                     {
-                        schemaResults,
-                        moduleResults,
                         Success = false,
                         Error = ex.Message
                     }
                 };
             }
+        }
+
+        public ActionResult Index()
+        {
+            return View();
         }
     }
 }

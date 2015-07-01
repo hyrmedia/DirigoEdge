@@ -1,32 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Web;
 using AutoMapper;
+using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Business.Models;
 using DirigoEdge.Data.Context;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Utils;
 using DirigoEdgeCore.Utils.Logging;
+using Newtonsoft.Json;
 using Schema = DirigoEdgeCore.Business.Models.Schema;
 
 namespace DirigoEdge.Business
 {
     public class ImportTools
     {
-        private readonly ILog Log = LogFactory.GetLog(typeof(ImportTools));
-
+        private static readonly ILog Log = LogFactory.GetLog(typeof(ImportTools));
         private readonly WebDataContext _context;
 
         public ImportTools(WebDataContext context)
         {
             _context = context;
-        }
-
-        public class ImportResult
-        {
-            public String Name { get; set; }
-            public int? Id { get; set; }
-            public String Message { get; set; }
         }
 
         public ImportResult AddModule(Module module)
@@ -73,6 +69,11 @@ namespace DirigoEdge.Business
 
         public List<ImportResult> AddModules(List<Module> modules)
         {
+            if (modules == null)
+            {
+                return null;
+            }
+
             var moduleIds = new List<ImportResult>();
 
             foreach (var module in modules)
@@ -91,6 +92,7 @@ namespace DirigoEdge.Business
             {
                 var schema = Mapper.Map<Schema, DirigoEdgeCore.Data.Entities.Schema>(schemaModel);
                 var existingSchema = _context.Schemas.FirstOrDefault(s => s.DisplayName == schemaModel.DisplayName);
+                
                 _context.Schemas.Add(schema);
                 _context.SaveChanges();
 
@@ -119,6 +121,11 @@ namespace DirigoEdge.Business
 
         public List<ImportResult> AddSchemas(List<Schema> schemas)
         {
+            if (schemas == null)
+            {
+                return null;
+            }
+
             var schemaIds = new List<ImportResult>();
 
             foreach (var schema in schemas)
@@ -128,6 +135,29 @@ namespace DirigoEdge.Business
             }
 
             return schemaIds;
+        }
+
+        public static ImportData TryPaseFileAsImportData(HttpPostedFileBase file)
+        {
+            try
+            {
+                return JsonConvert.DeserializeObject<ImportData>((new StreamReader(file.InputStream)).ReadToEnd());
+            }
+            catch(Exception ex)
+            {
+                Log.Error("Error Parsing uploaded file as ImportData", ex);
+                return null;
+            }
+        }
+
+        public ImportResults AddContent(ImportData data)
+        {
+            var results = new ImportResults();
+
+            results.SchemaResults = AddSchemas(data.Schemas);
+            results.ModuleResults = AddModules(data.Modules);
+
+            return results;
         }
     }
 }
