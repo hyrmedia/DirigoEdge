@@ -60,7 +60,7 @@ namespace DirigoEdge
             Redirect redirect = allRedirects
                 .FirstOrDefault(
                     x => (x.Source == Request.Path || x.Source + '/' == Request.Path || x.Source == Request.Path + '/')
-                         || (x.RootMatching && Request.Path.StartsWith(x.Source) && !Request.Path.StartsWith(x.Destination)));
+                         || (x.RootMatching && Request.Path.StartsWith(x.Source)));
 
             // Check whether the browser remains connected to the server.
             if (!Response.IsClientConnected)
