@@ -396,6 +396,7 @@
     <Content Include="Areas\Admin\Scripts\jquery\plugins\tagit\jquery.tagit.js" />
     <Content Include="Areas\Admin\Scripts\jquery\plugins\zclip\ZeroClipboard.swf" />
     <Content Include="Areas\Admin\Scripts\modernizr-2.6.2.min.js" />
+    <None Include="Areas\Admin\Scss\modules\_data-tables.scss" />
     <Content Include="Content\Images\edge_logo_head.png" />
     <Content Include="Content\Images\full-width.jpg" />
     <Content Include="Content\Images\left-rail.jpg" />
@@ -1230,7 +1231,7 @@
     <Content Include="Areas\Admin\CSS\images\Sorting icons.psd" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Admin\Scss\modules\_data-tables.scss" />
+    <Content Include="Areas\Admin\Scss\vendor\_data-tables.scss" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\CSS\images\TableSorter\Sorting icons.psd" />
