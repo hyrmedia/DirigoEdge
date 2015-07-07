@@ -18,6 +18,7 @@
                         <th>Title</th>
                         <th class="hidden-xs">Publish Date</th>
                         <th>Author</th>
+                        <th>Category</th>
                         <th class="hidden-xs">Published</th>
                         <th class="hidden-xs">Is Featured</th>
                         <th>Actions</th>
@@ -34,6 +35,7 @@
                                 <td class="title"><a href="@Url.Action("EditBlog", "Blog", new { id = @blog.BlogId })">@blog.Title</a></td>
                                 <td class="hidden-xs">@Convert.ToDateTime(blog.Date).ToString("MM/dd/yyyy")</td>
                                 <td>@blog.Author</td>
+                                <td>@blog.Category.CategoryName</td>
                                 <td class="hidden-xs">@active</td>
                                 <td class="hidden-xs">@isFeatured</td>
                                 <td class="actions">

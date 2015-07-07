@@ -85,7 +85,7 @@ redirect_class.prototype.initRedirectEvents = function () {
             },
             success: function () {
                 var noty_id = noty({ text: 'Redirect Successfully Deleted.', type: 'success', timeout: 2000 });
-                self.oTable.fnDeleteRow(self.rowIndex);
+                self.refreshTable();
                 $('#DeleteModal').modal('hide');
             },
             error: function (data) {
@@ -134,8 +134,7 @@ redirect_class.prototype.initRedirectEvents = function () {
                 $("#DestinationInput").val('');
                 $("#PermanentInput").prop('checked', false);
                 $("#MatchingInput").prop('checked', false);
-
-                self.oTable.row.add([source, destination, isPermanent, isRoot, '<a class="editRedirectButton btn btn-primary btn-sm" href="#" data-id="' + data.id + '">Edit</a> <a class="deleteRedirectButton btn btn-danger btn-sm" href="#" data-id="' + data.id + '">Delete</a></td></tr>']).draw();
+                self.refreshTable();
                 $('#AddRedirectModal').modal('hide');
             },
             error: function (data) {
@@ -179,12 +178,7 @@ redirect_class.prototype.initRedirectEvents = function () {
                 $("#EditDestinationInput").val('');
                 $("#EditPermanentInput").prop('checked', false);
                 $("#EditMatchingInput").prop('checked', false);
-
-                self.$manageRedirectRow.find('.source').text(source);
-                self.$manageRedirectRow.find('.destination').text(destination);
-                self.$manageRedirectRow.find('.permanent').text(isPermanent ? 'True' : 'False');
-                self.$manageRedirectRow.find('.root-matching').text(isRoot ? 'True' : 'False');
-
+                self.refreshTable();
                 $('#EditRedirectModal').modal('hide');
             },
             error: function (data) {
@@ -193,6 +187,21 @@ redirect_class.prototype.initRedirectEvents = function () {
                 $('#EditRedirectModal').modal('hide');
                 var noty_id = noty({ text: 'There was an error processing your request.', type: 'error' });
             }
+        });
+    });
+};
+
+redirect_class.prototype.refreshTable = function() {
+    var $container = $('.redirect-table-wrapper');
+    common.showAjaxLoader($container);
+    $container.load('/admin/redirect/redirects/ #redirect-table', function() {
+        common.hideAjaxLoader($container);
+        self.oTable = $("table.manageTable").DataTable({
+            "iDisplayLength": 25,
+            "aoColumnDefs": [
+                { "bSortable": false, "aTargets": ["actions"] } // No Sorting on actions
+            ],
+            "aaSorting": [[0, "desc"]] // Sort by id
         });
     });
 };

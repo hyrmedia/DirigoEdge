@@ -19,9 +19,9 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
             FolderListing = new List<Folder>();
             FileListing = new List<MediaFile>();
 
-            const string supportedExtensions = "*.jpg,*.gif,*.png,*.bmp,*.jpe,*.jpeg,*.svg,*.wmf,*.emf,*.xbm,*.ico,*.eps,*.tif,*.tiff,*.pdf,*.doc,*.docx";
+            const string supportedExtensions = "*.jpg,*.gif,*.png,*.bmp,*.jpe,*.jpeg,*.svg,*.wmf,*.emf,*.xbm,*.ico,*.eps,*.tif,*.tiff,*.pdf,*.doc,*.docx,*.xls,*.xlsx";
             const string imageExtensions = "*.jpg,*.JPG,*.gif,*.png,*.bmp,*.jpe,*.jpeg,*.ico,*.eps,*.tif,*.tiff,*.svg";
-            const string documentExtensions = "*.pdf,*.doc,*.docx";
+            const string documentExtensions = "*.pdf,*.doc,*.docx,*.xls,*.xlsx";
 
             var directories = Directory.GetDirectories(HttpContext.Current.Server.MapPath(ContentGlobals.IMAGEUPLOADDIRECTORY));
 

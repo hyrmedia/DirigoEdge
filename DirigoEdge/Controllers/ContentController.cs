@@ -129,7 +129,7 @@ namespace DirigoEdge.Controllers
 
         private ContentViewViewModel GetSubDirectoryModel(string path)
         {
-            var masterList = CachedObjects.GetCacheNavigationList();
+            var masterList = CachedObjects.GetCacheNavigationList(1);
             var pathPieces = path.Split('/');
             var permalink = pathPieces.Last().ToLower();
 
@@ -140,22 +140,25 @@ namespace DirigoEdge.Controllers
             {
                 if (currentNavigation == null) break;
                 currentPath = currentPath + piece + "/";
-                currentNavigation = currentNavigation.Children.FirstOrDefault(x => String.Equals(x.Href, currentPath, StringComparison.CurrentCultureIgnoreCase));
+                currentNavigation =
+                    currentNavigation.Children.FirstOrDefault(
+                        x => String.Equals(x.Href, currentPath, StringComparison.CurrentCultureIgnoreCase));
             }
 
             if (currentNavigation == null) return null;
 
             var thePage = CachedObjects.GetCacheContentPages().FirstOrDefault(x => x.Permalink == permalink && x.ParentNavigationItemId == currentNavigation.NavigationItemId);
 
-            if (thePage != null)
+            if (thePage == null)
             {
-                var model = new ContentViewViewModel {ThePage = ContentLoader.GetDetailById(thePage.ContentPageId)};
-                return model;
+                thePage = Context.ContentPages.FirstOrDefault(x => x.Permalink == permalink && x.ParentNavigationItemId == currentNavigation.NavigationItemId);
             }
-            else
-            {
-                return null;
-            }
+
+            if (thePage == null) return null;
+
+            var model = new ContentViewViewModel { ThePage = ContentLoader.GetDetailById(thePage.ContentPageId) };
+
+            return model;
         }
 
         public string GetCanonical(PageDetails page)

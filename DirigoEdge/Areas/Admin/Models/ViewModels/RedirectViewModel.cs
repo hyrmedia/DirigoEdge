@@ -13,7 +13,7 @@ public class RedirectViewModel : DirigoBaseModel
         BookmarkTitle = "Configure Redirects";
         Redirects = Context.Redirects.ToList();
 
-        var pages = Context.ContentPages.Where(x => x.IsActive == true).ToList();
+        var pages = Context.ContentPages.Where(x => x.IsActive == true).OrderBy(x => x.Title).ToList();
 
         foreach (var page in pages)
         {

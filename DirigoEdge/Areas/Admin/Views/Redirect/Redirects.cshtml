@@ -11,33 +11,35 @@
         </div>
         <button id="NewBlogPage" class="btn btn-primary mobileBlockStatic mobileMarginBottom" data-toggle="modal" data-target="#AddRedirectModal">New Redirect +</button>
     </div>
-
-    <table class="manageTable twelve bordered manageTable">
-        <thead>
-            <tr>
-                <th>Source</th>
-                <th>Destination</th>
-                <th>Is Permanent</th>
-                <th>Root Matching</th>
-                 <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody id="redirectBody">
-            @foreach (var redirect in Model.Redirects)
-            {
-                <tr data-id="@redirect.RedirectId">
-                    <td class="source">@redirect.Source</td>
-                    <td class="destination">@redirect.Destination</td>
-                    <td class="permanent">@redirect.IsPermanent</td>
-                    <td class="root-matching">@redirect.RootMatching</td>
-                    <td>
-                        <a class="editRedirectButton btn btn-primary btn-sm" href="#" data-id="@redirect.RedirectId">Edit</a>
-                        <a class="deleteRedirectButton btn btn-danger btn-sm" href="#" data-id="@redirect.RedirectId">Delete</a>
-                    </td>
+    
+    <div class="redirect-table-wrapper">
+        <table id="redirect-table" class="manageTable twelve bordered manageTable">
+            <thead>
+                <tr>
+                    <th>Source</th>
+                    <th>Destination</th>
+                    <th>Is Permanent</th>
+                    <th>Root Matching</th>
+                    <th>Actions</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody id="redirectBody">
+                @foreach (var redirect in Model.Redirects)
+                {
+                    <tr data-id="@redirect.RedirectId">
+                        <td class="source">@redirect.Source</td>
+                        <td class="destination">@redirect.Destination</td>
+                        <td class="permanent">@redirect.IsPermanent</td>
+                        <td class="root-matching">@redirect.RootMatching</td>
+                        <td>
+                            <a class="editRedirectButton btn btn-primary btn-sm" href="#" data-id="@redirect.RedirectId">Edit</a>
+                            <a class="deleteRedirectButton btn btn-danger btn-sm" href="#" data-id="@redirect.RedirectId">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 @section Scripts {
     <script src="/Areas/Admin/Scripts/redirectAdmin.js"></script>
@@ -93,7 +95,7 @@
                         </div>
                         <input class="form-control form-group redirect-destination hidden" id="DestinationInput" type="text" autocomplete="off" placeholder="/destination/path"/>
                         <select class="form-control redirect-destination" id="DestinationSelect">
-                            @foreach (var page in Model.Pages)
+                            @foreach (var page in Model.Pages.OrderBy(x => x))
                             {
                                 <option>@(page == "/home/" ? "/" : page)</option>
                             }
@@ -149,7 +151,7 @@
                     </div>
                     <input class=" form-control form-group redirect-destination hidden" id="EditDestinationInput" type="text" autocomplete="off" placeholder="/destination/path" />
                     <select class="form-control redirect-destination" id="EditDestinationSelect">
-                        @foreach (var page in Model.Pages)
+                        @foreach (var page in Model.Pages.OrderBy(x => x))
                         {
                             <option>@(page == "/home/" ? "/" : page)</option>
                         }
