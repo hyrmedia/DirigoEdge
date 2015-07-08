@@ -73,8 +73,8 @@ namespace DirigoEdge.Models.Shortcodes
                         }
                         query += " AND " + string.Format("(Events.MainCategory IS NOT NULL AND LOWER(REPLACE(Events.MainCategory, N' ', N'')) IN ({0}))", String.Join(",", events.Select(x => "'" + x + "'")));
                     }
-                    var startDate = (parameters != null && parameters.ContainsKey("startDate") ? DateTime.Parse(parameters["startDate"]) : DateTime.Now.Date);
-                    var endDate = (parameters != null && parameters.ContainsKey("endDate") ? DateTime.Parse(parameters["endDate"]) : DateTime.Now.Date);
+                    var startDate = (parameters != null && parameters.ContainsKey("startDate") ? DateTime.Parse(parameters["startDate"]) : DateTime.UtcNow.Date);
+                    var endDate = (parameters != null && parameters.ContainsKey("endDate") ? DateTime.Parse(parameters["endDate"]) : DateTime.MaxValue);
                     query += " AND " + string.Format("(Events.StartDate IS NULL OR Events.StartDate <= '{0}') AND (Events.EndDate IS NULL OR Events.EndDate >= '{1}')", endDate, startDate);
                     query += " ORDER BY Events.StartDate";
 
