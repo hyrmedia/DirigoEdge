@@ -15,7 +15,10 @@ ul {
 }
 
 .navbar {
+    position: fixed;
+    width: 100%;
     border: none;
+    z-index: 100;
 }
 
 .navbar .navbar-brand {
