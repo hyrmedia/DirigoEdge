@@ -1163,7 +1163,6 @@
     <Content Include="Views\Shared\Partials\BlogArticleSinglePartial.cshtml" />
     <Content Include="Views\Shared\Partials\BlogArchivePartial.cshtml" />
     <Content Include="Views\Shared\Partials\BlogArchiveSinglePartial.cshtml" />
-    <Content Include="Views\Home\Error404.cshtml" />
     <Content Include="Views\Shared\Partials\LatestBlogsPartial.cshtml" />
     <Content Include="App_Code\_Helpers.cshtml" />
     <Content Include="Views\Shared\Partials\ResponsiveBackgroundImage.cshtml" />

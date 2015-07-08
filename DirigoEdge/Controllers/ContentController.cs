@@ -84,9 +84,21 @@ namespace DirigoEdge.Controllers
                 return View(model.TheTemplate.ViewLocation, model);
             }
 
+            model = new ContentViewViewModel { ThePage = ContentLoader.GetDetailsByTitle("404") };
+
+            model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
+            model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent);
+
+            ViewBag.IsPage = true;
+            ViewBag.PageId = model.ThePage.ContentPageId;
+            ViewBag.IsPublished = model.ThePage.IsActive;
+            ViewBag.Title = model.ThePage.Title;
+            ViewBag.Index = "noindex";
+            ViewBag.Follow = "nofollow";
+
             HttpContext.Response.StatusCode = 404;
             Response.TrySkipIisCustomErrors = true;
-            return View("~/Views/Home/Error404.cshtml");
+            return View(model.TheTemplate.ViewLocation, model);
         }
 
         [HttpPost]
