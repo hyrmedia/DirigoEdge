@@ -8,8 +8,8 @@
 
 @foreach (var _event in Model.TheEvents)
 {
-    var startDate = Convert.ToDateTime(_event.StartDate);
-    var endDate = Convert.ToDateTime(_event.EndDate);
+    var startDate = _event.StartDate.HasValue ? _event.StartDate.Value : DateTime.UtcNow.Date;
+    var endDate = _event.EndDate.HasValue ? _event.EndDate.Value : DateTime.UtcNow.Date;
     var end = " - " + endDate.Day + Html.RenderDateSuffix(endDate.Day.ToString());
 
     var theDay = startDate.Day.ToString();
