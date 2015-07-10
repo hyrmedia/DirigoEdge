@@ -306,6 +306,10 @@ namespace DirigoEdge.Areas.Admin.Controllers
             {
                 blogEntity.Tags = new List<BlogTag>();
             }
+            else
+            {
+                editedBlog.Tags.Clear();
+            }
 
             if (!String.IsNullOrEmpty(editBlogModel.Tags))
             {
