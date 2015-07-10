@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
+using AutoMapper;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdge.Controllers.Base;
@@ -251,28 +253,32 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [HttpPost]
         [PermissionsFilter(Permissions = "Can Edit Blogs")]
         [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult ModifyBlog(EditBlogModel entity)
+        public JsonResult ModifyBlog(EditBlogModel editBlogModel)
         {
-            if (String.IsNullOrEmpty(entity.Title))
+            if (String.IsNullOrEmpty(editBlogModel.Title))
             {
-                return new JsonResult
-                {
-                    Data = new
-                    {
-                        success = false,
-                        message = "Your post must have a title"
-                    }
-                };
+                return NoBlogTitleError;
             }
 
-            var editedBlog = Context.Blogs.FirstOrDefault(x => x.BlogId == entity.BlogId);
+            var blogEntity = Context.Blogs.FirstOrDefault(x => x.BlogId == editBlogModel.BlogId);
 
-            if (editedBlog == null)
+            if (blogEntity == null)
             {
                 return JsonErrorResult;
             }
 
-            // Straight copies from the model
+            Mapper.CreateMap<EditBlogModel, Blog>()
+                .ForMember(dest => dest.Title,
+                            opts => opts.MapFrom(src => ContentUtils.ScrubInput(src.Title)))
+                .ForMember(dest => dest.ImageUrl,
+                            opts => opts.MapFrom(src => ContentUtils.ScrubInput(src.ImageUrl)))
+                .ForMember(dest => dest.PermaLink,
+                            opts => opts.MapFrom(src => ContentUtils.GetFormattedUrl(src.PermaLink)))
+                .ForAllMembers(p => p.Condition(c => !c.IsSourceValueNull));
+
+
+            Mapper.Map(editBlogModel, blogEntity);
+            /*// Straight copies from the model
             editedBlog.AuthorId = entity.AuthorId;
             editedBlog.HtmlContent = entity.HtmlContent;
             editedBlog.IsActive = entity.IsActive;
@@ -291,42 +297,59 @@ namespace DirigoEdge.Areas.Admin.Controllers
             editedBlog.Title = ContentUtils.ScrubInput(entity.Title);
             editedBlog.ImageUrl = ContentUtils.ScrubInput(entity.ImageUrl);
             editedBlog.PermaLink = ContentUtils.GetFormattedUrl(entity.PermaLink);
-
+            */
             // Database Nav property mappings
-            editedBlog.Category = Utils.GetCategoryOrUncategorized(entity.Category);
-            editedBlog.BlogAuthor = Context.BlogUsers.First(usr => usr.UserId == entity.AuthorId);
+            blogEntity.Category = Utils.GetCategoryOrUncategorized(editBlogModel.Category);
+            blogEntity.BlogAuthor = Context.BlogUsers.First(usr => usr.UserId == editBlogModel.AuthorId);
 
-            if (editedBlog.Tags == null)
+            if (blogEntity.Tags == null)
             {
-                editedBlog.Tags = new List<BlogTag>();
+                blogEntity.Tags = new List<BlogTag>();
             }
 
-            if (!String.IsNullOrEmpty(entity.Tags))
+            if (!String.IsNullOrEmpty(editBlogModel.Tags))
             {
-                foreach (var tag in entity.Tags.Split(','))
+                foreach (var tag in editBlogModel.Tags.Split(','))
                 {
-                    editedBlog.Tags.Add(Utils.GetOrCreateTag(tag));
+                    blogEntity.Tags.Add(Utils.GetOrCreateTag(tag));
                 }
             }
 
             var success = Context.SaveChanges();
             CachedObjects.GetCacheContentPages(true);
-            BookmarkUtil.UpdateTitle("/admin/pages/editblog/" + editedBlog.BlogId + "/", entity.Title);
+            BookmarkUtil.UpdateTitle("/admin/pages/editblog/" + blogEntity.BlogId + "/", editBlogModel.Title);
 
-            if (success > 0)
+            return success > 0 
+                ? BlogSaveSuccess(editBlogModel) 
+                : JsonErrorResult;
+        }
+
+        private static JsonResult BlogSaveSuccess(EditBlogModel editBlogModel)
+        {
+            return new JsonResult
+            {
+                Data = new
+                {
+                    success = true,
+                    message = "Blog saved successfully.",
+                    id = editBlogModel.BlogId
+                }
+            };
+        }
+
+        private static JsonResult NoBlogTitleError
+        {
+            get
             {
                 return new JsonResult
                 {
                     Data = new
                     {
-                        success = true,
-                        message = "Blog saved successfully.",
-                        id = entity.BlogId
+                        success = false,
+                        message = "Your post must have a title"
                     }
                 };
             }
-
-            return JsonErrorResult;
         }
 
         [HttpPost]
