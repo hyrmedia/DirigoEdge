@@ -68,7 +68,7 @@ user_class.prototype.manageUserAdminEvents = function () {
                 DisplayName: $("#NewUserName").val(),
                 UserName: $("#NewUserName").val(),
                 UserImageLocation: $("#NewUserImage").val(),
-                IsActive: $("#IsActiveBox").is(':checked'),
+                IsApproved: $("#IsActiveBox").is(':checked'),
                 Password: $("#NewUserPassword").val(),
                 FirstName: $("#NewUserFirstName").val(),
                 LastName: $("#NewUserLastName").val(),
@@ -180,7 +180,7 @@ user_class.prototype.manageUserAdminEvents = function () {
             user: {
                 UserName: $("#ModUserName").val(),
                 UserImageLocation: $("#ModUserImageLocation").val(),
-                IsActive: $("#ModUserIsActiveBox").is(":checked"),
+                IsApproved: $("#ModUserIsActiveBox").is(":checked"),
                 UserID: self.EditUserId,
                 FirstName: $("#ModUserFirstName").val(),
                 LastName: $("#ModUserLastName").val(),

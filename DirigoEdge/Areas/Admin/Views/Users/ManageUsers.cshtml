@@ -23,6 +23,7 @@
                         <th class="visible-lg">First</th>
                         <th class="visible-lg">Last</th>
                         <th class="visible-lg">Email</th>
+                        <th>Is Active</th>
                         <th class="hidden-xs">Role(s)</th>
                         <th class="actions" style="min-width: 120px">Actions</th>
                     </tr>
@@ -31,7 +32,7 @@
                     @{
                         foreach (var user in Model.Users)
                         {
-                            string active = !user.IsLockedOut ? "True" : "False";
+                            var isactive = user.IsApproved ? "true" : "false";
                         <tr>
                             <td class="imageLocation hidden-xs">
                                 <img width="80" src="@user.UserImageLocation" />
@@ -42,6 +43,7 @@
                             <td class="displayEmail visible-lg">
                                 <a href="mailto:@user.Email">@user.Email</a>
                             </td>
+                            <td class="isActive">@isactive</td>
                             @{
                             string roleList = "";
                             if (user.Roles != null && user.Roles.Count > 0)
@@ -129,7 +131,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-12 form-group">
-                                <label class="col-lg-12 col-xs-12 hide" for="IsActiveBox">
+                                <label class="col-lg-12 col-xs-12" for="IsActiveBox">
                                     <input class="" type="checkbox"
                                         id="IsActiveBox" checked="checked" autocomplete="off">
                                     Is Active
@@ -213,7 +215,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-12 form-group">
-                                <label class="col-lg-12 col-xs-12 hide" for="ModUserIsActiveBox">
+                                <label class="col-lg-12 col-xs-12" for="ModUserIsActiveBox">
                                     <input class="" type="checkbox"
                                            id="ModUserIsActiveBox" autocomplete="off">
                                     Is Active

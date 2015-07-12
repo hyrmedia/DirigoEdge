@@ -45,7 +45,8 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 editUser.LastName = user.LastName;
                 editUser.Email = user.Email;
                 editUser.UserImageLocation = user.UserImageLocation;
-                editUser.IsLockedOut = user.IsLockedOut;
+                editUser.IsApproved = user.IsApproved;
+                editUser.IsLockedOut = !user.IsApproved;
 
                 if (user.Roles != null)
                 {
@@ -123,6 +124,8 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 newlyAddedUser.LastName = user.LastName;
                 newlyAddedUser.Email = user.Email;
                 newlyAddedUser.UserImageLocation = user.UserImageLocation;
+                newlyAddedUser.IsApproved = user.IsApproved;
+                newlyAddedUser.IsLockedOut = !newlyAddedUser.IsApproved;
                 success = Context.SaveChanges();
 
                 // Add the asigned roles
