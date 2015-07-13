@@ -31,7 +31,7 @@ category_class.prototype.initConfirmCatDeleteEvent = function () {
         var error = function () {
             common.hideAjaxLoader($container);
             $('#DeleteCategoryModal').modal('hide');
-            noty({ text: 'There was an error processing your request.', type: 'error' });
+            noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
         };
 
         var data =
@@ -96,7 +96,7 @@ category_class.prototype.initAddCategoryEvent = function () {
         var error = function () {
             common.hideAjaxLoader($container);
             $('#AddCategoryModal').modal('hide');
-            noty({ text: 'There was an error processing your request.', type: 'error' });
+            noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
         };
 
         common.showAjaxLoader($container);

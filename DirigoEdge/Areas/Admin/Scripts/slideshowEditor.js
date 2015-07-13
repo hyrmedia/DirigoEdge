@@ -83,7 +83,7 @@ slideEditor_class.prototype.initSaveEvent = function () {
                 common.hideAjaxLoader($container);
             },
             error: function (data) {
-                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error' });
+                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
                 common.hideAjaxLoader($container);
             }
         });
