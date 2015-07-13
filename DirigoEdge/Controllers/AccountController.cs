@@ -58,6 +58,11 @@ namespace DirigoEdge.Controllers
                 message =
                     "Your account is locked from too many invalid attemptes.\r\n Please use 'Forgot Password' to reset it.";
             }
+            else if (user != null && !user.IsApproved)
+            {
+                message =
+                    "This account is not active. Please contact your administrator for more details.";
+            }
             else
             {
                 message = "The user name or password provided is incorrect.";
