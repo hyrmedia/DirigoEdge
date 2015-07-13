@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using DirigoEdge.Data.Entities;
 using DirigoEdge.Data.Entities.Extensibility;
 using DirigoEdgeCore.Data.Context;
 
@@ -12,6 +13,7 @@ namespace DirigoEdge.Data.Context
             Database.SetInitializer(new WebDataContextInitializer());
         }
 
+        public DbSet<SiteConfiguration> Configurations { get; set; }
         public DbSet<ContentPageExtension> ContentPageExtensions { get; set; }
     }
 }

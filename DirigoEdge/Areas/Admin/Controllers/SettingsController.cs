@@ -2,7 +2,6 @@
 using System.Web.Mvc;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
-using DirigoEdge.Controllers;
 using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
 
@@ -13,8 +12,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [PermissionsFilter(Permissions = "Can Edit Settings")]
         public ActionResult SiteSettings()
         {
-            var model = new SiteSettingsViewModel();
-
+            var model = SiteSettingsViewModel.LoadSiteSettings(Context);
             return View(model);
         }
 
@@ -37,7 +35,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [PermissionsFilter(Permissions = "Can Edit Settings")]
 		public JsonResult SaveBlogSettings(BlogSettings entity)
 		{
-            var result = new JsonResult()
+            var result = new JsonResult
             {
                 Data = new
                 {

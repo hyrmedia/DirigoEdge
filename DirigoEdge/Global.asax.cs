@@ -4,7 +4,6 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using DirigoEdge.Data.Context;
 using DirigoEdge.Models.Shortcodes;
-using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.PluginFramework;
 using DirigoEdgeCore.Utils;
 using DirigoEdgeCore.Utils.Logging;
@@ -42,6 +41,7 @@ namespace DirigoEdge
             DynamicModules.Instance.AddDynamicModule("featured_events", new EventsModule());
 
             Mapping.SetAutomapperMappings();
+            SettingsInitializer.EnsureRequiredSettingsExist();
         }
 
         // May need to store host in distributed or multi-tenant applications
@@ -57,7 +57,7 @@ namespace DirigoEdge
 
             }
 
-            Redirect redirect = allRedirects
+            var redirect = allRedirects
                 .FirstOrDefault(
                     x => (x.Source == Request.Path || x.Source + '/' == Request.Path || x.Source == Request.Path + '/')
                          || (x.RootMatching && Request.Path.StartsWith(x.Source)));

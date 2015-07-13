@@ -244,6 +244,9 @@
     <Compile Include="Areas\Admin\Models\ViewModels\ManageMediaViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\ManageModulesViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\ManageUsersViewModel.cs" />
+    <Compile Include="CustomUtils\SystemTime.cs" />
+    <Compile Include="CustomUtils\TimeUtils.cs" />
+    <Compile Include="SettingsInitializer.cs" />
     <Content Include="Areas\Admin\CSS\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Areas\Admin\CSS\images\ajaxLoader.gif" />
     <Content Include="Areas\Admin\CSS\images\ajaxLoaderTransparent.gif" />
@@ -444,6 +447,7 @@
     <Compile Include="CustomUtils\WebUtils.cs" />
     <Compile Include="Data\Context\WebDataContext.cs" />
     <Compile Include="Data\Context\WebDataContextInitializer.cs" />
+    <Compile Include="Data\Entities\Configuration.cs" />
     <Compile Include="Data\Entities\Extensibility\ContentPageExtension.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -458,6 +462,7 @@
     <Compile Include="Models\Base\WebBaseModel.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\ConfigSettings.cs" />
     <Compile Include="Models\Shortcodes\EventsModule.cs" />
     <Compile Include="Models\Shortcodes\ResponsiveImageShortcode.cs" />
     <Compile Include="Models\ViewModels\BlogArchiveViewModel.cs" />
