@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 
 namespace DirigoEdge.CustomUtils
 {
@@ -26,40 +28,42 @@ namespace DirigoEdge.CustomUtils
 
         private static void ConvertAllMembers(Object obj, Func<DateTime, DateTime> convertFunction)
         {
-            var type = obj.GetType();
-            var properties = type.GetProperties();
-
-            foreach (var prop in properties)
+            foreach (var prop in obj.GetType().GetProperties()
+                .Where(IsDateTime))
             {
-                if (prop.PropertyType != typeof (DateTime) && prop.PropertyType != typeof (DateTime?))
-                {
-                    continue;
-                }
-
-                var propAsTime = new DateTime();
-
-                if (prop.PropertyType == typeof (DateTime))
-                {
-                    propAsTime = (DateTime) prop.GetValue(obj, null);
-
-                }
-
-                if (prop.PropertyType == typeof (DateTime?))
-                {
-                    var nullableTime = (DateTime?) prop.GetValue(obj, null);
-                    if (nullableTime.HasValue)
-                    {
-                        propAsTime = nullableTime.Value;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
-
-                var convertedTime = convertFunction(propAsTime);
-                prop.SetValue(obj, convertedTime, null);
+                UpdateDatetimeProperty(obj, convertFunction, prop);
             }
+        }
+
+        private static bool IsDateTime(PropertyInfo prop)
+        {
+            return prop.PropertyType == typeof(DateTime) || prop.PropertyType == typeof(DateTime?);
+        }
+
+        private static void UpdateDatetimeProperty(object obj, Func<DateTime, DateTime> convertFunction, PropertyInfo prop)
+        {
+            var propAsTime = new DateTime();
+
+            if (prop.PropertyType == typeof (DateTime))
+            {
+                propAsTime = (DateTime)prop.GetValue(obj, null);
+            }
+
+            if (prop.PropertyType == typeof (DateTime?))
+            {
+                var nullableTime = (DateTime?) prop.GetValue(obj, null);
+                if (nullableTime.HasValue)
+                {
+                    propAsTime = nullableTime.Value;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            var convertedTime = convertFunction(propAsTime);
+            prop.SetValue(obj, convertedTime, null);
         }
     }
 }
