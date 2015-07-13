@@ -41,7 +41,7 @@ event_category_class.prototype.initConfirmCatDeleteEvent = function () {
                 // Close Modal
                 common.hideAjaxLoader($container);
                 $('#DeleteEventCategoryModal').modal('hide');
-                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error' });
+                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
         });
     });
@@ -104,7 +104,7 @@ event_category_class.prototype.initAddCategoryEvent = function () {
                 // Close Modal
                 common.hideAjaxLoader($container);
                 $('#AddEventCategoryModal').modal('hide');
-                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error' });
+                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
         });
     });

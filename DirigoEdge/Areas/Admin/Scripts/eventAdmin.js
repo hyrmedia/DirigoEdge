@@ -124,7 +124,7 @@ event_class.prototype.manageEventEvents = function() {
             },
             error: function(data) {
                 $('#DeleteModal').modal('hide');
-                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error' });
+                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
         });
     });
@@ -205,7 +205,7 @@ event_class.prototype.addEventEvents = function() {
                 $("#SaveSpinner").hide();
             },
             error: function(data) {
-                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error' });
+                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
                 $("#SaveSpinner").hide();
             }
         });
