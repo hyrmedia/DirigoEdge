@@ -7,9 +7,9 @@ using System.Web.Security;
 using AutoMapper;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
+using DirigoEdge.Attributes;
 using DirigoEdge.Business;
 using DirigoEdge.Controllers.Base;
-using DirigoEdge.CustomUtils;
 using DirigoEdge.Data.Entities.Extensibility;
 using DirigoEdge.Models.ViewModels;
 using DirigoEdgeCore.Business.Models;
@@ -20,7 +20,7 @@ using EditContentViewModel = DirigoEdge.Areas.Admin.Models.ViewModels.EditConten
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
-     [ConvertToLocal]
+     [TimeConvert]
     public class PagesController : WebBaseAdminController
     {
         [PermissionsFilter(Permissions = "Can Edit Pages")]
@@ -445,7 +445,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
         protected void SetContentPageData(ContentPage editedContent, PageDetails entity, bool isRevision, bool isBasic, DateTime? publishDate)
         {
-            Mapper.Map<PageDetails, ContentPage>(entity, editedContent);
+            Mapper.Map(entity, editedContent);
 
             if (isRevision)
             {
@@ -487,7 +487,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 Context.ContentPageExtensions.Add(ext);
             }
 
-            Mapper.Map<ContentPageComplete, ContentPageExtension>(page, ext);
+            Mapper.Map { get; set; }(page, ext);
             Context.SaveChanges();
         }
 

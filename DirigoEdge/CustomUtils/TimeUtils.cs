@@ -33,56 +33,113 @@ namespace DirigoEdge.CustomUtils
         }
 
         private static void ConvertAllMembers(Object obj, Func<DateTime, DateTime> convertFunction)
-        {
-            foreach (var prop in obj.GetType().GetProperties())
+        {foreach (var prop in obj.GetType().GetProperties())
             {
-                UpdateDatetimeProperty(obj, convertFunction, prop);
+                var itemType = prop.PropertyType;
+
+                if (IsDateTime(itemType))
+                {
+                    ConvertSingleDateTime(obj, convertFunction, prop);
+                    continue;
+                }
+
+                if (typeof(IEnumerable).IsAssignableFrom(itemType))
+                {
+                    ConvertDatesInList(obj, prop, convertFunction);
+                    continue;
+                }
+                
+                if (IsDirigoClass(itemType))
+                {
+                    ConvertAllMembers(prop.GetValue(obj, null), convertFunction);
+                }
             }
         }
 
-        private static bool IsDateTime(PropertyInfo prop)
-        {
-            return prop.PropertyType == typeof(DateTime) || prop.PropertyType == typeof(DateTime?);
-        }
-
-        private static void UpdateDatetimeProperty(object obj, Func<DateTime, DateTime> convertFunction, PropertyInfo prop)
+        private static void ConvertDatesInList(object obj, PropertyInfo prop, Func<DateTime, DateTime> convertFunction)
         {
             try
             {
-                var currentType = prop.PropertyType;
-                if (!IsDateTime(prop))
+                var itemlist = ((IEnumerable<Object>) prop.GetValue(obj, null)).ToList();
+
+                if (itemlist.Count == 0)
                 {
                     return;
                 }
 
-                var propAsTime = new DateTime();
-                var propertyValue = prop.GetValue(obj, null);
+                var listType = itemlist.First().GetType();
 
-                if (currentType == typeof (DateTime))
+                if (IsDirigoClass(listType))
                 {
-                    propAsTime = (DateTime)propertyValue;
+                    foreach (var item in itemlist)
+                    {
+                        ConvertAllMembers(item, convertFunction);
+                    }
                 }
 
-                if (currentType == typeof (DateTime?))
+
+                if (IsDateTime(listType))
                 {
-                    var nullableTime = (DateTime?)propertyValue;
-                    if (nullableTime.HasValue)
+                    if (prop.GetType() != typeof (List<>))
                     {
-                        propAsTime = nullableTime.Value;
-                    }
-                    else
-                    {
+                      
+                        // At this point I couldn't figure out a way to instantiate a new 
+                        // list/array/etc dynamically without a huge switch for each type.
+                        // for now, we support lists and can other types as need be.
                         return;
                     }
-                }
 
-                var convertedTime = convertFunction(propAsTime);
-                prop.SetValue(obj, convertedTime, null);
+                    //     var newDateList = new List<DateTime>()
+                    //      l
+                    //   prop.SetValue();
+                    foreach (var item in itemlist)
+                    {
+                        // item = convertFunction((DateTime) item);
+                    }
+                }
             }
-            catch (Exception ex)
+            catch 
             {
-                Log.Warn("Error converting datetime", ex);
+                
             }
+    }
+
+        private static bool IsDirigoClass(Type itemType)
+        {
+            return itemType.FullName.ToLower().Contains("dirigo");
+        }
+
+        private static bool IsDateTime(Type prop)
+        {
+            return prop == typeof(DateTime) || prop == typeof(DateTime?);
+        }
+
+        private static void ConvertSingleDateTime(object obj, Func<DateTime, DateTime> convertFunction, PropertyInfo prop)
+        {
+            var currentType = prop.PropertyType;
+            var propAsTime = new DateTime();
+            var propertyValue = prop.GetValue(obj, null);
+
+            if (currentType == typeof (DateTime))
+            {
+                propAsTime = (DateTime) propertyValue;
+            }
+
+            if (currentType == typeof (DateTime?))
+            {
+                var nullableTime = (DateTime?) propertyValue;
+                if (nullableTime.HasValue)
+                {
+                    propAsTime = nullableTime.Value;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            var convertedTime = convertFunction(propAsTime);
+            prop.SetValue(obj, convertedTime, null);
         }
     }
 }

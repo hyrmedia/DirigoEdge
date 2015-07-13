@@ -221,6 +221,7 @@
     <Compile Include="Areas\Admin\Models\DataModels\DefaultAdminModules.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\ManageNavigationViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\RedirectViewModel.cs" />
+    <Compile Include="Attributes\TimeConvert.cs" />
     <Compile Include="Business\BlogLoader.cs" />
     <Compile Include="Business\EditContentHelper.cs" />
     <Compile Include="Controllers\Base\WebBaseAdminController.cs" />
