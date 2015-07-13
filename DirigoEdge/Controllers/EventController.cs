@@ -2,6 +2,7 @@
 using System.Web;
 using System.Web.Mvc;
 using DirigoEdge.Controllers.Base;
+using DirigoEdge.Models.ViewModels;
 using DirigoEdgeCore.Models.ViewModels;
 
 namespace DirigoEdge.Controllers

@@ -1,11 +1,17 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DirigoEdgeCore.Utils.Logging;
 
 namespace DirigoEdge.CustomUtils
 {
     public static class TimeUtils
     {
+        public static readonly ILog Log = LogFactory.GetLog(typeof (TimeUtils));
+
+
         public static DateTime ConvertLocalToUTC(DateTime time)
         {
             return time.Subtract(SystemTime.LocalOffset);
@@ -28,8 +34,7 @@ namespace DirigoEdge.CustomUtils
 
         private static void ConvertAllMembers(Object obj, Func<DateTime, DateTime> convertFunction)
         {
-            foreach (var prop in obj.GetType().GetProperties()
-                .Where(IsDateTime))
+            foreach (var prop in obj.GetType().GetProperties())
             {
                 UpdateDatetimeProperty(obj, convertFunction, prop);
             }
@@ -42,28 +47,42 @@ namespace DirigoEdge.CustomUtils
 
         private static void UpdateDatetimeProperty(object obj, Func<DateTime, DateTime> convertFunction, PropertyInfo prop)
         {
-            var propAsTime = new DateTime();
-
-            if (prop.PropertyType == typeof (DateTime))
+            try
             {
-                propAsTime = (DateTime)prop.GetValue(obj, null);
-            }
-
-            if (prop.PropertyType == typeof (DateTime?))
-            {
-                var nullableTime = (DateTime?) prop.GetValue(obj, null);
-                if (nullableTime.HasValue)
-                {
-                    propAsTime = nullableTime.Value;
-                }
-                else
+                var currentType = prop.PropertyType;
+                if (!IsDateTime(prop))
                 {
                     return;
                 }
-            }
 
-            var convertedTime = convertFunction(propAsTime);
-            prop.SetValue(obj, convertedTime, null);
+                var propAsTime = new DateTime();
+                var propertyValue = prop.GetValue(obj, null);
+
+                if (currentType == typeof (DateTime))
+                {
+                    propAsTime = (DateTime)propertyValue;
+                }
+
+                if (currentType == typeof (DateTime?))
+                {
+                    var nullableTime = (DateTime?)propertyValue;
+                    if (nullableTime.HasValue)
+                    {
+                        propAsTime = nullableTime.Value;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
+                var convertedTime = convertFunction(propAsTime);
+                prop.SetValue(obj, convertedTime, null);
+            }
+            catch (Exception ex)
+            {
+                Log.Warn("Error converting datetime", ex);
+            }
         }
     }
 }

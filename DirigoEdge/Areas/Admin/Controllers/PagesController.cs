@@ -20,6 +20,7 @@ using EditContentViewModel = DirigoEdge.Areas.Admin.Models.ViewModels.EditConten
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
+     [ConvertToLocal]
     public class PagesController : WebBaseAdminController
     {
         [PermissionsFilter(Permissions = "Can Edit Pages")]
@@ -134,13 +135,6 @@ namespace DirigoEdge.Areas.Admin.Controllers
             {
                 model.Heading = editContentHeading;
             }
-
-
-            foreach (var revision in model.Revisions)
-            {
-                TimeUtils.ConvertAllMembersToLocal(revision);
-            }
-
 
             return View(model);
         }

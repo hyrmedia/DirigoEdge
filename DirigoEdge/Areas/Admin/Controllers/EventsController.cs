@@ -13,6 +13,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
     public class EventsController : WebBaseAdminController
     {
         [PermissionsFilter(Permissions = "Can Edit Events")]
+        [ConvertToLocal]
         public ActionResult EditEvent(string id)
         {
             var model = new EditEventViewModel(id);
@@ -58,6 +59,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
         [HttpPost]
         [PermissionsFilter(Permissions = "Can Edit Events")]
+        [ConvertToLocal]
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult ModifyEvent(Event entity)
         {
