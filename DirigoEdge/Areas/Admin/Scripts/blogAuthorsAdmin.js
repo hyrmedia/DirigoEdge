@@ -35,7 +35,7 @@ blog_authors_class.prototype.initPageEvents = function() {
         var error = function() {
             $('#NewAuthorModal').modal('hide');
             common.hideAjaxLoader($container);
-            noty({ text: 'There was an error processing your request.', type: 'error' });
+            noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
         };
 
         EDGE.ajaxPost(data, "/admin/blog/addbloguser", success, error);
@@ -88,7 +88,7 @@ blog_authors_class.prototype.initPageEvents = function() {
         var error = function() {
             common.hideAjaxLoader($container);
             $('#ModifyAuthorModal').modal('hide');
-            noty({ text: 'There was an error processing your request.', type: 'error' });
+            noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
         };
 
         EDGE.ajaxPost(data, "/admin/blog/modifybloguser", success, error);
@@ -130,7 +130,7 @@ blog_authors_class.prototype.initPageEvents = function() {
         };
         var error = function() {
             $('#ModifyUserModal').modal('hide');
-            noty({ text: 'There was an error processing your request.', type: 'error' });
+            noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
         };
 
         EDGE.ajaxPost(data, "/admin/blog/deletebloguser", success, error);

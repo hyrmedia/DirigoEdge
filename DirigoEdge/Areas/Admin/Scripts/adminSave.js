@@ -26,7 +26,7 @@ save_class.prototype.saveAdminData = function ($this) {
             $('.modal').modal('hide');
         },
         error: function (data) {
-            var noty_id = noty({ text: 'There was an error processing your request.', type: 'error' });
+            var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             $("#SaveIndicator").hide();
         }
     });
