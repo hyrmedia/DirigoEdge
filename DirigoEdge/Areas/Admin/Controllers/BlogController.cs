@@ -279,26 +279,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
 
             Mapper.Map(editBlogModel, blogEntity);
-            /*// Straight copies from the model
-            editedBlog.AuthorId = entity.AuthorId;
-            editedBlog.HtmlContent = entity.HtmlContent;
-            editedBlog.IsActive = entity.IsActive;
-            editedBlog.IsFeatured = entity.IsFeatured;
-            editedBlog.ShortDesc = entity.ShortDesc;
-            editedBlog.Date = entity.Date;
-            // Meta
-            editedBlog.Canonical = entity.Canonical;
-            editedBlog.OGImage = entity.OGImage;
-            editedBlog.OGTitle = entity.OGTitle;
-            editedBlog.OGType = entity.OGType;
-            editedBlog.OGUrl = entity.OGUrl;
-            editedBlog.MetaDescription = entity.MetaDescription;
 
-            // Cleaned inpuit
-            editedBlog.Title = ContentUtils.ScrubInput(entity.Title);
-            editedBlog.ImageUrl = ContentUtils.ScrubInput(entity.ImageUrl);
-            editedBlog.PermaLink = ContentUtils.GetFormattedUrl(entity.PermaLink);
-            */
             // Database Nav property mappings
             blogEntity.Category = Utils.GetCategoryOrUncategorized(editBlogModel.Category);
             blogEntity.BlogAuthor = Context.BlogUsers.First(usr => usr.UserId == editBlogModel.AuthorId);
@@ -309,7 +290,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
             }
             else
             {
-                editedBlog.Tags.Clear();
+                blogEntity.Tags.Clear();
             }
 
             if (!String.IsNullOrEmpty(editBlogModel.Tags))
