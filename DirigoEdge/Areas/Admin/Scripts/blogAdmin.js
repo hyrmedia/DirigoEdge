@@ -217,7 +217,7 @@ blog_class.prototype.manageBlogEvents = function() {
             error: function (data) {
                 common.hideAjaxLoader($container);
                 $('#DeleteModal').modal('hide');
-                noty({ text: 'There was an error processing your request.', type: 'error' });
+                noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
         });
     });
@@ -312,7 +312,7 @@ blog_class.prototype.addBlogEvents = function() {
                 $("#SaveSpinner").hide();
             },
             error: function(data) {
-                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error' });
+                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
                 $("#SaveSpinner").hide();
             }
         });

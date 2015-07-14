@@ -90,7 +90,7 @@ redirect_class.prototype.initRedirectEvents = function () {
             },
             error: function (data) {
                 $('#DeleteModal').modal('hide');
-                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error' });
+                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
         });
     });
@@ -141,7 +141,7 @@ redirect_class.prototype.initRedirectEvents = function () {
                 // Close Modal
                 common.hideAjaxLoader($container);
                 $('#AddRedirectModal').modal('hide');
-                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error' });
+                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
         });
     });
@@ -185,7 +185,7 @@ redirect_class.prototype.initRedirectEvents = function () {
                 // Close Modal
                 common.hideAjaxLoader($container);
                 $('#EditRedirectModal').modal('hide');
-                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error' });
+                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
         });
     });

@@ -384,8 +384,8 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 return result;
             }
 
+            var success = 0;
             var urlLink = "";
-
             var page = new ContentPage
             {
                 Title = title,
@@ -399,10 +399,12 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 HTMLContent = ContentUtils.RenderPartialViewToString(templatePath, null, ControllerContext, ViewData, TempData)
             };
 
-            page.HTMLContent = ContentUtils.ReplacePageParametersInHtmlContent(page.HTMLUnparsed, page);
-
             Context.ContentPages.Add(page);
-            var success = Context.SaveChanges();
+            Context.SaveChanges();
+
+            page.HTMLContent = ContentUtils.ReplacePageParametersInHtmlContent(page.HTMLUnparsed, page);
+            success = Context.SaveChanges();
+            CachedObjects.GetCacheContentPages(true);
 
             var parentHref = NavigationUtils.GetNavItemUrl(parent);
 

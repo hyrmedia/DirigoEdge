@@ -86,7 +86,7 @@ content_class.prototype.initDeleteModuleEvent = function() {
             },
             error: function(data) {
                 $('#DeleteModal').modal('hide');
-                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error' });
+                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
         });
     });
@@ -141,7 +141,7 @@ content_class.prototype.initDeleteContentEvent = function() {
             },
             error: function(data) {
                 $('#DeleteModal').modal('hide');
-                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error' });
+                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
         });
     });
@@ -174,7 +174,7 @@ content_class.prototype.initDeleteSchemaEvent = function () {
             },
             error: function (data) {
                 $('#DeleteModal').modal('hide');
-                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error' });
+                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
         });
     });
@@ -246,7 +246,7 @@ content_class.prototype.initNewPageModalEvents = function () {
             error: function (data) {
                 $('#NewUserModal').modal('hide');
                 common.hideAjaxLoader($container);
-                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error' });
+                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
         });
     });
@@ -414,7 +414,7 @@ content_class.prototype.manageContentAdminEvents = function() {
                 self.refreshRevisionListing();
             },
             error: function(data) {
-                noty({ text: 'There was an error processing your request.', type: 'error' });
+                noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
                 $("#SaveSpinner").hide();
             }
         });
@@ -476,7 +476,7 @@ content_class.prototype.manageContentAdminEvents = function() {
                 self.refreshRevisionListing();
             },
             error: function (data) {
-                noty({ text: 'There was an error processing your request.', type: 'error' });
+                noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
                 $("#SaveSpinner").hide();
             }
         });
@@ -504,7 +504,7 @@ content_class.prototype.manageContentAdminEvents = function() {
                 self.refreshRevisionListing();
             },
             error: function (data) {
-                noty({ text: 'There was an error processing your request.', type: 'error' });
+                noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
                 $("#SaveSpinner").hide();
             }
         });
@@ -543,7 +543,7 @@ content_class.prototype.manageContentAdminEvents = function() {
                 }
             },
             error: function (data) {
-                noty({ text: 'There was an error processing your request.', type: 'error' });
+                noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
                 $("#SaveSpinner").hide();
             }
         });
@@ -928,7 +928,7 @@ content_class.prototype.setRevisionModalHtml = function (revisionId, type) {
             $("#RevisionDetailModal textarea").val(data.html);
         },
         error: function (data) {
-           noty({ text: 'There was an error processing your request.', type: 'error' });
+            noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
         }
     });
 };
@@ -967,7 +967,7 @@ content_class.prototype.initParentCategoryEvents = function () {
             error: function (data) {
                 $('#NewUserModal').modal('hide');
                 //common.hideAjaxLoader($container);
-                noty({ text: 'There was an error processing your request.', type: 'error' });
+                noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
         });
     }).change();
