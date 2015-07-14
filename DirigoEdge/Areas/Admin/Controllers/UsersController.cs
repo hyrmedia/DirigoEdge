@@ -39,6 +39,10 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 var cfrp = new CodeFirstRoleProvider(Context);
                 var editUser = Context.Users.FirstOrDefault(x => x.UserId == user.UserId);
                 var currentUsername = UserUtils.CurrentMembershipUsername();
+                if (editUser == null)
+                {
+                    return result;
+                }
                 if (!user.IsApproved && currentUsername == editUser.Username)
                 {
                     result.Data = new
