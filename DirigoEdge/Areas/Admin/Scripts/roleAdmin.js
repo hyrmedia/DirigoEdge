@@ -75,7 +75,7 @@ role_class.prototype.manageUserRoleAdminEvents = function () {
             error: function (data) {
                 $('#NewUserModal').modal('hide');
                 common.hideAjaxLoader($container);
-                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error' });
+                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
         });
     });
@@ -120,7 +120,7 @@ role_class.prototype.manageUserRoleAdminEvents = function () {
             error: function (data) {
                 common.hideAjaxLoader($container);
                 $('#DeleteUserRoleModal').modal('hide');
-                noty({ text: 'There was an error processing your request.', type: 'error' });
+                noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
         });
     });
@@ -171,7 +171,7 @@ role_class.prototype.initRegistrationEvents = function () {
             error: function (data) {
                 common.hideAjaxLoader($container);
                 $('#EditRoleRegistrationModal').modal('hide');
-                noty({ text: 'There was an error processing your request.', type: 'error' });
+                noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
         });
     });
@@ -247,7 +247,7 @@ role_class.prototype.initPermissionEvents = function () {
             error: function () {
                 common.hideAjaxLoader($container);
                 $('#EditUserRolePermissionsModal').modal('hide');
-                noty({ text: 'There was an error processing your request.', type: 'error' });
+                noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
         });
     });
@@ -354,7 +354,7 @@ role_class.prototype.initEditUsersEvents = function () {
             error: function () {
                 common.hideAjaxLoader($container);
                 $('#EditUsersInRoleModal').modal('hide');
-                noty({ text: 'There was an error processing your request.', type: 'error' });
+                noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
         });
 

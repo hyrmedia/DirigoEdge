@@ -186,7 +186,7 @@ navBuilder_class.prototype.initSaveEvent = function () {
                 var noty_id = noty({ text: 'Navigation set saved successfully.', type: 'success', timeout: 1200 });
             },
             error: function (data) {
-                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error' });
+                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
         });
 
