@@ -20,7 +20,6 @@ using EditContentViewModel = DirigoEdge.Areas.Admin.Models.ViewModels.EditConten
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
-     [TimeConvert]
     public class PagesController : WebBaseAdminController
     {
         [PermissionsFilter(Permissions = "Can Edit Pages")]
@@ -445,7 +444,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
         protected void SetContentPageData(ContentPage editedContent, PageDetails entity, bool isRevision, bool isBasic, DateTime? publishDate)
         {
-            Mapper.Map(entity, editedContent);
+            Mapper.Map<PageDetails, ContentPage>(entity, editedContent);
 
             if (isRevision)
             {
@@ -487,7 +486,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 Context.ContentPageExtensions.Add(ext);
             }
 
-            Mapper.Map { get; set; }(page, ext);
+            Mapper.Map<ContentPageComplete, ContentPageExtension>(page, ext);
             Context.SaveChanges();
         }
 

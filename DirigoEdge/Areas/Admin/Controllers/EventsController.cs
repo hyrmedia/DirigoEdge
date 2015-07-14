@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web.Mvc;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
-using DirigoEdge.Attributes;
 using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Utils;
@@ -14,7 +13,6 @@ namespace DirigoEdge.Areas.Admin.Controllers
     public class EventsController : WebBaseAdminController
     {
         [PermissionsFilter(Permissions = "Can Edit Events")]
-        [TimeConvert]
         public ActionResult EditEvent(string id)
         {
             var model = new EditEventViewModel(id);

@@ -9,7 +9,7 @@ namespace DirigoEdge.CustomUtils
 {
     public static class TimeUtils
     {
-        public static readonly ILog Log = LogFactory.GetLog(typeof (TimeUtils));
+        public static readonly ILog Log = LogFactory.GetLog(typeof(TimeUtils));
 
 
         public static DateTime ConvertLocalToUTC(DateTime time)
@@ -33,7 +33,8 @@ namespace DirigoEdge.CustomUtils
         }
 
         private static void ConvertAllMembers(Object obj, Func<DateTime, DateTime> convertFunction)
-        {foreach (var prop in obj.GetType().GetProperties())
+        {
+            foreach (var prop in obj.GetType().GetProperties())
             {
                 var itemType = prop.PropertyType;
 
@@ -45,10 +46,10 @@ namespace DirigoEdge.CustomUtils
 
                 if (typeof(IEnumerable).IsAssignableFrom(itemType))
                 {
-                    ConvertDatesInList(obj, prop, convertFunction);
+                    ConvertList(obj, prop, convertFunction);
                     continue;
                 }
-                
+
                 if (IsDirigoClass(itemType))
                 {
                     ConvertAllMembers(prop.GetValue(obj, null), convertFunction);
@@ -56,7 +57,7 @@ namespace DirigoEdge.CustomUtils
             }
         }
 
-        private static void ConvertDatesInList(object obj, PropertyInfo prop, Func<DateTime, DateTime> convertFunction)
+        private static void ConvertList(object obj, PropertyInfo prop, Func<DateTime, DateTime> convertFunction)
         {
             try
             {
@@ -75,27 +76,13 @@ namespace DirigoEdge.CustomUtils
                     {
                         ConvertAllMembers(item, convertFunction);
                     }
+                     return;
                 }
-
 
                 if (IsDateTime(listType))
                 {
-                    if (prop.GetType() != typeof (List<>))
-                    {
-                      
-                        // At this point I couldn't figure out a way to instantiate a new 
-                        // list/array/etc dynamically without a huge switch for each type.
-                        // for now, we support lists and can other types as need be.
-                        return;
-                    }
-
-                    //     var newDateList = new List<DateTime>()
-                    //      l
-                    //   prop.SetValue();
-                    foreach (var item in itemlist)
-                    {
-                        // item = convertFunction((DateTime) item);
-                    }
+                    ConvertDateList(obj, prop, convertFunction, listType, itemlist);
+                    return;
                 }
             }
             catch 
@@ -103,6 +90,57 @@ namespace DirigoEdge.CustomUtils
                 
             }
     }
+
+        private static void ConvertDateList(object obj, PropertyInfo prop, Func<DateTime, DateTime> convertFunction, Type listType, List<object> itemlist)
+        {
+            if (prop.GetType() != typeof(List<>))
+            {
+                // At this point I couldn't figure out a way to instantiate a new 
+                // list/array/etc dynamically without a huge switch for each type.
+                // for now, we support lists and can other types as need be.
+                return;
+            }
+
+            if (listType == typeof(DateTime))
+            {
+                UpdateDateTimeList(obj, prop, convertFunction, itemlist);
+            }
+
+            if (listType == typeof(DateTime?))
+            {
+                UpdateNullableDateTimeList(obj, prop, convertFunction, itemlist);
+            }
+        }
+
+        private static void UpdateDateTimeList(object obj, PropertyInfo prop, Func<DateTime, DateTime> convertFunction, List<object> itemlist)
+        {
+            var newList = new List<DateTime>();
+
+            foreach (DateTime dateItem in itemlist)
+            {
+                newList.Add(convertFunction(dateItem));
+            }
+
+            prop.SetValue(obj, newList, null);
+        }
+
+        private static void UpdateNullableDateTimeList(object obj, PropertyInfo prop, Func<DateTime, DateTime> convertFunction, List<object> itemlist)
+        {
+            var newList = new List<DateTime?>();
+            foreach (DateTime? dateItem in itemlist)
+            {
+                if (dateItem.HasValue)
+                {
+                    newList.Add(convertFunction(dateItem.Value));
+                }
+                else
+                {
+                    newList.Add(null);
+                }
+
+                prop.SetValue(obj, newList, null);
+            }
+        }
 
         private static bool IsDirigoClass(Type itemType)
         {
@@ -120,14 +158,14 @@ namespace DirigoEdge.CustomUtils
             var propAsTime = new DateTime();
             var propertyValue = prop.GetValue(obj, null);
 
-            if (currentType == typeof (DateTime))
+            if (currentType == typeof(DateTime))
             {
-                propAsTime = (DateTime) propertyValue;
+                propAsTime = (DateTime)propertyValue;
             }
 
-            if (currentType == typeof (DateTime?))
+            if (currentType == typeof(DateTime?))
             {
-                var nullableTime = (DateTime?) propertyValue;
+                var nullableTime = (DateTime?)propertyValue;
                 if (nullableTime.HasValue)
                 {
                     propAsTime = nullableTime.Value;
