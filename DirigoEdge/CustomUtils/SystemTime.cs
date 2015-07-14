@@ -13,12 +13,19 @@ namespace DirigoEdge.CustomUtils
         {
             get
             {
-                if (LocalTimeZoneInfo == null)
+                try
                 {
-                    SetLocalTimeZoneFromConfig();
-                }
+                    if (LocalTimeZoneInfo == null)
+                    {
+                        SetLocalTimeZoneFromConfig();
+                    }
 
-                return LocalTimeZoneInfo.BaseUtcOffset;
+                    return LocalTimeZoneInfo.BaseUtcOffset;
+                }
+                catch
+                {
+                    return TimeZoneInfo.Utc.BaseUtcOffset;
+                }
             }
         }
 
@@ -26,12 +33,19 @@ namespace DirigoEdge.CustomUtils
         {
             get
             {
-                if (LocalTimeZoneInfo == null)
+                try
                 {
-                    SetLocalTimeZoneFromConfig();
-                }
+                    if (LocalTimeZoneInfo == null)
+                    {
+                        SetLocalTimeZoneFromConfig();
+                    }
 
-                return LocalTimeZoneInfo;
+                    return LocalTimeZoneInfo;
+                }
+                catch
+                {
+                    return TimeZoneInfo.Utc;
+                }
             }
         }
 
