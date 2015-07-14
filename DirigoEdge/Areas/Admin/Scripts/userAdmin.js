@@ -68,7 +68,7 @@ user_class.prototype.manageUserAdminEvents = function () {
                 DisplayName: $("#NewUserName").val(),
                 UserName: $("#NewUserName").val(),
                 UserImageLocation: $("#NewUserImage").val(),
-                IsActive: $("#IsActiveBox").is(':checked'),
+                IsApproved: $("#IsActiveBox").is(':checked'),
                 Password: $("#NewUserPassword").val(),
                 FirstName: $("#NewUserFirstName").val(),
                 LastName: $("#NewUserLastName").val(),
@@ -105,19 +105,20 @@ user_class.prototype.manageUserAdminEvents = function () {
                 common.hideAjaxLoader($container);
 
                 //Refresh the inner content to show the new user
-                self.refreshUserTable(noty({ text: 'User Successfully Created.', type: 'success', timeout: 3000 }));
+                noty({ text: 'User Successfully Created.', type: 'success', timeout: 3000 });
+                self.refreshUserTable();
             },
             error: function (data) {
                 $('#NewUserModal').modal('hide');
                 common.hideAjaxLoader($container);
-                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error' });
+                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
         });
     });
 
     // Manage Users Edit User
     $("#Main div.manageUsers").on("click", "a.editUser.btn", function () {
-        var $row = $(this).parent().parent();
+        var $row = $(this).closest('tr');
         var $el = $(this);
         self.EditUserId = $(this).attr("data-id");
         self.EditUserDisplayName = $row.find("td.displayName").text().trim();
@@ -134,8 +135,7 @@ user_class.prototype.manageUserAdminEvents = function () {
         $("#ModUserLastName").val(self.EditUserDisplayLastName);
         $("#ModUserEmail").val(self.EditUserDisplayEmail);
         $("#ModUserImageLocation").val(self.EditUserImageLoc);
-        if ($row.find("td.isActive").text() == "True") {
-            // Do Checkbox
+        if ($row.find("td.isActive").text() == "true") {
             $("#ModUserIsActiveBox").prop("checked", true);
         }
         else {
@@ -180,7 +180,7 @@ user_class.prototype.manageUserAdminEvents = function () {
             user: {
                 UserName: $("#ModUserName").val(),
                 UserImageLocation: $("#ModUserImageLocation").val(),
-                IsActive: $("#ModUserIsActiveBox").is(":checked"),
+                IsApproved: $("#ModUserIsActiveBox").is(":checked"),
                 UserID: self.EditUserId,
                 FirstName: $("#ModUserFirstName").val(),
                 LastName: $("#ModUserLastName").val(),
@@ -200,17 +200,19 @@ user_class.prototype.manageUserAdminEvents = function () {
             success: function (data) {
 
                 common.hideAjaxLoader($container);
-
-                // Close the dialog box
-                $('#ModifyUserModal').modal('hide');
+                noty({ text: data.message, type: data.success ? 'success' : 'error', timeout: 3000 });
 
                 //Refresh the inner content to show the new user
-                self.refreshUserTable(noty({ text: 'User Successfully Modified.', type: 'success', timeout: 3000 }));
+                if (data.success) {
+                    // Close the dialog box
+                    $('#ModifyUserModal').modal('hide');
+                    self.refreshUserTable();
+                }
             },
             error: function (data) {
                 common.hideAjaxLoader($container);
                 $('#ModifyUserModal').modal('hide');
-                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error' });
+                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
         });
     });
@@ -247,13 +249,13 @@ user_class.prototype.manageUserAdminEvents = function () {
 
                 // Close the dialog box
                 $('#DeleteUserModal').modal('hide');
-
-                self.refreshUserTable(noty({ text: 'User Successfully Deleted.', type: 'success', timeout: 3000 }));
+                noty({ text: 'User Successfully Deleted.', type: 'success', timeout: 3000 });
+                self.refreshUserTable();
             },
             error: function (data) {
                 common.hideAjaxLoader($container);
                 $('#ModifyUserModal').modal('hide');
-                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error' });
+                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
         });
     });
@@ -310,27 +312,25 @@ user_class.prototype.manageChangePasswordEvents = function () {
                 common.hideAjaxLoader($container);
                 $('#ChangePasswordModal').modal('hide');
                 $('.password-error').addClass('hide').html('');
-                self.refreshUserTable(noty({ text: 'Password Successfully Updated.', type: 'success', timeout: 3000 }));
+                noty({ text: 'Password Successfully Updated.', type: 'success', timeout: 3000 });
+                self.refreshUserTable();
             },
             error: function (data) {
                 common.hideAjaxLoader($container);
-                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error' });
+                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
         });
     });
 };
 
-user_class.prototype.refreshUserTable = function (fSuccess) {
+user_class.prototype.refreshUserTable = function () {
     //Refresh the inner content to show the new user
     var $container = $("#ManageUserTableContainer");
 
     common.showAjaxLoader($container);
     $container.load("/admin/users/manageusers/ #ManageUserTable", function (data) {
-        var noty_id = fSuccess;
-
         // Sort the table again since the html has changed
         user.sortUsers();
-
         common.hideAjaxLoader($container);
     });
 };
