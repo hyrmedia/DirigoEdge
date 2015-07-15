@@ -2,11 +2,8 @@
 using System.Linq;
 using System.Web.Mvc;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
-using DirigoEdge.Controllers;
 using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Utils;
-using Microsoft.Win32;
-using Delete = Microsoft.Ajax.Utilities.Delete;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {

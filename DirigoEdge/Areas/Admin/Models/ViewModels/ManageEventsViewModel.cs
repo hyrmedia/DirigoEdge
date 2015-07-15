@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DirigoEdge.CustomUtils;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models;
 
@@ -11,10 +12,27 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
 
         public ManageEventsViewModel()
         {
-            EventListing = Context.Events.ToList();
-            if (EventListing.Count == 0)
+            EventListing = new List<Event>();
+        }
+
+        public void LoadEvents()
+        {
+            if (Context.Events.Any())
             {
                 EventListing = Context.Events.ToList();
+            }
+
+            foreach (var edgeEvent in EventListing)
+            {
+                if (edgeEvent.StartDate.HasValue)
+                {
+                    edgeEvent.StartDate = TimeUtils.ConvertUTCToLocal(edgeEvent.StartDate.Value);
+                }
+
+                if (edgeEvent.EndDate.HasValue)
+                {
+                    edgeEvent.EndDate = TimeUtils.ConvertUTCToLocal(edgeEvent.EndDate.Value);
+                }
             }
         }
     }

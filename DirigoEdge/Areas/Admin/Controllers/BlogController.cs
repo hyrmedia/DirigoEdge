@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
+using AutoMapper;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
+using DirigoEdge.Attributes;
 using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Utils;
@@ -251,9 +254,78 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [HttpPost]
         [PermissionsFilter(Permissions = "Can Edit Blogs")]
         [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult ModifyBlog(EditBlogModel entity)
+        public JsonResult ModifyBlog(EditBlogModel editBlogModel)
         {
-            if (String.IsNullOrEmpty(entity.Title))
+            if (String.IsNullOrEmpty(editBlogModel.Title))
+            {
+                return NoBlogTitleError;
+            }
+
+            var blogEntity = Context.Blogs.FirstOrDefault(x => x.BlogId == editBlogModel.BlogId);
+
+            if (blogEntity == null)
+            {
+                return JsonErrorResult;
+            }
+
+            Mapper.CreateMap<EditBlogModel, Blog>()
+                .ForMember(dest => dest.Title,
+                            opts => opts.MapFrom(src => ContentUtils.ScrubInput(src.Title)))
+                .ForMember(dest => dest.ImageUrl,
+                            opts => opts.MapFrom(src => ContentUtils.ScrubInput(src.ImageUrl)))
+                .ForMember(dest => dest.PermaLink,
+                            opts => opts.MapFrom(src => ContentUtils.GetFormattedUrl(src.PermaLink)))
+                .ForAllMembers(p => p.Condition(c => !c.IsSourceValueNull));
+
+
+            Mapper.Map(editBlogModel, blogEntity);
+
+            // Database Nav property mappings
+            blogEntity.Category = Utils.GetCategoryOrUncategorized(editBlogModel.Category);
+            blogEntity.BlogAuthor = Context.BlogUsers.First(usr => usr.UserId == editBlogModel.AuthorId);
+
+            if (blogEntity.Tags == null)
+            {
+                blogEntity.Tags = new List<BlogTag>();
+            }
+            else
+            {
+                blogEntity.Tags.Clear();
+            }
+
+            if (!String.IsNullOrEmpty(editBlogModel.Tags))
+            {
+                foreach (var tag in editBlogModel.Tags.Split(','))
+                {
+                    blogEntity.Tags.Add(Utils.GetOrCreateTag(tag));
+                }
+            }
+
+            var success = Context.SaveChanges();
+            CachedObjects.GetCacheContentPages(true);
+            BookmarkUtil.UpdateTitle("/admin/pages/editblog/" + blogEntity.BlogId + "/", editBlogModel.Title);
+
+            return success > 0 
+                ? BlogSaveSuccess(editBlogModel) 
+                : JsonErrorResult;
+        }
+
+        private static JsonResult BlogSaveSuccess(EditBlogModel editBlogModel)
+        {
+            return new JsonResult
+            {
+                Data = new
+                {
+                    success = true,
+                    message = "Blog saved successfully.",
+                    id = editBlogModel.BlogId
+                }
+            };
+        }
+
+        private static JsonResult NoBlogTitleError
+        {
+            get
             {
                 return new JsonResult
                 {
@@ -264,73 +336,6 @@ namespace DirigoEdge.Areas.Admin.Controllers
                     }
                 };
             }
-
-            var editedBlog = Context.Blogs.FirstOrDefault(x => x.BlogId == entity.BlogId);
-
-            if (editedBlog == null)
-            {
-                return JsonErrorResult;
-            }
-
-            // Straight copies from the model
-            editedBlog.AuthorId = entity.AuthorId;
-            editedBlog.HtmlContent = entity.HtmlContent;
-            editedBlog.IsActive = entity.IsActive;
-            editedBlog.IsFeatured = entity.IsFeatured;
-            editedBlog.ShortDesc = entity.ShortDesc;
-            editedBlog.Date = entity.Date;
-            // Meta
-            editedBlog.Canonical = entity.Canonical;
-            editedBlog.OGImage = entity.OGImage;
-            editedBlog.OGTitle = entity.OGTitle;
-            editedBlog.OGType = entity.OGType;
-            editedBlog.OGUrl = entity.OGUrl;
-            editedBlog.MetaDescription = entity.MetaDescription;
-
-            // Cleaned inpuit
-            editedBlog.Title = ContentUtils.ScrubInput(entity.Title);
-            editedBlog.ImageUrl = ContentUtils.ScrubInput(entity.ImageUrl);
-            editedBlog.PermaLink = ContentUtils.GetFormattedUrl(entity.PermaLink);
-
-            // Database Nav property mappings
-            editedBlog.Category = Utils.GetCategoryOrUncategorized(entity.Category);
-            editedBlog.BlogAuthor = Context.BlogUsers.First(usr => usr.UserId == entity.AuthorId);
-
-            if (editedBlog.Tags == null)
-            {
-                editedBlog.Tags = new List<BlogTag>();
-            }
-            else
-            {
-                editedBlog.Tags.Clear();
-            }
-
-            if (!String.IsNullOrEmpty(entity.Tags))
-            {
-                foreach (var tag in entity.Tags.Split(','))
-                {
-                    editedBlog.Tags.Add(Utils.GetOrCreateTag(tag));
-                }
-            }
-
-            var success = Context.SaveChanges();
-            CachedObjects.GetCacheContentPages(true);
-            BookmarkUtil.UpdateTitle("/admin/pages/editblog/" + editedBlog.BlogId + "/", entity.Title);
-
-            if (success > 0)
-            {
-                return new JsonResult
-                {
-                    Data = new
-                    {
-                        success = true,
-                        message = "Blog saved successfully.",
-                        id = entity.BlogId
-                    }
-                };
-            }
-
-            return JsonErrorResult;
         }
 
         [HttpPost]

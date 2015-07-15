@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using DirigoEdgeCore.Data.Entities;
+using DirigoEdgeCore.Models;
 
-namespace DirigoEdgeCore.Models.ViewModels
+namespace DirigoEdge.Models.ViewModels
 {
     public class EventHomeViewModel : DirigoBaseModel
     {
@@ -18,15 +19,15 @@ namespace DirigoEdgeCore.Models.ViewModels
         public EventHomeViewModel()
         {
             var tomorrow = DateTime.UtcNow.Date;
-            Events = Context.Events.Where(x => x.IsActive == true && DateTime.Compare(x.EndDate.Value, tomorrow) >= 0).ToList();
-            FeaturedEvent = Context.Events.FirstOrDefault(x => x.IsFeatured == true);
+            Events = Context.Events.Where(x => x.IsActive && DateTime.Compare(x.EndDate.Value, tomorrow) >= 0).ToList();
+            FeaturedEvent = Context.Events.FirstOrDefault(x => x.IsFeatured);
             Categories = new List<EventCatExtraData>();
 
-            var cats = Context.EventCategories.Where(x => x.IsActive == true).ToList();
+            var cats = Context.EventCategories.Where(x => x.IsActive).ToList();
             foreach (var cat in cats)
             {
                 int count = Context.Events.Count(x => x.MainCategory == cat.CategoryName);
-                Categories.Add(new EventCatExtraData() { TheCategory = cat, EventCount = count });
+                Categories.Add(new EventCatExtraData { TheCategory = cat, EventCount = count });
             }
         }
     }
