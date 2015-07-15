@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdge.Controllers.Base;
+using DirigoEdge.CustomUtils;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models.ViewModels;
 using DirigoEdgeCore.Utils;
@@ -80,7 +81,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         {
             var newModule = new ContentModule();
 
-            var moduleToClone = Context.ContentModules.FirstOrDefault(x => x.ContentModuleId == id);
+            var moduleToClone = Context.ContentModules.First(x => x.ContentModuleId == id);
 
             newModule.CreateDate = DateTime.Today;
             newModule.HTMLContent = moduleToClone.HTMLContent;
@@ -106,8 +107,6 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [PermissionsFilter(Permissions = "Can Edit Modules")]
         public ActionResult NewContentModule(string schemaId, string editContentHeading)
         {
-            int ModuleId = 0;
-
             // Create a new Content Module to be passed to the edit content action
 
             ContentModule module = GetDefaultContentModule();
@@ -133,18 +132,18 @@ namespace DirigoEdge.Areas.Admin.Controllers
             Context.SaveChanges();
 
             // Update the module name
-            ModuleId = module.ContentModuleId;
-            module.ModuleName = "Module " + ModuleId;
+            var moduleId = module.ContentModuleId;
+            module.ModuleName = "Module " + moduleId;
             module.DraftAuthorName = UserUtils.CurrentMembershipUsername();
 
             Context.SaveChanges();
 
             CachedObjects.GetCacheContentModules(true);
 
-            object routeParameters = new { id = ModuleId };
+            object routeParameters = new { id = moduleId };
             if (!String.IsNullOrEmpty(editContentHeading))
             {
-                routeParameters = new { id = ModuleId, editContentHeading };
+                routeParameters = new { id = moduleId, editContentHeading };
             }
 
             return RedirectToAction("EditModule", "Modules", routeParameters);
@@ -215,7 +214,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             var drafts = Context.ContentModules.Where(x => x.ParentContentModuleId == parentId || x.ContentModuleId == parentId).OrderByDescending(x => x.CreateDate).ToList().Select(rev => new RevisionViewModel
             {
-                Date = rev.CreateDate,
+                Date = TimeUtils.ConvertUTCToLocal(rev.CreateDate),
                 ContentId = rev.ContentModuleId,
                 AuthorName = rev.DraftAuthorName,
                 WasPublished = rev.WasPublished
@@ -289,7 +288,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 {
                     success = true,
                     message = "Content saved successfully.",
-                    date = editedContent.CreateDate.Value.ToString("dd/MM/yyy @ h:mm tt")
+                    date = SystemTime.CurrentLocalTime.ToString("dd/MM/yyy @ h:mm tt")
                 };
             }
 

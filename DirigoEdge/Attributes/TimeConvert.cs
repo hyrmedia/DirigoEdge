@@ -29,20 +29,9 @@ namespace DirigoEdge.Attributes
         {
             try
             {
-                var type = filterContext.Result.GetType();
-
-                if (type == typeof(ActionResult))
-                {
-                }
-
-                if (type == typeof(ViewResult))
+                if (filterContext.Result.GetType() == typeof(ViewResult))
                 {
                     TimeUtils.ConvertAllMembersToLocal(((ViewResult)filterContext.Result).Model);
-                }
-
-                if (type == typeof(JsonResult))
-                {
-                    // TODO - do we need to process these?
                 }
             }
             catch (Exception ex)

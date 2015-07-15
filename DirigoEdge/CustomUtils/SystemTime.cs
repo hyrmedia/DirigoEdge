@@ -9,6 +9,12 @@ namespace DirigoEdge.CustomUtils
     {
         private static TimeZoneInfo LocalTimeZoneInfo { get; set; }
 
+
+        public static void TimeZoneChanged()
+        {
+            SetLocalTimeZoneFromConfig();
+        }
+
         public static TimeSpan LocalOffset
         {
             get
@@ -27,6 +33,11 @@ namespace DirigoEdge.CustomUtils
                     return TimeZoneInfo.Utc.BaseUtcOffset;
                 }
             }
+        }
+
+        public static DateTime CurrentLocalTime 
+        {
+            get { return TimeUtils.ConvertUTCToLocal(DateTime.UtcNow); }
         }
 
         public static TimeZoneInfo LocalTimeZone

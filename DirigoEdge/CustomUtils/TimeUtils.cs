@@ -61,7 +61,7 @@ namespace DirigoEdge.CustomUtils
         {
             try
             {
-                var itemlist = ((IEnumerable<Object>) prop.GetValue(obj, null)).ToList();
+                var itemlist = ((IEnumerable<Object>)prop.GetValue(obj, null)).ToList();
 
                 if (itemlist.Count == 0)
                 {
@@ -76,7 +76,7 @@ namespace DirigoEdge.CustomUtils
                     {
                         ConvertAllMembers(item, convertFunction);
                     }
-                     return;
+                    return;
                 }
 
                 if (IsDateTime(listType))
@@ -85,11 +85,11 @@ namespace DirigoEdge.CustomUtils
                     return;
                 }
             }
-            catch 
+            catch
             {
-                
+
             }
-    }
+        }
 
         private static void ConvertDateList(object obj, PropertyInfo prop, Func<DateTime, DateTime> convertFunction, Type listType, List<object> itemlist)
         {
@@ -178,6 +178,20 @@ namespace DirigoEdge.CustomUtils
 
             var convertedTime = convertFunction(propAsTime);
             prop.SetValue(obj, convertedTime, null);
+        }
+
+        public static DateTime? ConvertUTCToLocal(DateTime? nullable)
+        {
+            return nullable.HasValue
+                ? (DateTime?) ConvertUTCToLocal(nullable.Value) 
+                : null;
+        }
+
+        public static DateTime? ConvertLocalToUTC(DateTime? nullable)
+        {
+            return nullable.HasValue 
+                ? (DateTime?) ConvertLocalToUTC(nullable.Value) 
+                : null;
         }
     }
 }

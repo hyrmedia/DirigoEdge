@@ -5,6 +5,7 @@ using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.DataModels;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdge.Controllers.Base;
+using DirigoEdge.CustomUtils;
 using DirigoEdge.Models;
 using DirigoEdgeCore.Data.Entities;
 
@@ -100,7 +101,11 @@ namespace DirigoEdge.Areas.Admin.Controllers
             Mapper.Map(entity, siteSettings);
 
             var timeZone = Context.Configurations.First(config => config.Key == ConfigSettings.TimeZone.ToString());
-            timeZone.Value = entity.TimeZoneId;
+            if (timeZone.Value != entity.TimeZoneId)
+            {
+                timeZone.Value = entity.TimeZoneId;
+                SystemTime.TimeZoneChanged();
+            }
 
             var success = Context.SaveChanges();
 

@@ -7,9 +7,9 @@ using System.Web.Security;
 using AutoMapper;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
-using DirigoEdge.Attributes;
 using DirigoEdge.Business;
 using DirigoEdge.Controllers.Base;
+using DirigoEdge.CustomUtils;
 using DirigoEdge.Data.Entities.Extensibility;
 using DirigoEdge.Models.ViewModels;
 using DirigoEdgeCore.Business.Models;
@@ -250,7 +250,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             CachedObjects.GetCacheContentPages(true);
 
-            result.Data = new { publishDate = Convert.ToDateTime(DateTime.UtcNow).ToString("MM/dd/yyyy @ hh:mm") };
+            result.Data = new { publishDate = SystemTime.CurrentLocalTime.ToString("MM/dd/yyyy @ hh:mm") };
 
             return result;
         }
@@ -344,11 +344,11 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [PermissionsFilter(Permissions = "Can Edit Pages")]
         public JsonResult GetRevisionList(int id)
         {
-            JsonResult result = new JsonResult { JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            var result = new JsonResult { JsonRequestBehavior = JsonRequestBehavior.AllowGet };
 
             var drafts = Context.ContentPages.Where(x => x.ParentContentPageId == id || x.ContentPageId == id).OrderByDescending(x => x.PublishDate).ToList().Select(rev => new RevisionViewModel
             {
-                Date = rev.PublishDate,
+                Date = TimeUtils.ConvertUTCToLocal(rev.PublishDate),
                 ContentId = rev.ContentPageId,
                 AuthorName = rev.DraftAuthorName,
                 WasPublished = rev.WasPublished
