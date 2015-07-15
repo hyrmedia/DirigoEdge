@@ -14,12 +14,26 @@ namespace DirigoEdge.CustomUtils
 
         public static DateTime ConvertLocalToUTC(DateTime time)
         {
-            return time.Subtract(SystemTime.LocalOffset);
+            var convertTime =  time.Subtract(SystemTime.LocalOffset);
+           
+            if (SystemTime.LocalTimeZone.IsDaylightSavingTime(convertTime))
+            {
+                convertTime = convertTime.AddHours(-1);
+            }
+
+            return convertTime;
         }
 
         public static DateTime ConvertUTCToLocal(DateTime time)
         {
-            return time.Add(SystemTime.LocalOffset);
+            var convertTime = time.Add(SystemTime.LocalOffset);
+
+            if (SystemTime.LocalTimeZone.IsDaylightSavingTime(convertTime))
+            {
+                convertTime = convertTime.AddHours(1);
+            }
+
+            return convertTime;
         }
 
         public static void ConvertAllMembersToLocal(Object obj)
