@@ -27,7 +27,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [UserIsLoggedIn]
         public JsonResult ContentFile(HttpPostedFileBase file)
         {
-            var data = ImportTools.TryPaseFileAsImportData(file);
+            var data = ImportTools.TryParseFileAsImportData(file);
 
             if (data == null)
             {

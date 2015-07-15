@@ -33,6 +33,8 @@ namespace DirigoEdge.Business
                            UserUtils.GetCurrentUser(_context);
 
                 var mod = Mapper.Map<Module, ContentModule>(module);
+                var existingModule = _context.ContentModules.FirstOrDefault(m => m.ModuleName == module.ModuleName);
+
                 mod.DraftAuthorName = user.Username;
                 mod.CreateDate = DateTime.UtcNow;
 
@@ -47,7 +49,12 @@ namespace DirigoEdge.Business
 
                 _context.ContentModules.Add(mod);
                 _context.SaveChanges();
-               
+
+                if (existingModule != null)
+                {
+                    mod.ModuleName = mod.ModuleName + " " + mod.ContentModuleId;
+                }
+
                 return new ImportResult
                 {
                     Id = mod.ContentModuleId,
@@ -137,7 +144,7 @@ namespace DirigoEdge.Business
             return schemaIds;
         }
 
-        public static ImportData TryPaseFileAsImportData(HttpPostedFileBase file)
+        public static ImportData TryParseFileAsImportData(HttpPostedFileBase file)
         {
             try
             {

@@ -652,7 +652,7 @@ content_class.prototype.getPageData = function () {
                 NoFollow: $('.no-follow').is(':checked')
             }
         },
-        // Let Ajax handler know if we're using an advanced editor or baszzic editor
+        // Let Ajax handler know if we're using an advanced editor or basic editor
         // Basic editor does not send over JS / CSS rules so we should leave the content as is in the controller
         isBasic: isBasic
     };
