@@ -9,6 +9,7 @@ using DirigoEdge.Controllers;
 using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Membership;
+using DirigoEdgeCore.Utils;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
@@ -33,19 +34,30 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 }
             };
 
-            var success = 0;
-
             if (!String.IsNullOrEmpty(user.UserId.ToString()))
             {
                 var cfrp = new CodeFirstRoleProvider(Context);
                 var editUser = Context.Users.FirstOrDefault(x => x.UserId == user.UserId);
-
+                var currentUsername = UserUtils.CurrentMembershipUsername();
+                if (editUser == null)
+                {
+                    return result;
+                }
+                if (!user.IsApproved && currentUsername == editUser.Username)
+                {
+                    result.Data = new
+                    {
+                        success = false,
+                        message = "Current user cannot be deactivated."
+                    };
+                    return result;
+                }
                 editUser.Username = user.Username;
                 editUser.FirstName = user.FirstName;
                 editUser.LastName = user.LastName;
                 editUser.Email = user.Email;
                 editUser.UserImageLocation = user.UserImageLocation;
-                editUser.IsLockedOut = user.IsLockedOut;
+                editUser.IsApproved = user.IsApproved;
 
                 if (user.Roles != null)
                 {
@@ -79,18 +91,20 @@ namespace DirigoEdge.Areas.Admin.Controllers
                         // Add to CodeFirst as well
                         cfrp.AddUsersToRoles(new string[] {user.Username}, new string[] {role.RoleName});
                     }
-
-                    success = Context.SaveChanges();
+                    try
+                    {
+                        Context.SaveChanges();
+                        result.Data = new
+                        {
+                            success = true,
+                            message = "Changes saved successfully."
+                        };
+                    }
+                    catch (Exception e)
+                    {
+                        return result;
+                    }
                 }
-            }
-
-            if (success > 0)
-            {
-                result.Data = new
-                {
-                    success = true,
-                    message = "Changes saved successfully."
-                };
             }
             return result;
         }
@@ -123,6 +137,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 newlyAddedUser.LastName = user.LastName;
                 newlyAddedUser.Email = user.Email;
                 newlyAddedUser.UserImageLocation = user.UserImageLocation;
+                newlyAddedUser.IsApproved = user.IsApproved;
                 success = Context.SaveChanges();
 
                 // Add the asigned roles
