@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Common.CommandTrees;
 using System.IO;
 using System.Linq;
-using System.ServiceModel.XamlIntegration;
-using System.Web.Instrumentation;
 using System.Web.Mvc;
 using System.Web.Security;
+using AutoMapper;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
-using DirigoEdgeCore.Business;
+using DirigoEdge.Business;
 using DirigoEdge.Controllers.Base;
+using DirigoEdge.CustomUtils;
 using DirigoEdge.Data.Entities.Extensibility;
 using DirigoEdge.Models.ViewModels;
 using DirigoEdgeCore.Business.Models;
@@ -115,7 +114,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         {
             var model = new EditContentViewModel();
 
-            var editContentHelper = new DirigoEdge.Business.EditContentHelper(Context);
+            var editContentHelper = new EditContentHelper(Context);
             editContentHelper.LoadContentViewById(id, model);
 
             var userName = UserUtils.CurrentMembershipUsername();
@@ -144,7 +143,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         {
             var model = new EditContentViewModel();
 
-            var editContentHelper = new Business.EditContentHelper(Context);
+            var editContentHelper = new EditContentHelper(Context);
             editContentHelper.LoadContentViewById(id, model);
 
             return View(model);
@@ -251,7 +250,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             CachedObjects.GetCacheContentPages(true);
 
-            result.Data = new { publishDate = Convert.ToDateTime(DateTime.UtcNow).ToString("MM/dd/yyyy @ hh:mm") };
+            result.Data = new { publishDate = SystemTime.CurrentLocalTime.ToString("MM/dd/yyyy @ hh:mm") };
 
             return result;
         }
@@ -345,11 +344,11 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [PermissionsFilter(Permissions = "Can Edit Pages")]
         public JsonResult GetRevisionList(int id)
         {
-            JsonResult result = new JsonResult { JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            var result = new JsonResult { JsonRequestBehavior = JsonRequestBehavior.AllowGet };
 
             var drafts = Context.ContentPages.Where(x => x.ParentContentPageId == id || x.ContentPageId == id).OrderByDescending(x => x.PublishDate).ToList().Select(rev => new RevisionViewModel
             {
-                Date = rev.PublishDate,
+                Date = TimeUtils.ConvertUTCToLocal(rev.PublishDate),
                 ContentId = rev.ContentPageId,
                 AuthorName = rev.DraftAuthorName,
                 WasPublished = rev.WasPublished
@@ -447,7 +446,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
         protected void SetContentPageData(ContentPage editedContent, PageDetails entity, bool isRevision, bool isBasic, DateTime? publishDate)
         {
-            AutoMapper.Mapper.Map<PageDetails, ContentPage>(entity, editedContent);
+            Mapper.Map<PageDetails, ContentPage>(entity, editedContent);
 
             if (isRevision)
             {
@@ -489,7 +488,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 Context.ContentPageExtensions.Add(ext);
             }
 
-            AutoMapper.Mapper.Map<ContentPageComplete, ContentPageExtension>(page, ext);
+            Mapper.Map<ContentPageComplete, ContentPageExtension>(page, ext);
             Context.SaveChanges();
         }
 

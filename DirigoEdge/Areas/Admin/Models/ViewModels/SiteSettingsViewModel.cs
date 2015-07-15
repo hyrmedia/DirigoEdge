@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Security;
+using DirigoEdge.Data.Context;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models;
 
@@ -9,36 +11,33 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
     public class SiteSettingsViewModel : DirigoBaseModel
     {
         public SiteSettings Settings;
-        public Dictionary<int, bool> SiteRetensionTimeValues; // Count / IsSelected
         public List<string> RolesList;
+        public IReadOnlyCollection<TimeZoneInfo> TimeZones = TimeZoneInfo.GetSystemTimeZones();
+
+        public Dictionary<String, String> ConfigSettings;
 
         public SiteSettingsViewModel()
         {
             BookmarkTitle = "Site Settings";
-            Settings = Context.SiteSettings.FirstOrDefault();
+            RolesList = new List<string>();
+            ConfigSettings = new Dictionary<string, string>();
+        }
 
-            // Set some initial values if none are found.
-            if (Settings == null)
+        public static SiteSettingsViewModel LoadSiteSettings(WebDataContext context)
+        {
+            var model = new SiteSettingsViewModel
             {
-                Settings = new SiteSettings()
-                {
-                    SearchIndex = true
-                };
+                Settings = context.SiteSettings.FirstOrDefault(),
+                RolesList = Roles.GetAllRoles().ToList()
+            };
 
-                Context.SiteSettings.Add(Settings);
-
-                Context.SaveChanges();
+            var configs = context.Configurations;
+            foreach (var config in configs)
+            {
+               model.ConfigSettings.Add(config.Key, config.Value);
             }
 
-            SiteRetensionTimeValues = new Dictionary<int, bool>
-				{
-					{ 5, Settings.ContentPageRevisionsRetensionCount == 5 },
-					{ 10, Settings.ContentPageRevisionsRetensionCount == 10 },
-					{ 25, Settings.ContentPageRevisionsRetensionCount == 25 },
-					{ 50, Settings.ContentPageRevisionsRetensionCount == 50 }
-				};
-
-            RolesList = Roles.GetAllRoles().ToList();
+            return model;
         }
     }
 }

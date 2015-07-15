@@ -1,10 +1,12 @@
 ﻿using System.Web.Mvc;
+using DirigoEdge.Attributes;
 using DirigoEdge.Data.Context;
 using DirigoEdgeCore.Controllers;
 using DirigoEdgeCore.Utils.Logging;
 
 namespace DirigoEdge.Controllers.Base
 {
+    [TimeConvert]
     public class WebBaseController : DirigoBaseController
     {
         protected new ILog Log = LogFactory.GetLog(typeof(WebBaseController));

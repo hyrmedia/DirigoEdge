@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
+using DirigoEdge.Attributes;
 using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
 namespace DirigoEdge.Areas.Admin.Controllers

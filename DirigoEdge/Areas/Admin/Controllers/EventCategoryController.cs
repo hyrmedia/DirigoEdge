@@ -3,7 +3,6 @@ using System.Linq;
 using System.Web.Mvc;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
-using DirigoEdge.Controllers;
 using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
 

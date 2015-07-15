@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdge.Controllers.Base;
+using DirigoEdge.CustomUtils;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models.ViewModels;
 using DirigoEdgeCore.Utils;
@@ -220,7 +221,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             var drafts = Context.ContentModules.Where(x => x.ParentContentModuleId == parentId || x.ContentModuleId == parentId).OrderByDescending(x => x.CreateDate).ToList().Select(rev => new RevisionViewModel
             {
-                Date = rev.CreateDate,
+                Date = TimeUtils.ConvertUTCToLocal(rev.CreateDate),
                 ContentId = rev.ContentModuleId,
                 AuthorName = rev.DraftAuthorName,
                 WasPublished = rev.WasPublished
@@ -292,7 +293,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 {
                     success = true,
                     message = "Content saved successfully.",
-                    date = editedContent.CreateDate.Value.ToString("dd/MM/yyy @ h:mm tt")
+                    date = SystemTime.CurrentLocalTime.ToString("dd/MM/yyy @ h:mm tt")
                 };
             }
 
