@@ -8,10 +8,10 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
 {
     public class EditModuleViewModel : DraftableModel
     {
-        public ContentModule TheModule;
+        public ContentModule TheModule { get; set; }
 
-        public List<Schema> Schemas;
-        public List<RevisionViewModel> Revisions;
+        public List<Schema> Schemas { get; set; }
+        public List<RevisionViewModel> Revisions { get; set; }
 
         public override int? ParentId()
         {
