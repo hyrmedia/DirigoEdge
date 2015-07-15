@@ -10,12 +10,18 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
     {
         public List<Event> EventListing;
 
-        public void LoadEvents()
+        public ManageEventsViewModel()
         {
             EventListing = new List<Event>();
+        }
 
-            EventListing = Context.Events.ToList();
-            
+        public void LoadEvents()
+        {
+            if (Context.Events.Any())
+            {
+                EventListing = Context.Events.ToList();
+            }
+
             foreach (var edgeEvent in EventListing)
             {
                 if (edgeEvent.StartDate.HasValue)
@@ -28,8 +34,6 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
                     edgeEvent.EndDate = TimeUtils.ConvertUTCToLocal(edgeEvent.EndDate.Value);
                 }
             }
-            }
+        }
     }
-
-    
 }
