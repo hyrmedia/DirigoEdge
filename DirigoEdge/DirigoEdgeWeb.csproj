@@ -493,6 +493,7 @@
     <Compile Include="Models\ViewModels\TweetViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Scss\edge\_pagebuilder.scss" />
+    <Content Include="Areas\Admin\Views\Plugins\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Scripts\adminContentEditor.js" />
@@ -1299,9 +1300,6 @@
     <Content Include="Areas\Admin\Scss\modules\_forms.scss" />
     <Content Include="Areas\Admin\Scss\modules\_panel.scss" />
     <Content Include="Areas\Admin\Scss\modules\_revisions-list.scss" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Admin\Views\Redirect\Plugins\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Views\Shared\Partials\ModuleEditHeaderPartial.cshtml" />
