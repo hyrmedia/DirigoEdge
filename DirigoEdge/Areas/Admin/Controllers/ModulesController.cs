@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
@@ -11,6 +14,9 @@ using DirigoEdge.CustomUtils;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models.ViewModels;
 using DirigoEdgeCore.Utils;
+using AutoMapper;
+using DirigoEdge.Business.Models;
+using Module = DirigoEdge.Business.Models.Module;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
@@ -148,6 +154,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             return RedirectToAction("EditModule", "Modules", routeParameters);
         }
+        
 
         [HttpPost]
         [Authorize(Roles = "Administrators")]
@@ -241,8 +248,6 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 }
             };
 
-            var success = 0;
-
             if (String.IsNullOrEmpty(entity.ModuleName))
             {
                 return result;
@@ -277,7 +282,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
             editedContent.SchemaEntryValues = entity.SchemaEntryValues;
             editedContent.IsActive = true;
 
-            success = Context.SaveChanges();
+            var success = Context.SaveChanges();
 
             if (success > 0)
             {
@@ -303,7 +308,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             int moduleId = Int32.Parse(id);
 
-            var editorData = Context.ContentModules.FirstOrDefault(x => x.ContentModuleId == moduleId);
+            var editorData = Context.ContentModules.First(x => x.ContentModuleId == moduleId);
             result.Data = new
             {
                 html = editorData.HTMLContent,
@@ -313,6 +318,32 @@ namespace DirigoEdge.Areas.Admin.Controllers
             };
 
             return result;
+        }
+        
+        [HttpGet]
+        [UserIsLoggedIn]
+        public JsonResult GetModule(int id)
+        {
+            try
+            {
+                return new JsonResult
+                {
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                    Data = new {
+						Modules = new List<Object>{Mapper.Map<ContentModule, Module>(
+                            Context.ContentModules.First(x => x.ContentModuleId == id))}}
+
+                };
+            }
+            catch(Exception ex)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return new JsonResult
+                {
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                    Data = ex.Message
+                };
+            }
         }
 
         [PermissionsFilter(Permissions = "Can Edit Modules")]

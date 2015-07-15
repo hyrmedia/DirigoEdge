@@ -62,9 +62,9 @@
     <Reference Include="AutoMapper.Net4">
       <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
-    <Reference Include="DirigoEdgeCore, Version=1.4.22.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DirigoEdgeCore, Version=1.4.23.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DirigoEdgeCore.1.4.22.0\lib\net45\DirigoEdgeCore.dll</HintPath>
+      <HintPath>..\packages\DirigoEdgeCore.1.4.23.0\lib\net45\DirigoEdgeCore.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -199,6 +199,7 @@
     <Compile Include="Areas\Admin\Controllers\BlogController.cs" />
     <Compile Include="Areas\Admin\Controllers\BookmarkController.cs" />
     <Compile Include="Areas\Admin\Controllers\CategoryController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ImportController.cs" />
     <Compile Include="Areas\Admin\Controllers\NavigationController.cs" />
     <Compile Include="Areas\Admin\Controllers\RedirectController.cs" />
     <Compile Include="Areas\Admin\Controllers\RolesController.cs" />
@@ -212,7 +213,9 @@
     <Compile Include="Areas\Admin\Controllers\PluginsController.cs" />
     <Compile Include="Areas\Admin\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Admin\Controllers\SlideshowController.cs" />
+    <Compile Include="Areas\Admin\Models\ImportResult.cs" />
     <Compile Include="Areas\Admin\Models\DataModels\Settings.cs" />
+    <Compile Include="Areas\Admin\Models\ImportResults.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\BookmarkViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\EditContentViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\PluginViewModel.cs" />
@@ -225,6 +228,9 @@
     <Compile Include="Attributes\TimeConvert.cs" />
     <Compile Include="Business\BlogLoader.cs" />
     <Compile Include="Business\EditContentHelper.cs" />
+    <Compile Include="Business\ImportTools.cs" />
+    <Compile Include="Business\Models\Module.cs" />
+    <Compile Include="Business\Models\ImportData.cs" />
     <Compile Include="Controllers\Base\WebBaseAdminController.cs" />
     <Compile Include="Controllers\Base\WebBaseController.cs" />
     <Compile Include="Controllers\ImagesController.cs" />
@@ -1295,7 +1301,7 @@
     <Content Include="Areas\Admin\Scss\modules\_revisions-list.scss" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Admin\Views\Plugins\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Redirect\Plugins\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Views\Shared\Partials\ModuleEditHeaderPartial.cshtml" />
@@ -1321,6 +1327,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Partials\FeaturedEventsShortcodePartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Views\Import\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

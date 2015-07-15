@@ -2,15 +2,15 @@
 /// Content Admin Class. In charge of manage content, edit content for Modules and Pages
 /// ===========================================================================================
 
-content_class = function() {
+content_class = function () {
 
 };
 
-content_class.prototype.initPageEvents = function() {
+content_class.prototype.initPageEvents = function () {
 
     this.manageContentAdminEvents();
 
-    if ($("div.editContent").length > 0 && typeof(ace) != "undefined") {
+    if ($("div.editContent").length > 0 && typeof (ace) != "undefined") {
         this.initCodeEditorEvents();
         this.initWordWrapEvents();
         this.initContentImageUploadEvents();
@@ -30,7 +30,7 @@ content_class.prototype.initPageEvents = function() {
     if ($("div.manageSchemas").length > 0) {
         this.initDeleteSchemaEvent();
     }
-    
+
     // View / Act on Revisions
     this.initRevisionEvents();
 
@@ -43,9 +43,9 @@ content_class.prototype.initWordWrapEvents = function () {
 
     $("#WordWrap").change(function () {
         var wrapWords = $(this).is(":checked");
-        
+
         self.htmlEditor.getSession().setUseWrapMode(wrapWords);
-        
+
         // Let's help out our fellow coders and save their settings so they don't check/uncheck every time
         $.ajax({
             url: "/admin/pages/setwordwrap",
@@ -57,11 +57,11 @@ content_class.prototype.initWordWrapEvents = function () {
     });
 };
 
-content_class.prototype.initDeleteModuleEvent = function() {
+content_class.prototype.initDeleteModuleEvent = function () {
     var self = this;
 
     // Delete Module
-    $("div.manageModule table.manageTable td a.delete").click(function() {
+    $("div.manageModule table.manageTable td a.delete").click(function () {
         self.managePageId = $(this).attr("data-id");
 
         self.$managePageRow = $(this).closest('tr');
@@ -71,7 +71,7 @@ content_class.prototype.initDeleteModuleEvent = function() {
     });
 
     // Confirm Delete Content
-    $("#ConfirmModuleDelete").click(function() {
+    $("#ConfirmModuleDelete").click(function () {
         var id = self.managePageId;
         $.ajax({
             url: "/admin/modules/deletemodule",
@@ -79,12 +79,12 @@ content_class.prototype.initDeleteModuleEvent = function() {
             data: {
                 id: self.managePageId
             },
-            success: function(data) {
+            success: function (data) {
                 var noty_id = noty({ text: 'Module Successfully Deleted.', type: 'success', timeout: 2000 });
                 self.$managePageRow.remove();
                 $('#DeleteModal').modal('hide');
             },
-            error: function(data) {
+            error: function (data) {
                 $('#DeleteModal').modal('hide');
                 var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
@@ -92,7 +92,7 @@ content_class.prototype.initDeleteModuleEvent = function() {
     });
 };
 
-content_class.prototype.refreshTable = function(containerClass, url) {
+content_class.prototype.refreshTable = function (containerClass, url) {
     //Refresh the inner content to show the new user
     var $container = $(containerClass);
 
@@ -114,9 +114,9 @@ content_class.prototype.refreshTable = function(containerClass, url) {
     });
 }
 
-content_class.prototype.initDeleteContentEvent = function() {
+content_class.prototype.initDeleteContentEvent = function () {
     var self = this;
-    $("div.manageContent table.manageTable td a.delete").click(function() {
+    $("div.manageContent table.manageTable td a.delete").click(function () {
         self.managePageId = $(this).attr("data-id");
 
         self.$managePageRow = $(this).parent().parent();
@@ -126,7 +126,7 @@ content_class.prototype.initDeleteContentEvent = function() {
     });
 
     // Confirm Delete Content
-    $("#ConfirmContentDelete").click(function() {
+    $("#ConfirmContentDelete").click(function () {
         var id = self.managePageId;
         $.ajax({
             url: "/admin/pages/deletecontent",
@@ -134,12 +134,12 @@ content_class.prototype.initDeleteContentEvent = function() {
             data: {
                 id: self.managePageId
             },
-            success: function(data) {
+            success: function (data) {
                 var noty_id = noty({ text: 'Content Page Successfully Deleted.', type: 'success', timeout: 2000 });
                 self.$managePageRow.remove();
                 $('#DeleteModal').modal('hide');
             },
-            error: function(data) {
+            error: function (data) {
                 $('#DeleteModal').modal('hide');
                 var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
@@ -261,7 +261,7 @@ content_class.prototype.afterNewPageCreate = function (data) {
 
 };
 
-content_class.prototype.initCodeEditorEvents = function() {
+content_class.prototype.initCodeEditorEvents = function () {
     var self = this;
 
     // Init Code Editor
@@ -277,7 +277,7 @@ content_class.prototype.initCodeEditorEvents = function() {
     self.htmlEditor.commands.addCommand({
         name: 'switchTab',
         bindKey: { win: 'Ctrl-2', mac: 'Command-2' },
-        exec: function(editor) {
+        exec: function (editor) {
             $("a[href=#CSS]").trigger("click");
             $("#CSSContent textarea").focus();
         }
@@ -286,7 +286,7 @@ content_class.prototype.initCodeEditorEvents = function() {
     self.htmlEditor.commands.addCommand({
         name: 'switchTab',
         bindKey: { win: 'Ctrl-3', mac: 'Command-3' },
-        exec: function(editor) {
+        exec: function (editor) {
             $("a[href=#JS]").trigger("click");
             $("#JSContent textarea").focus();
         }
@@ -295,7 +295,7 @@ content_class.prototype.initCodeEditorEvents = function() {
     self.htmlEditor.commands.addCommand({
         name: 'Save',
         bindKey: { win: 'Ctrl-S', mac: 'Command-S' },
-        exec: function(editor) {
+        exec: function (editor) {
             $("#SaveContentButton").trigger("click");
         }
     });
@@ -307,7 +307,7 @@ content_class.prototype.initCodeEditorEvents = function() {
     self.cssEditor.commands.addCommand({
         name: 'switchTab1',
         bindKey: { win: 'Ctrl-1', mac: 'Command-1' },
-        exec: function(editor) {
+        exec: function (editor) {
             $("a[href=#Html]").trigger("click");
             $("#HTMLContent textarea").focus();
         },
@@ -319,7 +319,7 @@ content_class.prototype.initCodeEditorEvents = function() {
     self.jsEditor.getSession().setMode("ace/mode/javascript");
 
     // Change editor Theme
-    $("#EditorTheme").change(function() {
+    $("#EditorTheme").change(function () {
         var theme = $(this).val();
         self.htmlEditor.setTheme(theme);
         self.cssEditor.setTheme(theme);
@@ -327,7 +327,7 @@ content_class.prototype.initCodeEditorEvents = function() {
     });
 };
 
-content_class.prototype.initContentImageUploadEvents = function() {
+content_class.prototype.initContentImageUploadEvents = function () {
     var self = this;
 
     $('#InsertContentImage').fileBrowser(function (object) {
@@ -357,7 +357,7 @@ content_class.prototype.initModuleUploadEvents = function () {
             $("#ImageModuleThumbnail").attr("src", object.src);
         }
     });
-    
+
     // Key up refreshes thumbnail
     $("#ModuleThumbnail").keyup(function () {
         var src = $(this).val();
@@ -365,7 +365,7 @@ content_class.prototype.initModuleUploadEvents = function () {
     });
 };
 
-content_class.prototype.manageContentAdminEvents = function() {
+content_class.prototype.manageContentAdminEvents = function () {
     var self = this;
 
     // WYSIWYG Editor
@@ -381,7 +381,7 @@ content_class.prototype.manageContentAdminEvents = function() {
 
     // Save Content Button
     $("#SaveContentButton").click(function () {
-       
+
         // Make sure Page Title exists
         if ($("#PageTitle").val().length < 1) {
             alert("You must enter a page title before saving.");
@@ -391,7 +391,6 @@ content_class.prototype.manageContentAdminEvents = function() {
         var data = self.getPageData();
 
         $("#SaveSpinner").show();
-
         var url = $(this).attr("data-url") || 'ModifyContent';
         $.ajax({
             url: "/admin/pages/" + url,
@@ -399,7 +398,7 @@ content_class.prototype.manageContentAdminEvents = function() {
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data, null, 2),
-            success: function(data) {
+            success: function (data) {
                 noty({ text: 'Changes saved successfully.', type: 'success', timeout: 1200 });
                 $("#SaveSpinner").hide();
 
@@ -409,24 +408,23 @@ content_class.prototype.manageContentAdminEvents = function() {
 
                 // Update "Preview" button to use the just-saved / published id
                 $("#PreviewContentButton").attr("href", common.updateURLParameter($("#PreviewContentButton").attr("href"), "id", $("div.editContent").attr("data-id")));
-                
+
                 // Refresh Revisions list
                 self.refreshRevisionListing();
             },
-            error: function(data) {
+            error: function (data) {
                 noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
                 $("#SaveSpinner").hide();
             }
         });
     });
-    
+
     // Save Module Button
     $("#SaveModuleButton").click(function () {
 
         var data = self.getModuleData();
 
         $("#SaveSpinner").show();
-
         var url = $(this).attr("data-url") || 'modifycontent';
         $.ajax({
             url: "/admin/modules/" + url,
@@ -450,12 +448,17 @@ content_class.prototype.manageContentAdminEvents = function() {
             }
         });
     });
-    
+
+    $("#ExportModuleButton").click(function () {
+        console.log('export module ' + $("div.editContent").attr("data-id"));
+        EDGE.ajaxGet(null, "/admin/modules/getmodule/" + $("div.editContent").attr("data-id"), function (data) { console.log(data); });
+    });
+
     // Save a draft
-    $("#SaveDraftButton").click(function() {
+    $("#SaveDraftButton").click(function () {
 
         var data = self.getPageData();
-        
+
         $("#SaveSpinner").show();
         $.ajax({
             url: "/admin/pages/savedraft",
@@ -464,13 +467,13 @@ content_class.prototype.manageContentAdminEvents = function() {
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data, null, 2),
             success: function (data) {
-                
+
                 $("#SaveSpinner").hide();
 
                 // Update "Preview" button to use the just-saved id
                 $("#PreviewContentButton").attr("href", common.updateURLParameter($("#PreviewContentButton").attr("href"), "id", data.id));
 
-                self.setPublishedStatusState(false);                
+                self.setPublishedStatusState(false);
 
                 // Refresh Revisions list
                 self.refreshRevisionListing();
@@ -509,19 +512,19 @@ content_class.prototype.manageContentAdminEvents = function() {
             }
         });
     });
-    
+
     // Toggle Draft Status Container
     $("#StatusLabel, #CloseDraftStatus").click(function () {
         $("#DraftStatusContainer").slideToggle();
     });
-    
+
     // Change Draft Status
     $("#DraftStatusSelector").change(function () {
         var isActive = $("#DraftStatusSelector option:selected").val() == "published";
         var data = {
             entity: {
                 ContentPageId: $("div.editContent").attr("data-id"),
-                IsActive : isActive
+                IsActive: isActive
             }
         };
 
@@ -536,7 +539,7 @@ content_class.prototype.manageContentAdminEvents = function() {
                 $("#SaveSpinner").hide();
 
                 self.setPublishedStatusState(isActive);
-                
+
                 // Update publish date if just switched to publish
                 if (isActive) {
                     $("#PublishedDate").text(data.publishDate);
@@ -548,7 +551,7 @@ content_class.prototype.manageContentAdminEvents = function() {
             }
         });
     });
-    
+
     // View Permalink in new tab
     $("#ViewPermaLink").click(function (e) {
         e.preventDefault();
@@ -597,9 +600,9 @@ content_class.prototype.getModuleData = function () {
     return data;
 };
 
-content_class.prototype.getPageData = function() {
+content_class.prototype.getPageData = function () {
     var self = this;
-    
+
     var htmlContent;
     var cssContent;
     var jsContent;
@@ -835,7 +838,7 @@ content_class.prototype.parseSchemaContent = function (htmlContent) {
 
 // Set publish button text, drop down selected
 content_class.prototype.setPublishedStatusState = function (isActive) {
-    
+
     if (isActive) {
         $("#SaveContentButton").text("Update");
         $("#StatusLabel").text("Published");
@@ -846,13 +849,13 @@ content_class.prototype.setPublishedStatusState = function (isActive) {
         $("#StatusLabel").text("Draft");
         $("#DraftStatusSelector").val("draft");
     }
-    
+
     // Just saved a draft or published, can now remove version notice
     this.updateVersionNotice();
 };
 
 // If there is a "there is a newer version available" message, close and remove it.
-content_class.prototype.updateVersionNotice = function() {
+content_class.prototype.updateVersionNotice = function () {
     $("#VersionInfoContainer").fadeOut(function () {
         $(this).remove();
     });
@@ -868,7 +871,7 @@ content_class.prototype.initRevisionEvents = function () {
         var type = $("#RevisionsList").attr("type");
 
         $("#RevisionDetailModal").modal();
-        
+
         // Update the switch revision link to point to the new revision id we just loaded
         var isBasic = typeof (self.htmlEditor) == "undefined";
 

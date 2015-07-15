@@ -7,7 +7,6 @@ using System.Web.Security;
 using AutoMapper;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
-using DirigoEdge.Attributes;
 using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Utils;
@@ -268,18 +267,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 return JsonErrorResult;
             }
 
-            Mapper.CreateMap<EditBlogModel, Blog>()
-                .ForMember(dest => dest.Title,
-                            opts => opts.MapFrom(src => ContentUtils.ScrubInput(src.Title)))
-                .ForMember(dest => dest.ImageUrl,
-                            opts => opts.MapFrom(src => ContentUtils.ScrubInput(src.ImageUrl)))
-                .ForMember(dest => dest.PermaLink,
-                            opts => opts.MapFrom(src => ContentUtils.GetFormattedUrl(src.PermaLink)))
-                .ForAllMembers(p => p.Condition(c => !c.IsSourceValueNull));
-
-
             Mapper.Map(editBlogModel, blogEntity);
-
             // Database Nav property mappings
             blogEntity.Category = Utils.GetCategoryOrUncategorized(editBlogModel.Category);
             blogEntity.BlogAuthor = Context.BlogUsers.First(usr => usr.UserId == editBlogModel.AuthorId);

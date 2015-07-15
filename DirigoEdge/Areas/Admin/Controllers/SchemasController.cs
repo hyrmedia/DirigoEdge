@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
+using AutoMapper;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdge.Attributes;
 using DirigoEdge.Controllers.Base;
 using DirigoEdgeCore.Data.Entities;
-
 namespace DirigoEdge.Areas.Admin.Controllers
 {
     public class SchemasController : WebBaseAdminController
@@ -100,11 +101,10 @@ namespace DirigoEdge.Areas.Admin.Controllers
         public JsonResult GetSchemaHtml(int schemaId, int moduleId, bool isPage = false)
         {
             var result = new JsonResult();
-            Schema theSchema;
 
-            string entryValues = String.Empty;
+            string entryValues;
 
-            theSchema = Context.Schemas.FirstOrDefault(x => x.SchemaId == schemaId);
+            var theSchema = Context.Schemas.FirstOrDefault(x => x.SchemaId == schemaId);
 
             if (isPage)
             {
@@ -141,7 +141,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
                 if (currentPage == null)
                 {
-                    result.Data = new {error = "Content page not found."};
+                    result.Data = new { error = "Content page not found." };
                     return result;
                 }
 
@@ -218,7 +218,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
                 if (page == null)
                 {
-                    result.Data = new {success = false, error = "Content page could not be found."};
+                    result.Data = new { success = false, error = "Content page could not be found." };
                     return result;
                 }
 
@@ -260,6 +260,34 @@ namespace DirigoEdge.Areas.Admin.Controllers
             result.Data = new { moduleNames };
 
             return result;
+        }
+
+        [HttpGet]
+        [UserIsLoggedIn]
+        public JsonResult GetSchema(int id)
+        {
+            try
+            {
+                return new JsonResult
+                {
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                    Data = new
+                    {
+                        Schemas = new List<Object>
+                        {Mapper.Map<Schema, DirigoEdgeCore.Business.Models.Schema>(
+                            Context.Schemas.First(x => x.SchemaId == id))}
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return new JsonResult
+                {
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                    Data = ex.Message
+                };
+            }
         }
     }
 }
