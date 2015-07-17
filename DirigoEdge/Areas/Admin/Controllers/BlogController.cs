@@ -253,24 +253,24 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [HttpPost]
         [PermissionsFilter(Permissions = "Can Edit Blogs")]
         [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult ModifyBlog(EditBlogModel editBlogModel)
+        public JsonResult ModifyBlog(EditBlogModel entity)
         {
-            if (String.IsNullOrEmpty(editBlogModel.Title))
+            if (String.IsNullOrEmpty(entity.Title))
             {
                 return NoBlogTitleError;
             }
 
-            var blogEntity = Context.Blogs.FirstOrDefault(x => x.BlogId == editBlogModel.BlogId);
+            var blogEntity = Context.Blogs.FirstOrDefault(x => x.BlogId == entity.BlogId);
 
             if (blogEntity == null)
             {
                 return JsonErrorResult;
             }
 
-            Mapper.Map(editBlogModel, blogEntity);
+            Mapper.Map(entity, blogEntity);
             // Database Nav property mappings
-            blogEntity.Category = Utils.GetCategoryOrUncategorized(editBlogModel.Category);
-            blogEntity.BlogAuthor = Context.BlogUsers.First(usr => usr.UserId == editBlogModel.AuthorId);
+            blogEntity.Category = Utils.GetCategoryOrUncategorized(entity.Category);
+            blogEntity.BlogAuthor = Context.BlogUsers.First(usr => usr.UserId == entity.AuthorId);
 
             if (blogEntity.Tags == null)
             {
@@ -281,9 +281,9 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 blogEntity.Tags.Clear();
             }
 
-            if (!String.IsNullOrEmpty(editBlogModel.Tags))
+            if (!String.IsNullOrEmpty(entity.Tags))
             {
-                foreach (var tag in editBlogModel.Tags.Split(','))
+                foreach (var tag in entity.Tags.Split(','))
                 {
                     blogEntity.Tags.Add(Utils.GetOrCreateTag(tag));
                 }
@@ -291,10 +291,10 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             var success = Context.SaveChanges();
             CachedObjects.GetCacheContentPages(true);
-            BookmarkUtil.UpdateTitle("/admin/pages/editblog/" + blogEntity.BlogId + "/", editBlogModel.Title);
+            BookmarkUtil.UpdateTitle("/admin/pages/editblog/" + blogEntity.BlogId + "/", entity.Title);
 
             return success > 0 
-                ? BlogSaveSuccess(editBlogModel) 
+                ? BlogSaveSuccess(entity) 
                 : JsonErrorResult;
         }
 
