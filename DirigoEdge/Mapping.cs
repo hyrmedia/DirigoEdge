@@ -28,6 +28,10 @@ namespace DirigoEdge
             Mapper.CreateMap<Module, ContentModule>().ReverseMap();
             Mapper.CreateMap<Settings, SiteSettings>();
             Mapper.CreateMap<BlogController.EditBlogModel, Blog>()
+                .ForMember(dest => dest.Category,
+                            opts => opts.Ignore())
+               .ForMember(dest => dest.Tags,
+                            opts => opts.Ignore())
                .ForMember(dest => dest.Title,
                            opts => opts.MapFrom(src => ContentUtils.ScrubInput(src.Title)))
                .ForMember(dest => dest.ImageUrl,
