@@ -462,7 +462,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
             editedContent.DraftAuthorName = UserUtils.CurrentMembershipUsername();
             editedContent.WasPublished = publishDate.HasValue;
             editedContent.PublishDate = publishDate ?? DateTime.UtcNow;
-            editedContent.HTMLContent = ContentUtils.ReplacePageParametersInHtmlContent(editedContent.HTMLUnparsed, entity);
+            editedContent.HTMLContent = ContentUtils.ReplacePageParametersInHtmlContent(editedContent.HTMLContent, entity);
         }
 
 
