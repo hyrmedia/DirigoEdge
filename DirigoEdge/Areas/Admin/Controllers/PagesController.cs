@@ -150,35 +150,19 @@ namespace DirigoEdge.Areas.Admin.Controllers
         }
 
         [PermissionsFilter(Permissions = "Can Edit Pages")]
-        public JsonResult DeleteContent(string id)
+        public JsonResult DeleteContent(int id)
         {
             var result = new JsonResult()
             {
                 Data = new { success = false, message = "There was an error processing your request." }
             };
 
-            if (String.IsNullOrEmpty(id))
-            {
-                return result;
-            }
+            var helper = new EditContentHelper(Context);
+            var success= helper.DeleteContentPAge(id);
 
-            int pageId = Int32.Parse(id);
+           
 
-            var page = Context.ContentPages.FirstOrDefault(x => x.ContentPageId == pageId);
-            var revisions = Context.ContentPages.Where(x => x.ParentContentPageId == page.ContentPageId);
-
-            Context.ContentPages.Remove(page);
-
-            if (revisions.Any())
-            {
-                Context.ContentPages.RemoveRange(revisions);
-            }
-
-            var success = Context.SaveChanges();
-
-            BookmarkUtil.DeleteBookmarkForUrl("/admin/pages/editcontent/" + pageId + "/");
-
-            if (success > 0)
+            if (success)
             {
                 result.Data = new { success = true, message = "The page has been successfully deleted." };
             }
