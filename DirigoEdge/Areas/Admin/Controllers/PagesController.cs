@@ -158,7 +158,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
             };
 
             var helper = new EditContentHelper(Context);
-            var success= helper.DeleteContentPAge(id);
+            var success= helper.DeleteContentPage(id);
 
            
 

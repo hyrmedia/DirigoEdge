@@ -70,7 +70,7 @@ namespace DirigoEdge.Business
 
         }
 
-        public Boolean DeleteContentPAge(int id)
+        public Boolean DeleteContentPage(int id)
         {
             try
             {
