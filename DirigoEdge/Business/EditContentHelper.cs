@@ -2,21 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Security;
+using AutoMapper;
 using DirigoEdge.Data.Context;
-using DirigoEdge.Data.Entities.Extensibility;
-using DirigoEdge.Models.ViewModels;
 using DirigoEdgeCore.Business;
-using DirigoEdgeCore.Data.Context;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models.ViewModels;
 using DirigoEdgeCore.Utils;
-using Microsoft.Ajax.Utilities;
+using DirigoEdgeCore.Utils.Logging;
 using EditContentViewModel = DirigoEdge.Areas.Admin.Models.ViewModels.EditContentViewModel;
 
 namespace DirigoEdge.Business
 {
     public class EditContentHelper
     {
+        private readonly ILog _log = LogFactory.GetLog(typeof (EditContentHelper));
         private readonly AdminNavigationUtils _navigationUtils;
         private readonly WebDataContext _context;
 
@@ -35,7 +34,7 @@ namespace DirigoEdge.Business
             model.ContentPage.Details = contentLoader.GetDetailById(id);
 
             var ext = _context.ContentPageExtensions.FirstOrDefault(ex => ex.ContentPageId == id);
-            AutoMapper.Mapper.Map(ext, model.ContentPage);
+            Mapper.Map(ext, model.ContentPage);
 
             model.ShowFieldEditor = model.ContentPage.Details.SchemaId > -1;
 
@@ -69,6 +68,40 @@ namespace DirigoEdge.Business
             model.ParentNavIdsToDisable = contentLoader.GetNavItemsForContentPage(model.ContentPage.Details.ContentPageId);
             model.BookmarkTitle = model.ContentPage.Details.Title;
 
+        }
+
+        public Boolean DeleteContentPage(int id)
+        {
+            try
+            {
+                var page = _context.ContentPages.First(x => x.ContentPageId == id);
+                var revisions = _context.ContentPages.Where(x => x.ParentContentPageId == page.ContentPageId);
+                var extenstion = _context.ContentPageExtensions.FirstOrDefault(ext => ext.ContentPageId == id);
+
+                _context.ContentPages.Remove(page);
+
+                if (extenstion != null)
+                {
+                    _context.ContentPageExtensions.Remove(extenstion);
+                }
+
+                if (revisions.Any())
+                {
+                    _context.ContentPages.RemoveRange(revisions);
+                }
+
+                var success = _context.SaveChanges();
+
+                var util = new BookmarkUtil(_context);
+                util.DeleteBookmarkForUrl("/admin/pages/editcontent/" + id + "/");
+
+                return success > 0;
+            }
+            catch (Exception ex)
+            {
+                _log.Error(ex);
+                return false;
+            }
         }
 
         private int GetNewerVersionId(int basePageId, DateTime? publishDate, int contentPageId)
