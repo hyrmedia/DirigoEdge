@@ -5,7 +5,7 @@
     var sources = new List<string>();
 }
 
-@foreach (var route in ResponsiveImageUtils.ResponsiveImageRoutes)
+@foreach (var route in ResponsiveImageUtils.ResponsiveImageRoutes.Where(x => x.Width < Model.Width))
 {
     sources.Add(String.Format("/{0}{1} {2}w", route.Path, Model.ImagePath.Replace(" ", "%20"), route.Width));
 }
@@ -15,8 +15,16 @@
     sources.Add(String.Format("{0} {1}w", Model.ImagePath.Replace(" ", "%20"), Model.Width));
 }
 
-<img sizes="@Model.Sizes"
-     srcset="@String.Join(", ", sources)"
-     class="@Model.ClassName"
-     alt="@Model.AltText"
-     style="width: @(Model.Width + "px")">
+@* If there's only 1 source, not point in using srcset *@
+@if (sources.Count > 1)
+{
+    <img sizes="@Model.Sizes"
+         srcset="@String.Join(", ", sources)"
+         class="@Model.ClassName"
+         alt="@Model.AltText"
+         style="width: @(Model.Width + "px")">
+}
+else
+{
+    <img src="@Model.ImagePath" class="@Model.ClassName" alt="@Model.AltText"/>
+}
