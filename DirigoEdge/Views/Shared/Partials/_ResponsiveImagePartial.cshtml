@@ -18,4 +18,5 @@
 <img sizes="@Model.Sizes"
      srcset="@String.Join(", ", sources)"
      class="@Model.ClassName"
-     alt="@Model.AltText">
+     alt="@Model.AltText"
+     style="width: @(Model.Width + "px")">

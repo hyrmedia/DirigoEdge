@@ -51,12 +51,17 @@ namespace DirigoEdge.CustomUtils
 
         public class ResponsiveImageObject
         {
+            private string _sizes = ResponsiveImageSizes;
             public string ClassName { get; set; }
-            public string Sizes { get; set; }
             public string ImagePath { get; set; }
             public string AltText { get; set; }
             public int Width { get; set; }
             public int Height { get; set; }
+            public string Sizes
+            {
+                get { return _sizes; }
+                set { _sizes = value; }
+            }
         }
     }
 }
