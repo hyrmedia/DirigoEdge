@@ -348,14 +348,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [PermissionsFilter(Permissions = "Can Edit Pages")]
         public JsonResult AddNewPageFromTemplate(string templatePath, string viewTemplate, string permalink, string title, int parent)
         {
-            var result = new JsonResult()
-            {
-                Data = new
-                {
-                    success = false,
-                    message = "There was an error processing you request."
-                }
-            };
+            var result = new JsonResult();
 
             // check to see if permalink exists
             if (Context.ContentPages.Any(x => x.Permalink == permalink))
@@ -368,7 +361,6 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 return result;
             }
 
-            var success = 0;
             var urlLink = "";
             var page = new ContentPage
             {
@@ -383,11 +375,24 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 HTMLContent = ContentUtils.RenderPartialViewToString(templatePath, null, ControllerContext, ViewData, TempData)
             };
 
-            Context.ContentPages.Add(page);
-            Context.SaveChanges();
+            try
+            {
+                Context.ContentPages.Add(page);
+                Context.SaveChanges();
 
-            page.HTMLContent = ContentUtils.ReplacePageParametersInHtmlContent(page.HTMLUnparsed, page);
-            success = Context.SaveChanges();
+                page.HTMLContent = ContentUtils.ReplacePageParametersInHtmlContent(page.HTMLUnparsed, page);
+                Context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                result.Data = new
+                {
+                    success = false,
+                    message = "Page could not be created."
+                };
+                return result;
+            }
+            
             CachedObjects.GetCacheContentPages(true);
 
             var parentHref = NavigationUtils.GetNavItemUrl(parent);
@@ -397,17 +402,15 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 urlLink = parentHref + page.Permalink;
             }
 
-            if (success > 0)
+            urlLink = string.IsNullOrEmpty(urlLink) ? "/" + page.Permalink : urlLink;
+            result.Data = new
             {
-                urlLink = string.IsNullOrEmpty(urlLink) ? "/" + page.Permalink : urlLink;
-                result.Data = new
-                {
-                    id = page.ContentPageId,
-                    url = urlLink,
-                    success = true,
-                    message = "Page created, redirecting."
-                };
-            }
+                id = page.ContentPageId,
+                url = urlLink,
+                success = true,
+                message = "Page created, redirecting."
+            };
+
             return result;
         }
 
