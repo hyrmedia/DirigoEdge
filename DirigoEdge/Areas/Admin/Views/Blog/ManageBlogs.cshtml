@@ -28,7 +28,6 @@
                     @{
 					    foreach(var blog in Model.BlogListing)
 					    {
-						    blog.IsActive = blog.IsActive == null ? false : true;
 						    string active = blog.IsActive ? "True" : "False";
 						    string isFeatured = blog.IsFeatured ? "True" : "False";
                             <tr>
