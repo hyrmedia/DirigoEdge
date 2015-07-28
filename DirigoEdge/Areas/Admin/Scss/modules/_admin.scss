@@ -41,6 +41,17 @@ ul {
     }
 }
 
+
+.edgeVersion{
+    border-top:1px lightgray solid;
+    margin-left: 20px;
+    margin-right: 10px;
+    color: lightgray;
+    a{
+      margin-left: -20px;
+    }
+}
+
 .username .userIcon {
     background: url("./Images/User_white.png") repeat scroll 0 0 / 20px auto rgba(0, 0, 0, 0);
     display: inline-block;
