@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <setParameter name="IIS Web Application Name" value="Dirigo Edge" />
+  <setParameter name="DataContext-Web.config Connection String" value="data source=.\SQLEXPRESS;password=PASSWORD;user id=USER;initial catalog=EDGEDATABASE" />
+</parameters>

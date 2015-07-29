@@ -434,6 +434,7 @@
     <Content Include="gulpfile.js" />
     <Content Include="Scripts\Edge\ajax-service.js" />
     <Content Include="Scripts\Edge\Edge.js" />
+    <None Include="Properties\PublishProfiles\Development.pubxml" />
     <None Include="Properties\PublishProfiles\Package.pubxml" />
     <None Include="Scripts\jquery-1.4.4-vsdoc.js" />
     <Content Include="Scripts\jquery-1.4.4.js" />
