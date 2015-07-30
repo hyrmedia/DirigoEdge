@@ -96,10 +96,6 @@
                             <li>
                                 <a href="/account/logoff">Logout</a>
                             </li>
-                            <li class="edgeVersion">
-                                @{ var version = Assembly.GetAssembly(typeof (AdminController)).GetName().Version.ToString(); }
-                                <a>Edge @("v" + version.Substring(0, version.Length -2))</a>
-                            </li>
                         </ul>
                     </li>
                     <li class="header-bookmarks dropdown">
