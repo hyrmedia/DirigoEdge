@@ -435,7 +435,6 @@
     <Content Include="Scripts\Edge\ajax-service.js" />
     <Content Include="Scripts\Edge\Edge.js" />
     <None Include="Properties\PublishProfiles\Development.pubxml" />
-    <None Include="Properties\PublishProfiles\Package.pubxml" />
     <None Include="Scripts\jquery-1.4.4-vsdoc.js" />
     <Content Include="Scripts\jquery-1.4.4.js" />
     <Content Include="Scripts\jquery-1.4.4.min.js" />
@@ -499,7 +498,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Scss\edge\_pagebuilder.scss" />
     <Content Include="Areas\Admin\Views\Plugins\Index.cshtml" />
-    <None Include="Properties\PublishProfiles\Smoke Test.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Scripts\adminContentEditor.js" />
