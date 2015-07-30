@@ -1,4 +1,6 @@
-﻿@model DirigoEdge.Areas.Admin.Models.ViewModels.SiteSettingsViewModel
+﻿@using System.Reflection
+@using DirigoEdge.Areas.Admin.Models.ViewModels
+@model SiteSettingsViewModel
 
 @{
 	ViewBag.Title = "Site Settings";
@@ -9,6 +11,8 @@
     <div class="row">
         <div class="col-lg-12">
             <h3><i class="fa fa-wrench"></i> Site Settings @Html.Partial("Partials/BookmarkButtonPartial")</h3>
+            @{ var version = Assembly.GetAssembly(typeof(SiteSettingsViewModel)).GetName().Version.ToString(); }
+            <h6 class="edgeVersion">DirigoEdge @("v" + version.Substring(0, version.Length - 2))</h6>
         </div>
     </div>
 
