@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DirigoEdgeCore.Utils;
 using DirigoEdgeCore.Utils.Logging;
 
 namespace DirigoEdge.CustomUtils
@@ -11,6 +12,11 @@ namespace DirigoEdge.CustomUtils
     {
         public static readonly ILog Log = LogFactory.GetLog(typeof(TimeUtils));
 
+        public static String GetTimeConvertedDynamicHtml(string partialViewName, object model)
+        {
+            ConvertAllMembersToLocal(model);
+            return DynamicModules.GetViewHtml(partialViewName, model);
+        }
 
         public static DateTime ConvertLocalToUTC(DateTime time)
         {
