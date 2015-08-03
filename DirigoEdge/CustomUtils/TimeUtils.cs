@@ -48,7 +48,12 @@ namespace DirigoEdge.CustomUtils
 
         private static void ConvertAllMembers(Object obj, Func<DateTime, DateTime> convertFunction)
         {
-            foreach (var prop in obj.GetType().GetProperties())
+            if (obj == null)
+            {
+                return;
+            }
+
+            foreach (var prop in obj.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic   | BindingFlags.Instance  | BindingFlags.FlattenHierarchy))
             {
                 var itemType = prop.PropertyType;
 
