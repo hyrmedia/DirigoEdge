@@ -12,6 +12,14 @@ namespace DirigoEdge.CustomUtils
     {
         public static readonly ILog Log = LogFactory.GetLog(typeof(TimeUtils));
 
+        public static Boolean SameDayInSystemTime(DateTime time1, DateTime time2)
+        {
+            var time1Local = ConvertUTCToLocal(time1);
+            var time2Local = ConvertUTCToLocal(time2);
+
+            return time1Local.Date == time2Local.Date;
+        }
+
         public static String GetTimeConvertedDynamicHtml(string partialViewName, object model)
         {
             ConvertAllMembersToLocal(model);
