@@ -3,7 +3,8 @@ $hasMediaQueries : true;
 
 // Sass
 
-
+// Mixins
+@import 'sass/mixins/media-queries';
 // Vendor
 @import 'vendor/normalize';
 @import 'vendor/bootstrap';
