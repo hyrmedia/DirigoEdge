@@ -1,0 +1,36 @@
+﻿$screen-sm: 768px !default;
+$screen-md: 992px !default;
+$screen-lg: 1200px !default;
+$screen-xl: 1600px !default;
+
+// Breakpoints map
+// @type Map
+$breakpoints: (
+    // Regular breakpoints
+    "small"  : "(max-width: #{$screen-sm - 1})",
+    "medium" : "(max-width: #{$screen-md - 1})",
+    "large"  : "(max-width: #{$screen-lg - 1})",
+    "huge"   : "(max-width: #{$screen-xl - 1})"
+) !default;
+
+// Enable/disable media queries
+// @type Bool
+$MQs: true !default;
+
+// Output a media query named after `$point`.
+// @param {String} $point
+// @requires $breakpoints
+// @requires $MQs
+@mixin bp($point) {
+    $query: map-get($breakpoints, $point);
+  
+    @if not $query {
+        $query: $point;
+    }
+  
+    @if $MQs {
+        @media #{$query} {
+            @content;
+        }
+    }
+}

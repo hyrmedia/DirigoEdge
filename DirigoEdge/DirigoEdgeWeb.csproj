@@ -494,6 +494,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Scss\edge\_pagebuilder.scss" />
     <Content Include="Areas\Admin\Views\Plugins\Index.cshtml" />
+    <Content Include="Scss\sass\mixins\_media-queries.scss" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Scripts\adminContentEditor.js" />
@@ -1017,7 +1018,6 @@
   <ItemGroup>
     <Folder Include="App_Data\OutputCache\" />
     <Folder Include="Scripts\ckeditor\plugins\image\images\" />
-    <Folder Include="Scss\sass\" />
     <Folder Include="Uploaded\" />
   </ItemGroup>
   <ItemGroup>
