@@ -62,8 +62,8 @@
     <Reference Include="AutoMapper.Net4">
       <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
-    <Reference Include="DirigoEdgeCore, Version=1.5.7.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DirigoEdgeCore.1.5.7.0\lib\net45\DirigoEdgeCore.dll</HintPath>
+    <Reference Include="DirigoEdgeCore, Version=1.5.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DirigoEdgeCore.1.5.9.0\lib\net45\DirigoEdgeCore.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -494,7 +494,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Scss\edge\_pagebuilder.scss" />
     <Content Include="Areas\Admin\Views\Plugins\Index.cshtml" />
-    <Content Include="Scss\sass\mixins\_media-queries.scss" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Scripts\adminContentEditor.js" />
@@ -1018,6 +1017,7 @@
   <ItemGroup>
     <Folder Include="App_Data\OutputCache\" />
     <Folder Include="Scripts\ckeditor\plugins\image\images\" />
+    <Folder Include="Scss\sass\" />
     <Folder Include="Uploaded\" />
   </ItemGroup>
   <ItemGroup>
