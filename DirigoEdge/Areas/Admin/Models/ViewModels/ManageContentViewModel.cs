@@ -50,7 +50,7 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
                 });
             }
 
-            Pages = Context.ContentPages.Where(x => x.IsRevision == false && !excludeSchemas.Contains((int)x.SchemaId)).ToList();
+            Pages = Context.ContentPages.Where(x => x.ParentContentPageId == null && !excludeSchemas.Contains((int)x.SchemaId)).ToList();
 
             // Grab the formatted nav list for the category drop down
             NavList = NavigationUtils.GetNavList();
@@ -59,7 +59,7 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
         public ManageContentViewModel(int schemaId)
         {
             SchemaId = schemaId;
-            Pages = Context.ContentPages.Where(x => x.IsRevision == false && x.SchemaId == schemaId).OrderBy(x => x.SortOrder).ToList();
+            Pages = Context.ContentPages.Where(x => x.ParentContentPageId == null && x.SchemaId == schemaId).OrderBy(x => x.SortOrder).ToList();
 
             // Grab the formatted nav list for the category drop down
             NavList = NavigationUtils.GetNavList();
