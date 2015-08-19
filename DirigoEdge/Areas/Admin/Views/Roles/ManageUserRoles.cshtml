@@ -40,20 +40,18 @@
                                 <td class="hidden-xs" data-toggle="tooltip" title="@userList">@roleKvp.Value.Count</td>
                                 <td class="permsList hidden-xs">@permsLabel</td>
                                 <td>
-                                    <a class="btn btn-sm btn-info showUsers" href="javascript:void(0);" data-id="@roleKvp.Key.RoleId">Users</a>
-                                    @{
-                            if (!isAdmin)
-                            {
-                                <a class="btn btn-sm btn-info showPermissions" href="javascript:void(0);" data-id="@roleKvp.Key.RoleId">Permissions</a>
-                            }
-                                    }
-                                    <a class="btn btn-sm btn-info regCodes" href="javascript:void(0);" data-code="@roleKvp.Key.RegistrationCode" data-id="@roleKvp.Key.RoleId">Registration Code</a>
-                                    @{
-                            if (!isAdmin)
-                            {
-                                <a class="deleteUserRole btn btn-danger btn-sm secondary" href="javascript:void(0);" data-id="@roleKvp.Key.RoleId">Delete</a>
-                            }
-                                    }
+                                    <div class="actions">
+                                        <a class="btn btn-sm btn-info showUsers" href="javascript:void(0);" data-id="@roleKvp.Key.RoleId">Users</a>
+                                        @if (!isAdmin)
+                                        {
+                                            <a class="btn btn-sm btn-info showPermissions" href="javascript:void(0);" data-id="@roleKvp.Key.RoleId">Permissions</a>
+                                        }
+                                        <a class="btn btn-sm btn-info regCodes" href="javascript:void(0);" data-code="@roleKvp.Key.RegistrationCode" data-id="@roleKvp.Key.RoleId">Registration Code</a>
+                                        @if (!isAdmin)
+                                        {
+                                            <a class="deleteUserRole btn btn-danger btn-sm secondary" href="javascript:void(0);" data-id="@roleKvp.Key.RoleId">Delete</a>
+                                        }
+                                    </div>
                                 </td>
                             </tr>
                         }

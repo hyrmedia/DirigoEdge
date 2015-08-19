@@ -407,6 +407,7 @@
     <Content Include="Areas\Admin\Scripts\jquery\plugins\tagit\jquery.tagit.js" />
     <Content Include="Areas\Admin\Scripts\jquery\plugins\zclip\ZeroClipboard.swf" />
     <Content Include="Areas\Admin\Scripts\modernizr-2.6.2.min.js" />
+    <Content Include="Areas\Admin\Scss\modules\_dashboard.scss" />
     <None Include="Areas\Admin\Scss\modules\_data-tables.scss" />
     <Content Include="Content\Images\edge_logo_head.png" />
     <Content Include="Content\Images\full-width.jpg" />
@@ -494,6 +495,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Scss\edge\_pagebuilder.scss" />
     <Content Include="Areas\Admin\Views\Plugins\Index.cshtml" />
+    <Content Include="Areas\Admin\Scss\modules\_navbar.scss" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Scripts\adminContentEditor.js" />

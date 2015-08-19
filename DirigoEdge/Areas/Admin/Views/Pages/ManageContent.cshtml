@@ -70,13 +70,15 @@
                             <td class="hidden-xs">@Convert.ToDateTime(page.CreateDate).ToString("MM/dd/yyyy")</td>
                             <td class="hidden-xs">@(Convert.ToBoolean(page.IsActive) ? "Published" : "Draft")</td>
                             <td>
-                                <a class="btn btn-primary btn-sm" href="@codeEditUrl">Code Edit { }</a>
-                                @if (!hasSchema)
-                                {
-                                    <a class="btn btn-primary btn-sm" href="@Url.Action("EditContentBasic", "Pages", new {id = @page.ContentPageId})">WYSIWYG Edit</a>
-                                }
-                                <a class="btn btn-info btn-sm" href="/@page.Permalink/" target=_blank>Preview</a>
-                                <a class="delete btn btn-danger btn-sm" href="javascript:void(0);" data-id="@page.ContentPageId">Delete</a>
+                                <div class="actions">
+                                    <a class="btn btn-primary btn-sm" href="@codeEditUrl">Code Edit { }</a>
+                                    @if (!hasSchema)
+                                    {
+                                        <a class="btn btn-primary btn-sm" href="@Url.Action("EditContentBasic", "Pages", new {id = @page.ContentPageId})">WYSIWYG Edit</a>
+                                    }
+                                    <a class="btn btn-info btn-sm" href="/@page.Permalink/" target=_blank>Preview</a>
+                                    <a class="delete btn btn-danger btn-sm" href="javascript:void(0);" data-id="@page.ContentPageId">Delete</a>
+                                </div>
                             </td>
                         </tr>
                         }
