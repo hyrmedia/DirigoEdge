@@ -40,4 +40,8 @@ body {
     width: 100%;
     padding: calc(3em - 20px) 3em 3em;
     background: $color-light-gray;
+
+    @include bp(small) {
+        padding: calc(1em - 20px) 1em 1em;
+    }
 }

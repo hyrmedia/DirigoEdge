@@ -7,7 +7,7 @@
         <thead>
             <tr>
                 <th class="name">Name</th>
-                <th class="items">Items</th>
+                <th class="items hidden-xs">Items</th>
                 <th class="actions">Actions</th>
             </tr>
         </thead>
@@ -19,11 +19,13 @@
                     <td class="title">
                         <a href="/admin/media/managemedia/@folder.ToLower()/">@folder</a>
                     </td>
-                    <td>
+                    <td class="hidden-xs">
                         @Directory.GetFiles(directory).Length
                     </td>
                     <td>
-                        <button class="btn  btn-danger btn-sm delete-media-folder" >Delete</button>
+                        <div class="actions">
+                            <button class="btn  btn-danger btn-sm delete-media-folder">Delete</button>
+                        </div>
                     </td>
                 </tr>
             }
