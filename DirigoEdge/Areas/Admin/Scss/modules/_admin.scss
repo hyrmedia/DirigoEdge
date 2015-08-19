@@ -6,6 +6,14 @@ h3 i {
     padding-right: 0.5em;
 }
 
+h3 + .btn {
+    @include bp(small) {
+        display: block;
+        position: static !important;
+        margin-bottom: 1em;
+    }
+}
+
 table {
     width: 100%;
 }
