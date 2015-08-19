@@ -36,6 +36,9 @@ sidebar_class.prototype.initPageEvents = function () {
         }
     });
 
+    $('.sidebar-toggle').click(function () {
+        $('body').toggleClass('sidebar-open');
+    });
 };
 
 

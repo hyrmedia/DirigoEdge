@@ -14,34 +14,6 @@ ul {
     padding: 0;
 }
 
-.navbar {
-    position: fixed;
-    width: 100%;
-    border: none;
-    z-index: 100;
-}
-
-.navbar .navbar-brand {
-    height: 57px;
-}
-
-.navbar-header .navbar-toggle {
-    padding: 8px 11px;
-    border-color: transparent;
-}
-
-.navbar-header .navbar-toggle i {
-    font-size: 1.3em;
-    color: white;
-}
-
-@media (min-width: 768px) {
-    #admin-navbar .navbar-nav > li {
-        float: right;
-    }
-}
-
-
 .edgeVersion {
     margin-left: 45px;
     margin-top: -10px;
