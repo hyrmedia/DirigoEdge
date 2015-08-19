@@ -22,16 +22,6 @@ body {
     background: $color-light-gray;
     z-index: 10;
     transform: translate3d($sidebar-width-expanded, 0, 0);
-
-    .collapse-menu & {
-        width: calc(100% - #{$sidebar-width-collapsed});
-        transform: translate3d($sidebar-width-collapsed, 0, 0);
-        transition: transform 0.3s ease-in-out;
-    }
-
-    .sidebarOpen.collapse-menu & {
-        transform: translate3d($sidebar-width-expanded, 0, 0);
-    }
 }
 
 .main {
