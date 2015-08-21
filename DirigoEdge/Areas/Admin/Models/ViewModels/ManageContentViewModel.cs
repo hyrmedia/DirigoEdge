@@ -51,7 +51,7 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
                 });
             }
 
-            Pages = Context.ContentPages.Where(x => x.ParentContentPageId == null && x.IsRevision == false && (x.SchemaId == null || !excludeSchemas.Contains(x.SchemaId.Value))).ToList();
+            Pages = Context.ContentPages.Where(x => x.ParentContentPageId == null && (x.SchemaId == null || !excludeSchemas.Contains(x.SchemaId.Value))).ToList();
 
             // Grab the formatted nav list for the category drop down
             NavList = NavigationUtils.GetNavList();
