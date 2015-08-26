@@ -36,11 +36,13 @@
                                 <td class="hidden-xs"><a class="" data-toggle="tooltip" href="javascript:void(0);" title="<img src='@user.UserImageLocation' alt='Image Not Found'>">@user.UserImageLocation</a></td>
                                 <td class="isActive">@active</td>
                                 <td>
-                                    <a class="editUser btn btn-primary btn-sm" href="javascript:void(0);" data-id="@user.UserId">Edit</a>
-                                    @if (user.UserId != 1)
-                                    {
-                                        <a class="deleteUser btn btn-danger btn-sm" href="javascript:void(0);" data-id="@user.UserId">Delete</a>
-                                    }
+                                    <div class="actions">
+                                        <a class="editUser btn btn-primary btn-sm" href="javascript:void(0);" data-id="@user.UserId">Edit</a>
+                                        @if (user.UserId != 1)
+                                        {
+                                            <a class="deleteUser btn btn-danger btn-sm" href="javascript:void(0);" data-id="@user.UserId">Delete</a>
+                                        }
+                                    </div>
                                 </td>
                             </tr>
 					    }

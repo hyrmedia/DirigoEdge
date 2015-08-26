@@ -6,7 +6,7 @@
         <tr>
             <th class="thumb hidden-xs">Preview</th>
             <th class="name">Name</th>
-            <th class="date">Create Date</th>
+            <th class="date hidden-xs">Create Date</th>
             <th class="location hidden-xs">Location</th>
             <th class="actions">Actions</th>
         </tr>
@@ -26,7 +26,7 @@
                 <td class="title">
                     @media.Path.Split('/').Last()
                 </td>
-                <td>
+                <td class="hidden-xs">
                     @media.CreateDate.ToString("MM/dd/yyyy")
                 </td>
                 <td class="hidden-xs copyImg">
@@ -34,8 +34,10 @@
                     <button class="btn btn-sm btn-default copy">Copy</button>
                 </td>
                 <td>
-                    <a class="preview btn btn-info btn-sm" href="@media.Path" target="_blank" data-src="@media.Path">Preview</a>
-                    <button class="delete btn btn-danger btn-sm" data-src="@media.Path">Delete</button>
+                    <div class="actions">
+                        <a class="preview btn btn-info btn-sm" href="@media.Path" target="_blank" data-src="@media.Path">Preview</a>
+                        <button class="delete btn btn-danger btn-sm" data-src="@media.Path">Delete</button>
+                    </div>
                 </td>
             </tr>
         }

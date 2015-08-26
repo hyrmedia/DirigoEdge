@@ -62,9 +62,9 @@
     <Reference Include="AutoMapper.Net4">
       <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
-    <Reference Include="DirigoEdgeCore, Version=1.5.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DirigoEdgeCore.1.5.2.0\lib\net45\DirigoEdgeCore.dll</HintPath>
+    <Reference Include="DirigoEdgeCore, Version=1.5.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DirigoEdgeCore.1.5.9.0\lib\net45\DirigoEdgeCore.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -407,6 +407,7 @@
     <Content Include="Areas\Admin\Scripts\jquery\plugins\tagit\jquery.tagit.js" />
     <Content Include="Areas\Admin\Scripts\jquery\plugins\zclip\ZeroClipboard.swf" />
     <Content Include="Areas\Admin\Scripts\modernizr-2.6.2.min.js" />
+    <Content Include="Areas\Admin\Scss\modules\_dashboard.scss" />
     <None Include="Areas\Admin\Scss\modules\_data-tables.scss" />
     <Content Include="Content\Images\edge_logo_head.png" />
     <Content Include="Content\Images\full-width.jpg" />
@@ -435,7 +436,6 @@
     <Content Include="Scripts\Edge\ajax-service.js" />
     <Content Include="Scripts\Edge\Edge.js" />
     <None Include="Properties\PublishProfiles\Development.pubxml" />
-    <None Include="Properties\PublishProfiles\Package.pubxml" />
     <None Include="Scripts\jquery-1.4.4-vsdoc.js" />
     <Content Include="Scripts\jquery-1.4.4.js" />
     <Content Include="Scripts\jquery-1.4.4.min.js" />
@@ -499,7 +499,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Scss\edge\_pagebuilder.scss" />
     <Content Include="Areas\Admin\Views\Plugins\Index.cshtml" />
-    <None Include="Properties\PublishProfiles\Smoke Test.pubxml" />
+    <Content Include="Areas\Admin\Scss\modules\_navbar.scss" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Scripts\adminContentEditor.js" />

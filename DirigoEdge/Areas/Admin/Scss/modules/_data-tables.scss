@@ -1,14 +1,28 @@
 ﻿.dataTable {
 
-    tr.altered.even {
-        background-color: #f7f7f7;
+    tr.odd {
+        background-color: #f0f0f0;
     }
     
     .title a {
         display: block;
-        width: 35em;
+        width: 30vw;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
+
+        @include bp(small) {
+            white-space: normal;
+        }
+    }
+
+    .actions {
+        display: flex;
+        flex-wrap: wrap;
+
+        .btn {
+            flex-grow: 1;
+            margin: 0 0 4px 4px;
+        }
     }
 }

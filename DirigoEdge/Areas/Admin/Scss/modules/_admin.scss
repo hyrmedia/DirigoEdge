@@ -1,44 +1,31 @@
 ﻿h1, h2, h3, h4, h5, h6 {
-	font-weight:300;
+    font-weight: 300;
 }
 
 h3 i {
     padding-right: 0.5em;
 }
 
+h3 + .btn {
+    @include bp(small) {
+        display: block;
+        position: static !important;
+        margin-bottom: 1em;
+    }
+}
+
 table {
-    width: 100%;    
+    width: 100%;
 }
 
 ul {
     padding: 0;
 }
 
-.navbar {
-    position: fixed;
-    width: 100%;
-    border: none;
-    z-index: 100;
-}
-
-.navbar .navbar-brand {
-    height: 57px;
-}
-
-.navbar-header .navbar-toggle {
-    padding: 8px 11px;
-    border-color: transparent;
-}
-
-.navbar-header .navbar-toggle i {
-    font-size: 1.3em;
-    color: white;
-}
-
-@media (min-width: 768px) {
-    #admin-navbar .navbar-nav > li {
-        float: right;
-    }
+.edgeVersion {
+    margin-left: 45px;
+    margin-top: -10px;
+    font-size: 10px;
 }
 
 .username .userIcon {
@@ -53,25 +40,27 @@ ul {
 }
 
 div.tipContainer {
-	margin: 20px 0;
-	color: #888;
+    margin: 20px 0;
+    color: #888;
 }
+
 div.tipContainer kbd {
-	margin-right: 4px;
+    margin-right: 4px;
 }
+
 ul.quickActions {
-	margin-left: 20px;
+    margin-left: 20px;
 }
 /** Login Page **/
 input.modifyPasswordButton, input.registerUserButton {
-	margin-left: 18px;
+    margin-left: 18px;
 }
 /** jQueryUI Override **/
 #ui-datepicker-div {
-	min-width: 202px;
-	border-radius: 0 0 0 0;
+    min-width: 202px;
+    border-radius: 0 0 0 0;
     box-shadow: 4px 4px 4px #999999;
-	border: 1px solid #CCCCCC;
+    border: 1px solid #CCCCCC;
 }
 
 #ui-datepicker-div .ui-widget-header {
@@ -83,52 +72,62 @@ input.modifyPasswordButton, input.registerUserButton {
 }
 
 #ui-datepicker-div .ui-widget-header .ui-icon {
-	background-image: url("/areas/admin/scripts/jqueryui/css/smoothness/images/ui-icons_ffffff_256x240.png");
+    background-image: url("/areas/admin/scripts/jqueryui/css/smoothness/images/ui-icons_ffffff_256x240.png");
 }
 
 #ui-datepicker-div .ui-state-default {
-	background: #fff;
+    background: #fff;
 }
+
 #ui-datepicker-div a.ui-datepicker-prev.ui-state-hover, #ui-datepicker-div a.ui-datepicker-next.ui-state-hover {
-	background: #666;
-	cursor: pointer;
-	top: 2px;
+    background: #666;
+    cursor: pointer;
+    top: 2px;
 }
+
 .ui-state-highlight {
-	border: 1px solid #089FC9;
+    border: 1px solid #089FC9;
 }
 
 
 table.ui-datepicker-calendar th {
     padding: 0.7em 0.1em;
 }
+
 div.row.header {
-    overflow:visible;
+    overflow: visible;
 }
+
 .top-barContainer {
-    background:url(./Images/debut_dark.png) #444;
+    background: url(./Images/debut_dark.png) #444;
 }
+
 nav.top-bar {
-	background:url(./Images/debut_dark.png) #444;
-    margin:0;
+    background: url(./Images/debut_dark.png) #444;
+    margin: 0;
 }
+
 .top-bar ul.right .has-dropdown .dropdown {
-	right: 0;
+    right: 0;
 }
+
 #ManageUserTableContainer {
-    clear:both;
+    clear: both;
 }
+
 #ManageUserTableContainer td.imageLocation {
-	text-align: center;
+    text-align: center;
 }
+
 #DeleteUserButton, #ConfirmBlogDelete, .confirmDeleteButton {
-    margin-left:12px;
+    margin-left: 12px;
 }
+
 .saveTip {
-    clear:both;
-    margin-top:8px;
-    font-size:12px;
-    color:#444;
+    clear: both;
+    margin-top: 8px;
+    font-size: 12px;
+    color: #444;
 }
 
 #PublishDate {
@@ -141,37 +140,41 @@ nav.top-bar {
     display: inline;
     padding: 0;
     width: auto;
-    font-size:12px;
-    color:#089FC9;
-    text-decoration:underline;
+    font-size: 12px;
+    color: #089FC9;
+    text-decoration: underline;
 }
+
 table.bordered {
-    border:1px solid #CCC;
-    box-shadow:0 0 4px #CCC;
+    border: 1px solid #CCC;
+    box-shadow: 0 0 4px #CCC;
 }
+
 div.panel.categories ul li.catListing form.custom {
-    max-height:150px;
-    overflow:auto;
+    max-height: 150px;
+    overflow: auto;
 }
 /** Content Admin **/
 #SaveContent.btn {
-    margin:12px 0;
+    margin: 12px 0;
 }
 
 input#PageName {
-    margin-bottom:4px;
+    margin-bottom: 4px;
 }
+
 div.urlTip {
-    margin-bottom:12px;
-    margin-left:4px;
-    font-size:12px;
-    color:#444;
+    margin-bottom: 12px;
+    margin-left: 4px;
+    font-size: 12px;
+    color: #444;
 }
+
 #InsertContentImage {
-	position: absolute;
-	right: 15px;
-	top: 90px;
-    font-weight:normal;
+    position: absolute;
+    right: 15px;
+    top: 90px;
+    font-weight: normal;
 }
 
 #InsertContentImage.moduleButton {
@@ -179,34 +182,39 @@ div.urlTip {
 }
 
 /** Admin Content Editors **/
-div.addBlog.module div.blogTitle , 
+div.addBlog.module div.blogTitle,
 div.editBlog.module div.blogTitle,
 div.editEvent.module div.eventTitle,
 div.editContent div.contentTitle {
-	margin-bottom:18px;   
-	font-size:13px;
-	color:#666;
+    margin-bottom: 18px;
+    font-size: 13px;
+    color: #666;
 }
-div.addBlog.module div.blogTitle input, 
+
+div.addBlog.module div.blogTitle input,
 div.editBlog.module div.blogTitle input,
 div.editContent div.contentTitle input {
-    margin-bottom:4px;
-    color:#333;
+    margin-bottom: 4px;
+    color: #333;
 }
+
 div.addBlog.module div.blogTitle span.permHint,
 div.editBlog.module div.blogTitle span.permHint,
 div.editEvent.module div.eventTitle span.permHint,
 div.editContent span.permHint {
-    margin-left:4px;
-    font-weight:bold;
+    margin-left: 4px;
+    font-weight: bold;
 }
+
 #PermaLinkEnd {
-    text-transform:lowercase;
-    background-color:#FFFBCC;
+    text-transform: lowercase;
+    background-color: #FFFBCC;
 }
+
 #EditPermaLink, #ViewPermaLink {
-    margin-left:10px;
+    margin-left: 10px;
 }
+
 #PermaLinkEditPane {
     box-shadow: none;
     display: inline;
@@ -217,22 +225,26 @@ div.editContent span.permHint {
     text-transform: lowercase;
     width: auto;
 }
+
 div.addBlog div.editArea a.btn, div.editBlog div.editArea a.btn,
 div.addEvent div.editArea a.btn, div.editEvent div.editArea a.btn {
-	margin-top:12px;   
+    margin-top: 12px;
 }
+
 #popTitle {
-    font-weight:bold;
+    font-weight: bold;
 }
+
 #DeleteModal #Confirm {
-    margin-left:10px;
+    margin-left: 10px;
 }
 /** ADMIN AREA **/
 ul.adminList li {
-	margin-bottom:10px;   
+    margin-bottom: 10px;
 }
+
 ul.tabs-content.contained li {
-	background:#FFF;   
+    background: #FFF;
 }
 
 
@@ -246,264 +258,300 @@ ul.tabs-content.contained li {
 .sidebar ul.tabs li a:hover,
 .sidebar ul.tabs li a.active {
     background: #f9f9f9;
-    color:#333;
-    border-left: 3px solid  #2BA6CB;
-}
-#ConfirmFeatImage {
-    margin-top:8px;
+    color: #333;
+    border-left: 3px solid #2BA6CB;
 }
 
-div.manageBlogs table td.actions { min-width:166px; }
+#ConfirmFeatImage {
+    margin-top: 8px;
+}
+
+div.manageBlogs table td.actions {
+    min-width: 166px;
+}
 
 .newContentButton,
-#NewContentPage, 
+#NewContentPage,
 #NewBlogPage,
 #NewEventPage,
 #NewContentModule {
-	position:absolute;
-	right:15px;
-	top:10px;
+    position: absolute;
+    right: 15px;
+    top: 10px;
 }
+
 @media all and (max-width: 767px) {
     .newContentButton {
         position: static;
         margin: 0 auto 20px auto;
         float: none !important;
     }
-    }
-#EditorThemeContainer {
-	position: absolute;
-	right: 10px;
-	top: 4px;
-	width: 260px;
-}
-#EditorThemeContainer label {
-	display: inline;
-}
-#EditorTheme {
-	width: 200px;
 }
 
-#SaveSpinner { float: left;top: -7px; }
+#EditorThemeContainer {
+    position: absolute;
+    right: 10px;
+    top: 4px;
+    width: 260px;
+}
+
+#EditorThemeContainer label {
+    display: inline;
+}
+
+#EditorTheme {
+    width: 200px;
+}
+
+#SaveSpinner {
+    float: left;
+    top: -7px;
+}
 
 /** Stock Image Holder **/
 #StockImageHolder {
-	max-height:253px;
-	overflow-y:auto;
-	overflow-x:hidden;
+    max-height: 253px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
+
 #StockImageHolder a {
-	display: block;
-	float: left;
-	width: 170px;
-	border:4px solid #FFF;
+    display: block;
+    float: left;
+    width: 170px;
+    border: 4px solid #FFF;
 }
+
 #StockImageHolder a:hover {
-	cursor:pointer;
-	border:4px solid #2BA6CB;
+    cursor: pointer;
+    border: 4px solid #2BA6CB;
 }
+
 #StockImageHolder img {
-	height:54px;
+    height: 54px;
 }
 
 #FeaturedImageModal .alt {
-	margin-top: 12px;
+    margin-top: 12px;
 }
 
 .saveContainer .btn {
-	margin: 5px 5px 10px 0;
+    margin: 5px 5px 10px 0;
     font-weight: normal;
 }
+
 .confirmModalButton {
-	margin-left: 12px;
+    margin-left: 12px;
 }
+
 .modifyPasswordButton {
-	margin-left: 20px;
+    margin-left: 20px;
 }
-#popTitle { margin-right: 4px; }
+
+#popTitle {
+    margin-right: 4px;
+}
 /** SlideShow Editor **/
 #SlideEditList {
-	counter-reset: li; /* Initiate a counter */
-	margin-left: 0;
+    counter-reset: li; /* Initiate a counter */
+    margin-left: 0;
 }
+
 #SlideEditList li.slideContainer {
-	border: 1px dashed #DDDDDD;
-	margin-bottom: 12px;
-	margin-left: 20px;
-	padding: 10px 18px 5px 18px;
+    border: 1px dashed #DDDDDD;
+    margin-bottom: 12px;
+    margin-left: 20px;
+    padding: 10px 18px 5px 18px;
 }
+
 #SlideEditList div.imageSetContainer {
-	margin-bottom: 5px;
+    margin-bottom: 5px;
 }
+
 #SlideEditList div.imageSetContainer input {
-	margin-bottom: 2px;
+    margin-bottom: 2px;
 }
+
 #SlideEditList li.slideContainer:nth-child(even) {
-	background-color: #F2F2F2;
+    background-color: #F2F2F2;
 }
+
 form.slideActionList {
-	margin-top: 20px;
+    margin-top: 20px;
 }
+
 #SlideEditList > li {
-    position:relative;
-    margin:0 0 6px 2em;
-    padding:4px 8px;
-    list-style:none;
-    border-top:2px solid #666;
-    background:#f6f6f6;
+    position: relative;
+    margin: 0 0 6px 2em;
+    padding: 4px 8px;
+    list-style: none;
+    border-top: 2px solid #666;
+    background: #f6f6f6;
 }
+
 #SlideEditList > li:before {
-    content:counter(li); /* Use the counter as content */
-    counter-increment:li; /* Increment the counter by 1 */
-    position:absolute;
-    top:-2px;
-    left:-2em;
-    width:2em;
-    margin-right:8px;
-    color:#555;
-    font-weight:bold;
-    text-align:center;
-	font-size: 14px;
+    content: counter(li); /* Use the counter as content */
+    counter-increment: li; /* Increment the counter by 1 */
+    position: absolute;
+    top: -2px;
+    left: -2em;
+    width: 2em;
+    margin-right: 8px;
+    color: #555;
+    font-weight: bold;
+    text-align: center;
+    font-size: 14px;
 }
 
 /** Media Upload **/
 #UploadedMediaListing {
-	overflow: hidden;
-	padding: 10px;
-	margin: 0;
+    overflow: hidden;
+    padding: 10px;
+    margin: 0;
 }
+
 #UploadedMediaListing li {
-	list-style: none;
-	float: left;
-	max-width: 120px;
-	margin-right: 8px;
+    list-style: none;
+    float: left;
+    max-width: 120px;
+    margin-right: 8px;
 }
+
 img.constrained {
-	max-width: 280px;
-	width: 100%;
+    max-width: 280px;
+    width: 100%;
 }
+
 span.tooltip img.constrained {
-	max-width: 800px;
+    max-width: 800px;
 }
 
 #UploadedMediaListing li img {
-	width: 100%;
+    width: 100%;
 }
 
 /** Site Settings **/
 div.settingsComment {
-	margin: 6px 0 10px 0;
-	font-style: italic;
-	color: #666;
-	font-size: 12px;
+    margin: 6px 0 10px 0;
+    font-style: italic;
+    color: #666;
+    font-size: 12px;
 }
+
 input.commentBelow {
-	margin-bottom: 2px;
+    margin-bottom: 2px;
 }
 
 div.editArea {
-	margin-bottom: 20px  !important;
+    margin-bottom: 20px !important;
 }
+
 #CategoriesModule span.catName {
-	margin-left: 4px;
+    margin-left: 4px;
 }
 /* Give extra space to drop elements below*/
 @media all and (min-width: 768px) {
-    #Sortable1 { padding-bottom: 150px; }
-    #Sortable2 { padding-bottom: 100px; }
+    #Sortable1 {
+        padding-bottom: 150px;
+    }
+
+    #Sortable2 {
+        padding-bottom: 100px;
+    }
 }
 
 
 div.connectedSortable div.panel {
-	padding-top: 4px;
-	padding: 0;
+    padding-top: 4px;
+    padding: 0;
 }
 
 div.connectedSortable div.panel h4 {
-	border-bottom: 1px solid #E6E6E6;
-	cursor: move;
-	margin: 0 0 15px;
-	padding: 10px 20px;
-	background: url("./Images/collapse.png") no-repeat scroll right 14px transparent;
-	font-weight: 300;
+    border-bottom: 1px solid #E6E6E6;
+    cursor: move;
+    margin: 0 0 15px;
+    padding: 10px 20px;
+    background: url("./Images/collapse.png") no-repeat scroll right 14px transparent;
+    font-weight: 300;
 }
+
 div.connectedSortable div.panel p, div.connectedSortable div.panel label {
-	font-weight: 300;
+    font-weight: 300;
 }
+
 div.connectedSortable div.panel h4:hover {
-	border-bottom:1px solid #DDD;
-	color: #000;
-	box-shadow: 0px 0px 8px #FFF inset;
+    border-bottom: 1px solid #DDD;
+    color: #000;
+    box-shadow: 0px 0px 8px #FFF inset;
 }
 
 div.connectedSortable div.panel.collapsed h4 {
-	background: url("./Images/expand.png") no-repeat scroll right 14px transparent;
-	margin-bottom: 0 !important;
-	border: none;
+    background: url("./Images/expand.png") no-repeat scroll right 14px transparent;
+    margin-bottom: 0 !important;
+    border: none;
 }
 
 div.connectedSortable div.panel div.content {
-	padding: 0 20px 20px 20px;
-	height: auto;
+    padding: 0 20px 20px 20px;
+    height: auto;
 }
 
 div.connectedSortable div.panel.collapsed div.content {
-	height: 0;
-	padding: 0;
-	overflow: hidden;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
 }
+
 ul.imageList li {
-	list-style: none;
-	float: left;
-	width: 33.333%;
-	padding: 5px;
-	
+    list-style: none;
+    float: left;
+    width: 33.333%;
+    padding: 5px;
 }
 
 ul.imageList li img {
-	border: 1px solid #CCC;
-
+    border: 1px solid #CCC;
 }
 
 ul.imageList li span.container {
-	position: relative;
-	background: transparent;
-	overflow: hidden;
+    position: relative;
+    background: transparent;
+    overflow: hidden;
 }
 
 ul.imageList li span.container:hover span {
-	left: 0;
+    left: 0;
 }
 
 ul.imageList li span {
-	background: rgba(0, 0, 0, 0.7);
-	display: block;
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	top: 0;
-	transition: all 200ms ease-in-out;
+    background: rgba(0, 0, 0, 0.7);
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    transition: all 200ms ease-in-out;
 }
 
 ul.imageList li span.container span {
-	left: -100%;
+    left: -100%;
 }
 
 ul.imageList li a {
-	color: #fff;
-	text-shadow: 0 1px 0 #000;
-	margin-left: 10px;
-	margin-top: 12px;
-	display: inline-block;
+    color: #fff;
+    text-shadow: 0 1px 0 #000;
+    margin-left: 10px;
+    margin-top: 12px;
+    display: inline-block;
 }
 
 ul.imageList li a:hover {
-	text-decoration: underline;
+    text-decoration: underline;
 }
 
 /*Site Settings*/
 div.siteSettings div.custom.dropdown {
-	display: inline-block;
+    display: inline-block;
 }
 
 div.siteSettings div.row {
@@ -512,40 +560,37 @@ div.siteSettings div.row {
 
 /*New Page listing*/
 div.newPageTemplateListing ul li {
-	float: left;
-	list-style: none outside none;
-	margin-right: 24px;
-	max-width: 178px;
+    float: left;
+    list-style: none outside none;
+    margin-right: 24px;
+    max-width: 178px;
 }
 
 div.newPageTemplateListing ul li a {
-	display: inline-block;
-	text-align: center;
-	transition: all 300ms ease-in-out;
-	
+    display: inline-block;
+    text-align: center;
+    transition: all 300ms ease-in-out;
 }
 
 div.newPageTemplateListing ul li a:hover {
-	
 }
 
 div.newPageTemplateListing ul li a img {
-	border: 3px solid #FFF;
+    border: 3px solid #FFF;
 }
 
 div.newPageTemplateListing ul li a.active img {
-	border: 3px solid #00C7FF;
-
+    border: 3px solid #00C7FF;
 }
 
 div.newPageTemplateListing ul li a img {
-	width: 100%;
-	margin-bottom: 8px;
+    width: 100%;
+    margin-bottom: 8px;
 }
 
 /** New Module **/
 #ChangeImageThumbnail img {
-	margin-bottom: 8px;
+    margin-bottom: 8px;
 }
 
 /*User Roles*/
@@ -553,9 +598,10 @@ div.newPageTemplateListing ul li a img {
     margin-top: -4px;
     border-bottom: 1px solid #F2F2F2;
 }
+
 ul.userList {
     height: 220px;
-    overflow: auto;    
+    overflow: auto;
     border-radius: 2px;
     margin: 0;
 }
@@ -575,24 +621,29 @@ ul.userList li:hover {
     background-color: #ddd;
 }
 
-    ul.userList li label {
-        display: inline;
-        font-size: 16px;
-    }
+ul.userList li label {
+    display: inline;
+    font-size: 16px;
+}
 
-    ul.tabs-content.contained.noPadding > li {
-        padding: 0;
-    }
+ul.tabs-content.contained.noPadding > li {
+    padding: 0;
+}
 
-#PublishModule { margin-top: 20px; }
-h2.left i.fa { color: #444; }
+#PublishModule {
+    margin-top: 20px;
+}
+
+h2.left i.fa {
+    color: #444;
+}
 
 /** Draft Status **/
 div.contentStatus {
     clear: both;
     margin: 12px 0;
-
 }
+
 .contentStatus label {
     position: relative;
     top: 4px;
@@ -604,10 +655,12 @@ div.contentStatus {
 .contentStatus select {
     width: auto;
 }
+
 #DraftStatusContainer {
     display: none;
     margin-top: 10px;
 }
+
 #CloseDraftStatus {
     display: block;
     font-size: 12px;
@@ -617,6 +670,7 @@ div.contentStatus {
 .topAlert {
     margin-top: 20px;
 }
+
 .contentTitle tester {
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -642,58 +696,36 @@ div.panel .panelActions {
     margin-top: 6px;
     font-size: 12px;
 }
+
 .confirmButton {
     margin-left: 12px;
 }
 
 .badge {
-  background-color: #bbb;
-  border-radius: 50px;
-  color: #fff;
-  display: inline-block;
-  float: right;
-  font-size: 10px;
-  margin: 3px 4px 0;
-  padding: 1px 8px 2px;
-  text-align: center;
-}
-
-/** Common Tags */
-ul.commonTags { list-style: none;overflow: hidden; }
-ul.commonTags li { float: left; margin: 0px 5px;}
-
-.modal .roleListing label {
-    padding: 10px;
-}
-
-
-.dashboard-panel {
-    padding: 10px;
-    min-height: 240px;
-}
-
-.dashboard-panel h3 {
+    background-color: #bbb;
+    border-radius: 50px;
+    color: #fff;
+    display: inline-block;
+    float: right;
+    font-size: 10px;
+    margin: 3px 4px 0;
+    padding: 1px 8px 2px;
     text-align: center;
 }
 
-.dashboard-panel ul {
+/** Common Tags */
+ul.commonTags {
     list-style: none;
-    margin-top: 20px;
+    overflow: hidden;
 }
 
-.dashboard-panel ul li {
-    padding: 5px 10px;
+ul.commonTags li {
+    float: left;
+    margin: 0px 5px;
 }
 
-.dashboard-panel ul li a {
-    display: block;
-    text-decoration: none;
-}
-
-.dashboard-panel ul li:hover a {
-    background-color: #428BCA;
-    box-shadow: 0 0 0 5px #428BCA;
-    color: #fff;
+.modal .roleListing label {
+    padding: 10px;
 }
 
 .navbar {
@@ -705,7 +737,7 @@ ul.commonTags li { float: left; margin: 0px 5px;}
 }
 
 .rolePermissionsList {
-    margin-left: 0;   
+    margin-left: 0;
 }
 
 .rolePermissionsList li {
@@ -737,7 +769,7 @@ table.dataTable thead th, table.dataTable thead td {
     font-size: 1em;
     color: #aaa;
     -webkit-transition: all 0.1s ease-in-out;
-            transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
 }
 
 .bookmark-toggle .fa-bookmark:hover {
@@ -753,14 +785,14 @@ table.dataTable thead th, table.dataTable thead td {
     opacity: 1;
     visibility: hidden;
     -webkit-transform: translate(-50%, -50%);
-        -ms-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
 .bookmark-toggle .fa-bookmark.is-bookmarked {
     color: #e6c300;
     -webkit-animation: bookmark-wiggle 0.4s ease-in-out;
-            animation: bookmark-wiggle 0.4s ease-in-out;
+    animation: bookmark-wiggle 0.4s ease-in-out;
 }
 
 .bookmark-toggle .fa-bookmark.is-bookmarked:after {
@@ -768,56 +800,65 @@ table.dataTable thead th, table.dataTable thead td {
     opacity: 0;
     visibility: visible;
     -webkit-transition: all 0.3s ease-in-out;
-            transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
     pointer-events: none;
 }
 
 @-webkit-keyframes bookmark-wiggle {
-  0% {
-    -webkit-transform: rotate(-20deg);
-            transform: rotate(-20deg);
-  }
-  25% {
-    -webkit-transform: rotate(15deg);
-            transform: rotate(15deg);
-  }
-  50% {
-    -webkit-transform: rotate(-7deg);
-            transform: rotate(-7deg);
-  }
-  75% {
-    -webkit-transform: rotate(3deg);
-            transform: rotate(3deg);
-  }
+    0% {
+        -webkit-transform: rotate(-20deg);
+        transform: rotate(-20deg);
+    }
+
+    25% {
+        -webkit-transform: rotate(15deg);
+        transform: rotate(15deg);
+    }
+
+    50% {
+        -webkit-transform: rotate(-7deg);
+        transform: rotate(-7deg);
+    }
+
+    75% {
+        -webkit-transform: rotate(3deg);
+        transform: rotate(3deg);
+    }
 }
 
 @keyframes bookmark-wiggle {
-  0% {
-    -webkit-transform: rotate(-20deg);
-            transform: rotate(-20deg);
-  }
-  25% {
-    -webkit-transform: rotate(15deg);
-            transform: rotate(15deg);
-  }
-  50% {
-    -webkit-transform: rotate(-7deg);
-            transform: rotate(-7deg);
-  }
-  75% {
-    -webkit-transform: rotate(3deg);
-            transform: rotate(3deg);
-  }
+    0% {
+        -webkit-transform: rotate(-20deg);
+        transform: rotate(-20deg);
+    }
+
+    25% {
+        -webkit-transform: rotate(15deg);
+        transform: rotate(15deg);
+    }
+
+    50% {
+        -webkit-transform: rotate(-7deg);
+        transform: rotate(-7deg);
+    }
+
+    75% {
+        -webkit-transform: rotate(3deg);
+        transform: rotate(3deg);
+    }
 }
 
 .sync-schema-view {
     transition: color 0.3s ease-in-out;
+
     .is-syncing {
         color: rgba(43, 166, 203, 0.7);
+
         i {
             opacity: 1;
         }
     }
+
     i {
         color: #222;
         opacity: 0;
