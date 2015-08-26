@@ -5,6 +5,7 @@ using System.Web;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models;
 using DirigoEdgeCore.Utils;
+using System.Configuration;
 
 namespace DirigoEdge.Areas.Admin.Models.ViewModels
 {
@@ -19,8 +20,10 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
 
         public EditNavigationViewModel(int id)
         {
+            var excludeSchemasNavigation = ConfigurationManager.AppSettings["ExcludeSchemasForNavigation"].Split(',').Select(int.Parse);
+
             // Grab Every Page and Id so we can list it in the dropdown
-            PageIdNameCollection = Context.ContentPages.Where(x => x.IsActive.Value && x.SchemaId != 1).Select(x => new { x.ContentPageId, x.Title }).OrderBy(x => x.Title).ToDictionary(o => o.ContentPageId, o => o.Title);
+            PageIdNameCollection = Context.ContentPages.Where(x => x.IsActive.Value && !x.IsRevision && (x.SchemaId == null || !excludeSchemasNavigation.Contains(x.SchemaId.Value))).Select(x => new { x.ContentPageId, x.Title }).OrderBy(x => x.Title).ToDictionary(o => o.ContentPageId, o => o.Title);
 
             //PromoModules = context.ContentModules.Where(m => m.SchemaId == 3).ToList();
 

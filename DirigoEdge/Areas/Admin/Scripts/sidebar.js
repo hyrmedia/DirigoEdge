@@ -15,10 +15,6 @@ sidebar_class.prototype.initPageEvents = function () {
 
         $('body').removeClass('sidebarOpen');
 
-        if ($('body').hasClass('collapse-menu')) {
-            $('.sidebar .collapse').collapse('hide');
-        }
-
     });
 
     // Avoid event propagation issues with anchors. Should
@@ -40,23 +36,9 @@ sidebar_class.prototype.initPageEvents = function () {
         }
     });
 
-    $('.js-toggle-sidebar').click(function () {
-        var toggledMenu;
-
-        if (Modernizr.localstorage) {
-            toggledMenu = localStorage.getItem('collapse-menu') === 'true' ? 'false' : 'true';
-            localStorage.setItem('collapse-menu', toggledMenu);
-        }
-
-        $('body').toggleClass('collapse-menu');
-        $(this).blur();
-
-        return false;
+    $('.sidebar-toggle').click(function () {
+        $('body').toggleClass('sidebar-open');
     });
-
-    if (Modernizr.localstorage && localStorage['collapse-menu'] === 'true') {
-        $('body').addClass('collapse-menu');
-    }
 };
 
 

@@ -23,7 +23,7 @@
                         <th class="visible-lg">First</th>
                         <th class="visible-lg">Last</th>
                         <th class="visible-lg">Email</th>
-                        <th>Is Active</th>
+                        <th class="hidden-xs">Is Active</th>
                         <th class="hidden-xs">Role(s)</th>
                         <th class="actions" style="min-width: 120px">Actions</th>
                     </tr>
@@ -43,7 +43,7 @@
                             <td class="displayEmail visible-lg">
                                 <a href="mailto:@user.Email">@user.Email</a>
                             </td>
-                            <td class="isActive">@isactive</td>
+                            <td class="isActive hidden-xs">@isactive</td>
                             @{
                             string roleList = "";
                             if (user.Roles != null && user.Roles.Count > 0)
@@ -62,11 +62,13 @@
                             }
                             <td class="roles hidden-xs">@roleList</td>
                             <td>
-                                <a class="editUser btn btn-primary btn-sm" href="javascript:void(0);" data-id="@user.UserId">Edit</a>
-                                @if (user.Username != Membership.GetUser().UserName)
-                                {
-                                    <a class="deleteUser btn btn-danger btn-sm" href="javascript:void(0);" data-id="@user.UserId">Delete</a>
-                                }
+                                <div class="actions">
+                                    <a class="editUser btn btn-primary btn-sm" href="javascript:void(0);" data-id="@user.UserId">Edit</a>
+                                    @if (user.Username != Membership.GetUser().UserName)
+                                    {
+                                        <a class="deleteUser btn btn-danger btn-sm" href="javascript:void(0);" data-id="@user.UserId">Delete</a>
+                                    }
+                                </div>
                             </td>
                         </tr>
                         }

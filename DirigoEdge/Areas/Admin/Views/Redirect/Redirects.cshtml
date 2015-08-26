@@ -32,8 +32,10 @@
                         <td class="permanent">@redirect.IsPermanent</td>
                         <td class="root-matching">@redirect.RootMatching</td>
                         <td>
-                            <a class="editRedirectButton btn btn-primary btn-sm" href="#" data-id="@redirect.RedirectId">Edit</a>
-                            <a class="deleteRedirectButton btn btn-danger btn-sm" href="#" data-id="@redirect.RedirectId">Delete</a>
+                            <div class="actions">
+                                <a class="editRedirectButton btn btn-primary btn-sm" href="#" data-id="@redirect.RedirectId">Edit</a>
+                                <a class="deleteRedirectButton btn btn-danger btn-sm" href="#" data-id="@redirect.RedirectId">Delete</a>
+                            </div>
                         </td>
                     </tr>
                 }

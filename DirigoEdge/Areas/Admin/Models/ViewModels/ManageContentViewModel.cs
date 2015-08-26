@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models;
+using System.Configuration;
 
 namespace DirigoEdge.Areas.Admin.Models.ViewModels
 {
@@ -28,7 +29,7 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
         public ManageContentViewModel(string[] templateViews)
         {
             // Add any Schema Id's here that you don't want to be listed on this manage page
-            var excludeSchemas = new List<int> { 1, 3 };
+            var excludeSchemas = ConfigurationManager.AppSettings["ExcludeSchemas"].Split(',').Select(int.Parse);
 
             foreach (var view in templateViews)
             {
@@ -50,7 +51,7 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
                 });
             }
 
-            Pages = Context.ContentPages.Where(x => x.IsRevision == false && !excludeSchemas.Contains((int)x.SchemaId)).ToList();
+            Pages = Context.ContentPages.Where(x => x.ParentContentPageId == null && (x.SchemaId == null || !excludeSchemas.Contains(x.SchemaId.Value))).ToList();
 
             // Grab the formatted nav list for the category drop down
             NavList = NavigationUtils.GetNavList();
@@ -59,7 +60,7 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
         public ManageContentViewModel(int schemaId)
         {
             SchemaId = schemaId;
-            Pages = Context.ContentPages.Where(x => x.IsRevision == false && x.SchemaId == schemaId).OrderBy(x => x.SortOrder).ToList();
+            Pages = Context.ContentPages.Where(x => x.ParentContentPageId == null && x.SchemaId == schemaId).OrderBy(x => x.SortOrder).ToList();
 
             // Grab the formatted nav list for the category drop down
             NavList = NavigationUtils.GetNavList();
