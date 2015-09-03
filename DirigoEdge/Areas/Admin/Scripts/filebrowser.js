@@ -379,7 +379,7 @@
     Plugin.prototype.loadDirectoryFiles = function (dir) {
 
         var self = this,
-            $container = $(".file-browser.open > div.browser");
+            $container = $(".file-browser div.browser");
 
         if (!dir) return false;
 
