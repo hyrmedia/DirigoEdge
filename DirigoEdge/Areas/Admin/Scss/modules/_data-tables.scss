@@ -1,7 +1,16 @@
-﻿.dataTable {
+﻿table.dataTable,
+table.manageTable {
 
     tr.odd {
         background-color: #f0f0f0;
+    }
+
+    thead th,
+    tbody td {
+        padding-left: 18px;
+        padding-right: 18px;
+        border-top: 1px solid white;
+        border-left: 1px solid white;
     }
     
     .title a {
@@ -25,4 +34,8 @@
             margin: 0 0 4px 4px;
         }
     }
+}
+
+.fixedHeader {
+    background: #f7f7f7;
 }

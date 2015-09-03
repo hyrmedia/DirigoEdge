@@ -5,6 +5,7 @@
     left: 0;
     width: $sidebar-width-expanded;
     padding: 33px 0;
+    border-right: 2px solid #ddd;
     background: $color-gray;
     font-size: 16px;
     overflow: auto;
@@ -36,10 +37,21 @@
         }
 
         a {
-            @extend .clearfix;
-            padding: 10px 0;
+            position: relative;
+            padding: 12px 5px;
             font-size: 0.9em;
-            color: $color-black;
+            color: #444;
+            overflow: hidden;
+
+            &.active:before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: 3px;
+                background: $color-edge;
+            }
 
             &:hover {
                 background: #ddd;
@@ -70,9 +82,16 @@
             }
         }
 
+        > li:nth-child(even) {
+            > a,
+            > a[data-toggle="collapse"].collapsed {
+                background: #e5e5e5;
+            }
+        }
+
         .collapse,
         .collapsing {
-            background: $color-gray;
+            background: $color-light-gray;
 
             a {
                 padding-left: 30px;
