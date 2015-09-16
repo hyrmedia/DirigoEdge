@@ -26,8 +26,6 @@
                             Show Thumbnails
                         </label>
                         <a class="btn btn-primary newContentButton mobileMarginBottom mobileBlockStatic" href="#" data-toggle="modal" data-target="#MediaModal">Add Media +</a>
-                    
-                   
                     }
                     else
                     {
@@ -38,9 +36,7 @@
 
             @if (!isCategoryPage)
             {
-                <ul class="category-listing">
-                    @_Helpers.MediaDirectoriesTable()
-                </ul>
+                @_Helpers.MediaDirectoriesTable()
             }
             else
             {

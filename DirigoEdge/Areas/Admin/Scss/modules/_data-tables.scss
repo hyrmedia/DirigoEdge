@@ -1,14 +1,41 @@
-﻿.dataTable {
+﻿table.dataTable,
+table.manageTable {
 
-    tr.altered.even {
-        background-color: #f7f7f7;
+    tr.odd {
+        background-color: #f0f0f0;
+    }
+
+    thead th,
+    tbody td {
+        padding-left: 18px;
+        padding-right: 18px;
+        border-top: 1px solid white;
+        border-left: 1px solid white;
     }
     
     .title a {
         display: block;
-        width: 35em;
+        width: 30vw;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
+
+        @include bp(small) {
+            white-space: normal;
+        }
     }
+
+    .actions {
+        display: flex;
+        flex-wrap: wrap;
+
+        .btn {
+            flex-grow: 1;
+            margin: 0 0 4px 4px;
+        }
+    }
+}
+
+.fixedHeader {
+    background: #f7f7f7;
 }

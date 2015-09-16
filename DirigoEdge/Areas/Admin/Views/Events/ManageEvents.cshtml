@@ -34,9 +34,11 @@
                                 <td class="hidden-xs">@Convert.ToDateTime(thisEvent.EndDate).ToString("MM/dd/yyyy")</td>
                                 <td class="hidden-xs">@Convert.ToDateTime(thisEvent.DateCreated).ToString("MM/dd/yyyy")</td>
                                 <td class="hidden-xs">@active</td>
-                                <td class="actions">
-                                    <a class="btn btn-primary btn-sm mobileTop" href="/event/@ContentUtils.GetFormattedUrl(thisEvent.PermaLink)" target=_blank>Preview</a>
-                                    <a class="delete btn btn-danger btn-sm" href="javascript:void(0);" data-id="@thisEvent.EventId">Delete</a>
+                                <td>
+                                    <div class="actions">
+                                        <a class="btn btn-primary btn-sm mobileTop" href="/event/@ContentUtils.GetFormattedUrl(thisEvent.PermaLink)" target=_blank>Preview</a>
+                                        <a class="delete btn btn-danger btn-sm" href="javascript:void(0);" data-id="@thisEvent.EventId">Delete</a>
+                                    </div>
                                 </td>
                             </tr>
 					    }

@@ -1,21 +1,36 @@
-﻿@mixin breakpoint($class) {
-  @if $class == xs {
-    @media (max-width: 767px) { @content; }
-  }
+﻿$screen-sm: 768px !default;
+$screen-md: 992px !default;
+$screen-lg: 1200px !default;
+$screen-xl: 1600px !default;
 
-  @else if $class == sm {
-    @media (min-width: 768px) { @content; }
-  }
+// Breakpoints map
+// @type Map
+$breakpoints: (
+    // Regular breakpoints
+    "small"  : "(max-width: #{$screen-sm - 1})",
+    "medium" : "(max-width: #{$screen-md - 1})",
+    "large"  : "(max-width: #{$screen-lg - 1})",
+    "huge"   : "(max-width: #{$screen-xl - 1})"
+) !default;
 
-  @else if $class == md {
-    @media (min-width: 992px) { @content; }
-  }
+// Enable/disable media queries
+// @type Bool
+$MQs: true !default;
 
-  @else if $class == lg {
-    @media (min-width: 1200px) { @content; }
-  }
-
-  @else {
-    @warn "Breakpoint mixin supports: xs, sm, md, lg";
-  }
+// Output a media query named after `$point`.
+// @param {String} $point
+// @requires $breakpoints
+// @requires $MQs
+@mixin bp($point) {
+    $query: map-get($breakpoints, $point);
+  
+    @if not $query {
+        $query: $point;
+    }
+  
+    @if $MQs {
+        @media #{$query} {
+            @content;
+        }
+    }
 }

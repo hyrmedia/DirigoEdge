@@ -17,8 +17,8 @@
                     <tr>
                         <th>Title</th>
                         <th class="hidden-xs">Publish Date</th>
-                        <th>Author</th>
-                        <th>Category</th>
+                        <th class="hidden-xs">Author</th>
+                        <th class="hidden-xs">Category</th>
                         <th class="hidden-xs">Published</th>
                         <th class="hidden-xs">Is Featured</th>
                         <th>Actions</th>
@@ -33,13 +33,15 @@
                             <tr>
                                 <td class="title"><a href="@Url.Action("EditBlog", "Blog", new { id = @blog.BlogId })">@blog.Title</a></td>
                                 <td class="hidden-xs">@Convert.ToDateTime(blog.Date).ToString("MM/dd/yyyy")</td>
-                                <td>@blog.Author</td>
-                                <td>@blog.Category.CategoryName</td>
+                                <td class="hidden-xs">@blog.Author</td>
+                                <td class="hidden-xs">@blog.Category.CategoryName</td>
                                 <td class="hidden-xs">@active</td>
                                 <td class="hidden-xs">@isFeatured</td>
-                                <td class="actions">
-                                    <a class="btn btn-primary btn-sm mobileTop" href="/blog/blog.Category.CategoryNameFormatted/@ContentUtils.GetFormattedUrl(blog.PermaLink)" target=_blank>Preview</a>
-                                    <a class="delete btn btn-danger btn-sm" href="javascript:void(0);" data-id="@blog.BlogId">Delete</a>
+                                <td>
+                                    <div class="actions">
+                                        <a class="btn btn-primary btn-sm mobileTop" href="/blog/blog.Category.CategoryNameFormatted/@ContentUtils.GetFormattedUrl(blog.PermaLink)" target=_blank>Preview</a>
+                                        <a class="delete btn btn-danger btn-sm" href="javascript:void(0);" data-id="@blog.BlogId">Delete</a>
+                                    </div>
                                 </td>
                             </tr>
 					    }

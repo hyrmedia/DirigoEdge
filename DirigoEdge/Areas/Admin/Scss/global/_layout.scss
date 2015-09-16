@@ -1,5 +1,6 @@
 ﻿html,
 body {
+    height: 100%;
     font-size: 14px;
 }
 
@@ -11,7 +12,7 @@ body {
 }
 
 .contents {
-    height: calc(100% - #{$navbar-height});
+    height: 100%;
 }
 
 .outer-wrapper {
@@ -23,14 +24,14 @@ body {
     z-index: 10;
     transform: translate3d($sidebar-width-expanded, 0, 0);
 
-    .collapse-menu & {
-        width: calc(100% - #{$sidebar-width-collapsed});
-        transform: translate3d($sidebar-width-collapsed, 0, 0);
+    @include bp(medium) {
+        width: 100%;
+        transform: translate3d(0, 0, 0);
         transition: transform 0.3s ease-in-out;
-    }
-
-    .sidebarOpen.collapse-menu & {
-        transform: translate3d($sidebar-width-expanded, 0, 0);
+    
+        .sidebar-open & {
+            transform: translate3d($sidebar-width-expanded, 0, 0);
+        }
     }
 }
 
@@ -39,4 +40,8 @@ body {
     width: 100%;
     padding: calc(3em - 20px) 3em 3em;
     background: $color-light-gray;
+
+    @include bp(small) {
+        padding: calc(1em - 20px) 1em 1em;
+    }
 }

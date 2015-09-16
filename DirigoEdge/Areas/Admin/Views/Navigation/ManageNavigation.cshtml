@@ -22,8 +22,10 @@
                     {
                         <tr>
                             <td class="title"><a href="@Url.Action("EditNav", "Navigation", new { id = @nav.NavigationId })">@nav.Name</a></td>
-                            <td class="actions">
-                                <a class="delete btn btn-danger btn-sm" href="javascript:void(0);" data-id="@nav.NavigationId">Delete</a>
+                            <td>
+                                <div class="actions">
+                                    <a class="delete btn btn-danger btn-sm" href="javascript:void(0);" data-id="@nav.NavigationId">Delete</a>
+                                </div>
                             </td>
                         </tr>
                     }
