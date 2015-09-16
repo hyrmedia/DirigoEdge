@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DirigoEdgeCore.Utils;
 using DirigoEdgeCore.Utils.Logging;
 
 namespace DirigoEdge.CustomUtils
@@ -11,6 +12,28 @@ namespace DirigoEdge.CustomUtils
     {
         public static readonly ILog Log = LogFactory.GetLog(typeof(TimeUtils));
 
+        public static Boolean SameDayInSystemTime(DateTime time1, DateTime time2)
+        {
+            var time1Local = ConvertUTCToLocal(time1);
+            var time2Local = ConvertUTCToLocal(time2);
+
+            return time1Local.Date == time2Local.Date;
+        }
+
+        public static Boolean IsEarlierDateInSystemTime(DateTime time1, DateTime time2)
+        {
+            var time1Local = ConvertUTCToLocal(time1);
+            var time2Local = ConvertUTCToLocal(time2);
+
+            return time1Local.Date < time2Local.Date;
+        }
+
+
+        public static String GetTimeConvertedDynamicHtml(string partialViewName, object model)
+        {
+            ConvertAllMembersToLocal(model);
+            return DynamicModules.GetViewHtml(partialViewName, model);
+        }
 
         public static DateTime ConvertLocalToUTC(DateTime time)
         {
@@ -48,7 +71,12 @@ namespace DirigoEdge.CustomUtils
 
         private static void ConvertAllMembers(Object obj, Func<DateTime, DateTime> convertFunction)
         {
-            foreach (var prop in obj.GetType().GetProperties())
+            if (obj == null)
+            {
+                return;
+            }
+
+            foreach (var prop in obj.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic   | BindingFlags.Instance  | BindingFlags.FlattenHierarchy))
             {
                 var itemType = prop.PropertyType;
 
