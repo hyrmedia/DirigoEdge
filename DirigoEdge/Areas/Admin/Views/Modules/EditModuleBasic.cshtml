@@ -6,7 +6,7 @@
 @model DirigoEdge.Areas.Admin.Models.ViewModels.EditModuleViewModel
 @Html.Partial("Partials/RevisionDetailPartial")
 
-<div class="editContent" data-id="@Model.TheModule.ContentModuleId">
+<div class="editContent" data-id="@Model.TheModule.ContentModuleId" data-page="@Model.TheModule.ContentModuleId">
     @Html.Partial("Partials/ModuleEditHeaderPartial")
     <div class="row visibleOverflow" id="ContentRowContainer">
         <div id="ContentRow" class="col-lg-9">

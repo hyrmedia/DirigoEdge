@@ -487,7 +487,7 @@ content_class.prototype.manageContentAdminEvents = function () {
 
     $("#SaveModuleDraftButton").click(function () {
 
-        var data = self.getPageData();
+        var data = self.getModuleData();
 
         $("#SaveSpinner").show();
         $.ajax({
@@ -522,9 +522,11 @@ content_class.prototype.manageContentAdminEvents = function () {
     $("#DraftStatusSelector").change(function () {
         var isActive = $("#DraftStatusSelector option:selected").val() == "published";
         var data = {
-            entity: {
-                ContentPageId: $("div.editContent").attr("data-id"),
-                IsActive: isActive
+            page: {
+                details: {
+                    ContentPageId: $("div.editContent").attr("data-id"),
+                    IsActive: isActive
+                }
             }
         };
 
@@ -628,7 +630,7 @@ content_class.prototype.getPageData = function () {
         {
             details: {
                 ContentPageId: $("div.editContent").attr("data-id"),
-                DisplayName: $("#ContentName").val(),
+                DisplayName: $("#PageTitle").val(),
                 Permalink: $("#PermaLinkEnd").text().toLowerCase(),
                 Description: $("#ModuleDescription").val(),
                 ThumbnailLocation: $("#ModuleThumbnail").val(),
