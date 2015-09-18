@@ -1,14 +1,14 @@
-﻿@{
-    ViewBag.Title = "Edit Content";
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
-}
-
-@model DirigoEdge.Areas.Admin.Models.ViewModels.EditContentViewModel
+﻿@model DirigoEdge.Areas.Admin.Models.ViewModels.EditContentViewModel
 @using System
 @using System
 @using DirigoEdgeCore.Utils
 
-<div class="editContent" data-id="@Model.BasePageId">
+@{
+    ViewBag.Title = "Edit Content";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="editContent" data-id="@Model.BasePageId" data-page="@Model.ContentPage.Details.ContentPageId">
 
     @Html.Partial("Partials/PageEditHeaderPartial")
 

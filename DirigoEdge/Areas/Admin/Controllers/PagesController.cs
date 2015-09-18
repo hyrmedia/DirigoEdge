@@ -91,6 +91,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             // Update the page title / permalink with the new id we now have
             page.DisplayName = "Page " + page.ContentPageId;
+            page.Title = "Page " + page.ContentPageId;
             page.HTMLContent = ContentUtils.ReplacePageParametersInHtmlContent(page.HTMLUnparsed, page);
 
             AddNewPageExtension(page);
@@ -268,23 +269,22 @@ namespace DirigoEdge.Areas.Admin.Controllers
         public JsonResult ChangeDraftStatus(ContentPageComplete page)
         {
             var result = new JsonResult();
+            DateTime? publishDate = null;
 
             var editedContent = Context.ContentPages.FirstOrDefault(x => x.ContentPageId == page.Details.ContentPageId);
-            if (editedContent != null)
+            if (editedContent == null)
             {
-                editedContent.IsActive = page.Details.IsActive;
+                return result;
             }
+            editedContent.IsActive = page.Details.IsActive;
 
-            // Return last publish date if we just changed to publish
-            if (Convert.ToBoolean(page.Details.IsActive))
+            if (page.Details.IsActive)
             {
-                if (editedContent != null)
-                {
-                    editedContent.PublishDate = DateTime.UtcNow;
-                }
-
-                result.Data = new { publishDate = Convert.ToDateTime(DateTime.UtcNow).ToString("MM/dd/yyyy @ hh:mm") };
+                editedContent.PublishDate = DateTime.UtcNow;
             }
+            publishDate = editedContent.PublishDate;
+
+            result.Data = new { publishDate = publishDate.HasValue ? TimeUtils.ConvertUTCToLocal(publishDate.Value).ToString("MM/dd/yyyy @ hh:mm") : "" };
 
             Context.SaveChanges();
 
