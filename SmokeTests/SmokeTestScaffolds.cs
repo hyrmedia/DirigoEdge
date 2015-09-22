@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Net;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using static System.String;
 
 namespace SmokeTests
 {
@@ -14,7 +15,11 @@ namespace SmokeTests
 
         public SmokeTestScaffolds()
         {
-            BaseUrl  = ConfigurationManager.AppSettings["SmoketestUrl"];
+            BaseUrl = ConfigurationManager.AppSettings["SmoketestUrl"];
+            if (IsNullOrEmpty(BaseUrl))
+            {
+                BaseUrl = "http://smoketest.qa.dirigodev.com/";
+            }
         }
 
         protected static HttpWebResponse GetResponseFromUrl(String url)
