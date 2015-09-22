@@ -13,7 +13,7 @@ namespace SmokeTests
         public void FixtureSetup()
         {
             Driver = new ChromeDriver();
-            Driver.Manage().Timeouts().ImplicitlyWait(new TimeSpan(0, 0, 90));
+            Driver.Manage().Timeouts().ImplicitlyWait(new TimeSpan(0, 15, 0));
         }
 
         #region HomePage
