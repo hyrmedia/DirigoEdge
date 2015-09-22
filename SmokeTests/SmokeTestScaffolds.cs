@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Net;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -9,7 +10,12 @@ namespace SmokeTests
     public class SmokeTestScaffolds
     {
         protected IWebDriver Driver;
-        protected const String BaseUrl = "http://tfs2013/";
+        protected static String BaseUrl; 
+
+        public SmokeTestScaffolds()
+        {
+            BaseUrl  = ConfigurationManager.AppSettings["SmoketestUrl"];
+        }
 
         protected static HttpWebResponse GetResponseFromUrl(String url)
         {

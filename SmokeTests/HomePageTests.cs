@@ -16,6 +16,7 @@ namespace SmokeTests
             Driver.Manage().Timeouts().ImplicitlyWait(new TimeSpan(0, 0, 30));
         }
 
+        #region HomePage
         [Test]
         public void LoadHomePage()
         {
@@ -29,7 +30,8 @@ namespace SmokeTests
             Driver.Navigate().GoToUrl(BaseUrl);
             Driver.FindElement(By.CssSelector(".contentPage"));
         }
-
+        #endregion
+        #region Blogs
         [Test]
         public void LoadBlogListingPage()
         {
@@ -43,5 +45,6 @@ namespace SmokeTests
             Driver.Navigate().GoToUrl(BaseUrl + "blog");
             Driver.FindElement(By.CssSelector(".blogListing"));
         }
+        #endregion
     }
 }
