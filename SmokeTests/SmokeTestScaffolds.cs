@@ -20,6 +20,8 @@ namespace SmokeTests
             {
                 BaseUrl = "http://smoketest.qa.dirigodev.com/";
             }
+
+            Console.WriteLine("Testing " + BaseUrl);
         }
 
         protected static HttpWebResponse GetResponseFromUrl(String url)
