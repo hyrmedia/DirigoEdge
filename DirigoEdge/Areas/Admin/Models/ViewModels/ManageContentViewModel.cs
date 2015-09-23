@@ -31,7 +31,7 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
 
         public ManageContentViewModel(string[] templateViews)
         {
-
+            // using this to access GetGeneratedUrl(ContentPage) for preview button
             NavigationUtility = NavigationUtils;
 
             // Add any Schema Id's here that you don't want to be listed on this manage page
@@ -66,6 +66,9 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
 
         public ManageContentViewModel(int schemaId)
         {
+            // using this to access GetGeneratedUrl(ContentPage) for preview button
+            NavigationUtility = NavigationUtils;
+
             SchemaId = schemaId;
             Pages = Context.ContentPages.Where(x => x.ParentContentPageId == null && x.SchemaId == schemaId).OrderBy(x => x.SortOrder).ToList();
 
