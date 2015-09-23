@@ -248,6 +248,13 @@ namespace DirigoEdge.Areas.Admin.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Used when adding module field to schema 
+        /// to list modules under a specific schema id, 
+        /// excluding drafts
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>JSON List of module names ordered A-Z</returns>
         [HttpGet]
         [PermissionsFilter(Permissions = "Can Edit Modules")]
         [AcceptVerbs(HttpVerbs.Get)]
@@ -255,7 +262,11 @@ namespace DirigoEdge.Areas.Admin.Controllers
         {
             var result = new JsonResult { JsonRequestBehavior = JsonRequestBehavior.AllowGet };
 
-            List<string> moduleNames = Context.ContentModules.Where(x => x.SchemaId == id).Select(x => x.ModuleName).ToList();
+            List<string> moduleNames = Context.ContentModules
+                .Where(x => x.SchemaId == id && x.ParentContentModuleId == null)
+                .Select(x => x.ModuleName)
+                .OrderBy(x => x)
+                .ToList();
 
             result.Data = new { moduleNames };
 
