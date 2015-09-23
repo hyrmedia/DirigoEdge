@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using DirigoEdge.CustomUtils;
 
 namespace DirigoEdge.Models.Shortcodes
 {
@@ -81,7 +82,9 @@ namespace DirigoEdge.Models.Shortcodes
                     TheEvents = context.Database.SqlQuery<Event>(query).Take(count).ToList();
                 }
 
-                return TheEvents.Any() ? DynamicModules.GetViewHtml("Partials/FeaturedEventsShortcodePartial", this) : String.Empty;
+                return TheEvents.Any() 
+                    ? TimeUtils.GetTimeConvertedDynamicHtml("Partials/FeaturedEventsShortcodePartial", this) 
+                    : String.Empty;
             }
         }
 

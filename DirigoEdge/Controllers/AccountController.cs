@@ -203,7 +203,7 @@ namespace DirigoEdge.Controllers
         [AllowAnonymous]
         public ActionResult ResetPasswordSuccess()
         {
-            var model = new ContentViewViewModel("resetpasswordsuccess");
+            var model = new ContentViewViewModel("reset-password-success");
 
             if (model.ThePage != null)
             {
@@ -286,10 +286,16 @@ namespace DirigoEdge.Controllers
                 return RedirectToAction("Login");
             }
 
-            WebSecurity.ChangePassword(u.UserName, model.Password);
-            WebSecurity.ClearResetKey(u.UserName);
+            var result = WebSecurity.ChangePassword(u.UserName, model.Password);
+            if (result)
+            {
+                WebSecurity.ClearResetKey(u.UserName);
 
-            return RedirectToAction("Login");
+                return RedirectToAction("Login");
+            }
+
+            ModelState.AddModelError("", ErrorCodeToString(MembershipCreateStatus.InvalidPassword));
+            return View(model);
         }
 
 
