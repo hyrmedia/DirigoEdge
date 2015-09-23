@@ -394,6 +394,8 @@ content_class.prototype.manageContentAdminEvents = function () {
         var data = self.getPageData();
 
         $("#SaveSpinner").show();
+        $('#SaveContentButton').removeClass('disabled');
+
         var url = $(this).attr("data-url") || 'ModifyContent';
         $.ajax({
             url: "/admin/pages/" + url,
@@ -401,19 +403,25 @@ content_class.prototype.manageContentAdminEvents = function () {
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data, null, 2),
-            success: function (data) {
-                noty({ text: 'Changes saved successfully.', type: 'success', timeout: 1200 });
-                $("#SaveSpinner").hide();
+            success: function (result) {
+                if (result.permalinkExists) {
+                    // this permalink exists
+                    $('#SaveContentButton').addClass('disabled');
+                    $("#SaveSpinner").hide();
+                    noty({ text: 'Permalink already exists under the parent page.', type: 'error', timeout: 3000 });
+                } else {
+                    noty({ text: 'Changes saved successfully.', type: 'success', timeout: 1200 });
+                    
+                    self.setPublishedStatusState(true);
 
-                self.setPublishedStatusState(true);
+                    $("#PublishedDate").text(data.publishDate);
 
-                $("#PublishedDate").text(data.publishDate);
+                    // Update "Preview" button to use the just-saved / published id
+                    $("#PreviewContentButton").attr("href", common.updateURLParameter($("#PreviewContentButton").attr("href"), "id", $("div.editContent").attr("data-id")));
 
-                // Update "Preview" button to use the just-saved / published id
-                $("#PreviewContentButton").attr("href", common.updateURLParameter($("#PreviewContentButton").attr("href"), "id", $("div.editContent").attr("data-id")));
-
-                // Refresh Revisions list
-                self.refreshRevisionListing();
+                    // Refresh Revisions list
+                    self.refreshRevisionListing();
+                }
             },
             error: function (data) {
                 noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });

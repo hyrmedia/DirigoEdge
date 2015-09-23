@@ -222,6 +222,19 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 return result;
             }
 
+            var contentUtility = new ContentUtils();
+            if (contentUtility.CheckPermalink(page.Details.Permalink, page.Details.ContentPageId,
+                page.Details.ParentNavigationItemId))
+            {
+                // permalink exists already under this parent page id
+                result.Data = new
+                {
+                    permalinkExists = true
+                };
+                return result;
+
+            }
+
             SaveDraftInDb(page, editedContent.PublishDate);
             BookmarkUtil.UpdateTitle("/admin/pages/editcontent/" + editedContent.ContentPageId + "/", page.Details.Title);
 
