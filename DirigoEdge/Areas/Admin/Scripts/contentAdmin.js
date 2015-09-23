@@ -15,6 +15,7 @@ content_class.prototype.initPageEvents = function () {
         this.initWordWrapEvents();
         this.initContentImageUploadEvents();
         this.initModuleUploadEvents();
+        this.initPermaLinkEvents();
     }
 
     if ($("div.manageContent").length > 0) {
@@ -970,12 +971,42 @@ content_class.prototype.initParentCategoryEvents = function () {
                 $("#SiteUrl").text(newUrl);
             },
             error: function (data) {
-                $('#NewUserModal').modal('hide');
-                //common.hideAjaxLoader($container);
                 noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
         });
     }).change();
+};
+
+content_class.prototype.initPermaLinkEvents = function() {
+
+    // permalink blur, check for duplicate
+    $('#PermaLinkEditPane').blur(function () {
+        var $this = $(this);
+        var original = $this.attr('data-original');
+        var pageId = $("div.editContent").attr("data-id") || $("#BuilderContents").attr("data-id");
+        var permalink = $this.val();
+        $('#SaveContentButton').removeClass('disabled');
+
+        $.ajax({
+            url: "/admin/pages/checkpermalink/",
+            type: "POST",
+            data: { id: pageId, permalink: permalink },
+            success: function (data) {
+               if (!data.success) {
+                   // this permalink exists
+                   $('#SaveContentButton').addClass('disabled');
+                   noty({ text: 'Permalink already exists.', type: 'error', timeout: 3000 });
+               } else {
+                   $('#SaveContentButton').removeClass('disabled');
+                   $("#PermaLinkEnd").text(permalink);
+                   $this.attr('data-original', permalink);
+               }
+            },
+            error: function (data) {
+                noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
+            }
+        });
+    });
 };
 
 // Keep at the bottom

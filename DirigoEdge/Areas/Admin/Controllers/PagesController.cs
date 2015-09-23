@@ -349,9 +349,10 @@ namespace DirigoEdge.Areas.Admin.Controllers
         public JsonResult AddNewPageFromTemplate(string templatePath, string viewTemplate, string permalink, string title, int parent)
         {
             var result = new JsonResult();
+            var contentUtility = new ContentUtils();
 
             // check to see if permalink exists
-            if (Context.ContentPages.Any(x => x.Permalink == permalink))
+            if (contentUtility.CheckPermalink(permalink, 0, parent))
             {
                 result.Data = new
                 {
@@ -411,6 +412,31 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 message = "Page created, redirecting."
             };
 
+            return result;
+        }
+
+        [PermissionsFilter(Permissions = "Can Edit Pages")]
+        public JsonResult CheckPermalink(int id, string permalink)
+        {
+            var result = new JsonResult()
+            {
+                Data = new
+                {
+                    success = true,
+                    message = ""
+                }
+            };
+            var contentUtility = new ContentUtils();
+
+            // check to see if permalink exists
+            if (contentUtility.CheckPermalink(permalink, id))
+            {
+                result.Data = new
+                {
+                    success = false,
+                    message = "Permalink is already in use."
+                };
+            }
             return result;
         }
 
