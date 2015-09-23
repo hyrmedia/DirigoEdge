@@ -6,6 +6,7 @@ using System.Web;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models;
 using System.Configuration;
+using DirigoEdgeCore.Utils;
 
 namespace DirigoEdge.Areas.Admin.Models.ViewModels
 {
@@ -24,10 +25,15 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
 
         // Nav Id, Label
         public Dictionary<int, string> NavList;
+
+        public NavigationUtils NavigationUtility;
       
 
         public ManageContentViewModel(string[] templateViews)
         {
+
+            NavigationUtility = NavigationUtils;
+
             // Add any Schema Id's here that you don't want to be listed on this manage page
             var excludeSchemas = ConfigurationManager.AppSettings["ExcludeSchemas"].Split(',').Select(int.Parse);
 
@@ -55,6 +61,7 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
 
             // Grab the formatted nav list for the category drop down
             NavList = NavigationUtils.GetNavList();
+
         }
 
         public ManageContentViewModel(int schemaId)

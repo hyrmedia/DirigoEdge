@@ -76,7 +76,7 @@
                                     {
                                         <a class="btn btn-primary btn-sm" href="@Url.Action("EditContentBasic", "Pages", new {id = @page.ContentPageId})">WYSIWYG Edit</a>
                                     }
-                                    <a class="btn btn-info btn-sm" href="/@page.Permalink/" target=_blank>Preview</a>
+                                    <a class="btn btn-info btn-sm" href="@(Model.NavigationUtility.GetGeneratedUrl(page))" target=_blank>Preview</a>
                                     <a class="delete btn btn-danger btn-sm" href="javascript:void(0);" data-id="@page.ContentPageId">Delete</a>
                                 </div>
                             </td>
