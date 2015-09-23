@@ -15,7 +15,6 @@ content_class.prototype.initPageEvents = function () {
         this.initWordWrapEvents();
         this.initContentImageUploadEvents();
         this.initModuleUploadEvents();
-        this.initPermaLinkEvents();
     }
 
     if ($("div.manageContent").length > 0) {
@@ -37,6 +36,9 @@ content_class.prototype.initPageEvents = function () {
 
     // Generate Url Structure
     this.initParentCategoryEvents();
+
+    // permalink
+    this.initPermaLinkEvents();
 };
 
 content_class.prototype.initWordWrapEvents = function () {
@@ -951,17 +953,20 @@ content_class.prototype.initParentCategoryEvents = function () {
     var self = this;
 
     $('#PageCategory').on('change', function () {
+        //$('#PermaLinkEditPane').val($("#PermaLinkEnd").text());
         var categoryId = $("#PageCategory option:selected").attr("data-id");
         var pageId = $("div.editContent").attr("data-id") || $("#BuilderContents").attr("data-id");
+        var permalinkForCompare = $("#PermaLinkEnd").text();
+        $('#SaveContentButton').removeClass('disabled');
 
         $.ajax({
             url: "/admin/navigation/getpageurl/",
             type: "POST",
-            data: { pageid: pageId, categoryId: categoryId },
+            data: { pageid: pageId, categoryId: categoryId, permalink: permalinkForCompare },
             success: function (data) {
                 var siteBaseUrl = $("#SiteUrl").attr("data-url");
                 var newFullUrl = data.url;
-                var permalink = $("#PermaLinkEnd").text();
+                var permalink = $('#PermaLinkEditPane').attr('data-original');
                 var formattedPermalink = newFullUrl.replace(permalink + "/", "", "i");
                 var newUrl = siteBaseUrl + formattedPermalink;
 
@@ -969,6 +974,12 @@ content_class.prototype.initParentCategoryEvents = function () {
                 newUrl = newUrl.replace(/([^:]\/)\/+/g, "$1");
 
                 $("#SiteUrl").text(newUrl);
+
+                if (data.permalinkExists) {
+                    // this permalink exists
+                    $('#SaveContentButton').addClass('disabled');
+                    noty({ text: 'Permalink already exists under the parent page.', type: 'error', timeout: 3000 });
+                }
             },
             error: function (data) {
                 noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
@@ -985,21 +996,20 @@ content_class.prototype.initPermaLinkEvents = function() {
         var original = $this.attr('data-original');
         var pageId = $("div.editContent").attr("data-id") || $("#BuilderContents").attr("data-id");
         var permalink = $this.val();
+        var parentId = $("#PageCategory option:selected").attr("data-id");
         $('#SaveContentButton').removeClass('disabled');
 
         $.ajax({
             url: "/admin/pages/checkpermalink/",
             type: "POST",
-            data: { id: pageId, permalink: permalink },
+            data: { id: pageId, permalink: permalink, parentId: parentId },
             success: function (data) {
                if (!data.success) {
                    // this permalink exists
                    $('#SaveContentButton').addClass('disabled');
-                   noty({ text: 'Permalink already exists.', type: 'error', timeout: 3000 });
+                   noty({ text: 'Permalink already exists under the parent page.', type: 'error', timeout: 3000 });
                } else {
                    $('#SaveContentButton').removeClass('disabled');
-                   $("#PermaLinkEnd").text(permalink);
-                   $this.attr('data-original', permalink);
                }
             },
             error: function (data) {

@@ -415,8 +415,15 @@ namespace DirigoEdge.Areas.Admin.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Return false if permalink in use
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="permalink"></param>
+        /// <param name="parentId"></param>
+        /// <returns>False if permalink in use</returns>
         [PermissionsFilter(Permissions = "Can Edit Pages")]
-        public JsonResult CheckPermalink(int id, string permalink)
+        public JsonResult CheckPermalink(int id, string permalink, int parentId = 0)
         {
             var result = new JsonResult()
             {
@@ -429,7 +436,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
             var contentUtility = new ContentUtils();
 
             // check to see if permalink exists
-            if (contentUtility.CheckPermalink(permalink, id))
+            if (contentUtility.CheckPermalink(permalink, id, parentId))
             {
                 result.Data = new
                 {
