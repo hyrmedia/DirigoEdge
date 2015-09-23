@@ -1,10 +1,15 @@
-﻿@{
+﻿@using DirigoEdgeCore.Utils
+@model DirigoEdge.Areas.Admin.Models.ViewModels.ManageContentViewModel
+
+@{
     ViewBag.Title = Model.Heading;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     bool hasSchema = Model.SchemaId >= 0;
+
+    // using this to access GetGeneratedUrl(ContentPage) for preview button
+    var navigationUtility = new NavigationUtils();            
 }
 
-@model DirigoEdge.Areas.Admin.Models.ViewModels.ManageContentViewModel
 
 <div class="manageContent">
 
@@ -76,7 +81,7 @@
                                     {
                                         <a class="btn btn-primary btn-sm" href="@Url.Action("EditContentBasic", "Pages", new {id = @page.ContentPageId})">WYSIWYG Edit</a>
                                     }
-                                    <a class="btn btn-info btn-sm" href="/@page.Permalink/" target=_blank>Preview</a>
+                                    <a class="btn btn-info btn-sm" href="@(navigationUtility.GetGeneratedUrl(page))" target=_blank>Preview</a>
                                     <a class="delete btn btn-danger btn-sm" href="javascript:void(0);" data-id="@page.ContentPageId">Delete</a>
                                 </div>
                             </td>
