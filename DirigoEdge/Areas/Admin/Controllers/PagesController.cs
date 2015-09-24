@@ -222,6 +222,19 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 return result;
             }
 
+            var contentUtility = new ContentUtils();
+            if (contentUtility.CheckPermalink(page.Details.Permalink, page.Details.ContentPageId,
+                page.Details.ParentNavigationItemId))
+            {
+                // permalink exists already under this parent page id
+                result.Data = new
+                {
+                    permalinkExists = true
+                };
+                return result;
+
+            }
+
             SaveDraftInDb(page, editedContent.PublishDate);
             BookmarkUtil.UpdateTitle("/admin/pages/editcontent/" + editedContent.ContentPageId + "/", page.Details.Title);
 
@@ -349,9 +362,10 @@ namespace DirigoEdge.Areas.Admin.Controllers
         public JsonResult AddNewPageFromTemplate(string templatePath, string viewTemplate, string permalink, string title, int parent)
         {
             var result = new JsonResult();
+            var contentUtility = new ContentUtils();
 
             // check to see if permalink exists
-            if (Context.ContentPages.Any(x => x.Permalink == permalink))
+            if (contentUtility.CheckPermalink(permalink, 0, parent))
             {
                 result.Data = new
                 {
@@ -411,6 +425,38 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 message = "Page created, redirecting."
             };
 
+            return result;
+        }
+
+        /// <summary>
+        /// Return false if permalink in use
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="permalink"></param>
+        /// <param name="parentId"></param>
+        /// <returns>False if permalink in use</returns>
+        [PermissionsFilter(Permissions = "Can Edit Pages")]
+        public JsonResult CheckPermalink(int id, string permalink, int parentId = 0)
+        {
+            var result = new JsonResult()
+            {
+                Data = new
+                {
+                    success = true,
+                    message = ""
+                }
+            };
+            var contentUtility = new ContentUtils();
+
+            // check to see if permalink exists
+            if (contentUtility.CheckPermalink(permalink, id, parentId))
+            {
+                result.Data = new
+                {
+                    success = false,
+                    message = "Permalink is already in use."
+                };
+            }
             return result;
         }
 
