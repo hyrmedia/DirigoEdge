@@ -260,7 +260,7 @@ role_class.prototype.initEditUsersEvents = function () {
     // Show modal
     $(document).on("click", "a.showUsers", function () {
         
-        var $row = $(this).parent().parent();
+        var $row = $(this).closest('tr');
         self.EditUserRoleId = $(this).attr("data-id");
         self.EditUserRoleDisplayName = $row.find("td.roleName").text();
         $("#EditUsersNRole").text(self.EditUserRoleDisplayName);
@@ -297,16 +297,16 @@ role_class.prototype.initEditUsersEvents = function () {
     });
     
     // Toggling checkboxes changes user changed count and marks for update
-    $("#UserListing ul.userList li").on("change", "input[type=checkbox]", function (e) {
+    $('#UserListing').on('change', 'ul.userList input[type=checkbox]', function (e) {
         e.preventDefault();
         
         // Update user count
-        $(this).closest("li").addClass("changed");
+        $(this).closest('li').addClass('changed');
 
-        var changedCount = $("#UserListing ul.userList li.changed").length;
+        var changedCount = $('#UserListing ul.userList li.changed').length;
 
-        $("#UsersChangedContainer").show();
-        $("#UserModCount").text(changedCount);
+        $('#UsersChangedContainer').show();
+        $('#UserModCount').text(changedCount);
     });
 
     // Add Remove User Submission
@@ -316,15 +316,15 @@ role_class.prototype.initEditUsersEvents = function () {
         var addUsers = [];
         var removeUsers = [];
 
-        $("#UserListing ul.userList li.changed").each(function () {
+        $('#UserListing ul.userList li.changed').each(function () {
 
-            var $checked = $(this).find("input[type=checkbox]").is(":checked");
+            var $checked = $(this).find('input[type=checkbox]').is(':checked');
             
             if ($checked) {
-                addUsers.push($(this).attr("data-id"));
+                addUsers.push($(this).attr('data-id'));
             }
             else {
-                removeUsers.push($(this).attr("data-id"));
+                removeUsers.push($(this).attr('data-id'));
             }
         });
 
@@ -333,11 +333,11 @@ role_class.prototype.initEditUsersEvents = function () {
             AddUsers: addUsers,
             RoleID: self.EditUserRoleId
         };
-        var $container = $("#EditUsersInRoleModal div.content");
+        var $container = $('#EditUsersInRoleModal div.content');
         common.showAjaxLoader($container);
         $.ajax({
-            url: "/admin/roles/modifyusersinrole",
-            type: "POST",
+            url: '/admin/roles/modifyusersinrole',
+            type: 'POST',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data, null, 2),

@@ -1,4 +1,8 @@
 ﻿@model DirigoEdge.Areas.Admin.Controllers.RolesController.RoleUsersModel
+@{
+    Layout = "";
+}
+
 
 <ul class="nav nav-tabs">
     <li class="active"><a href="#inrole" data-toggle="tab">In Role</a></li>
@@ -8,15 +12,15 @@
 <ul class="tab-content noPadding">
     <li class="active tab-pane" id="inrole">
         <ul class="userList">
-            @{
-
+            @if (Model.Role != null)
+            {
                 foreach (var user in Model.Role.Users)
                 {
                     string labelId = "check" + user.UserId;
-                <li data-id="@user.UserId">
-                    <input class="" type="checkbox" checked="checked" id="@labelId"/>
-                    <label for="@labelId">@user.Username</label>
-                </li>
+                    <li data-id="@user.UserId">
+                        <input class="" type="checkbox" checked="checked" id="@labelId"/>
+                        <label for="@labelId">@user.Username</label>
+                    </li>
                 }
             }
         </ul>
