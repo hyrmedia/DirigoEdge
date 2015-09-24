@@ -50,36 +50,37 @@ namespace DirigoEdge.Areas.Admin.Controllers
         }
 
         [PermissionsFilter(Permissions = "Can Edit Modules")]
-        public JsonResult DeleteModule(string id)
+        public JsonResult DeleteModule(int? id)
         {
-            var result = new JsonResult()
-            {
-                Data = new { success = false, message = "There was an error processing your request." }
-            };
 
-            if (String.IsNullOrEmpty(id))
+            if (!id.HasValue)
             {
-                return result;
+                return GenericJsonError;
             }
 
-            int moduleId = Int32.Parse(id);
+            var modules = Context.ContentModules.Where(x => x.ContentModuleId == id || x.ParentContentModuleId == id);
 
-            var module = Context.ContentModules.FirstOrDefault(x => x.ContentModuleId == moduleId);
-            var revisions = Context.ContentModules.Where(x => x.ParentContentModuleId == module.ContentModuleId);
-            if (revisions.Any())
+            if (!modules.Any())
             {
-                Context.ContentModules.RemoveRange(revisions);
+                return GenericJsonError;
             }
-            Context.ContentModules.Remove(module);
-            var success = Context.SaveChanges();
 
-            if (success > 0)
+            try
             {
+                Context.ContentModules.RemoveRange(modules);
+
+                Context.SaveChanges();
                 BookmarkUtil.DeleteBookmarkForUrl("/admin/modules/" + id + "/");
-                result.Data = new { success = true, message = "The module has been successfully deleted." };
-            }
 
-            return result;
+                return new JsonResult
+                {
+                    Data = new { success = true, message = "The module has been successfully deleted." }
+                };
+            }
+            catch (Exception)
+            {
+                return GenericJsonError;
+            }
         }
 
         [PermissionsFilter(Permissions = "Can Edit Modules")]
@@ -154,7 +155,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             return RedirectToAction("EditModule", "Modules", routeParameters);
         }
-        
+
 
         [HttpPost]
         [Authorize(Roles = "Administrators")]
@@ -273,13 +274,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             editedContent.DraftAuthorName = UserUtils.CurrentMembershipUsername();
             editedContent.CreateDate = DateTime.UtcNow;
-            editedContent.ModuleName = ContentUtils.ScrubInput(entity.ModuleName);
-            editedContent.HTMLContent = entity.HTMLContent;
-            editedContent.HTMLUnparsed = entity.HTMLUnparsed;
-            editedContent.JSContent = entity.JSContent;
-            editedContent.CSSContent = entity.CSSContent;
-            editedContent.SchemaId = entity.SchemaId;
-            editedContent.SchemaEntryValues = entity.SchemaEntryValues;
+            LoadContentFromUploadedModel(entity, editedContent);
             editedContent.IsActive = true;
 
             var success = Context.SaveChanges();
@@ -298,6 +293,17 @@ namespace DirigoEdge.Areas.Admin.Controllers
             }
 
             return result;
+        }
+
+        private static void LoadContentFromUploadedModel(ContentModule entity, ContentModule editedContent)
+        {
+            editedContent.ModuleName = ContentUtils.ScrubInput(entity.ModuleName);
+            editedContent.HTMLContent = entity.HTMLContent;
+            editedContent.HTMLUnparsed = entity.HTMLUnparsed;
+            editedContent.JSContent = entity.JSContent;
+            editedContent.CSSContent = entity.CSSContent;
+            editedContent.SchemaId = entity.SchemaId;
+            editedContent.SchemaEntryValues = entity.SchemaEntryValues;
         }
 
         [UserIsLoggedIn]
@@ -319,7 +325,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             return result;
         }
-        
+
         [HttpGet]
         [UserIsLoggedIn]
         public JsonResult GetModule(int id)
@@ -329,13 +335,15 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 return new JsonResult
                 {
                     JsonRequestBehavior = JsonRequestBehavior.AllowGet,
-                    Data = new {
-						Modules = new List<Object>{Mapper.Map<ContentModule, Module>(
-                            Context.ContentModules.First(x => x.ContentModuleId == id))}}
+                    Data = new
+                    {
+                        Modules = new List<Object>{Mapper.Map<ContentModule, Module>(
+                            Context.ContentModules.First(x => x.ContentModuleId == id))}
+                    }
 
                 };
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return new JsonResult
@@ -376,11 +384,6 @@ namespace DirigoEdge.Areas.Admin.Controllers
             string js = "";
             string css = "";
 
-            // todo : should come from global registry. 
-            // todo: loop over shortcode directory and call method
-            // CurrentYearShortcode is the value of name
-            // Look it up
-            // Call the method
             MethodInfo method = this.GetType().GetMethod(name);
             if (method != null)
             {
@@ -388,19 +391,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 var getHtmlValue = shortcode.GetType().GetMethod("GetHtml").ToString();
                 html = getHtmlValue;
             }
-            // Dynamic Modules will add themselves to the registry, then we'll just index into each object
-            //if (name == "formbuilder")
-            //{
-            //    // Build out the form
-            //    html = new FormBuilderModel().GetDefaultHtml();
-            //}
 
-            //if (name == "lodgingphotos")
-            //{
-            //    html = RenderPartialViewToString("/Areas/Admin/Views/Shared/Partials/LodgingPhotosPartial.cshtml", null, ControllerContext, ViewData, TempData);
-            //}
-
-            //var editorData = context.ContentModules.FirstOrDefault(x => x.ContentModuleId == moduleId);
             result.Data = new
             {
                 html,
