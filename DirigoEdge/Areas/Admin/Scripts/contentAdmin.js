@@ -404,10 +404,10 @@ content_class.prototype.manageContentAdminEvents = function () {
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data, null, 2),
             success: function (result) {
+                $("#SaveSpinner").hide();
                 if (result.permalinkExists) {
                     // this permalink exists
                     $('#SaveContentButton').addClass('disabled');
-                    $("#SaveSpinner").hide();
                     noty({ text: 'Permalink already exists under the parent page.', type: 'error', timeout: 3000 });
                 } else {
                     noty({ text: 'Changes saved successfully.', type: 'success', timeout: 1200 });
