@@ -82,7 +82,7 @@ role_class.prototype.manageUserRoleAdminEvents = function () {
     
     // Delete user role and confirmation
     $(".manageUsers").on("click", "a.deleteUserRole.btn", function () {
-        var $row = $(this).parent().parent();
+        var $row = $(this).closest('tr');
         var $el = $(this);
         self.EditUserRoleId = $(this).attr("data-id");
         self.EditUserRoleDisplayName = $row.find("td.roleName").text();
@@ -183,13 +183,13 @@ role_class.prototype.initPermissionEvents = function () {
     
     // Show user permissions
     $(document).on("click", "a.showPermissions", function () {
-        var $row = $(this).parent().parent();
+        var $row = $(this).closest('tr');
         self.EditUserRoleId = $(this).attr("data-id");
-        self.EditUserRoleDisplayName = $row.find("td.roleName").text();
+        self.EditUserRoleDisplayName = $row.find(".roleName").text();
         $("#EditUserRole").text(self.EditUserRoleDisplayName);
 
         // Set the permissions to edit accordingly
-        var nCurrentRolePermissions = $row.find("td.permsList").text().split(", ");
+        var nCurrentRolePermissions = $row.find(".permsList").text().split(", ");
 
         $("#EditUserRolePermissionsModal ul.rolePermissionsList li").each(function () {
             var currentRole = $(this).find("span.key").text();
@@ -259,24 +259,23 @@ role_class.prototype.initEditUsersEvents = function () {
 
     // Show modal
     $(document).on("click", "a.showUsers", function () {
-        
+
         var $row = $(this).closest('tr');
         self.EditUserRoleId = $(this).attr("data-id");
         self.EditUserRoleDisplayName = $row.find("td.roleName").text();
         $("#EditUsersNRole").text(self.EditUserRoleDisplayName);
-        
+
         // Hide how many users changed
         $("#UsersChangedContainer").hide();
 
         // Show modal
         $("#EditUsersInRoleModal").modal();
-        
+
         // Ajax in the Users for the current role
         var $container = $("#EditUsersInRoleModal > div.content");
         common.showAjaxLoader($container);
-        var data = { RoleName: self.EditUserRoleDisplayName };
+        var data = { roleId: self.EditUserRoleId };
         $("#UserListing").load("/admin/roles/getroleusers/", data, function () {
-            
             // Success
             common.hideAjaxLoader($container);
         });
@@ -299,7 +298,7 @@ role_class.prototype.initEditUsersEvents = function () {
     // Toggling checkboxes changes user changed count and marks for update
     $('#UserListing').on('change', 'ul.userList input[type=checkbox]', function (e) {
         e.preventDefault();
-        
+
         // Update user count
         $(this).closest('li').addClass('changed');
 
@@ -319,7 +318,7 @@ role_class.prototype.initEditUsersEvents = function () {
         $('#UserListing ul.userList li.changed').each(function () {
 
             var $checked = $(this).find('input[type=checkbox]').is(':checked');
-            
+
             if ($checked) {
                 addUsers.push($(this).attr('data-id'));
             }
@@ -341,7 +340,7 @@ role_class.prototype.initEditUsersEvents = function () {
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data, null, 2),
-            success: function (data) {
+            success: function (result) {
 
                 common.hideAjaxLoader($container);
 

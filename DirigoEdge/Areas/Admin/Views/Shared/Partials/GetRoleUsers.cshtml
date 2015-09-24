@@ -2,52 +2,40 @@
 @{
     Layout = "";
 }
-
-
 <ul class="nav nav-tabs">
     <li class="active"><a href="#inrole" data-toggle="tab">In Role</a></li>
     <li><a href="#notinrole" data-toggle="tab">Not In Role</a></li>
 </ul>
-
 <ul class="tab-content noPadding">
     <li class="active tab-pane" id="inrole">
         <ul class="userList">
-            @if (Model.Role != null)
+            @if (Model.UsersInRole.Any())
             {
-                foreach (var user in Model.Role.Users)
+                foreach (var user in Model.UsersInRole)
                 {
                     string labelId = "check" + user.UserId;
                     <li data-id="@user.UserId">
-                        <input class="" type="checkbox" checked="checked" id="@labelId"/>
+                        <input class="" type="checkbox" checked="checked" id="@labelId" />
                         <label for="@labelId">@user.Username</label>
                     </li>
                 }
             }
         </ul>
 
-
     </li>
     <li id="notinrole" class="tab-pane">
         <ul class="userList">
-            @{
-
-                    // Add all other users that aren't in that role, that way admins can quickly add users
-                    var test = Model.Users.Where(x => !x.Roles.Contains(Model.Role)).ToList();
-
-                    if (test.Any())
-                    {
-                        foreach (var user in test)
-                        {
-                            string labelId = "check" + user.UserId;
-                <li data-id="@user.UserId">
-                    <input class="" type="checkbox" id="@labelId"/>
-                    <label for="@labelId">@user.Username</label>
-                </li>
-                    }
+            @if (Model.UsersNotInRole.Any())
+            {
+                foreach (var user in Model.UsersNotInRole)
+                {
+                    string labelId = "check" + user.UserId;
+                    <li data-id="@user.UserId">
+                        <input class="" type="checkbox" id="@labelId" />
+                        <label for="@labelId">@user.Username</label>
+                    </li>
                 }
             }
         </ul>
-
     </li>
-
 </ul>
