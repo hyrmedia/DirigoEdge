@@ -180,7 +180,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [HttpPost]
         [PermissionsFilter(Permissions = "Can Edit Pages")]
         [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult GetPageUrl(int pageId, int categoryId)
+        public JsonResult GetPageUrl(int pageId, int categoryId, string permalink = "")
         {
             var result = new JsonResult()
             {
@@ -209,7 +209,8 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 {
                     success = true,
                     message = "Retrieved page url.",
-                    url = href
+                    url = href,
+                    permalinkExists = new ContentUtils().CheckPermalink(permalink, pageId, categoryId)
                 };
             }
 
