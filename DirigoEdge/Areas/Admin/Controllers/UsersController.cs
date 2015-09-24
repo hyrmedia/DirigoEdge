@@ -50,6 +50,19 @@ namespace DirigoEdge.Areas.Admin.Controllers
                     };
                     return result;
                 }
+                // Changed email, if email address already taken, return
+                if (user.Email != editUser.Email && UserUtils.UserExistsByEmail(user.Email))
+                {
+                    result.Data = new { success = false, message = "An account already exists for this email address." };
+                    return result;
+                }
+
+                // Changed username, if username already taken, return
+                if (user.Username != editUser.Username && UserUtils.UserExistsByUsername(user.Username))
+                {
+                    result.Data = new { success = false, message = "An account already exists for this username." };
+                    return result;
+                }
                 editUser.Username = user.Username;
                 editUser.FirstName = user.FirstName;
                 editUser.LastName = user.LastName;
@@ -122,6 +135,21 @@ namespace DirigoEdge.Areas.Admin.Controllers
 
             var success = 0;
 
+            
+            // If email address already taken, return
+            if (UserUtils.UserExistsByEmail(user.Email))
+            {
+                result.Data = new { success = false, message = "An account already exists for this email address." };
+                return result;
+            }
+
+            // If username already taken, return
+            if (UserUtils.UserExistsByUsername(user.Username))
+            {
+                result.Data = new { success = false, message = "An account already exists for this username." };
+                return result;
+            }
+
             if (!String.IsNullOrEmpty(user.Username))
             {
                 // Add to .Net Membership Framework First
@@ -162,8 +190,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
             }
             return result;
         }
-
-
+            
         [PermissionsFilter(Permissions = "Can Edit Users")]
         public JsonResult DeleteUser(User user)
         {
