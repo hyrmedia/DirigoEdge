@@ -93,13 +93,22 @@ namespace DirigoEdge.Controllers
                 // Attempt to register the user
                 try
                 {
-                   UserRoleUtilities.RegisterUser(model, Context);
+                    // If email address or username already taken, return
+                    if (UserUtils.UserExistsByEmail(model.Email) || UserUtils.UserExistsByUsername(model.UserName))
+                    {
+                        throw new Exception();
+                    }
+                    UserRoleUtilities.RegisterUser(model, Context);
 
                     return RedirectToAction("Index", "Admin", new {area = "Admin"});
                 }
                 catch (MembershipCreateUserException e)
                 {
                     ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
+                }
+                catch (Exception e)
+                {
+                    ModelState.AddModelError("", "An account already exists for this email address or username.");
                 }
             }
 
