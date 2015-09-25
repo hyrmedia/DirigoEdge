@@ -36,6 +36,9 @@ content_class.prototype.initPageEvents = function () {
 
     // Generate Url Structure
     this.initParentCategoryEvents();
+
+    // permalink
+    this.initPermaLinkEvents();
 };
 
 content_class.prototype.initWordWrapEvents = function () {
@@ -391,6 +394,8 @@ content_class.prototype.manageContentAdminEvents = function () {
         var data = self.getPageData();
 
         $("#SaveSpinner").show();
+        $('#SaveContentButton').removeClass('disabled');
+
         var url = $(this).attr("data-url") || 'ModifyContent';
         $.ajax({
             url: "/admin/pages/" + url,
@@ -398,19 +403,25 @@ content_class.prototype.manageContentAdminEvents = function () {
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data, null, 2),
-            success: function (data) {
-                noty({ text: 'Changes saved successfully.', type: 'success', timeout: 1200 });
+            success: function (result) {
                 $("#SaveSpinner").hide();
+                if (result.permalinkExists) {
+                    // this permalink exists
+                    $('#SaveContentButton').addClass('disabled');
+                    noty({ text: 'Permalink already exists under the parent page.', type: 'error', timeout: 3000 });
+                } else {
+                    noty({ text: 'Changes saved successfully.', type: 'success', timeout: 1200 });
+                    
+                    self.setPublishedStatusState(true);
 
-                self.setPublishedStatusState(true);
+                    $("#PublishedDate").text(data.publishDate);
 
-                $("#PublishedDate").text(data.publishDate);
+                    // Update "Preview" button to use the just-saved / published id
+                    $("#PreviewContentButton").attr("href", common.updateURLParameter($("#PreviewContentButton").attr("href"), "id", $("div.editContent").attr("data-id")));
 
-                // Update "Preview" button to use the just-saved / published id
-                $("#PreviewContentButton").attr("href", common.updateURLParameter($("#PreviewContentButton").attr("href"), "id", $("div.editContent").attr("data-id")));
-
-                // Refresh Revisions list
-                self.refreshRevisionListing();
+                    // Refresh Revisions list
+                    self.refreshRevisionListing();
+                }
             },
             error: function (data) {
                 noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
@@ -487,7 +498,7 @@ content_class.prototype.manageContentAdminEvents = function () {
 
     $("#SaveModuleDraftButton").click(function () {
 
-        var data = self.getPageData();
+        var data = self.getModuleData();
 
         $("#SaveSpinner").show();
         $.ajax({
@@ -522,9 +533,11 @@ content_class.prototype.manageContentAdminEvents = function () {
     $("#DraftStatusSelector").change(function () {
         var isActive = $("#DraftStatusSelector option:selected").val() == "published";
         var data = {
-            entity: {
-                ContentPageId: $("div.editContent").attr("data-id"),
-                IsActive: isActive
+            page: {
+                details: {
+                    ContentPageId: $("div.editContent").attr("data-id"),
+                    IsActive: isActive
+                }
             }
         };
 
@@ -628,7 +641,7 @@ content_class.prototype.getPageData = function () {
         {
             details: {
                 ContentPageId: $("div.editContent").attr("data-id"),
-                DisplayName: $("#ContentName").val(),
+                DisplayName: $("#PageTitle").val(),
                 Permalink: $("#PermaLinkEnd").text().toLowerCase(),
                 Description: $("#ModuleDescription").val(),
                 ThumbnailLocation: $("#ModuleThumbnail").val(),
@@ -948,17 +961,20 @@ content_class.prototype.initParentCategoryEvents = function () {
     var self = this;
 
     $('#PageCategory').on('change', function () {
+        //$('#PermaLinkEditPane').val($("#PermaLinkEnd").text());
         var categoryId = $("#PageCategory option:selected").attr("data-id");
         var pageId = $("div.editContent").attr("data-id") || $("#BuilderContents").attr("data-id");
+        var permalinkForCompare = $("#PermaLinkEnd").text();
+        $('#SaveContentButton').removeClass('disabled');
 
         $.ajax({
             url: "/admin/navigation/getpageurl/",
             type: "POST",
-            data: { pageid: pageId, categoryId: categoryId },
+            data: { pageid: pageId, categoryId: categoryId, permalink: permalinkForCompare },
             success: function (data) {
                 var siteBaseUrl = $("#SiteUrl").attr("data-url");
                 var newFullUrl = data.url;
-                var permalink = $("#PermaLinkEnd").text();
+                var permalink = $('#PermaLinkEditPane').attr('data-original');
                 var formattedPermalink = newFullUrl.replace(permalink + "/", "", "i");
                 var newUrl = siteBaseUrl + formattedPermalink;
 
@@ -966,14 +982,49 @@ content_class.prototype.initParentCategoryEvents = function () {
                 newUrl = newUrl.replace(/([^:]\/)\/+/g, "$1");
 
                 $("#SiteUrl").text(newUrl);
+
+                if (data.permalinkExists) {
+                    // this permalink exists
+                    $('#SaveContentButton').addClass('disabled');
+                    noty({ text: 'Permalink already exists under the parent page.', type: 'error', timeout: 3000 });
+                }
             },
             error: function (data) {
-                $('#NewUserModal').modal('hide');
-                //common.hideAjaxLoader($container);
                 noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
             }
         });
     }).change();
+};
+
+content_class.prototype.initPermaLinkEvents = function() {
+
+    // permalink blur, check for duplicate
+    $('#PermaLinkEditPane').blur(function () {
+        var $this = $(this);
+        var original = $this.attr('data-original');
+        var pageId = $("div.editContent").attr("data-id") || $("#BuilderContents").attr("data-id");
+        var permalink = $this.val();
+        var parentId = $("#PageCategory option:selected").attr("data-id");
+        $('#SaveContentButton').removeClass('disabled');
+
+        $.ajax({
+            url: "/admin/pages/checkpermalink/",
+            type: "POST",
+            data: { id: pageId, permalink: permalink, parentId: parentId },
+            success: function (data) {
+               if (!data.success) {
+                   // this permalink exists
+                   $('#SaveContentButton').addClass('disabled');
+                   noty({ text: 'Permalink already exists under the parent page.', type: 'error', timeout: 3000 });
+               } else {
+                   $('#SaveContentButton').removeClass('disabled');
+               }
+            },
+            error: function (data) {
+                noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
+            }
+        });
+    });
 };
 
 // Keep at the bottom

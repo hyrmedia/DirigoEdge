@@ -7,7 +7,7 @@
 @using DirigoEdgeCore.Utils
 
 
-<div class="editContent" data-id="@Model.ContentPage.Details.ContentPageId">
+<div class="editContent" data-id="@Model.ContentPage.Details.ContentPageId" data-page="@Model.ContentPage.Details.ContentPageId">
     
     @Html.Partial("Partials/PageEditHeaderPartial")
 
@@ -21,7 +21,7 @@
             <div class="contentTitle">
                 <input id="PageTitle" class="required form-control input-lg" type="text" value="@Model.ContentPage.Details.Title" autocomplete=off />
                 <span class="permHint">Permalink: </span>
-                <span data-url="@Model.SiteUrl" id="SiteUrl">@Model.SiteUrl</span><span id="PermaLinkEnd" data-modified="@permaLinkModded">@ContentUtils.GetFormattedUrl(Model.ContentPage.Details.Permalink)</span><input id="PermaLinkEditPane" type="text" class="hide autogrow" autocomplete="off" /><span>/</span>
+                <span data-url="@Model.SiteUrl" id="SiteUrl">@Model.SiteUrl</span><span id="PermaLinkEnd" data-modified="@permaLinkModded">@ContentUtils.GetFormattedUrl(Model.ContentPage.Details.Permalink)</span><input id="PermaLinkEditPane" data-original="@ContentUtils.GetFormattedUrl(Model.ContentPage.Details.Permalink)" type="text" class="hide autogrow" autocomplete="off" /><span>/</span>
                 <a id="EditPermaLink" href="javascript:void(0);">edit</a>
                 <a id="ViewPermaLink" href="@Model.SiteUrl@Model.ContentPage.Details.Permalink" target="_blank">view live page</a>
             </div>

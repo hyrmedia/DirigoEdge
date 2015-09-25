@@ -93,13 +93,22 @@ namespace DirigoEdge.Controllers
                 // Attempt to register the user
                 try
                 {
-                   UserRoleUtilities.RegisterUser(model, Context);
+                    // If email address or username already taken, return
+                    if (UserUtils.UserExistsByEmail(model.Email) || UserUtils.UserExistsByUsername(model.UserName))
+                    {
+                        throw new Exception();
+                    }
+                    UserRoleUtilities.RegisterUser(model, Context);
 
                     return RedirectToAction("Index", "Admin", new {area = "Admin"});
                 }
                 catch (MembershipCreateUserException e)
                 {
                     ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
+                }
+                catch (Exception e)
+                {
+                    ModelState.AddModelError("", "An account already exists for this email address or username.");
                 }
             }
 
@@ -203,7 +212,7 @@ namespace DirigoEdge.Controllers
         [AllowAnonymous]
         public ActionResult ResetPasswordSuccess()
         {
-            var model = new ContentViewViewModel("resetpasswordsuccess");
+            var model = new ContentViewViewModel("reset-password-success");
 
             if (model.ThePage != null)
             {
@@ -286,10 +295,16 @@ namespace DirigoEdge.Controllers
                 return RedirectToAction("Login");
             }
 
-            WebSecurity.ChangePassword(u.UserName, model.Password);
-            WebSecurity.ClearResetKey(u.UserName);
+            var result = WebSecurity.ChangePassword(u.UserName, model.Password);
+            if (result)
+            {
+                WebSecurity.ClearResetKey(u.UserName);
 
-            return RedirectToAction("Login");
+                return RedirectToAction("Login");
+            }
+
+            ModelState.AddModelError("", ErrorCodeToString(MembershipCreateStatus.InvalidPassword));
+            return View(model);
         }
 
 

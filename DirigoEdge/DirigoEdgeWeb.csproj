@@ -65,8 +65,8 @@
     <Reference Include="AutoMapper.Net4">
       <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
-    <Reference Include="DirigoEdgeCore, Version=1.5.11.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DirigoEdgeCore.1.5.11.0\lib\net45\DirigoEdgeCore.dll</HintPath>
+    <Reference Include="DirigoEdgeCore, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DirigoEdgeCore.1.7.0.0\lib\net45\DirigoEdgeCore.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -436,9 +436,17 @@
     <Content Include="CSS\images\ui-icons_ffffff_256x240.png" />
     <Content Include="CSS\main.css" />
     <Content Include="gulpfile.js" />
+    <Content Include="Scripts\ckeditor\plugins\icons_hidpi.png" />
+    <Content Include="Scripts\ckeditor\plugins\magicline\images\hidpi\icon-rtl.png" />
+    <Content Include="Scripts\ckeditor\plugins\magicline\images\hidpi\icon.png" />
+    <Content Include="Scripts\ckeditor\plugins\magicline\images\icon-rtl.png" />
+    <Content Include="Scripts\ckeditor\skins\moono\hidpi\close.png" />
+    <Content Include="Scripts\ckeditor\skins\moono\hidpi\lock-open.png" />
+    <Content Include="Scripts\ckeditor\skins\moono\hidpi\lock.png" />
+    <Content Include="Scripts\ckeditor\skins\moono\hidpi\refresh.png" />
+    <Content Include="Scripts\ckeditor\skins\moono\icons_hidpi.png" />
     <Content Include="Scripts\Edge\ajax-service.js" />
     <Content Include="Scripts\Edge\Edge.js" />
-    <None Include="Properties\PublishProfiles\Development.pubxml" />
     <Content Include="Scripts\moment-timezone.js" />
     <Content Include="Areas\Admin\Scripts\mustache\mustache.js" />
     <Content Include="Areas\Admin\Scripts\navBuilder.js" />
@@ -1356,15 +1364,10 @@
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != '' And Exists('$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets')" />
   <Import Project="..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0\tools\VSToolsPath\WebApplications\Microsoft.WebApplication.targets" Condition="Exists('..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0\tools\VSToolsPath\WebApplications\Microsoft.WebApplication.targets')" />
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -6,6 +6,7 @@ using System.Web;
 using DirigoEdgeCore.Data.Entities;
 using DirigoEdgeCore.Models;
 using System.Configuration;
+using DirigoEdgeCore.Utils;
 
 namespace DirigoEdge.Areas.Admin.Models.ViewModels
 {
@@ -24,7 +25,6 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
 
         // Nav Id, Label
         public Dictionary<int, string> NavList;
-      
 
         public ManageContentViewModel(string[] templateViews)
         {
@@ -55,6 +55,7 @@ namespace DirigoEdge.Areas.Admin.Models.ViewModels
 
             // Grab the formatted nav list for the category drop down
             NavList = NavigationUtils.GetNavList();
+
         }
 
         public ManageContentViewModel(int schemaId)

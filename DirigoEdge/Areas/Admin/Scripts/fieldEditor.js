@@ -3,7 +3,7 @@
 */
 
 fieldEditor_class = function () {
-    this.moduleId = $("#Main > div.editContent").attr("data-id");
+    this.moduleId = $("#Main > div.editContent").attr("data-page") || $("#Main > div.editContent").attr("data-id");
 };
 
 fieldEditor_class.prototype.initPageEvents = function () {
