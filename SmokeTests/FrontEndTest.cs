@@ -28,6 +28,7 @@ namespace SmokeTests
         public void ValidateHomePage()
         {
             Driver.Navigate().GoToUrl(BaseUrl);
+           Console.WriteLine(Driver.PageSource);
             Driver.FindElement(By.CssSelector(".contentPage"));
         }
         #endregion
