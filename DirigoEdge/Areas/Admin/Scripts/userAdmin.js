@@ -66,7 +66,7 @@ user_class.prototype.manageUserAdminEvents = function () {
         var data = {
             user: {
                 DisplayName: $("#NewUserName").val(),
-                UserName: $("#NewUserName").val(),
+                Username: $("#NewUserName").val(),
                 UserImageLocation: $("#NewUserImage").val(),
                 IsApproved: $("#IsActiveBox").is(':checked'),
                 Password: $("#NewUserPassword").val(),
@@ -97,16 +97,19 @@ user_class.prototype.manageUserAdminEvents = function () {
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data, null, 2),
-            success: function (data) {
-                // Close the dialog box
-                $('#NewUserModal').modal('hide');
-                $('.user-error').addClass('hide').html('');
-
+            success: function (result) {
                 common.hideAjaxLoader($container);
+                if (result.success) {
+                    // Close the dialog box
+                    $('#NewUserModal').modal('hide');
+                    $('.user-error').addClass('hide').html('');
 
-                //Refresh the inner content to show the new user
-                noty({ text: 'User Successfully Created.', type: 'success', timeout: 3000 });
-                self.refreshUserTable();
+                    //Refresh the inner content to show the new user
+                    noty({ text: 'User Successfully Created.', type: 'success', timeout: 3000 });
+                    self.refreshUserTable();
+                } else {
+                    $('.user-error').removeClass('hide').html(result.message);
+                }
             },
             error: function (data) {
                 $('#NewUserModal').modal('hide');
@@ -178,7 +181,7 @@ user_class.prototype.manageUserAdminEvents = function () {
 
         var data = {
             user: {
-                UserName: $("#ModUserName").val(),
+                Username: $("#ModUserName").val(),
                 UserImageLocation: $("#ModUserImageLocation").val(),
                 IsApproved: $("#ModUserIsActiveBox").is(":checked"),
                 UserID: self.EditUserId,
@@ -197,16 +200,19 @@ user_class.prototype.manageUserAdminEvents = function () {
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data, null, 2),
-            success: function (data) {
-
+            success: function (result) {
                 common.hideAjaxLoader($container);
-                noty({ text: data.message, type: data.success ? 'success' : 'error', timeout: 3000 });
+                if (result.success) {
+                    noty({ text: result.message, type: result.success ? 'success' : 'error', timeout: 3000 });
 
-                //Refresh the inner content to show the new user
-                if (data.success) {
-                    // Close the dialog box
-                    $('#ModifyUserModal').modal('hide');
-                    self.refreshUserTable();
+                    //Refresh the inner content to show the new user
+                    if (result.success) {
+                        // Close the dialog box
+                        $('#ModifyUserModal').modal('hide');
+                        self.refreshUserTable();
+                    }
+                } else {
+                    $('#ModifyUserModal .user-error').text(result.message).removeClass('hide');
                 }
             },
             error: function (data) {
