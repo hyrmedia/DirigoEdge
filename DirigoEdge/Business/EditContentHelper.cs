@@ -31,7 +31,7 @@ namespace DirigoEdge.Business
             model.EditURL = "editcontent";
 
             var contentLoader = new ContentLoader();
-            model.ContentPage.Details = contentLoader.GetDetailById(id);
+            model.ContentPage.Details = contentLoader.GetDetailsById(id);
 
             var ext = _context.ContentPageExtensions.FirstOrDefault(ex => ex.ContentPageId == id);
             Mapper.Map(ext, model.ContentPage);

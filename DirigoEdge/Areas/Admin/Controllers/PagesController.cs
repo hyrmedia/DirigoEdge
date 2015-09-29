@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
@@ -174,7 +175,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
         [PermissionsFilter(Permissions = "Can Edit Pages")]
         public ActionResult PreviewContent(int id)
         {
-            var model = new ContentViewViewModel { ThePage = ContentLoader.GetDetailById(id) };
+            var model = new ContentViewViewModel { ThePage = ContentLoader.GetDetailsById(id) };
             model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
             model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent);
 
@@ -184,7 +185,7 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 return View(model.TheTemplate.ViewLocation, model);
             }
 
-            model = new ContentViewViewModel { ThePage = ContentLoader.GetDetailsByTitle("404") };
+            model = new ContentViewViewModel { ThePage = ContentLoader.GetDetailsById(Convert.ToInt16(ConfigurationManager.AppSettings["404ContentPageId"])) };
 
             model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
             model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent);

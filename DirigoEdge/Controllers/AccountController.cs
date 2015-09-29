@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -219,14 +220,14 @@ namespace DirigoEdge.Controllers
                 return View(model.TheTemplate.ViewLocation, model);
             }
 
-            model = new ContentViewViewModel { ThePage = ContentLoader.GetDetailsByTitle("404") };
+            model = new ContentViewViewModel { ThePage = ContentLoader.GetDetailsById(Convert.ToInt16(ConfigurationManager.AppSettings["404ContentPageId"])) };
 
             model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
             model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent);
 
             ViewBag.IsPage = true;
             ViewBag.PageId = model.ThePage.ContentPageId;
-            ViewBag.IsPublished = model.ThePage.IsActive;
+            return ViewBag.IsPublished = model.ThePage.IsActive;
             ViewBag.Title = model.ThePage.Title;
             ViewBag.Index = "noindex";
             ViewBag.Follow = "nofollow";
