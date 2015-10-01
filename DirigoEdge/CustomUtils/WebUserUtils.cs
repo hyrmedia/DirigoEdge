@@ -33,32 +33,31 @@ namespace DirigoEdge.CustomUtils
             VerifyChangeIsValid(user, editUser, currentUsername);
             UpdateUserValues(user, editUser);
 
-            if (user.Username != currentUsername)
-            {
-                FormsAuthentication.SignOut();
-                FormsAuthentication.SetAuthCookie(user.Username, false);
-            }
-
             if (user.Roles == null)
             {
                 throw new Exception("There was an error processing your request.");
             }
 
-            // Modify the user roles
-            // First delete existing roles
-            foreach (var role in editUser.Roles.ToList())
-            {
-                RemoveUserFromFole(user, role, cfrp);
-            }
-            
-            foreach (var role in user.Roles)
-            {
-                AssignUserToRole(user, role, cfrp);
-            }
-
             try
             {
+
+                foreach (var role in editUser.Roles.ToList())
+                {
+                    RemoveUserFromFole(user, role, cfrp);
+                }
+
+                foreach (var role in user.Roles)
+                {
+                    AssignUserToRole(user, role, cfrp);
+                }
+
                 Context.SaveChanges();
+
+                if (user.Username != currentUsername)
+                {
+                    FormsAuthentication.SignOut();
+                    FormsAuthentication.SetAuthCookie(user.Username, false);
+                }
             }
             catch (Exception e)
             {
@@ -79,7 +78,7 @@ namespace DirigoEdge.CustomUtils
         public void AddNewUser(User user)
         {
             var cfrp = new CodeFirstRoleProvider(Context);
-            
+
             VerfiyNewUserIsValid(user);
 
             WebSecurity.CreateUserAndAccount(user.Username, user.Password, user.TimeZone, user.Email);
@@ -129,7 +128,7 @@ namespace DirigoEdge.CustomUtils
             {
                 Roles.RemoveUserFromRole(userToDelete.Username, role);
             }
-            
+
             var eventModule = Context.EventAdminModules.Where(x => x.User.UserId == userToDelete.UserId);
             Context.EventAdminModules.RemoveRange(eventModule);
 
@@ -184,8 +183,8 @@ namespace DirigoEdge.CustomUtils
             {
                 Roles.AddUserToRole(user.Username, role.RoleName);
             }
-            
-            cfrp.AddUsersToRoles(new[] {user.Username}, new[] {role.RoleName});
+
+            cfrp.AddUsersToRoles(new[] { user.Username }, new[] { role.RoleName });
         }
 
         public void RemoveUserFromFole(User user, Role role, RoleProvider cfrp)
@@ -193,11 +192,11 @@ namespace DirigoEdge.CustomUtils
             var rolesList = user.Roles.Select(a => a.RoleName).ToList();
             var userRoles = Context.Roles.Where(x => rolesList.Contains(role.RoleName)).ToList();
             var foundRole = !userRoles.Contains(role);
-            
+
             if (foundRole)
             {
                 Roles.RemoveUserFromRole(user.Username, role.RoleName);
-                cfrp.RemoveUsersFromRoles(new[] {user.Username}, new[] {role.RoleName});
+                cfrp.RemoveUsersFromRoles(new[] { user.Username }, new[] { role.RoleName });
             }
         }
 
