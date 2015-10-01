@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
@@ -22,19 +23,19 @@ namespace DirigoEdge.Controllers
             var thisUri = new Uri(Request.Url.GetLeftPart(UriPartial.Path));
 
             // Check for content pages before returning a 404
-            var title = GetPageTitle(thisUri);
+            var fullPath = GetPageFullPath(thisUri);
 
             // If url has a subdirectory, try the master url list to see if it is a child page
-            bool hasSubDirectory = title.Contains("/");
+            bool hasSubDirectory = fullPath.Contains("/");
             if (hasSubDirectory)
             {
-                model = GetSubDirectoryModel(title);
+                model = GetSubDirectoryModel(fullPath);
             }
 
             // If not a subdirectory try based on permalink / title
             if (model == null || model.ThePage == null)
             {
-                model = new ContentViewViewModel { ThePage = ContentLoader.GetDetailsByTitle(title) };
+                model = new ContentViewViewModel { ThePage = ContentLoader.GetDetailsByPermalink(fullPath) };
                 
             }
 
@@ -58,7 +59,7 @@ namespace DirigoEdge.Controllers
                     pageModel.IsBookmarked =
                         Context.Bookmarks.Any(
                             bookmark =>
-                                bookmark.Title == title && bookmark.Url == Request.RawUrl &&
+                                bookmark.Title == fullPath && bookmark.Url == Request.RawUrl &&
                                 bookmark.UserId == user.UserId);
                     
 
@@ -84,7 +85,7 @@ namespace DirigoEdge.Controllers
                 return View(model.TheTemplate.ViewLocation, model);
             }
 
-            model = new ContentViewViewModel { ThePage = ContentLoader.GetDetailsByTitle("404") };
+            model = new ContentViewViewModel { ThePage = ContentLoader.GetDetailsById(Convert.ToInt16(ConfigurationManager.AppSettings["404ContentPageId"])) };
 
             model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
             model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent);
@@ -123,7 +124,7 @@ namespace DirigoEdge.Controllers
             return result;
         }
 
-        private static string GetPageTitle(Uri thisUri)
+        private static string GetPageFullPath(Uri thisUri)
         {
             string title = thisUri.PathAndQuery;
 
@@ -168,7 +169,7 @@ namespace DirigoEdge.Controllers
 
             if (thePage == null) return null;
 
-            var model = new ContentViewViewModel { ThePage = ContentLoader.GetDetailById(thePage.ContentPageId) };
+            var model = new ContentViewViewModel { ThePage = ContentLoader.GetDetailsById(thePage.ContentPageId) };
 
             return model;
         }

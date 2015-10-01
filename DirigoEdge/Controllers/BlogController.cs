@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Web.Mvc;
@@ -89,7 +90,7 @@ namespace DirigoEdge.Controllers
         {
             get
             {
-                var model = new ContentViewViewModel { ThePage = ContentLoader.GetDetailsByTitle("404") };
+                var model = new ContentViewViewModel { ThePage = ContentLoader.GetDetailsById(Convert.ToInt16(ConfigurationManager.AppSettings["404ContentPageId"])) };
 
                 model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
                 model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent);
