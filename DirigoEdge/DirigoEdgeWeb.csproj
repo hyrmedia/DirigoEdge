@@ -254,6 +254,7 @@
     <Compile Include="Areas\Admin\Models\ViewModels\ManageUsersViewModel.cs" />
     <Compile Include="CustomUtils\SystemTime.cs" />
     <Compile Include="CustomUtils\TimeUtils.cs" />
+    <Compile Include="CustomUtils\WebUserUtils.cs" />
     <Compile Include="SettingsInitializer.cs" />
     <Content Include="Areas\Admin\CSS\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Areas\Admin\CSS\images\ajaxLoader.gif" />
