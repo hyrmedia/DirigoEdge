@@ -194,20 +194,47 @@ namespace DirigoEdge.Areas.Admin.Controllers
             return result;
         }
 
-
+        public class UserForRoleComparison
+        {
+            public Guid UserId { get; set; }
+            public String Username { get; set; }
+        }
         public class RoleUsersModel
         {
-            public Role Role { get; set;}
-            public List<User>  Users { get; set; }
+            public List<UserForRoleComparison> UsersInRole { get; set; }
+            public List<UserForRoleComparison> UsersNotInRole { get; set; }
         }
 
         [PermissionsFilter(Permissions = "Can Edit Users")]
-        public ActionResult GetRoleUsers(string RoleName)
+        public ActionResult GetRoleUsers(string roleId)
         {
+            // find the role
+            var roleIdGuid = new Guid(roleId);
+            var role = Context.Roles.FirstOrDefault(x => x.RoleId == roleIdGuid);
+
+            // need role users
+            var roleUsers = role.Users;
+
+            // get the users in that role selected into new model
+            var queryUsersInRole =
+                roleUsers.Select(x => new UserForRoleComparison { UserId = x.UserId, Username = x.Username }).ToList();
+            var usersInRole = new List<UserForRoleComparison>();
+            usersInRole.AddRange(queryUsersInRole);
+
+
+            // get users not in role selected into new model
+            var tempUsers = roleUsers.Select(x => x.UserId).ToList();
+            var queryUsersNotInRole = Context.Users
+                .Where(x => !tempUsers.Contains(x.UserId))
+                .Select(x => new UserForRoleComparison { UserId = x.UserId, Username = x.Username }).ToList();
+            var usersNotInRole = new List<UserForRoleComparison>();
+            usersNotInRole.AddRange(queryUsersNotInRole);
+
+
             var model = new RoleUsersModel
             {
-                Role = Context.Roles.Where(x => x.RoleName == RoleName).ToList().FirstOrDefault(),
-                Users = Context.Users.ToList()
+                UsersInRole = usersInRole,
+                UsersNotInRole = usersNotInRole
             };
 
             return View("~/Areas/Admin/Views/Shared/Partials/GetRoleUsers.cshtml", model);

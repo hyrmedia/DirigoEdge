@@ -184,7 +184,7 @@ event_class.prototype.addEventEvents = function() {
             return false;
         }
         
-        if ($('[data-field="StartDate"]').val() > $('[data-field="EndDate"]').val()) {
+        if (Date.parse($('[data-field="StartDate"]').val()) > Date.parse($('[data-field="EndDate"]').val())) {
             alert("Please enter end date greater than or equal to start date. For one day events, enter start date same as end date");
             return false;
         }
