@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Diagnostics;
 using System.Net;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -21,7 +22,7 @@ namespace SmokeTests
                 BaseUrl = "http://smoketest.qa.dirigodev.com/";
             }
 
-            Console.WriteLine("Testing " + BaseUrl);
+            Trace.WriteLine("Testing " + BaseUrl);
         }
 
         protected static HttpWebResponse GetResponseFromUrl(String url)
