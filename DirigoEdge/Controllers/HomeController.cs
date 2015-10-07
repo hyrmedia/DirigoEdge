@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
@@ -18,7 +19,7 @@ namespace DirigoEdge.Controllers
 	{
 		public ActionResult Index()
 		{
-		    var model = new ContentViewViewModel {ThePage = ContentLoader.GetDetailsByTitle("home")};
+		    var model = new ContentViewViewModel {ThePage = ContentLoader.GetDetailsByPermalink("home")};
 
 		    if (model.ThePage != null)
             {
@@ -41,7 +42,7 @@ namespace DirigoEdge.Controllers
                 return View(model.TheTemplate.ViewLocation, model);
             }
 
-            model = new ContentViewViewModel { ThePage = ContentLoader.GetDetailsByTitle("404") };
+            model = new ContentViewViewModel { ThePage = ContentLoader.GetDetailsById(Convert.ToInt16(ConfigurationManager.AppSettings["404ContentPageId"])) };
 
             model.TheTemplate = ContentLoader.GetContentTemplate(model.ThePage.Template);
             model.PageData = ContentUtils.GetFormattedPageContentAndScripts(model.ThePage.HTMLContent);
