@@ -65,6 +65,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AdminTests.cs" />
     <Compile Include="FrontEndTest.cs" />
     <Compile Include="SmokeTestScaffolds.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
