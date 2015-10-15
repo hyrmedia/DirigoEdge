@@ -189,8 +189,13 @@ navBuilder_class.prototype.initSaveEvent = function () {
                     noty({ text: 'Navigation saved successfully!', type: 'success', timeout: 1200 });
                     $err.addClass('hide').html('');
                 } else {
-                    noty({ text: 'Navigation not saved.', type: 'error', timeout: 3000 });
-                    $err.removeClass('hide').html(data.message);
+                    noty({ text: data.message, type: 'error', timeout: 3000 });
+                    $err.removeClass('hide').html('Navigation not saved. Navigation item <strong>' +
+                            data.name + '</strong> cannot use <strong>' + data.title + '</strong> as its content page.' +
+                            ' The content page <strong>' + data.title + '</strong> has its parent set to this navigation item. ' +
+                            'Please change the page\'s parent setting ' +
+                            '<a target="_blank" href="/admin/pages/editcontent' + data.id + '">here</a>, ' +
+                            'or set the navigation item\'s page to something different.');
                 }
             },
             error: function (data) {

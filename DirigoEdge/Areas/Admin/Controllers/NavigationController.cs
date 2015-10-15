@@ -160,12 +160,11 @@ namespace DirigoEdge.Areas.Admin.Controllers
                             result.Data = new
                             {
                                 success = false,
-                                message = "Navigation not saved. Navigation item <strong>" +
-                                    navItem.Name + "</strong> cannot use <strong>" + page.Title + "</strong> as its content page." +
-                                     " The content page <strong>" + page.Title + "</strong> has its parent set to this navigation item. " +
-                                    "Please change the page's parent setting " +
-                                     "<a target=\"_blank\" href=\"/admin/pages/editcontent/" + page.ContentPageId + "/\">here</a>, " +
-                                     "or set the navigation item's page to something different."
+                                message = "Navigation not saved.",
+                                name = navItem.Name,
+                                title = page.Title,
+                                id = page.ContentPageId
+
                             };
                             return result;
                         }
