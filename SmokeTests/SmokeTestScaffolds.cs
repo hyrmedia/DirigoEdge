@@ -12,15 +12,15 @@ namespace SmokeTests
     public class SmokeTestScaffolds
     {
         protected IWebDriver Driver;
-        protected static String BaseUrl; 
+        protected static String BaseUrl;
+        protected static String Username;
+        protected static String Password;
 
         public SmokeTestScaffolds()
         {
             BaseUrl = ConfigurationManager.AppSettings["SmoketestUrl"];
-            if (IsNullOrEmpty(BaseUrl))
-            {
-                BaseUrl = "http://smoketest.qa.dirigodev.com/";
-            }
+            Username = ConfigurationManager.AppSettings["Username"];
+            Password = ConfigurationManager.AppSettings["Password"];
 
             Trace.WriteLine("Testing " + BaseUrl);
         }

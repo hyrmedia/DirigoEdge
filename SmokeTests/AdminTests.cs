@@ -28,8 +28,8 @@ namespace SmokeTests
             Assert.IsNotNull(usernameField);
             Assert.IsNotNull(passwordField);
 
-            usernameField.SendKeys("cbelanger");
-            passwordField.SendKeys("Password1!");
+            usernameField.SendKeys(Username);
+            passwordField.SendKeys(Password);
 
             submitButton.Click();
             Thread.Sleep(2000);
