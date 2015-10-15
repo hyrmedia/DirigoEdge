@@ -116,6 +116,8 @@ navBuilder_class.prototype.initSaveEvent = function () {
 
         var $container = $("#BuildList");
         common.showAjaxLoader($container);
+        var $err = $('.navigation-error');
+        $err.addClass('hide').html('');
 
         var ParentNavId = $("#BuildList").attr("data-id");
 
@@ -183,10 +185,17 @@ navBuilder_class.prototype.initSaveEvent = function () {
             data: JSON.stringify(data, null, 2),
             success: function (data) {
                 common.hideAjaxLoader($container);
-                var noty_id = noty({ text: 'Navigation set saved successfully.', type: 'success', timeout: 1200 });
+                if (data.success) {
+                    noty({ text: 'Navigation saved successfully!', type: 'success', timeout: 1200 });
+                    $err.addClass('hide').html('');
+                } else {
+                    noty({ text: 'Navigation not saved.', type: 'error', timeout: 3000 });
+                    $err.removeClass('hide').html(data.message);
+                }
             },
             error: function (data) {
-                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
+                noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
+                $err.addClass('hide').html('');
             }
         });
 
