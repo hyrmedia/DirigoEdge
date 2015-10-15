@@ -18,7 +18,7 @@ namespace SmokeTests
 
         public SmokeTestScaffolds()
         {
-            BaseUrl = ConfigurationManager.AppSettings["SmoketestUrl"] ?? "localhost";
+            BaseUrl = ConfigurationManager.AppSettings["SmoketestUrl"] ?? "http://localhost/";
             Username = ConfigurationManager.AppSettings["Username"] ?? "Username";
             Password = ConfigurationManager.AppSettings["Password"] ?? "Password";
 
