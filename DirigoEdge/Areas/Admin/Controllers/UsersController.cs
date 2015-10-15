@@ -1,18 +1,23 @@
 ﻿using System;
-using System.Linq;
 using System.Web.Mvc;
-using System.Web.Security;
 using DirigoEdge.Areas.Admin.Models;
 using DirigoEdge.Areas.Admin.Models.ViewModels;
 using DirigoEdge.Controllers.Base;
+using DirigoEdge.CustomUtils;
 using DirigoEdgeCore.Data.Entities;
-using DirigoEdgeCore.Membership;
-using DirigoEdgeCore.Utils;
 
 namespace DirigoEdge.Areas.Admin.Controllers
 {
     public class UsersController : WebBaseAdminController
     {
+
+        private WebUserUtils _webUserUtils { get; set; }
+        protected WebUserUtils WebUserUtils
+        {
+            get { return _webUserUtils ?? (_webUserUtils = new WebUserUtils(Context)); }
+        }
+
+
         [PermissionsFilter(Permissions = "Can Edit Users")]
         public ActionResult ManageUsers()
         {
@@ -20,239 +25,120 @@ namespace DirigoEdge.Areas.Admin.Controllers
             return View(model);
         }
 
+
         [PermissionsFilter(Permissions = "Can Edit Users")]
         public JsonResult ModifyUser(User user)
         {
-            var result = new JsonResult()
+            try
             {
-                Data = new
+                WebUserUtils.UpdateUser(user);
+                return new JsonResult
                 {
-                    success = false,
-                    message = "There was an error processing your request."
-                }
-            };
-
-            if (!String.IsNullOrEmpty(user.UserId.ToString()))
+                    Data = new
+                    {
+                        success = true,
+                        message = "Changes saved successfully."
+                    }
+                };
+            }
+            catch (Exception ex)
             {
-                var cfrp = new CodeFirstRoleProvider(Context);
-                var editUser = Context.Users.FirstOrDefault(x => x.UserId == user.UserId);
-                var currentUsername = UserUtils.CurrentMembershipUsername();
-                if (editUser == null)
+                return new JsonResult
                 {
-                    return result;
-                }
-                if (!user.IsApproved && currentUsername == editUser.Username)
-                {
-                    result.Data = new
+                    Data = new
                     {
                         success = false,
-                        message = "Current user cannot be deactivated."
-                    };
-                    return result;
-                }
-                editUser.Username = user.Username;
-                editUser.FirstName = user.FirstName;
-                editUser.LastName = user.LastName;
-                editUser.Email = user.Email;
-                editUser.UserImageLocation = user.UserImageLocation;
-                editUser.IsApproved = user.IsApproved;
-
-                if (user.Roles != null)
-                {
-                    // Modify the user roles
-                    // First delete existing roles
-                    foreach (var role in editUser.Roles.ToList())
-                    {
-                        // get current role for comparison
-                        var rolesList = user.Roles.Select(a => a.RoleName).ToList();
-                        var userRoles = Context.Roles.Where(x => rolesList.Contains(role.RoleName)).ToList();
-                        var foundRole = !userRoles.Contains(role);
-
-                        // Only remove roles if it's not in the new set
-                        if (foundRole)
-                        {
-                            Roles.RemoveUserFromRole(user.Username, role.RoleName);
-                            cfrp.RemoveUsersFromRoles(new string[] {user.Username}, new string[] {role.RoleName});
-                        }
+                        message = ex.Message
                     }
-
-
-                    // Add the asigned roles
-                    foreach (var role in user.Roles)
-                    {
-                        // Add to Membership Framework
-                        if (!Roles.IsUserInRole(user.Username, role.RoleName))
-                        {
-                            Roles.AddUserToRole(user.Username, role.RoleName);
-                        }
-
-                        // Add to CodeFirst as well
-                        cfrp.AddUsersToRoles(new string[] {user.Username}, new string[] {role.RoleName});
-                    }
-                    try
-                    {
-                        Context.SaveChanges();
-                        result.Data = new
-                        {
-                            success = true,
-                            message = "Changes saved successfully."
-                        };
-                    }
-                    catch (Exception e)
-                    {
-                        return result;
-                    }
-                }
+                };
             }
-            return result;
         }
 
         [PermissionsFilter(Permissions = "Can Edit Users")]
         public JsonResult AddUser(User user)
         {
-            var result = new JsonResult()
+            try
             {
-                Data = new
+                WebUserUtils.AddNewUser(user);
+
+                return new JsonResult
                 {
-                    success = false,
-                    message = "There was an error processing your request."
-                }
-            };
-            var cfrp = new CodeFirstRoleProvider(Context);
-
-            var success = 0;
-
-            if (!String.IsNullOrEmpty(user.Username))
-            {
-                // Add to .Net Membership Framework First
-                WebSecurity.CreateUserAndAccount(user.Username, user.Password, user.TimeZone, user.Email);
-
-                // Now add additional fields to  CodeFirst User
-                var newlyAddedUser = Context.Users.FirstOrDefault(x => x.Username == user.Username);
-
-                newlyAddedUser.CreateDate = DateTime.UtcNow;
-                newlyAddedUser.FirstName = user.FirstName;
-                newlyAddedUser.LastName = user.LastName;
-                newlyAddedUser.Email = user.Email;
-                newlyAddedUser.UserImageLocation = user.UserImageLocation;
-                newlyAddedUser.IsApproved = user.IsApproved;
-                success = Context.SaveChanges();
-
-                // Add the asigned roles
-                if (user.Roles != null && user.Roles.Any())
-                {
-                    foreach (var role in user.Roles)
+                    Data = new
                     {
-                        // Add to Membership Framework
-                        Roles.AddUserToRole(user.Username, role.RoleName);
-
-                        // Add to CodeFirst as well
-                        cfrp.AddUsersToRoles(new string[] { user.Username }, new string[] { role.RoleName });
+                        success = true,
+                        message = "User added successfully."
                     }
-                }
-            }
-
-            if (success > 0)
-            {
-                result.Data = new
-                {
-                    success = true,
-                    message = "User added successfully."
                 };
             }
-            return result;
+            catch (Exception ex)
+            {
+                return new JsonResult
+                {
+                    Data = new
+                    {
+                        success = false,
+                        message = ex.Message
+                    }
+                };
+            }
         }
-
 
         [PermissionsFilter(Permissions = "Can Edit Users")]
         public JsonResult DeleteUser(User user)
         {
-            var result = new JsonResult()
+
+            try
             {
-                Data = new
+                WebUserUtils.DeleteUser(user.UserId);
+                return new JsonResult
                 {
-                    success = false,
-                    message = "There was an error processing your request."
-                }
-            };
-
-            var success = 0;
-
-            if (!String.IsNullOrEmpty(user.UserId.ToString()))
-            {
-                var UserToDelete = Context.Users.FirstOrDefault(x => x.UserId == user.UserId);
-
-                // Make sure user even exists
-                if (UserToDelete == null)
-                {
-                    return result;
-                }
-
-                // Clean up Roles First
-                foreach (var role in Roles.GetRolesForUser(UserToDelete.Username))
-                {
-                    Roles.RemoveUserFromRole(UserToDelete.Username, role);
-                }
-
-                // Clean Up CodeFirst Items
-                var eventModule = Context.EventAdminModules.Where(x => x.User.UserId == UserToDelete.UserId);
-                Context.EventAdminModules.RemoveRange(eventModule);
-
-                var blogModule = Context.BlogAdminModules.Where(x => x.User.UserId == UserToDelete.UserId);
-                Context.BlogAdminModules.RemoveRange(blogModule);
-
-                success = Context.SaveChanges();
-
-                // Finally Delete From Membership
-                WebSecurity.DeleteUser(UserToDelete.Username);
-            }
-
-            if (success > 0)
-            {
-                result.Data = new
-                {
-                    success = true,
-                    message = "User successfully deleted."
+                    Data = new
+                    {
+                        success = true,
+                        message = "User successfully deleted."
+                    }
                 };
             }
-
-            return result;
+            catch (Exception ex)
+            {
+                return new JsonResult
+                {
+                    Data = new
+                    {
+                        success = false,
+                        message = ex.Message
+                    }
+                };
+            }
         }
 
         [PermissionsFilter(Permissions = "Can Edit Users")]
         public JsonResult ChangeUserPassword(User user, string newPassword)
         {
-            var result = new JsonResult()
+            try
             {
-                Data = new
+                WebUserUtils.ChangePassword(user.UserId, newPassword);
+
+                return new JsonResult
                 {
-                    success = false,
-                    message = "There was an error processing your request."
-                }
-            };
-
-            var success = 0;
-            if (!String.IsNullOrEmpty(user.UserId.ToString()))
-            {
-                var userToUpdate = Context.Users.FirstOrDefault(x => x.UserId == user.UserId);
-                var cfmp = new CodeFirstMembershipProvider();
-
-                cfmp.ChangePassword(userToUpdate.Username, newPassword);
-
-                success = Context.SaveChanges();
-            }
-
-            if (success > 0)
-            {
-                result.Data = new
-                {
-                    success = true,
-                    message = "Password changed."
+                    Data = new
+                    {
+                        success = true,
+                        message = "Password changed."
+                    }
                 };
             }
-
-            return result;
+            catch (Exception ex)
+            {
+                return new JsonResult
+                {
+                    Data = new
+                    {
+                        success = false,
+                        message = "There was an error processing your request."
+                    }
+                };
+            }
         }
-
     }
 }

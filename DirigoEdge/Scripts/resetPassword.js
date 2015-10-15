@@ -65,8 +65,6 @@ reset_password_class.prototype.initChangePasswordEvents = function () {
                 // Show message
                 if (password != cpassword) {
                     $msgContainer.html('<div class="alert-box alert">Passwords must match</div>');
-                } else {
-                    $msgContainer.html('<div class="alert-box alert">Must be at least 12 characters, contain one uppercase letter, one lowercase letter, one number, and one special character (!&#64;#$&*)</div>');
                 }
             }
 

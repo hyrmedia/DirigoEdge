@@ -55,6 +55,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SmokeTest|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.dll</HintPath>
@@ -62,8 +65,8 @@
     <Reference Include="AutoMapper.Net4">
       <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
-    <Reference Include="DirigoEdgeCore, Version=1.5.11.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DirigoEdgeCore.1.5.11.0\lib\net45\DirigoEdgeCore.dll</HintPath>
+    <Reference Include="DirigoEdgeCore, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DirigoEdgeCore.1.9.0.0\lib\net45\DirigoEdgeCore.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -254,6 +257,7 @@
     <Compile Include="Areas\Admin\Models\ViewModels\ManageUsersViewModel.cs" />
     <Compile Include="CustomUtils\SystemTime.cs" />
     <Compile Include="CustomUtils\TimeUtils.cs" />
+    <Compile Include="CustomUtils\WebUserUtils.cs" />
     <Compile Include="SettingsInitializer.cs" />
     <Content Include="Areas\Admin\CSS\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Areas\Admin\CSS\images\ajaxLoader.gif" />
@@ -433,6 +437,15 @@
     <Content Include="CSS\images\ui-icons_ffffff_256x240.png" />
     <Content Include="CSS\main.css" />
     <Content Include="gulpfile.js" />
+    <Content Include="Scripts\ckeditor\plugins\icons_hidpi.png" />
+    <Content Include="Scripts\ckeditor\plugins\magicline\images\hidpi\icon-rtl.png" />
+    <Content Include="Scripts\ckeditor\plugins\magicline\images\hidpi\icon.png" />
+    <Content Include="Scripts\ckeditor\plugins\magicline\images\icon-rtl.png" />
+    <Content Include="Scripts\ckeditor\skins\moono\hidpi\close.png" />
+    <Content Include="Scripts\ckeditor\skins\moono\hidpi\lock-open.png" />
+    <Content Include="Scripts\ckeditor\skins\moono\hidpi\lock.png" />
+    <Content Include="Scripts\ckeditor\skins\moono\hidpi\refresh.png" />
+    <Content Include="Scripts\ckeditor\skins\moono\icons_hidpi.png" />
     <Content Include="Scripts\Edge\ajax-service.js" />
     <Content Include="Scripts\Edge\Edge.js" />
     <Content Include="Scripts\moment-timezone.js" />
@@ -1357,7 +1370,6 @@
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
-  <Import Project="..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets')" />
   <Import Project="..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
