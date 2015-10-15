@@ -137,6 +137,9 @@ namespace DirigoEdge.Areas.Admin.Controllers
             var nav = Context.Navigations.FirstOrDefault(x => x.NavigationId == navigationId);
             nav.Name = name;
 
+            // get all content pages to be able to search
+            var allPages = Context.ContentPages.Where(x => x.IsActive == true).ToList();
+
             // Make sure Nav Items aren't null
             items = items ?? new List<NavigationItem>();
 
@@ -146,6 +149,26 @@ namespace DirigoEdge.Areas.Admin.Controllers
                 var item = Context.NavigationItems.FirstOrDefault(x => x.NavigationItemId == navItem.NavigationItemId);
                 if (item != null)
                 {
+                    var contentPageId = navItem.ContentPageId;
+                    if (navItem.UsesContentPage)
+                    {
+                        // make sure the content page it uses doesn't have it set as a parent
+                        var page = allPages.FirstOrDefault(x => x.ContentPageId == contentPageId);
+                        if (page != null && page.ParentNavigationItemId == navItem.NavigationItemId)
+                        {
+                            // this nav item is trying to use a page that has it set as the parent, infinite loop
+                            result.Data = new
+                            {
+                                success = false,
+                                message = "Navigation not saved.",
+                                name = navItem.Name,
+                                title = page.Title,
+                                id = page.ContentPageId
+
+                            };
+                            return result;
+                        }
+                    }
                     item.Name = navItem.Name;
                     item.Href = navItem.Href;
                     item.Order = navItem.Order;
@@ -163,9 +186,9 @@ namespace DirigoEdge.Areas.Admin.Controllers
             if (success > 0)
             {
                 // Clear the cache of the nav on save
-                CachedObjects.GetCacheNavigationList(0, true);      
+                CachedObjects.GetCacheNavigationList(0, true);
 
-                BookmarkUtil.DeleteBookmarkForUrl("/admin/navigation/editnav/" + navigationId +"/");
+                BookmarkUtil.DeleteBookmarkForUrl("/admin/navigation/editnav/" + navigationId + "/");
 
                 result.Data = new
                 {
