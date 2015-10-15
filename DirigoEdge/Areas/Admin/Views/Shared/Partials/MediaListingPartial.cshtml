@@ -18,7 +18,7 @@
             <tr>
                 <td class="thumb hidden-xs">
                     <div class="image @media.FileExtensionClass" data-image="@media.IsImage.ToString().ToLower()" data-thumb="@(thumbPath)@media.ThumbnailPath">
-                        @if (!media.IsImage && !media.Path.Contains(".svg"))
+                        @if (!media.IsImage)
                         {
                             <i class="fa fa-file-text"></i>
                         }
