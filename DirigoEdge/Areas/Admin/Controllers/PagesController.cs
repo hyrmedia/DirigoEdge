@@ -447,6 +447,13 @@ namespace DirigoEdge.Areas.Admin.Controllers
                     message = ""
                 }
             };
+
+            // if id == 0, this is not a content page, we are not verifying permalink, should be from event call, just return
+            if (id < 1)
+            {
+                return result;
+            }
+
             var contentUtility = new ContentUtils();
 
             // check to see if permalink exists
