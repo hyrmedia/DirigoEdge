@@ -15,6 +15,9 @@ content_class.prototype.initPageEvents = function () {
         this.initWordWrapEvents();
         this.initContentImageUploadEvents();
         this.initModuleUploadEvents();
+
+        // permalink
+        this.initPermaLinkEvents();
     }
 
     if ($("div.manageContent").length > 0) {
@@ -36,9 +39,6 @@ content_class.prototype.initPageEvents = function () {
 
     // Generate Url Structure
     this.initParentCategoryEvents();
-
-    // permalink
-    this.initPermaLinkEvents();
 };
 
 content_class.prototype.initWordWrapEvents = function () {

@@ -30,7 +30,7 @@ EDGE.prototype.ajaxGet = function (data, url, success, error) {
     return $.ajax({
         url: url,
         type: 'GET',
-        data: data ? JSON.stringify(data, null, 2) : null,
+        data: data,
         contentType: 'application/json; charset=utf-8',
         success: success,
         error: error
