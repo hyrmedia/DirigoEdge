@@ -30,5 +30,7 @@ CKEDITOR.editorConfig = function( config ) {
 	config.removePlugins = 'magicline';
 	config.extraPlugins = 'codemirror,insertimage';
 	config.disableNativeSpellChecker = false;
-    config.allowedContent = true;
+	config.allowedContent = true;
+
+    config.title = false;
 };
