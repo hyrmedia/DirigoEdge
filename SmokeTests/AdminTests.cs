@@ -1,48 +1,30 @@
 ﻿using System;
-using System.Threading;
 using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
+using SmokeTests.Models;
 
 namespace SmokeTests
 {
     [TestFixture]
     public class AdminTests : SmokeTestScaffolds
     {
+        private UserActions UserActions { get; set; }
+
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            Driver = new ChromeDriver();
+            Driver = WebDriverFactory.GetDefaultDriver();
             Driver.Manage().Timeouts().ImplicitlyWait(new TimeSpan(0, 0, 30));
-        }
-
-        public class LoginFields
-        {
-            public IWebElement UsernameField { get; set; }
-            public IWebElement PasswordField { get; set; }
-            public IWebElement SubmitButton { get; set; }
-        }
-
-        public LoginFields LoadLoginPage()
-        {
-            Driver.Navigate().GoToUrl(BaseUrl + "/account/login/");
-
-            return new LoginFields
-            {
-                UsernameField = Driver.FindElement(By.Id("UserName")),
-                PasswordField = Driver.FindElement(By.Id("Password")),
-                SubmitButton = Driver.FindElement(By.ClassName("btn-default"))
-            };
+            UserActions = new UserActions(Driver, BaseUrl);
         }
 
         [Test]
         public void LoginTest()
         {
-            var fields = LoadLoginPage();
+            var fields = UserActions.NavigateToLoginPage();
 
             AssertLoginPageFields(fields);
 
-            SendLogin(fields);
+            UserActions.SendLogin(fields, Username, Password);
 
             Driver.Navigate().GoToUrl(BaseUrl + "admin/");
 
@@ -56,20 +38,10 @@ namespace SmokeTests
             Assert.IsNotNull(fields.SubmitButton);
         }
 
-        public static void SendLogin(LoginFields fields)
-        {
-            fields.UsernameField.SendKeys(Username);
-            fields.PasswordField.SendKeys(Password);
-
-            fields.SubmitButton.Click();
-            Thread.Sleep(2000);
-        }
-
-
         public void Login()
         {
-            var fields = LoadLoginPage();
-            SendLogin(fields);
+            var fields = UserActions.NavigateToLoginPage();
+            UserActions.SendLogin(fields, Username, Password);
         }
 
         [Test]
