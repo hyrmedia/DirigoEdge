@@ -16,25 +16,66 @@ namespace SmokeTests
             Driver.Manage().Timeouts().ImplicitlyWait(new TimeSpan(0, 0, 30));
         }
 
-        [Test]
-        public void Login()
+        public class LoginFields
+        {
+            public IWebElement UsernameField { get; set; }
+            public IWebElement PasswordField { get; set; }
+            public IWebElement SubmitButton { get; set; }
+        }
+
+        public LoginFields LoadLoginPage()
         {
             Driver.Navigate().GoToUrl(BaseUrl + "/account/login/");
 
-            var usernameField = Driver.FindElement(By.Id("UserName"));
-            var passwordField = Driver.FindElement(By.Id("Password"));
-            var submitButton = Driver.FindElement(By.ClassName("btn-default"));
+            return new LoginFields
+            {
+                UsernameField = Driver.FindElement(By.Id("UserName")),
+                PasswordField = Driver.FindElement(By.Id("Password")),
+                SubmitButton = Driver.FindElement(By.ClassName("btn-default"))
+            };
+        }
 
-            Assert.IsNotNull(usernameField);
-            Assert.IsNotNull(passwordField);
+        [Test]
+        public void LoginTest()
+        {
+            var fields = LoadLoginPage();
 
-            usernameField.SendKeys(Username);
-            passwordField.SendKeys(Password);
+            AssertLoginPageFields(fields);
 
-            submitButton.Click();
-            Thread.Sleep(2000);
+            SendLogin(fields);
+
             Driver.Navigate().GoToUrl(BaseUrl + "admin/");
+
             Assert.AreEqual("Edge Dashboard", Driver.Title);
+        }
+
+        private void AssertLoginPageFields(LoginFields fields)
+        {
+            Assert.IsNotNull(fields.UsernameField);
+            Assert.IsNotNull(fields.PasswordField);
+            Assert.IsNotNull(fields.SubmitButton);
+        }
+
+        public static void SendLogin(LoginFields fields)
+        {
+            fields.UsernameField.SendKeys(Username);
+            fields.PasswordField.SendKeys(Password);
+
+            fields.SubmitButton.Click();
+            Thread.Sleep(2000);
+        }
+
+
+        public void Login()
+        {
+            var fields = LoadLoginPage();
+            SendLogin(fields);
+        }
+
+        [Test]
+        public void CreatePage()
+        {
+            Login();
         }
     }
 }

@@ -4,11 +4,9 @@ using System.Diagnostics;
 using System.Net;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using static System.String;
 
 namespace SmokeTests
 {
-    [TestFixture]
     public class SmokeTestScaffolds
     {
         protected IWebDriver Driver;
@@ -18,9 +16,9 @@ namespace SmokeTests
 
         public SmokeTestScaffolds()
         {
-            BaseUrl = ConfigurationManager.AppSettings["SmoketestUrl"] ?? "http://localhost/";
-            Username = ConfigurationManager.AppSettings["Username"] ?? "Username";
-            Password = ConfigurationManager.AppSettings["Password"] ?? "Password";
+            BaseUrl = ConfigurationManager.AppSettings["SmoketestUrl"] ?? "http://smoketest.qa.dirigodev.com/";
+            Username = ConfigurationManager.AppSettings["Username"] ?? "cbelanger";
+            Password = ConfigurationManager.AppSettings["Password"] ?? "Password1!";
 
             Trace.WriteLine("Testing " + BaseUrl);
         }
