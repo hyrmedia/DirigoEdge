@@ -4,25 +4,26 @@ using System.Diagnostics;
 using System.Net;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using static System.String;
 
 namespace SmokeTests
 {
-    [TestFixture]
     public class SmokeTestScaffolds
     {
-        protected IWebDriver Driver;
-        protected static String BaseUrl;
-        protected static String Username;
-        protected static String Password;
+        protected IWebDriver Driver { get; set; } 
+        protected static String BaseUrl { get; set; } = ConfigurationManager.AppSettings["SmoketestUrl"] ?? "http://localhost/";
+        protected static String Username { get; set; } = ConfigurationManager.AppSettings["Username"] ?? "Username";
+        protected static String Password { get; set; } = ConfigurationManager.AppSettings["Password"] ?? "Password";
 
         public SmokeTestScaffolds()
         {
-            BaseUrl = ConfigurationManager.AppSettings["SmoketestUrl"] ?? "http://localhost/";
-            Username = ConfigurationManager.AppSettings["Username"] ?? "Username";
-            Password = ConfigurationManager.AppSettings["Password"] ?? "Password";
+            LogTestParameters();
+        }
 
-            Trace.WriteLine("Testing " + BaseUrl);
+        private static void LogTestParameters()
+        {
+            Trace.WriteLine("Testing: " + BaseUrl);
+            Trace.WriteLine("Username: " + Username);
+            Trace.WriteLine("Password: " + Password);
         }
 
         protected static HttpWebResponse GetResponseFromUrl(String url)
