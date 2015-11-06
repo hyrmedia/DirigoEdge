@@ -27,8 +27,8 @@ namespace SmokeTests
         [Test]
         public void ValidateHomePage()
         {
-            Driver.Navigate().GoToUrl(BaseUrl);
-           Console.WriteLine(Driver.PageSource);
+            Driver.NavigateToUrl(BaseUrl);
+            Console.WriteLine(Driver.PageSource);
             Driver.FindElement(By.CssSelector(".contentPage"));
         }
         #endregion
@@ -43,7 +43,7 @@ namespace SmokeTests
         [Test]
         public void ValidateBlogListing()
         {
-            Driver.Navigate().GoToUrl(BaseUrl + "blog");
+            Driver.NavigateToUrl(BaseUrl + "blog");
             Driver.FindElement(By.CssSelector(".blogListing"));
         }
         #endregion

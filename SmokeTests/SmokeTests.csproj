@@ -66,6 +66,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AdminTests.cs" />
+    <Compile Include="DriverExtensions.cs" />
     <Compile Include="FrontEndTest.cs" />
     <Compile Include="Models\LoginFields.cs" />
     <Compile Include="SmokeTestScaffolds.cs" />

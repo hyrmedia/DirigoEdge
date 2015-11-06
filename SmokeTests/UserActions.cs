@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using OpenQA.Selenium;
 using SmokeTests.Models;
 
@@ -11,8 +7,8 @@ namespace SmokeTests
 {
     public class UserActions
     {
-        private IWebDriver Driver { get; set; }
-        private String BaseUrl { get; set; }
+        private IWebDriver Driver { get; }
+        private String BaseUrl { get; }
 
         public UserActions(IWebDriver driver, String baseUrl)
         {
@@ -26,7 +22,7 @@ namespace SmokeTests
         /// <returns>The Username and Password Fields and Submit Button needed to log in</returns>
         public LoginFields NavigateToLoginPage()
         {
-            Driver.Navigate().GoToUrl(BaseUrl + "/account/login/");
+            Driver.NavigateToUrl(BaseUrl + "/account/login/");
 
             return new LoginFields
             {
@@ -43,6 +39,12 @@ namespace SmokeTests
 
             fields.SubmitButton.Click();
             Thread.Sleep(2000);
+        }
+
+        public void Login(String username, String password)
+        {
+            var fields = NavigateToLoginPage();
+            SendLogin(fields, username, password);
         }
     }
 }

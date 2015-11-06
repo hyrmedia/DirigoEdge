@@ -26,7 +26,7 @@ namespace SmokeTests
 
             UserActions.SendLogin(fields, Username, Password);
 
-            Driver.Navigate().GoToUrl(BaseUrl + "admin/");
+            Driver.NavigateToUrl(BaseUrl + "admin/");
 
             Assert.AreEqual("Edge Dashboard", Driver.Title);
         }
@@ -38,16 +38,10 @@ namespace SmokeTests
             Assert.IsNotNull(fields.SubmitButton);
         }
 
-        public void Login()
-        {
-            var fields = UserActions.NavigateToLoginPage();
-            UserActions.SendLogin(fields, Username, Password);
-        }
-
         [Test]
         public void CreatePage()
         {
-            Login();
+            UserActions.Login(Username, Password);
         }
     }
 }
