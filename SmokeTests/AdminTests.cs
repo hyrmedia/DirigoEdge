@@ -1,40 +1,53 @@
 ﻿using System;
-using System.Threading;
 using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
+using SmokeTests.Models;
 
 namespace SmokeTests
 {
     [TestFixture]
     public class AdminTests : SmokeTestScaffolds
     {
+        private UserActions UserActions { get; set; }
+
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            Driver = new ChromeDriver();
+            Driver = WebDriverFactory.GetDefaultDriver();
             Driver.Manage().Timeouts().ImplicitlyWait(new TimeSpan(0, 0, 30));
+            UserActions = new UserActions(Driver, BaseUrl);
         }
 
         [Test]
+        public void LoginTest()
+        {
+            var fields = UserActions.NavigateToLoginPage();
+
+            AssertLoginPageFields(fields);
+
+            UserActions.SendLogin(fields, Username, Password);
+
+            Driver.Navigate().GoToUrl(BaseUrl + "admin/");
+
+            Assert.AreEqual("Edge Dashboard", Driver.Title);
+        }
+
+        private void AssertLoginPageFields(LoginFields fields)
+        {
+            Assert.IsNotNull(fields.UsernameField);
+            Assert.IsNotNull(fields.PasswordField);
+            Assert.IsNotNull(fields.SubmitButton);
+        }
+
         public void Login()
         {
-            Driver.Navigate().GoToUrl(BaseUrl + "/account/login/");
+            var fields = UserActions.NavigateToLoginPage();
+            UserActions.SendLogin(fields, Username, Password);
+        }
 
-            var usernameField = Driver.FindElement(By.Id("UserName"));
-            var passwordField = Driver.FindElement(By.Id("Password"));
-            var submitButton = Driver.FindElement(By.ClassName("btn-default"));
-
-            Assert.IsNotNull(usernameField);
-            Assert.IsNotNull(passwordField);
-
-            usernameField.SendKeys(Username);
-            passwordField.SendKeys(Password);
-
-            submitButton.Click();
-            Thread.Sleep(2000);
-            Driver.Navigate().GoToUrl(BaseUrl + "admin/");
-            Assert.AreEqual("Edge Dashboard", Driver.Title);
+        [Test]
+        public void CreatePage()
+        {
+            Login();
         }
     }
 }
