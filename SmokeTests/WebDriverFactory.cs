@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using System;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
 namespace SmokeTests
@@ -7,7 +8,10 @@ namespace SmokeTests
     {
         public static IWebDriver GetDefaultDriver()
         {
-            return new ChromeDriver();
+            var driver = new ChromeDriver();
+            driver.Manage().Timeouts().ImplicitlyWait(new TimeSpan(0, 0, 30));
+
+            return driver;
         }
     }
 }

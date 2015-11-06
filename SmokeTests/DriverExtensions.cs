@@ -8,5 +8,10 @@ namespace SmokeTests
         {
             driver.Navigate().GoToUrl(url);
         }
+
+        public static IWebElement Element(this IWebDriver driver, string selector)
+        {
+            return driver.FindElement(By.CssSelector(selector));
+        }
     }
 }

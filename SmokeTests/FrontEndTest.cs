@@ -13,7 +13,6 @@ namespace SmokeTests
         public void FixtureSetup()
         {
             Driver = WebDriverFactory.GetDefaultDriver();
-            Driver.Manage().Timeouts().ImplicitlyWait(new TimeSpan(0, 0, 30));
         }
 
         #region HomePage
@@ -27,7 +26,7 @@ namespace SmokeTests
         [Test]
         public void ValidateHomePage()
         {
-            Driver.NavigateToUrl(BaseUrl);
+            NavigateToPath(String.Empty);
             Console.WriteLine(Driver.PageSource);
             Driver.FindElement(By.CssSelector(".contentPage"));
         }
@@ -43,7 +42,7 @@ namespace SmokeTests
         [Test]
         public void ValidateBlogListing()
         {
-            Driver.NavigateToUrl(BaseUrl + "blog");
+            NavigateToPath("blog");
             Driver.FindElement(By.CssSelector(".blogListing"));
         }
         #endregion
