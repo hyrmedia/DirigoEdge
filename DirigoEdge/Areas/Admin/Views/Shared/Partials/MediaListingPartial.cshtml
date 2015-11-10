@@ -1,7 +1,7 @@
 ﻿@model List<DirigoEdge.Areas.Admin.Models.ViewModels.Media>
 
 
-<table class="manageTable twelve bordered manageTable">
+<table class="manageTable bordered manageTable">
     <thead>
         <tr>
             <th class="thumb hidden-xs">Preview</th>
@@ -14,9 +14,10 @@
     <tbody>
         @foreach (var media in Model)
         {
+            var thumbPath = media.ThumbnailPath.Contains(".svg") ? "" : "/images/thumbnail";
             <tr>
                 <td class="thumb hidden-xs">
-                    <div class="image @media.FileExtensionClass" data-image="@media.IsImage.ToString().ToLower()" data-thumb="@media.ThumbnailPath">
+                    <div class="image @media.FileExtensionClass" data-image="@media.IsImage.ToString().ToLower()" data-thumb="@(thumbPath)@media.ThumbnailPath">
                         @if (!media.IsImage)
                         {
                             <i class="fa fa-file-text"></i>
