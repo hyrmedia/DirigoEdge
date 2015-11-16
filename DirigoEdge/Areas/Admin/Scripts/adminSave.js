@@ -11,7 +11,6 @@ save_class.prototype.saveAdminData = function ($this) {
     var saveMessage = $this.attr("data-saveMessage") || "Save Successful.";
     var isListData = $this.data('list');
     var data = isListData ? this.getListData() : this.getData();
-
     $("#SaveIndicator").show();
     $.ajax({
         url: saveUrl,
@@ -26,7 +25,13 @@ save_class.prototype.saveAdminData = function ($this) {
             $('.modal').modal('hide');
         },
         error: function (data) {
-            var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
+            var message = 'There was an error processing your request.';
+            if (data && data.message);
+            {
+                message = $.parseJSON(data.responseText).message;
+            }
+
+            var noty_id = noty({ text: message, type: 'error', timeout: 3000 });
             $("#SaveIndicator").hide();
         }
     });
@@ -41,18 +46,33 @@ save_class.prototype.initPageEvents = function () {
     });
 };
 
-save_class.prototype.getData = function() {
+save_class.prototype.getData = function () {
     var data = {
-        entity : {
-            
+        entity: {
+
         }
     };
 
     // Text Fields
-    $("input[type=text].saveField").each(function() {
+    $("input[type=text].saveField").each(function () {
         var field = $(this).attr("data-field");
         var value = $(this).val();
-        
+
+        data.entity[field] = value;
+    });
+
+    $("input[type=password].saveField").each(function () {
+        var field = $(this).attr("data-field");
+        var value = $(this).val();
+
+        data.entity[field] = value;
+    });
+
+
+    $("input[type=number].saveField").each(function () {
+        var field = $(this).attr("data-field");
+        var value = $(this).val();
+
         data.entity[field] = value;
     });
 
@@ -63,7 +83,7 @@ save_class.prototype.getData = function() {
 
         data.entity[field] = value;
     });
-    
+
     // Select Boxes (single value)
     $("select.saveField").each(function () {
         var field = $(this).attr("data-field");
@@ -172,7 +192,7 @@ $(document).ready(function () {
 (function () {
     var log = console.log;
 
-    console.rainbow = function(str) {
+    console.rainbow = function (str) {
         var css = 'font-size:30px; text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black; background: linear-gradient(to right, red, yellow, lime, aqua, blue, fuchsia); color: white; font-weight: bold; padding: 0 0.5em;';
         var args = Array.prototype.slice.call(arguments);
         args[0] = '%c' + args[0];
