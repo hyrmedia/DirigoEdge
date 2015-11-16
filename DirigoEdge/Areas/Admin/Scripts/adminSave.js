@@ -7,7 +7,6 @@ save_class = function () {
 };
 
 save_class.prototype.saveAdminData = function ($this) {
-    console.log($this);
     var saveUrl = $this.attr("data-url");
     var saveMessage = $this.attr("data-saveMessage") || "Save Successful.";
     var isListData = $this.data('list');
