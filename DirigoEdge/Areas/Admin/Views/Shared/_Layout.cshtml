@@ -345,7 +345,9 @@
                     </li>
                 }
 
-                @if (Request.UrlReferrer != null)
+                @Html.DoAction("the_plugin_menu")
+
+            @if (Request.UrlReferrer != null)
                 {
                     <li class="back-sidebar">
                         <a href="@Request.UrlReferrer">
@@ -355,7 +357,6 @@
                     </li>
                 }
 
-                @Html.DoAction("the_plugin_menu")
             </ul>
         </section>
 
