@@ -25,16 +25,19 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		SmokeTest|Any CPU = SmokeTest|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{7BC4B75C-CF5A-4586-907A-5E93D26BC520}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7BC4B75C-CF5A-4586-907A-5E93D26BC520}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BC4B75C-CF5A-4586-907A-5E93D26BC520}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BC4B75C-CF5A-4586-907A-5E93D26BC520}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BC4B75C-CF5A-4586-907A-5E93D26BC520}.SmokeTest|Any CPU.ActiveCfg = SmokeTest|Any CPU
 		{C9C67EBF-97DB-4E53-BE2F-0981988717E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C9C67EBF-97DB-4E53-BE2F-0981988717E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9C67EBF-97DB-4E53-BE2F-0981988717E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C9C67EBF-97DB-4E53-BE2F-0981988717E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9C67EBF-97DB-4E53-BE2F-0981988717E4}.SmokeTest|Any CPU.ActiveCfg = SmokeTest|Any CPU
+		{C9C67EBF-97DB-4E53-BE2F-0981988717E4}.SmokeTest|Any CPU.Build.0 = SmokeTest|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

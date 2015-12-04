@@ -22,9 +22,10 @@
             left: 0;
             bottom: 2em;
             width: (12 / 0.9) * 1em;
-            font-size: 0.9em;    
+            font-size: 0.9em;
             z-index: 9999;
             border-right: 2px solid #CCC;
+            overflow: auto;
 
             li {
                 @extend .clearfix;

@@ -116,6 +116,8 @@ navBuilder_class.prototype.initSaveEvent = function () {
 
         var $container = $("#BuildList");
         common.showAjaxLoader($container);
+        var $err = $('.navigation-error');
+        $err.addClass('hide').html('');
 
         var ParentNavId = $("#BuildList").attr("data-id");
 
@@ -183,10 +185,22 @@ navBuilder_class.prototype.initSaveEvent = function () {
             data: JSON.stringify(data, null, 2),
             success: function (data) {
                 common.hideAjaxLoader($container);
-                var noty_id = noty({ text: 'Navigation set saved successfully.', type: 'success', timeout: 1200 });
+                if (data.success) {
+                    noty({ text: 'Navigation saved successfully!', type: 'success', timeout: 1200 });
+                    $err.addClass('hide').html('');
+                } else {
+                    noty({ text: data.message, type: 'error', timeout: 3000 });
+                    $err.removeClass('hide').html('Navigation not saved. Navigation item <strong>' +
+                            data.name + '</strong> cannot use <strong>' + data.title + '</strong> as its content page.' +
+                            ' The content page <strong>' + data.title + '</strong> has its parent set to this navigation item. ' +
+                            'Please change the page\'s parent setting ' +
+                            '<a target="_blank" href="/admin/pages/editcontent' + data.id + '">here</a>, ' +
+                            'or set the navigation item\'s page to something different.');
+                }
             },
             error: function (data) {
-                var noty_id = noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
+                noty({ text: 'There was an error processing your request.', type: 'error', timeout: 3000 });
+                $err.addClass('hide').html('');
             }
         });
 

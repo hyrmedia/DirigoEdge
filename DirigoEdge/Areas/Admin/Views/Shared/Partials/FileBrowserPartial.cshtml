@@ -63,11 +63,12 @@
                     <ul class="files__list">
                         @foreach (var file in Model.FileListing)
                         {
+                            var thumbPath = file.Filename.Contains(".svg") ? "" : "/images/thumbnail";
                             <li class="file-container" data-path="@file.WebPath" data-icon="@file.Icon" data-width="@file.Width" data-height="@file.Height">
                                 <a href="@file.WebPath" class="file-thumbnail" target="_blank">
                                     @if (file.Icon == "picture-o")
                                     {
-                                        <img src="/images/thumbnail/uploaded/@file.Folder/@file.Filename" />
+                                        <img src="@(thumbPath)/uploaded/@file.Folder/@file.Filename" />
                                     }
                                     else
                                     {
