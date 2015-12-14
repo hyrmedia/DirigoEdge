@@ -95,11 +95,22 @@ redirect_class.prototype.initRedirectEvents = function () {
         });
     });
 
-    $('#SourceInput, #DestinationInput, #EditSourceInput, #EditDestinationInput').on('keyup', function (e) {
-        var $val = $(this);
+    $('#SourceInput, #EditSourceInput').on('keyup', function (e) {
+        var $input = $(this);
+        var source = $input.val();
 
-        if ($val.val().indexOf("/") !== 0) {
-            $val.val('/' + $val.val());
+        if (source.indexOf("/") !== 0) {
+            $input.val('/' + source);
+        }
+    });
+
+    $('#DestinationInput, #EditDestinationInput').on('blur', function (e) {
+        var $input = $(this);
+        var destination = $input.val();
+
+        // Enforce leading slash unless destination is external
+        if (!destination.match(/^http/) && destination.indexOf("/") !== 0) {
+            $input.val('/' + destination);
         }
     });
 
