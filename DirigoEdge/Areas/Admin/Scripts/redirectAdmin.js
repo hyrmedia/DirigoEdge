@@ -109,7 +109,7 @@ redirect_class.prototype.initRedirectEvents = function () {
         var destination = $input.val();
 
         // Enforce leading slash unless destination is external
-        if (!destination.match(/^http/) && destination.indexOf("/") !== 0) {
+        if (!destination.match(/^https?:\/\//) && destination.indexOf("/") !== 0) {
             $input.val('/' + destination);
         }
     });
