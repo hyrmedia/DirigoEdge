@@ -71,7 +71,7 @@
                     <span class="sr-only">Toggle user navigation</span>
                     <i class="fa fa-cog"></i>
                 </button>
-                <a class="navbar-brand" href="@Url.Action("Index", "Admin")">
+                <a class="navbar-brand" href="@Url.Action("Index", "Admin", new {area = "Admin"})">
                     <img src="/content/logo.png" alt="Edge Admin Logo"/>
                 </a>
             </div>
@@ -146,7 +146,7 @@
             <!-- New Nav Structure -->
             <ul class="nav nav-stacked" role="tablist">
                 <li>
-                    <a href="@Url.Action("Index", "Admin")">
+                    <a href="@Url.Action("Index", "Admin", new {area = "Admin"})">
                         <i class="fa fa-home"></i>
                         <span>Dashboard</span>
                     </a>
@@ -173,7 +173,7 @@
                             @if (UserRoleUtilities.UserHasPermission("Can Edit Blogs"))
                             {
                                 <li>
-                                    <a href="@Url.Action("ManageBlogs", "Blog")">
+                                    <a href="@Url.Action("ManageBlogs", "Blog", new {area = "Admin"})">
                                         <span>Manage Posts</span>
                                     </a>
                                 </li>
@@ -182,7 +182,7 @@
                             @if (UserRoleUtilities.UserHasPermission("Can Edit Blog Categories"))
                             {
                                 <li>
-                                    <a href="@Url.Action("ManageCategories", "Blog")">
+                                    <a href="@Url.Action("ManageCategories", "Blog", new {area = "Admin"})">
                                         <span>Categories</span>
                                     </a>
                                 </li>
@@ -191,7 +191,7 @@
                             @if (UserRoleUtilities.UserHasPermission("Can Edit Blog Authors"))
                             {
                                 <li>
-                                    <a href="@Url.Action("ManageBlogAuthors", "Blog")"><span>Authors</span></a>
+                                    <a href="@Url.Action("ManageBlogAuthors", "Blog", new {area = "Admin"})"><span>Authors</span></a>
                                 </li>
                             }
 
@@ -203,7 +203,7 @@
                 @if (UserRoleUtilities.UserHasPermission("Can Edit Navigation"))
                 {
                     <li class="separated">
-                        <a href="@Url.Action("ManageNavigation", "Navigation")">
+                        <a href="@Url.Action("ManageNavigation", "Navigation", new {area = "Admin"})">
                             <i class="fa fa-compass"></i>
                             <span>Navigation</span>
                         </a>
@@ -222,7 +222,7 @@
                             @if (UserRoleUtilities.UserHasPermission("Can Edit Pages"))
                             {
                                 <li>
-                                    <a href="@Url.Action("ManageContent", "Pages")">
+                                    <a href="@Url.Action("ManageContent", "Pages", new {area = "Admin"})">
                                         <span>Pages</span>
                                     </a>
                                 </li>
@@ -231,7 +231,7 @@
                             @if (UserRoleUtilities.UserHasPermission("Can Edit Modules"))
                             {
                                 <li>
-                                    <a href="@Url.Action("ManageModules", "Modules")">
+                                    <a href="@Url.Action("ManageModules", "Modules", new {area = "Admin"})">
                                         <span>Modules</span>
                                     </a>
                                 </li>
@@ -240,7 +240,7 @@
                             @if (UserRoleUtilities.UserHasPermission("Can Edit Schemas"))
                             {
                                 <li>
-                                    <a href="@Url.Action("ManageSchemas", "Schemas")">
+                                    <a href="@Url.Action("ManageSchemas", "Schemas", new {area = "Admin"})">
                                         <span>Schemas</span>
                                     </a>
                                 </li>
@@ -261,12 +261,12 @@
                         </a>
                         <ul id="eventsDropdown" class="collapse nav nav-stacked">
                             <li>
-                                <a href="@Url.Action("ManageEvents", "Events")">
+                                <a href="@Url.Action("ManageEvents", "Events", new {area = "Admin"})">
                                     <span>Manage Events</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="@Url.Action("ManageEventCategories", "EventCategory")">
+                                <a href="@Url.Action("ManageEventCategories", "EventCategory", new {area = "Admin"})">
                                     <span>Categories</span>
                                 </a>
                             </li>
@@ -286,12 +286,12 @@
                         </a>
                         <ul id="usersDropdown" class="collapse nav nav-stacked">
                             <li>
-                                <a href="@Url.Action("ManageUsers", "Users")">
+                                <a href="@Url.Action("ManageUsers", "Users", new {area = "Admin"})">
                                     <span>Users</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="@Url.Action("ManageUserRoles", "Roles")">
+                                <a href="@Url.Action("ManageUserRoles", "Roles", new {area = "Admin"})">
                                     <span>Roles</span>
                                 </a>
                             </li>
@@ -311,32 +311,32 @@
                         </a>
                         <ul id="settingsDropdown" class="collapse nav nav-stacked">
                             <li>
-                                <a href="@Url.Action("SiteSettings", "Settings")">
+                                <a href="@Url.Action("SiteSettings", "Settings", new {area = "Admin"})">
                                     <span>Site Settings</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="@Url.Action("BlogSettings", "Settings")">
+                                <a href="@Url.Action("BlogSettings", "Settings", new {area = "Admin"})">
                                     <span>Blog Settings</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="@Url.Action("FeatureSettings", "Settings")">
+                                <a href="@Url.Action("FeatureSettings", "Settings", new {area = "Admin"})">
                                     <span>Enable Features</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="@Url.Action("Redirects", "Redirect")">
+                                <a href="@Url.Action("Redirects", "Redirect", new {area = "Admin"})">
                                     <span>Manage Redirects</span>
                                 </a>
                             </li>
                        <!--     <li>
-                                <a href="@Url.Action("Index", "Import")">
+                                <a href="@Url.Action("Index", "Import", new { area = "Admin" })">
                                     <span>Import Content</span>
                                 </a>
                             </li>-->
                             <li>
-                                <a href="@Url.Action("Index", "Plugins")">
+                                <a href="@Url.Action("Index", "Plugins", new {area = "Admin"})">
                                     <span>Plugins</span>
                                 </a>
                             </li>
