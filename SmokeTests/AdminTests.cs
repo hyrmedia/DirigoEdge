@@ -1,5 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
+using OpenQA.Selenium;
 using SmokeTests.Models;
 
 namespace SmokeTests
@@ -13,7 +14,7 @@ namespace SmokeTests
         public void FixtureSetup()
         {
             Driver = WebDriverFactory.GetDefaultDriver();
-            Driver.Manage().Timeouts().ImplicitlyWait(new TimeSpan(0, 0, 30));
+
             UserActions = new UserActions(Driver, BaseUrl);
         }
 
@@ -26,7 +27,7 @@ namespace SmokeTests
 
             UserActions.SendLogin(fields, Username, Password);
 
-            Driver.Navigate().GoToUrl(BaseUrl + "admin/");
+            NavigateToPath("admin/");
 
             Assert.AreEqual("Edge Dashboard", Driver.Title);
         }
@@ -38,16 +39,34 @@ namespace SmokeTests
             Assert.IsNotNull(fields.SubmitButton);
         }
 
-        public void Login()
-        {
-            var fields = UserActions.NavigateToLoginPage();
-            UserActions.SendLogin(fields, Username, Password);
-        }
-
         [Test]
-        public void CreatePage()
+        [Ignore("No need to fail a build on this until we finish it")]
+        public void TestEditContent()
         {
-            Login();
+            UserActions.Login(Username, Password);
+            NavigateToPath("admin/pages/managecontent/");
+
+            Assert.AreEqual("Manage Content Pages", Driver.Title);
+            var link = Driver.Element(".manageTable tr:first-child .title a");
+
+            Assert.IsNotNull(link);
+
+            link.Click();
+
+            Assert.AreEqual("Edit Content", Driver.Title);
+
+            var updateButton = Driver.Element("#SaveContentButton");
+
+            Assert.IsNotNull(updateButton);
+
+            updateButton.Click();
+
+            var noty = Driver.Element(".noty_text");
+            var text = noty.Text;
+
+            Assert.IsNotNull(noty);
+     //       Assert.AreEqual("Changes saved successfully.", noty.Text);
+
         }
     }
 }

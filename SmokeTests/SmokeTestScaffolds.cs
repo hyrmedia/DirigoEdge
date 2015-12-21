@@ -26,11 +26,26 @@ namespace SmokeTests
             Trace.WriteLine("Password: " + Password);
         }
 
+
+        /// <summary>
+        ///  Excecutes a HttpWebRequest
+        /// </summary>
+        /// <param name="url">The URL to load</param>
+        /// <returns>The HttpWebResponse from executing the request</returns>
         protected static HttpWebResponse GetResponseFromUrl(String url)
         {
             var webRequest = (HttpWebRequest)WebRequest.Create(url);
-            var response = (HttpWebResponse)webRequest.GetResponse();
-            return response;
+            return (HttpWebResponse)webRequest.GetResponse();
+        }
+
+
+        /// <summary>
+        /// Navigate to the given path relative to BaseUrl
+        /// </summary>
+        /// <param name="path"></param>
+        protected void NavigateToPath(string path = "")
+        {
+            Driver.NavigateToUrl(BaseUrl + path);
         }
 
         [TestFixtureTearDown]
