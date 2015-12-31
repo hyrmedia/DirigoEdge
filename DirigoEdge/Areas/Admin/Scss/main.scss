@@ -41,4 +41,6 @@ $hasMediaQueries : true;
 @import 'modules/revisions-list';
 
 // Client Specific
-@import 'client/base';
+// All site styles should be imported via
+// a _base.scss in the client folder.
+@import 'client/*.scss';

@@ -7,10 +7,11 @@ $screen-xl: 1600px !default;
 // @type Map
 $breakpoints: (
     // Regular breakpoints
-    "small"  : "(max-width: #{$screen-sm - 1})",
-    "medium" : "(max-width: #{$screen-md - 1})",
-    "large"  : "(max-width: #{$screen-lg - 1})",
-    "huge"   : "(max-width: #{$screen-xl - 1})"
+    "small"       : "(max-width: #{$screen-sm - 1})",
+    "medium"      : "(max-width: #{$screen-md - 1})",
+    "large"       : "(max-width: #{$screen-lg - 1})",
+    "huge"        : "(max-width: #{$screen-xl - 1})",
+    "medium-only" : "(min-width: #{$screen-sm}) and (max-width: #{$screen-md - 1})"
 ) !default;
 
 // Enable/disable media queries

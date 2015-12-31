@@ -1,10 +1,9 @@
 ﻿// Stylesheet Variables
 $hasMediaQueries : true;
 
-// Sass
-
 // Mixins
 @import 'sass/mixins/media-queries';
+
 // Vendor
 @import 'vendor/normalize';
 @import 'vendor/bootstrap';
@@ -13,11 +12,12 @@ $hasMediaQueries : true;
 // Edge Styles
 @import 'edge/alerts';
 @import 'edge/pagebuilder';
+@import 'edge/blog';
+@import 'edge/admin';
+@import 'edge/membership';
+@import 'edge/spinner';
 
-// Global
-@import 'global/spinner';
-
-// Modules
-@import 'modules/blog';
-@import 'modules/admin';
-@import 'modules/membership';
+// Site
+// All site styles should be imported via
+// a _base.scss in the site folder.
+@import "site/*.scss";
