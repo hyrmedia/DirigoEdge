@@ -151,6 +151,9 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
+
+                @Html.DoAction("admin_menu_before_media")
+            
                 @if (UserRoleUtilities.UserHasPermission("Can Manage Media"))
                 {
                     <li>
@@ -276,6 +279,8 @@
                     </li>
                 }
 
+                @Html.DoAction("admin_menu_before_users")
+
                 @if (UserRoleUtilities.UserHasPermission("Can Edit Users"))
                 {
                     <li>
@@ -330,11 +335,11 @@
                                     <span>Manage Redirects</span>
                                 </a>
                             </li>
-                       <!--     <li>
+                            @*<li>
                                 <a href="@Url.Action("Index", "Import", new { area = "Admin" })">
                                     <span>Import Content</span>
                                 </a>
-                            </li>-->
+                            </li>*@
                             <li>
                                 <a href="@Url.Action("Index", "Plugins", new {area = "Admin"})">
                                     <span>Plugins</span>
@@ -346,6 +351,7 @@
                 }
 
                 @Html.DoAction("the_plugin_menu")
+                @Html.DoAction("admin_menu_end")
 
                 @if (Request.UrlReferrer != null)
                 {
