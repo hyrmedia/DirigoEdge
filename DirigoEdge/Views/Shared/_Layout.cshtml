@@ -129,8 +129,9 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script> window.jQuery || document.write('<script src="/Scripts/jquery/jquery-1.11.1.min.js"><\/script>') </script>
         @{
-            string scripts = SquishIt.Framework.Bundle.JavaScript()
+            var scriptBundle = SquishIt.Framework.Bundle.JavaScript();
 
+            scriptBundle
                 .Add("~/scripts/picturefill.js")
                 .Add("~/scripts/common.js")
 
@@ -146,10 +147,12 @@
                 .Add("~/scripts/blog_class.js")
                 .Add("~/scripts/resetPassword.js")
                 .Add("~/Scripts/Edge/Edge.js")
-                .Add("~/scripts/Edge/ajax-service.js")
-                .Render("~/scripts/combined_#.js");
+                .Add("~/scripts/Edge/ajax-service.js");
+
+            // Some mechanism here so plugins can add references
+            // to scriptBundle before it's rendered
         }
-        @Html.Raw(scripts)
+        @Html.Raw(scriptBundle.Render("~/scripts/combined_#.js"))
 
         @* Load the text editor plugin and text editor modal for admins so they can edit content in place *@
         @if (UserUtils.UserIsAdmin())
