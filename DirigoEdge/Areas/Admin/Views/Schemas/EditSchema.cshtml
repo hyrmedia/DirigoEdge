@@ -1,64 +1,102 @@
-﻿@{
+﻿@using DirigoEdgeCore.Utils
+@model DirigoEdge.Areas.Admin.Models.ViewModels.EditSchemaViewModel
+
+@{
     ViewBag.Title = "Edit Schema";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-@model DirigoEdge.Areas.Admin.Models.ViewModels.EditSchemaViewModel
 
 <div class="editContent" data-id="@Model.TheSchema.SchemaId">
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-xs-12">
             <h3>Edit Schema @Html.Partial("Partials/BookmarkButtonPartial")</h3>
-            
-            <label>Schema Name</label>
-            <input class=" form-control" id="SchemaName" type="text" value="@Model.TheSchema.DisplayName" autocomplete="off"/>
         </div>
     </div>
 
     <div class="row">
+        <div class="col-md-9">
 
-        <div class="col-lg-12">
+            <div class="schema-name">
+                <input id="SchemaName" class="form-control input-lg" placeholder="Schema Name" type="text" value="@Model.TheSchema.DisplayName" autocomplete="off"/>
+            </div>
 
-            <div id="FormBuilder"></div>
+            <div class="schema">
+                <ul class="schema-fields">
+                    <li class="schema-field field-list">
+                        <div class="group-label">Slides</div>
+                        <ul class="schema-fields">
+                            <li class="schema-field field-image">
+                                <label>Image Field</label>
+                                <input type="text" value="http://fillmurray.com/500/300"/>
+                                <button class="btn btn-primary filebrowser">Choose Image</button>
+                                <img src="http://fillmurray.com/500/300">
+                            </li>
+                            <li class="schema-field field-text">
+                                <label>Headline</label>
+                                <input type="text" />
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="schema-field field-text">
+                        <label>Headline</label>
+                        <input type="text"/>
+                    </li>
+                    <li class="schema-field field-text">
+                        <label>Headline</label>
+                        <input type="text"/>
+                    </li>
+                    <li class="schema-field field-text">
+                        <label>Headline</label>
+                        <input type="text" />
+                    </li>
+                </ul>
+            </div>
 
         </div>
 
-    </div>
+        <div class="col-md-3">
+            <div class="panel container-fluid">
+                <h4>Settings</h4>
 
+                <div class="saveContainer">
+                    <button id="SaveSchemaButton" class="btn btn-primary mobileMarginBottom">Save Schema</button>
+                    <div id="SaveSpinner" class="standaloneSpinner"></div>
+                </div>
+            </div>
+
+            <div class="panel container-fluid">
+                <h4>Fields Of Dreams</h4>
+
+                <div class="saveContainer">
+                    <button id="SaveSchemaButton" class="btn btn-primary mobileMarginBottom">Save Schema</button>
+                    <div id="SaveSpinner" class="standaloneSpinner"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
-@section Styles {
-    <link href="/Areas/Admin/Scripts/jquery/plugins/formbuilder/jquery.formbuilder.css" rel="stylesheet" />
-    <style>
-        #SchemaName {
-            max-width: 280px;
+
+        @section Styles {
+
         }
 
-        .fb-left.fixed {
-            left: 255px;
-            top: 45px;
-            transition: all 300ms ease-in-out;
-            bottom: 0;
-            overflow: auto;
+        @section Scripts {
+
+            @*<script src="/Areas/Admin/Scripts/schemaEditor.js"></script>*@
+
+            <script>
+                // Setup the data for loading
+                ODATA = @Html.Raw(Model.TheSchema.JSONData);
+
+                $(function() {
+                    $(".schema ul").sortable({
+                        connectWith: ".schema ul",
+                        placeholder: "ui-state-highlight"
+                    });
+                });
+
+            </script>
         }
-
-        .sideBarClosed .fb-left.fixed {
-            left: 40px;
-        }
-    </style>
-}
-
-@section Scripts {
-
-    <script src="/Areas/Admin/Scripts/jquery/plugins/formbuilder/backbone-min.js"></script>
-
-    <script src="/Areas/Admin/Scripts/jquery/plugins/formbuilder/jquery.formbuilder.js"></script>
-
-    <script src="/Areas/Admin/Scripts/schemaEditor.js"></script>
-
-    <script>
-        // Setup the data for loading
-        ODATA = @Html.Raw(Model.TheSchema.JSONData);
-    </script>
-}
