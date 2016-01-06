@@ -1,12 +1,17 @@
 /// <vs SolutionOpened='dev, dev:admin' />
-var gulp         = require('gulp'),
-    sass         = require('gulp-sass'),
-    sourcemaps   = require('gulp-sourcemaps'),
-    beep         = require('beepbeep'),
-    autoprefixer = require('gulp-autoprefixer'),
-    rimraf       = require('gulp-rimraf'),
-    colors       = require('colors'),
-    livereload   = require('gulp-livereload');
+var gulp = require('gulp');
+var sass = require('gulp-sass');
+var sourcemaps = require('gulp-sourcemaps');
+var beep = require('beepbeep');
+var autoprefixer = require('gulp-autoprefixer');
+var rimraf = require('gulp-rimraf');
+var colors = require('colors');
+var livereload = require('gulp-livereload');
+var handlebars = require('gulp-handlebars');
+var wrap = require('gulp-wrap');
+var declare = require('gulp-declare');
+var concat = require('gulp-concat');
+
 
 gulp.task('sass:dev', function () {
 
@@ -110,10 +115,32 @@ gulp.task('sass:admin:prod', function () {
         .pipe(gulp.dest('./areas/admin/css'));
 });
 
+// Compile handlebars templates for schemas
+gulp.task('schema-templates', function () {
+
+    console.log('[handlebars]'.bold.magenta + ' Compiling handlebars templates for schemas');
+
+    gulp.src('areas/admin/scripts/schema/templates/**/*.hbs')
+        .pipe(handlebars({
+            handlebars: require('handlebars')
+        }))
+        .pipe(wrap('Handlebars.template(<%= contents %>)'))
+        .pipe(declare({
+            namespace: 'Schema.templates',
+            noRedeclare: true,
+            processName: function (filePath) {
+                return declare.processNameByPath(filePath.replace('areas\\admin\\scripts\\schema\\templates\\', ''));
+            }
+        }))
+        .pipe(concat('templates.js'))
+        .pipe(gulp.dest('areas/admin/scripts/schema/templates/'));
+
+});
+
 // Watch files for changes
 gulp.task('watch', function () {
 
-    console.log('[watch]'.bold.magenta + ' Watching Sass files for changes');
+    console.log('[watch]'.bold.magenta + ' Watching files for changes');
 
     livereload.listen();
     gulp.watch(['scss/**/*.scss'], ['sass:dev']);
@@ -123,10 +150,11 @@ gulp.task('watch', function () {
 // Watch files for changes
 gulp.task('watch:admin', function () {
 
-    console.log('[watch]'.bold.magenta + ' Watching Sass files for changes');
+    console.log('[watch]'.bold.magenta + ' Watching files for changes');
 
     livereload.listen();
     gulp.watch(['areas/admin/scss/**/*.scss'], ['sass:admin:dev']);
+    gulp.watch(['areas/admin/scripts/schema/templates/**/*.hbs'], ['schema-templates']);
 
 });
 
@@ -135,7 +163,7 @@ gulp.task('dev', ['sass:dev', 'watch'], function () {
     return console.log('\n[dev]'.bold.magenta + ' Ready for you to start doing things\n'.bold.green);
 });
 
-gulp.task('dev:admin', ['sass:admin:dev', 'watch:admin'], function () {
+gulp.task('dev:admin', ['sass:admin:dev', 'schema-templates', 'watch:admin'], function () {
     return console.log('\n[dev]'.bold.magenta + ' Ready for you to start doing things\n'.bold.green);
 });
 

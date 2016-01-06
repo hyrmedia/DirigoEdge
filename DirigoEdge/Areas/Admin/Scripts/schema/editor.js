@@ -1,4 +1,4 @@
-﻿var SchemaEditor = function (el, opts) {
+﻿Schema.Editor = function (el, opts) {
 
     if (!opts && typeof el === 'object') {
         opts = el;
@@ -14,35 +14,37 @@
 
     this.settings = $.extend({}, this.defaults, opts);
 
-    this.templates = (function () {
+};
 
-        var obj = {};
+Schema.Editor.prototype.init = function () {
 
-        $('script[type="text/x-handlebars-template"]').each(function () {
-            obj[$(this).attr('id').replace('field-template-', '')] = $(this).html();
+    this.populateEditorFields(this.makeSortable.bind(this));
+    this.attachSelectorEvents();
+    this.attachSaveEvents();
+
+};
+
+Schema.Editor.prototype.populateEditorFields = function (cb) {
+
+    var _this = this;
+
+    EDGE.ajaxGet({}, '/areas/admin/scripts/schema/fake.json', function (data) {
+
+        _this.remoteData = data;
+
+        $.each(data.SchemaField, function () {
+
+            _this.settings.$schema.find('.schema-fields').append(_this.renderEditorField(this.FieldType, this));
+
         });
 
-        return obj;
+        if (cb && typeof cb === 'function') cb();
 
-    }());
-
-    /* todo: this should live somewhere else */
-    this.defaultContexts = {
-        text : {
-            Label : 'Text'
-        }
-    };
+    });
 
 };
 
-SchemaEditor.prototype.init = function () {
-
-    this.makeSortable();
-    this.attachSelectorEvents();
-
-};
-
-SchemaEditor.prototype.makeSortable = function () {
+Schema.Editor.prototype.makeSortable = function () {
 
     var _this = this;
 
@@ -75,7 +77,7 @@ SchemaEditor.prototype.makeSortable = function () {
 
 };
 
-SchemaEditor.prototype.attachSelectorEvents = function () {
+Schema.Editor.prototype.attachSelectorEvents = function () {
 
     var _this = this;
 
@@ -86,21 +88,31 @@ SchemaEditor.prototype.attachSelectorEvents = function () {
 
 };
 
-SchemaEditor.prototype.renderEditorField = function (type, context) {
+Schema.Editor.prototype.attachSaveEvents = function () {
 
-    var template;
+    this.$el.find('#SaveSchemaButton').on('click', function () {
 
-    if (!(type in this.templates)) return null;
+        var schema = this.remoteData;
 
-    /* todo: pre-compile templates */
-    template = Handlebars.compile(this.templates[type]);
-    context = context || this.defaultContexts[type];
+        schema.SchemaField = this.serializeSchema();
 
-    return template(context);
+        /* todo: POST schema to server */
+
+    }.bind(this));
 
 };
 
-SchemaEditor.prototype.replaceSelectorWithField = function (ui) {
+Schema.Editor.prototype.renderEditorField = function (type, context) {
+
+    if (!(type in Schema.templates.fields)) return null;
+
+    context = context || Schema.definitions[type].defaultContext;
+
+    return Schema.templates.fields[type](context);
+
+};
+
+Schema.Editor.prototype.replaceSelectorWithField = function (ui) {
 
     var type = ui.item.data('type');
 
@@ -108,13 +120,24 @@ SchemaEditor.prototype.replaceSelectorWithField = function (ui) {
 
 };
 
-SchemaEditor.prototype.appendNewField = function (type, context) {
+Schema.Editor.prototype.appendNewField = function (type, context) {
 
     this.settings.$schema.find('ul').append(this.renderEditorField(type, context));
 
 };
 
-$(function () {
-    var schemaEditor = new SchemaEditor();
-    schemaEditor.init();
-});
+Schema.Editor.prototype.serializeSchema = function () {
+
+    var fields = [];
+
+    this.settings.$schema.find('li').each(function () {
+
+        var type = $(this).data('type');
+
+        fields.push(Schema.definitions[type].serialize($(this)));
+
+    });
+
+    return fields;
+
+};

@@ -353,6 +353,7 @@
     <Content Include="Areas\Admin\Scripts\eventAdmin.js" />
     <Content Include="Areas\Admin\Scripts\fieldEditor.js" />
     <Content Include="Areas\Admin\Scripts\filebrowser.js" />
+    <Content Include="Areas\Admin\Scripts\handlebars\handlebars.js" />
     <Content Include="Areas\Admin\Scripts\jquery.mjs.nestedSortable.js" />
     <Content Include="Areas\Admin\Scripts\jqueryui\css\smoothness\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Areas\Admin\Scripts\jqueryui\css\smoothness\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -405,7 +406,15 @@
     <Content Include="Areas\Admin\Scripts\jquery\plugins\tagit\jquery.tagit.js" />
     <Content Include="Areas\Admin\Scripts\jquery\plugins\zclip\ZeroClipboard.swf" />
     <Content Include="Areas\Admin\Scripts\modernizr-2.6.2.min.js" />
+    <Content Include="Areas\Admin\Scripts\schema\field-definitions.js" />
+    <Content Include="Areas\Admin\Scripts\schema\field.js" />
+    <Content Include="Areas\Admin\Scripts\schema\schema.js" />
+    <Content Include="Areas\Admin\Scripts\schema\templates\templates.js" />
     <Content Include="Areas\Admin\Scss\modules\_dashboard.scss" />
+    <Content Include="Areas\Admin\Scripts\schema\templates\fields\text.hbs" />
+    <Content Include="Areas\Admin\Scripts\schema\templates\fields\image.hbs" />
+    <Content Include="Areas\Admin\Scripts\schema\fake.json" />
+    <Content Include="Areas\Admin\Scripts\schema\templates\fields\textarea.hbs" />
     <None Include="Areas\Admin\Scss\modules\_data-tables.scss" />
     <Content Include="Content\Images\edge_logo_head.png" />
     <Content Include="Content\Images\full-width.jpg" />
@@ -448,7 +457,7 @@
     <Content Include="Areas\Admin\Scripts\redirectAdmin.js" />
     <Content Include="Areas\Admin\Scripts\roleAdmin.js" />
     <Content Include="Areas\Admin\Scripts\mediaAdmin.js" />
-    <Content Include="Areas\Admin\Scripts\schemaEditor.js" />
+    <Content Include="Areas\Admin\Scripts\schema\editor.js" />
     <Content Include="Areas\Admin\Scripts\sidebar.js" />
     <Content Include="Areas\Admin\Scripts\siteSettings.js" />
     <Content Include="Content\logo.png" />

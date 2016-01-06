@@ -1,0 +1,31 @@
+﻿{
+  "SchemaId": 1,
+  "Name": "Jason Sucks",
+  "DisplayName": "Jason Sucks",
+  "SchemaField": [
+    {
+      "SchemaId": 1,
+      "SchemaFieldId": 1,
+      "FieldType": "text",
+      "Name": "Text",
+      "DisplayName": "Text",
+      "Metadata": { }
+    },
+    {
+      "SchemaId": 1,
+      "SchemaFieldId": 2,
+      "FieldType": "image",
+      "Name": "Bill Murray",
+      "DisplayName": "Bill Murray",
+      "Metadata": { }
+    },
+    {
+      "SchemaId": 1,
+      "SchemaFieldId": 3,
+      "FieldType": "textarea",
+      "Name": "Textarea",
+      "DisplayName": "Textarea",
+      "Metadata": { }
+    }
+  ]
+}

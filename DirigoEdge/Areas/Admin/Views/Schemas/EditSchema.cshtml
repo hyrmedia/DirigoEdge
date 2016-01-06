@@ -23,33 +23,6 @@
 
             <div class="schema">
                 <ul class="schema-fields">
-                    <li class="schema-field field-list">
-                        <div class="group-label">Slides</div>
-                        <ul class="schema-fields">
-                            <li class="schema-field field-image">
-                                <label>Image Field</label>
-                                <input type="text" value="http://fillmurray.com/500/300"/>
-                                <button class="btn btn-primary filebrowser">Choose Image</button>
-                                <img src="http://fillmurray.com/500/300">
-                            </li>
-                            <li class="schema-field field-text">
-                                <label>Headline</label>
-                                <input type="text" />
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="schema-field field-text">
-                        <label>Headline</label>
-                        <input type="text"/>
-                    </li>
-                    <li class="schema-field field-text">
-                        <label>Headline</label>
-                        <input type="text"/>
-                    </li>
-                    <li class="schema-field field-text">
-                        <label>Headline</label>
-                        <input type="text" />
-                    </li>
                 </ul>
             </div>
 
@@ -76,8 +49,8 @@
                         <li data-type="image">
                             <div class="btn btn-primary field-button"><i class="fa fa-picture-o"></i> Image</div>
                         </li>
-                        <li data-type="paragraph">
-                            <div class="btn btn-primary field-button"><i class="fa fa-paragraph"></i> Paragraph</div>
+                        <li data-type="textarea">
+                            <div class="btn btn-primary field-button"><i class="fa fa-paragraph"></i> Textarea</div>
                         </li>
                         <li data-type="wysiwyg">
                             <div class="btn btn-primary field-button"><i class="fa fa-pencil"></i> WYSIWYG</div>
@@ -100,29 +73,23 @@
                         <li data-type="list">
                             <div class="btn btn-primary field-button"><i class="fa fa-list"></i> List</div>
                         </li>
+
+                        @* todo: Add the rest of the buttons *@
+                        @*
+                            // Time
+                            // Date + Time
+                            // Number
+                            // Group
+                            // File
+                            // Users
+                            // Tags
+                        *@
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-@* todo: move to partial(s) *@
-<script id="field-template-text" type="text/x-handlebars-template">
-    <li class="schema-field field-text">
-        <label>{{Label}}</label>
-        <input type="text" value="{{Value}}" placeholder="{{Placeholder}}"/>
-    </li>
-</script>
-
-<script id="field-template-image" type="text/x-handlebars-template">
-    <li class="schema-field field-image">
-        <label>{{Label}}</label>
-        <input type="text" value="{{Value}}" placeholder="{{Placeholder}}" />
-        <button class="btn btn-primary filebrowser">Choose Image</button>
-        <img src="{{Value}}">
-    </li>
-</script>
 
 @section Styles {
 
@@ -131,10 +98,17 @@
 @section Scripts {
 
     <script src="/Areas/Admin/Scripts/handlebars/handlebars.js"></script>
-    <script src="/Areas/Admin/Scripts/schemaEditor.js"></script>
+    <script src="/Areas/Admin/Scripts/schema/schema.js"></script>
+    <script src="/Areas/Admin/Scripts/schema/templates/templates.js"></script>
+    <script src="/Areas/Admin/Scripts/schema/field.js"></script>
+    <script src="/Areas/Admin/Scripts/schema/field-definitions.js"></script>
+    <script src="/Areas/Admin/Scripts/schema/editor.js"></script>
 
     <script>
-        // Setup the data for loading
-        ODATA = @Html.Raw(Model.TheSchema.JSONData);
+        $(function () {
+            var schemaEditor = new Schema.Editor();
+            schemaEditor.init();
+        });
     </script>
+
 }

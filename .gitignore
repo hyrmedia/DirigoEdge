@@ -197,11 +197,12 @@ FakesAssemblies/
 *.suo
 *.orig
 
-# Generated CSS files
+# Generated files
 /DirigoEdge/Areas/Admin/CSS/main.css
 /DirigoEdge/Areas/Admin/CSS/logged-in.css
 /DirigoEdge/CSS/main.css
 /DirigoEdge/DirigoEdge.zip
+/DirigoEdge/Areas/Admin/Scripts/schema/templates/templates.js
 
 /DirigoEdge/DirigoEdge.SourceManifest.xml
 
