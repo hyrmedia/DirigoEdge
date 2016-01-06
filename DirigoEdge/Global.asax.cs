@@ -42,6 +42,8 @@ namespace DirigoEdge
 
             Mapping.SetAutomapperMappings();
             SettingsInitializer.EnsureRequiredSettingsExist();
+            DataInitiializer.EnsureRequiredDataIsPresent();
+
         }
 
         // May need to store host in distributed or multi-tenant applications

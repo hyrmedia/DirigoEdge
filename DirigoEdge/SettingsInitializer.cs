@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using DirigoEdge.Data.Context;
-using DirigoEdge.Data.Entities;
 using DirigoEdge.Models;
 using DirigoEdgeCore.Data.Context;
 using DirigoEdgeCore.Data.Entities;
