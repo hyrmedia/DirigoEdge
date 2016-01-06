@@ -68,9 +68,39 @@
             <div class="panel container-fluid">
                 <h4>Fields Of Dreams</h4>
 
-                <div class="saveContainer">
-                    <button id="SaveSchemaButton" class="btn btn-primary mobileMarginBottom">Save Schema</button>
-                    <div id="SaveSpinner" class="standaloneSpinner"></div>
+                <div class="field-buttons">
+                    <ul>
+                        <li>
+                            <div class="btn btn-primary field-button"><i class="fa fa-font"></i> Text</div>
+                        </li>
+                        <li>
+                            <div class="btn btn-primary field-button"><i class="fa fa-picture-o"></i> Image</div>
+                        </li>
+                        <li>
+                            <div class="btn btn-primary field-button"><i class="fa fa-paragraph"></i> Paragraph</div>
+                        </li>
+                        <li>
+                            <div class="btn btn-primary field-button"><i class="fa fa-pencil"></i> WYSIWYG</div>
+                        </li>
+                        <li>
+                            <div class="btn btn-primary field-button"><i class="fa fa-square-o"></i> Checkboxes</div>
+                        </li>
+                        <li>
+                            <div class="btn btn-primary field-button"><i class="fa fa-circle-o"></i> Multiple Choice</div>
+                        </li>
+                        <li>
+                            <div class="btn btn-primary field-button"><i class="fa fa-calendar"></i> Date</div>
+                        </li>
+                        <li>
+                            <div class="btn btn-primary field-button"><i class="fa fa-caret-down"></i> Dropdown</div>
+                        </li>
+                        <li>
+                            <div class="btn btn-primary field-button"><i class="fa fa-caret-down"></i> Module</div>
+                        </li>
+                        <li>
+                            <div class="btn btn-primary field-button"><i class="fa fa-list"></i> List</div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -96,6 +126,27 @@
                         connectWith: ".schema ul",
                         placeholder: "ui-state-highlight"
                     });
+
+                    $(".field-buttons ul").sortable({
+                        connectWith: ".schema ul",
+                        placeholder: "ui-state-highlight",
+                        start: function (event, ui) {
+                            ui.item.clone().removeAttr('style').addClass('clone').insertAfter(ui.item);
+                        },
+                        beforeStop: function(event, ui) {
+                            $(this).sortable("option", "selfDrop", $(ui.placeholder).parent()[0] === this);
+                        },
+                        stop: function (event, ui) {
+                            var $sortable = $(this);
+
+                            if ($sortable.sortable("option", "selfDrop")) {
+                                $('li.clone', this).remove();
+                                $sortable.sortable('cancel');
+                            } else {
+                                $('li.clone', this).removeClass('clone');
+                            }
+                        }
+                    }).disableSelection();
                 });
 
             </script>
