@@ -1,210 +1,120 @@
-﻿/// ===========================================================================================
-/// Schema Editor
-/// ===========================================================================================
+﻿var SchemaEditor = function (el, opts) {
 
-schemaEditor_class = function () {
-    this.id = $(".editContent").data("id");
-
-    // No likey autosave
-    Formbuilder.options.AUTOSAVE = false;
-};
-
-
-schemaEditor_class.prototype.initPageEvents = function () {
-    var self = this;
-
-    this.initFormBuilder();
-
-    $('#SchemaName').change(function () {
-        $('.js-save-form').removeAttr('disabled');
-    });
-
-    // Set theme to match Foundation
-    $(".js-save-form").addClass("button").text("Save Schema");
-
-    // Set up Save event
-    self.schema.on('save', function (data) {
-
-        // Sets children id's as attributes on list items
-        self.updateListChildrenAttributes();
-
-        // Run through the save data and set the children id's as field data
-        var oData = JSON.parse(data);
-        $.each(oData.fields, function (key, value) {
-
-            if (value.field_type == "list") {
-                var sChildren = $("[data-prevcid=" + value.cid + "]").attr("data-children") || "";
-                var nChildren = sChildren.split(',');
-
-                value.field_options.children = nChildren;
-            }
-        });
-
-        data = JSON.stringify(oData);
-        $.ajax({
-            url: "/admin/schemas/saveschema",
-            type: "POST",
-            data: {
-                name: $("#SchemaName").val(),
-                data: data,
-                id: self.id
-            }
-        });
-    });
-
-    // When adding a new field, make sure we update list items so they can be droppable
-    $(".fb-response-fields").on("sortstop", function (event, ui) {
-        setTimeout(function () {
-            self.initListingItems();
-        }, 200);
-    });
-
-    $(".fb-add-field-types a").click(function () {
-        setTimeout(function () {
-            self.initListingItems();
-        }, 200);
-    });
-
-    // Sticky Edit Window
-    var $sidebar = $("#FormBuilder .fb-left"),
-        $window = $("#Main"),
-        offset = $sidebar.offset(),
-        topPadding = 30;
-
-    $window.scroll(function () {
-
-        if ($window.scrollTop() > offset.top - topPadding) {
-            $sidebar.addClass('fixed');
-        } else {
-            $sidebar.removeClass('fixed');
-        }
-    });
-};
-
-schemaEditor_class.prototype.initFormBuilder = function () {
-
-    var self = this;
-
-    this.schema = new Formbuilder({
-        selector: '#FormBuilder',
-        autosave: false,
-        bootstrapData: ODATA.fields
-    });
-
-    // Set up any previously saved cid's as attributes in case we need to reference the previous id's
-    $("#FormBuilder .fb-field-wrapper").each(function (index, value) {
-
-        if (ODATA.fields.length >= index) {
-            var prevCid = ODATA.fields[index].cid;
-            $(this).attr("data-prevcid", prevCid);
-        }
-    });
-
-    // Run through and set up the list items
-    if (ODATA && ODATA.hasOwnProperty("fields")) {
-        $.each(ODATA.fields, function (key, value) {
-
-            if (value.field_type == "list") {
-
-                var $listItem = self.getElementByPrevCid(value.cid);
-                var children = value.field_options.children;
-
-                for (var x = 0; x < children.length; x++) {
-
-                    var $childItem = children[x] ? self.getElementByPrevCid(children[x]) : null;
-
-                    if ($childItem != null) {
-                        $listItem.find(".listingContainer").append($childItem);
-                    }
-                }
-            }
-        });
+    if (!opts && typeof el === 'object') {
+        opts = el;
+        el = null;
     }
 
-    setTimeout(function () {
-        self.initListingItems();
-        self.initListingSortables();
-    }, 200);
-};
+    this.$el = el || $('.editSchema');
 
-// Returns a jQuery object based on units .data() "cid" attribute
-schemaEditor_class.prototype.getElementByPrevCid = function (cid) {
-    return $(".fb-field-wrapper[data-prevcid=" + cid + "]");
-};
+    this.defaults = {
+        $schema: this.$el.find('.schema'),
+        $fieldSelector: this.$el.find('.field-selector'),
+    };
 
-schemaEditor_class.prototype.initListingItems = function () {
-    var self = this;
-    //this.schema.mainView.setSortable();
+    this.settings = $.extend({}, this.defaults, opts);
 
-    $(".response-field-list > .subtemplate-wrapper > .cover").remove();
+    this.templates = (function () {
 
-    $(".listingContainer:not(.ui-droppable)").droppable({
-        greedy: true,
-        hoverClass: "drop-hover",
-        accepts: ".fb-button",
-        drop: function (event, ui) {
+        var obj = {};
 
-            self.$wrapper = $(this);
+        $('script[type="text/x-handlebars-template"]').each(function () {
+            obj[$(this).attr('id').replace('field-template-', '')] = $(this).html();
+        });
 
-            setTimeout(function () {
+        return obj;
 
-                // Move the item the sortable just added inside the list item, but only if it isn't already inside
-                if (self.$wrapper.find(".editing").length < 1) {
+    }());
 
-                    self.$wrapper.append($("#FormBuilder .fb-field-wrapper.editing"));
-                }
-
-                // Init Sortable on the listing container if hasn't already been initialized
-                if (!self.$wrapper.hasClass(".ui-sortable")) {
-                    self.initListingSortables(self.$wrapper);
-                }
-
-            }, 150);
+    /* todo: this should live somewhere else */
+    this.defaultContexts = {
+        text : {
+            Label : 'Text'
         }
-    });
+    };
+
 };
 
-schemaEditor_class.prototype.initListingSortables = function ($el) {
+SchemaEditor.prototype.init = function () {
 
-    if ($el == null) {
-        $el = $(".listingContainer:not(.ui-sortable)");
-    }
+    this.makeSortable();
+    this.attachSelectorEvents();
 
-    $el.sortable({
-        revert: 100,
-        start: function () {
-            $(this).addClass("sorting");
+};
+
+SchemaEditor.prototype.makeSortable = function () {
+
+    var _this = this;
+
+    $('ul', this.settings.$schema).sortable({
+        connectWith: $('ul', this.settings.$schema),
+        placeholder: 'ui-state-highlight'
+    });
+
+    $('ul', this.settings.$fieldSelector).sortable({
+        connectWith: $('ul', this.settings.$schema),
+        placeholder: 'ui-state-highlight',
+        start: function (event, ui) {
+            ui.item.clone().removeAttr('style').addClass('clone').insertAfter(ui.item);
         },
-        stop: function () {
-            $(this).removeClass("sorting");
+        beforeStop: function (event, ui) {
+            $(this).sortable('option', 'selfDrop', $(ui.placeholder).parent()[0] === this);
+        },
+        stop: function (event, ui) {
+            var $sortable = $(this);
+
+            if ($sortable.sortable('option', 'selfDrop')) {
+                $('li.clone', this).remove();
+                $sortable.sortable('cancel');
+            } else {
+                $('li.clone', this).removeClass('clone');
+                _this.replaceSelectorWithField(ui);
+            }
         }
-    });
+    }).disableSelection();
+
 };
 
-schemaEditor_class.prototype.updateListChildrenAttributes = function () {
+SchemaEditor.prototype.attachSelectorEvents = function () {
 
-    $("#FormBuilder .fb-field-wrapper").each(function () {
-        // Store the current CID for later selection during save
-        $(this).attr("data-current-id", $(this).data('cid'));
+    var _this = this;
+
+    this.settings.$fieldSelector.find('li').on('click', function () {
+        var type = $(this).data('type');
+        _this.appendNewField(type);
     });
 
-    $("#FormBuilder .fb-field-wrapper.response-field-list").each(function () {
-        // Grab CID's from children and add them to list attribute
-        var nChildrenList = [];
-        $(this).find("> .subtemplate-wrapper > .listingContainer > .fb-field-wrapper").each(function () {
-            var childCid = $(this).data('cid');
-
-            var newCid = $(".fb-field-wrapper[data-current-id=" + childCid + "]").attr("data-prevcid") || childCid;
-
-            nChildrenList.push(newCid);
-        });
-
-        $(this).attr("data-children", nChildrenList.join());
-    });
 };
 
-// Keep at the bottom
-$(document).ready(function () {
-    schemaEditor = new schemaEditor_class();
-    schemaEditor.initPageEvents();
+SchemaEditor.prototype.renderEditorField = function (type, context) {
+
+    var template;
+
+    if (!(type in this.templates)) return null;
+
+    /* todo: pre-compile templates */
+    template = Handlebars.compile(this.templates[type]);
+    context = context || this.defaultContexts[type];
+
+    return template(context);
+
+};
+
+SchemaEditor.prototype.replaceSelectorWithField = function (ui) {
+
+    var type = ui.item.data('type');
+
+    ui.item.replaceWith(this.renderEditorField(type));
+
+};
+
+SchemaEditor.prototype.appendNewField = function (type, context) {
+
+    this.settings.$schema.find('ul').append(this.renderEditorField(type, context));
+
+};
+
+$(function () {
+    var schemaEditor = new SchemaEditor();
+    schemaEditor.init();
 });

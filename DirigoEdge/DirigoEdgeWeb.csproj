@@ -507,6 +507,7 @@
     <Content Include="Areas\Admin\Views\Plugins\Index.cshtml" />
     <Content Include="Areas\Admin\Scss\modules\_navbar.scss" />
     <Content Include="Scss\sass\mixins\_media-queries.scss" />
+    <Content Include="Areas\Admin\Scss\modules\_schema-editor.scss" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Scripts\adminContentEditor.js" />

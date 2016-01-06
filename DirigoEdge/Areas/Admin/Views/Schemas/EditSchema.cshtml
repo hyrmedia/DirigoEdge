@@ -7,7 +7,7 @@
 }
 
 
-<div class="editContent" data-id="@Model.TheSchema.SchemaId">
+<div class="editSchema" data-id="@Model.TheSchema.SchemaId">
     <div class="row">
         <div class="col-xs-12">
             <h3>Edit Schema @Html.Partial("Partials/BookmarkButtonPartial")</h3>
@@ -68,36 +68,36 @@
             <div class="panel container-fluid">
                 <h4>Fields Of Dreams</h4>
 
-                <div class="field-buttons">
+                <div class="field-selector">
                     <ul>
-                        <li>
+                        <li data-type="text">
                             <div class="btn btn-primary field-button"><i class="fa fa-font"></i> Text</div>
                         </li>
-                        <li>
+                        <li data-type="image">
                             <div class="btn btn-primary field-button"><i class="fa fa-picture-o"></i> Image</div>
                         </li>
-                        <li>
+                        <li data-type="paragraph">
                             <div class="btn btn-primary field-button"><i class="fa fa-paragraph"></i> Paragraph</div>
                         </li>
-                        <li>
+                        <li data-type="wysiwyg">
                             <div class="btn btn-primary field-button"><i class="fa fa-pencil"></i> WYSIWYG</div>
                         </li>
-                        <li>
+                        <li data-type="checkboxes">
                             <div class="btn btn-primary field-button"><i class="fa fa-square-o"></i> Checkboxes</div>
                         </li>
-                        <li>
+                        <li data-type="multiple-choice">
                             <div class="btn btn-primary field-button"><i class="fa fa-circle-o"></i> Multiple Choice</div>
                         </li>
-                        <li>
+                        <li data-type="date">
                             <div class="btn btn-primary field-button"><i class="fa fa-calendar"></i> Date</div>
                         </li>
-                        <li>
+                        <li data-type="dropdown">
                             <div class="btn btn-primary field-button"><i class="fa fa-caret-down"></i> Dropdown</div>
                         </li>
-                        <li>
+                        <li data-type="module">
                             <div class="btn btn-primary field-button"><i class="fa fa-caret-down"></i> Module</div>
                         </li>
-                        <li>
+                        <li data-type="list">
                             <div class="btn btn-primary field-button"><i class="fa fa-list"></i> List</div>
                         </li>
                     </ul>
@@ -107,47 +107,34 @@
     </div>
 </div>
 
+@* todo: move to partial(s) *@
+<script id="field-template-text" type="text/x-handlebars-template">
+    <li class="schema-field field-text">
+        <label>{{Label}}</label>
+        <input type="text" value="{{Value}}" placeholder="{{Placeholder}}"/>
+    </li>
+</script>
 
+<script id="field-template-image" type="text/x-handlebars-template">
+    <li class="schema-field field-image">
+        <label>{{Label}}</label>
+        <input type="text" value="{{Value}}" placeholder="{{Placeholder}}" />
+        <button class="btn btn-primary filebrowser">Choose Image</button>
+        <img src="{{Value}}">
+    </li>
+</script>
 
-        @section Styles {
+@section Styles {
 
-        }
+}
 
-        @section Scripts {
+@section Scripts {
 
-            @*<script src="/Areas/Admin/Scripts/schemaEditor.js"></script>*@
+    <script src="/Areas/Admin/Scripts/handlebars/handlebars.js"></script>
+    <script src="/Areas/Admin/Scripts/schemaEditor.js"></script>
 
-            <script>
-                // Setup the data for loading
-                ODATA = @Html.Raw(Model.TheSchema.JSONData);
-
-                $(function() {
-                    $(".schema ul").sortable({
-                        connectWith: ".schema ul",
-                        placeholder: "ui-state-highlight"
-                    });
-
-                    $(".field-buttons ul").sortable({
-                        connectWith: ".schema ul",
-                        placeholder: "ui-state-highlight",
-                        start: function (event, ui) {
-                            ui.item.clone().removeAttr('style').addClass('clone').insertAfter(ui.item);
-                        },
-                        beforeStop: function(event, ui) {
-                            $(this).sortable("option", "selfDrop", $(ui.placeholder).parent()[0] === this);
-                        },
-                        stop: function (event, ui) {
-                            var $sortable = $(this);
-
-                            if ($sortable.sortable("option", "selfDrop")) {
-                                $('li.clone', this).remove();
-                                $sortable.sortable('cancel');
-                            } else {
-                                $('li.clone', this).removeClass('clone');
-                            }
-                        }
-                    }).disableSelection();
-                });
-
-            </script>
-        }
+    <script>
+        // Setup the data for loading
+        ODATA = @Html.Raw(Model.TheSchema.JSONData);
+    </script>
+}
