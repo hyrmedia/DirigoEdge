@@ -98,15 +98,17 @@
 @section Scripts {
 
     <script src="/Areas/Admin/Scripts/handlebars/handlebars.js"></script>
+    <script src="/Areas/Admin/Scripts/lodash/lodash.js"></script>
     <script src="/Areas/Admin/Scripts/schema/schema.js"></script>
     <script src="/Areas/Admin/Scripts/schema/templates/templates.js"></script>
+    <script src="/Areas/Admin/Scripts/schema/helpers.js"></script>
     <script src="/Areas/Admin/Scripts/schema/field.js"></script>
     <script src="/Areas/Admin/Scripts/schema/field-definitions.js"></script>
-    <script src="/Areas/Admin/Scripts/schema/editor.js"></script>
+    <script src="/Areas/Admin/Scripts/schema/builder.js"></script>
 
     <script>
         $(function () {
-            var schemaEditor = new Schema.Editor();
+            var schemaEditor = new Schema.Builder();
             schemaEditor.init();
         });
     </script>

@@ -1,4 +1,4 @@
-﻿Schema.Editor = function (el, opts) {
+﻿Schema.Builder = function (el, opts) {
 
     if (!opts && typeof el === 'object') {
         opts = el;
@@ -16,7 +16,7 @@
 
 };
 
-Schema.Editor.prototype.init = function () {
+Schema.Builder.prototype.init = function () {
 
     this.populateEditorFields(this.makeSortable.bind(this));
     this.attachSelectorEvents();
@@ -24,7 +24,7 @@ Schema.Editor.prototype.init = function () {
 
 };
 
-Schema.Editor.prototype.populateEditorFields = function (cb) {
+Schema.Builder.prototype.populateEditorFields = function (cb) {
 
     var _this = this;
 
@@ -32,7 +32,7 @@ Schema.Editor.prototype.populateEditorFields = function (cb) {
 
         _this.remoteData = data;
 
-        $.each(data.SchemaField, function () {
+        $.each(sortFields(data.SchemaField), function () {
 
             _this.settings.$schema.find('.schema-fields').append(_this.renderEditorField(this.FieldType, this));
 
@@ -42,9 +42,23 @@ Schema.Editor.prototype.populateEditorFields = function (cb) {
 
     });
 
+    function sortFields(array) {
+
+        array.forEach(function (item) {
+            var keys = _.keys(item);
+            keys.forEach(function (key) {
+                if (_.isArray(item[key])) {
+                    item[key] = sortFields(item[key]);
+                }
+            });
+        });
+
+        return _.sortBy(array, 'SortOrder');
+    };
+
 };
 
-Schema.Editor.prototype.makeSortable = function () {
+Schema.Builder.prototype.makeSortable = function () {
 
     var _this = this;
 
@@ -77,7 +91,7 @@ Schema.Editor.prototype.makeSortable = function () {
 
 };
 
-Schema.Editor.prototype.attachSelectorEvents = function () {
+Schema.Builder.prototype.attachSelectorEvents = function () {
 
     var _this = this;
 
@@ -88,7 +102,7 @@ Schema.Editor.prototype.attachSelectorEvents = function () {
 
 };
 
-Schema.Editor.prototype.attachSaveEvents = function () {
+Schema.Builder.prototype.attachSaveEvents = function () {
 
     this.$el.find('#SaveSchemaButton').on('click', function () {
 
@@ -96,13 +110,15 @@ Schema.Editor.prototype.attachSaveEvents = function () {
 
         schema.SchemaField = this.serializeSchema();
 
+        console.log(schema);
+
         /* todo: POST schema to server */
 
     }.bind(this));
 
 };
 
-Schema.Editor.prototype.renderEditorField = function (type, context) {
+Schema.Builder.prototype.renderEditorField = function (type, context) {
 
     if (!(type in Schema.templates.fields)) return null;
 
@@ -112,7 +128,7 @@ Schema.Editor.prototype.renderEditorField = function (type, context) {
 
 };
 
-Schema.Editor.prototype.replaceSelectorWithField = function (ui) {
+Schema.Builder.prototype.replaceSelectorWithField = function (ui) {
 
     var type = ui.item.data('type');
 
@@ -120,13 +136,13 @@ Schema.Editor.prototype.replaceSelectorWithField = function (ui) {
 
 };
 
-Schema.Editor.prototype.appendNewField = function (type, context) {
+Schema.Builder.prototype.appendNewField = function (type, context) {
 
     this.settings.$schema.find('ul').append(this.renderEditorField(type, context));
 
 };
 
-Schema.Editor.prototype.serializeSchema = function () {
+Schema.Builder.prototype.serializeSchema = function () {
 
     var fields = [];
 

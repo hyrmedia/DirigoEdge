@@ -9,6 +9,7 @@
       "FieldType": "text",
       "Name": "Text",
       "DisplayName": "Text",
+      "SortOrder": 2,
       "Metadata": { }
     },
     {
@@ -17,6 +18,7 @@
       "FieldType": "image",
       "Name": "Bill Murray",
       "DisplayName": "Bill Murray",
+      "SortOrder": 1,
       "Metadata": { }
     },
     {
@@ -25,7 +27,60 @@
       "FieldType": "textarea",
       "Name": "Textarea",
       "DisplayName": "Textarea",
+      "SortOrder": 3,
       "Metadata": { }
+    },
+    {
+      "SchemaId": 1,
+      "SchemaFieldId": 4,
+      "FieldType": "list",
+      "Name": "Test List",
+      "DisplayName": "Test List",
+      "SortOrder": 4,
+      "Metadata": { },
+      "Fields": [
+        {
+          "SchemaId": 1,
+          "ParentSchemaFieldId": 4,
+          "SchemaFieldId": 5,
+          "FieldType": "text",
+          "Name": "List Text",
+          "DisplayName": "List Text",
+          "SortOrder": 1,
+          "Metadata": { }
+        },
+        {
+          "SchemaId": 1,
+          "SchemaFieldId": 6,
+          "FieldType": "list",
+          "Name": "Test List 2",
+          "DisplayName": "Test List 2",
+          "SortOrder": 2,
+          "Metadata": { },
+          "Fields": [
+            {
+              "SchemaId": 1,
+              "ParentSchemaFieldId": 6,
+              "SchemaFieldId": 7,
+              "FieldType": "text",
+              "Name": "List Text",
+              "DisplayName": "List Text",
+              "SortOrder": 2,
+              "Metadata": { }
+            },
+            {
+              "SchemaId": 1,
+              "ParentSchemaFieldId": 6,
+              "SchemaFieldId": 8,
+              "FieldType": "image",
+              "Name": "Header Photo",
+              "DisplayName": "Header Photo",
+              "SortOrder": 1,
+              "Metadata": { }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

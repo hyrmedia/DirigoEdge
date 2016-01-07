@@ -4,8 +4,10 @@ Schema.definitions.text = new SchemaField({
     serializer: function ($element) {
         return {
             SchemaFieldId: $element.data('id') ? parseInt($element.data('id')) : null,
-            DisplayName: $element.find('.display-name').text(),
+            ParentSchemaFieldId: $element.parent().closest('.field-list').data('id'),
+            DisplayName: $element.find('.display-name').first().text(),
             FieldType: $element.data('type'),
+            SortOrder: null,
             Metadata: {
 
             }
@@ -20,8 +22,10 @@ Schema.definitions.image = new SchemaField({
     serializer: function ($element) {
         return {
             SchemaFieldId: $element.data('id') ? parseInt($element.data('id')) : null,
-            DisplayName: $element.find('.display-name').text(),
+            ParentSchemaFieldId: $element.parent().closest('.field-list').data('id'),
+            DisplayName: $element.find('.display-name').first().text(),
             FieldType: $element.data('type'),
+            SortOrder: null,
             Metadata: {
 
             }
@@ -36,8 +40,10 @@ Schema.definitions.textarea = new SchemaField({
     serializer: function ($element) {
         return {
             SchemaFieldId: $element.data('id') ? parseInt($element.data('id')) : null,
-            DisplayName: $element.find('.display-name').text(),
+            ParentSchemaFieldId: $element.parent().closest('.field-list').data('id'),
+            DisplayName: $element.find('.display-name').first().text(),
             FieldType: $element.data('type'),
+            SortOrder: null,
             Metadata: {
 
             }
@@ -45,6 +51,24 @@ Schema.definitions.textarea = new SchemaField({
     },
     defaultContext: {
         DisplayName: 'Textarea'
+    }
+});
+
+Schema.definitions.list = new SchemaField({
+    serializer: function ($element) {
+        return {
+            SchemaFieldId: $element.data('id') ? parseInt($element.data('id')) : null,
+            ParentSchemaFieldId: $element.parent().closest('.field-list').data('id'),
+            DisplayName: $element.find('.display-name').first().text(),
+            FieldType: $element.data('type'),
+            SortOrder: null,
+            Metadata: {
+
+            }
+        }
+    },
+    defaultContext: {
+        DisplayName: 'List'
     }
 });
 
@@ -57,7 +81,6 @@ Schema.definitions.textarea = new SchemaField({
 // Time
 // Date + Time
 // WYSIWYG
-// List
 // Module
 // Number
 // Group
