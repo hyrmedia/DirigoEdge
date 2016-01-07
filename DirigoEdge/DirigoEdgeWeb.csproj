@@ -252,6 +252,11 @@
     <Compile Include="CustomUtils\SystemTime.cs" />
     <Compile Include="CustomUtils\TimeUtils.cs" />
     <Compile Include="CustomUtils\WebUserUtils.cs" />
+    <Compile Include="Data\Entities\Schemas\FieldChoice.cs" />
+    <Compile Include="Data\Entities\Schemas\FieldDefinition.cs" />
+    <Compile Include="Data\Entities\Schemas\FieldType.cs" />
+    <Compile Include="Data\Entities\Schemas\MetaDataType.cs" />
+    <Compile Include="Data\Entities\Schemas\Schema.cs" />
     <Compile Include="SettingsInitializer.cs" />
     <Content Include="Areas\Admin\CSS\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Areas\Admin\CSS\images\ajaxLoader.gif" />
