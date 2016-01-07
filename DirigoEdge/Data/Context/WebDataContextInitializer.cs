@@ -3,11 +3,15 @@ using DirigoEdgeCore.Data.Context;
 
 namespace DirigoEdge.Data.Context
 {
-    public class WebDataContextInitializer : CreateDatabaseIfNotExists<DataContext>
+    public partial class WebDataContextInitializer : CreateDatabaseIfNotExists<WebDataContext>
     {
-        protected override void Seed(DataContext context)
+        protected override void Seed(WebDataContext context)
         {
-           DataContextInitializer.Init(context);
+            DataContextInitializer.Init(context);
+
+            CustomSeed(context);
         }
+
+        partial void CustomSeed(WebDataContext context);
     }
 }

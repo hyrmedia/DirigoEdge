@@ -2,11 +2,17 @@
 using DirigoEdge.Data.Entities;
 using DirigoEdge.Data.Entities.Extensibility;
 using DirigoEdgeCore.Data.Context;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace DirigoEdge.Data.Context
 {
-    public class WebDataContext : DataContext
+    public partial class WebDataContext : DataContext
     {
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+        }
+
         public WebDataContext()
             : base("DataContext")
         {
