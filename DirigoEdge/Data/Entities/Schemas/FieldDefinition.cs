@@ -11,5 +11,7 @@ namespace DirigoEdge.Data.Entities.Schemas
         
         [MaxLength(256)]
         public virtual String Name { get; set; }
+
+        public virtual FieldDefinition ParentDefinition { get; set; }
     }
 }

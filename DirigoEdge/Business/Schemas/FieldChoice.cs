@@ -1,11 +1,10 @@
 ﻿using System;
 
-namespace DirigoEdge.Data.Entities.Schemas
+namespace DirigoEdge.Business.Schemas
 {
     public class FieldChoice
     {
-        public virtual int FieldChoiceId { get; set; }
-        public virtual FieldDefinition FieldDefinition { get; set; }
+        public int FieldChoiceId { get; set; }
         public String Value { get; set; }
     }
 }

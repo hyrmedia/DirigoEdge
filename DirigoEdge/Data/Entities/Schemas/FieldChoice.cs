@@ -6,6 +6,6 @@ namespace DirigoEdge.Data.Entities.Schemas
     {
         public virtual int FieldChoiceId { get; set; }
         public virtual FieldDefinition FieldDefinition { get; set; }
-        public String Value { get; set; }
+        public virtual String Value { get; set; }
     }
 }

@@ -1,13 +1,10 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
-namespace DirigoEdge.Data.Entities.Schemas
+namespace DirigoEdge.Business.Schemas
 {
     public class FieldType
     {
-        public virtual int FieldTypeId { get; set; }
-
-        [MaxLength(256)]
+        public int FieldTypeId { get; set; }
         public virtual String Name { get; set; }
     }
 }

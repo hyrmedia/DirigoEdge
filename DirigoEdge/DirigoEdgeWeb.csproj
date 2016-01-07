@@ -228,6 +228,12 @@
     <Compile Include="Business\ImportTools.cs" />
     <Compile Include="Business\Models\Module.cs" />
     <Compile Include="Business\Models\ImportData.cs" />
+    <Compile Include="Business\Schemas\FieldChoice.cs" />
+    <Compile Include="Business\Schemas\FieldDefinition.cs" />
+    <Compile Include="Business\Schemas\FieldType.cs" />
+    <Compile Include="Business\Schemas\Metadata.cs" />
+    <Compile Include="Business\Schemas\MetaDataType.cs" />
+    <Compile Include="Business\Schemas\Schema.cs" />
     <Compile Include="Controllers\Base\WebBaseAdminController.cs" />
     <Compile Include="Controllers\Base\WebBaseController.cs" />
     <Compile Include="Controllers\ImagesController.cs" />
@@ -255,6 +261,7 @@
     <Compile Include="Data\Entities\Schemas\FieldChoice.cs" />
     <Compile Include="Data\Entities\Schemas\FieldDefinition.cs" />
     <Compile Include="Data\Entities\Schemas\FieldType.cs" />
+    <Compile Include="Data\Entities\Schemas\Metadata.cs" />
     <Compile Include="Data\Entities\Schemas\MetaDataType.cs" />
     <Compile Include="Data\Entities\Schemas\Schema.cs" />
     <Compile Include="SettingsInitializer.cs" />

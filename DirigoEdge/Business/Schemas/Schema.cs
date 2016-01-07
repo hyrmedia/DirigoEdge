@@ -1,13 +1,13 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
-namespace DirigoEdge.Data.Entities.Schemas
+namespace DirigoEdge.Business.Schemas
 {
     public class Schema
     {
-        public virtual int SchemaId { get; set; }
+        public int SchemaId { get; set; }
+        public String Name { get; set; }
 
-        [MaxLength(256)]
-        public virtual String Name { get; set; }
+        public List<FieldDefinition>  Fields { get; set; }
     }
 }
