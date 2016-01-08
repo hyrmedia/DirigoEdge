@@ -1,0 +1,33 @@
+﻿<li class="schema-field field-text" data-id="{{SchemaFieldId}}" data-type="text">
+    <label class="display-name">{{DisplayName}}</label>
+    <input class="field-value" type="text" value="" placeholder="" />
+
+    <div class="edit-area">
+        <div class="metadata">
+            <div class="title">Metadata</div>
+            
+            
+            <div class="metadata-fields">
+                {{#each extended.metadata}}
+                    {{{render-metadata this ../Metadata}}}
+                {{/each}}                
+            </div>
+        </div>
+        <div class="validation">
+            <div class="title">Validation</div>
+            <div class="validation-fields">
+                <div class="validation-field">
+                    <label>Max Length</label>
+                    <input type="text" />
+                </div>
+                <div class="validation-field">
+                    <label>Min Length</label>
+                    <input type="text" />
+                </div>
+                <div class="validation-field">
+                    <label><input type="checkbox" /> Required</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</li>

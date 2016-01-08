@@ -18,27 +18,25 @@
 
 Schema.Builder.prototype.init = function () {
 
-    this.populateEditorFields(this.makeSortable.bind(this));
     this.attachSelectorEvents();
     this.attachSaveEvents();
 
+    $.when(EDGE.ajaxGet({}, '/areas/admin/scripts/schema/fake.json')).then(function (data) {
+        this.remoteData = data;
+        this.populateEditorFields();
+        this.makeSortable();
+        this.attachFieldEvents();
+    }.bind(this));
+
 };
 
-Schema.Builder.prototype.populateEditorFields = function (cb) {
+Schema.Builder.prototype.populateEditorFields = function () {
 
     var _this = this;
 
-    EDGE.ajaxGet({}, '/areas/admin/scripts/schema/fake.json', function (data) {
+    $.each(sortFields(this.remoteData.SchemaField), function () {
 
-        _this.remoteData = data;
-
-        $.each(sortFields(data.SchemaField), function () {
-
-            _this.settings.$schema.find('.schema-fields').append(_this.renderEditorField(this.FieldType, this));
-
-        });
-
-        if (cb && typeof cb === 'function') cb();
+        _this.settings.$schema.find('.schema-fields').append(_this.renderEditorField(this.FieldType, _this.extendField(this)));
 
     });
 
@@ -55,6 +53,17 @@ Schema.Builder.prototype.populateEditorFields = function (cb) {
 
         return _.sortBy(array, 'SortOrder');
     };
+
+};
+
+Schema.Builder.prototype.extendField = function (context) {
+
+    context.extended = {
+        metadata: Schema.definitions[context.FieldType].metadata,
+        validation: Schema.definitions[context.FieldType].validation
+    };
+
+    return context;
 
 };
 
@@ -118,13 +127,29 @@ Schema.Builder.prototype.attachSaveEvents = function () {
 
 };
 
+Schema.Builder.prototype.attachFieldEvents = function () {
+
+    var _this = this;
+
+    this.settings.$schema.find('li').on('click', function (e) {
+        var $this = $(this);
+
+        e.stopPropagation();
+
+        _this.settings.$schema.find('li.is-selected').removeClass('is-selected');
+
+        $this.addClass('is-selected');
+    });
+
+};
+
 Schema.Builder.prototype.renderEditorField = function (type, context) {
 
-    if (!(type in Schema.templates.fields)) return null;
+    if (!(type in Schema.templates.builderFields)) return null;
 
     context = context || Schema.definitions[type].defaultContext;
 
-    return Schema.templates.fields[type](context);
+    return Schema.templates.builderFields[type](context);
 
 };
 
@@ -146,7 +171,7 @@ Schema.Builder.prototype.serializeSchema = function () {
 
     var fields = [];
 
-    this.settings.$schema.find('li').each(function () {
+    this.settings.$schema.children('li').each(function () {
 
         var type = $(this).data('type');
 

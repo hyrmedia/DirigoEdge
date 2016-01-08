@@ -6,11 +6,33 @@
     {
       "SchemaId": 1,
       "SchemaFieldId": 1,
+      "ParentSchemaFieldId":  null,
       "FieldType": "text",
       "Name": "Text",
       "DisplayName": "Text",
       "SortOrder": 2,
-      "Metadata": { }
+      "Metadata": [
+        {
+          "Help Text": "This is for text"
+        },
+        {
+          "Style": "Small"
+        },
+        {
+          "Placeholder":  "Justin's House"
+        }
+      ],
+      "Validation": [
+        {
+          "Max Length": 100
+        },
+        {
+          "Min Length": 0
+        },
+        {
+          "Required": true
+        }
+      ]
     },
     {
       "SchemaId": 1,
@@ -19,7 +41,7 @@
       "Name": "Bill Murray",
       "DisplayName": "Bill Murray",
       "SortOrder": 1,
-      "Metadata": { }
+      "Metadata": [ ]
     },
     {
       "SchemaId": 1,
@@ -28,16 +50,17 @@
       "Name": "Textarea",
       "DisplayName": "Textarea",
       "SortOrder": 3,
-      "Metadata": { }
+      "Metadata": [ ]
     },
     {
       "SchemaId": 1,
       "SchemaFieldId": 4,
+      "ParentSchemaFieldId": null,
       "FieldType": "list",
       "Name": "Test List",
       "DisplayName": "Test List",
       "SortOrder": 4,
-      "Metadata": { },
+      "Metadata": [ ],
       "Fields": [
         {
           "SchemaId": 1,
@@ -47,7 +70,7 @@
           "Name": "List Text",
           "DisplayName": "List Text",
           "SortOrder": 1,
-          "Metadata": { }
+          "Metadata": [ ]
         },
         {
           "SchemaId": 1,
@@ -56,7 +79,7 @@
           "Name": "Test List 2",
           "DisplayName": "Test List 2",
           "SortOrder": 2,
-          "Metadata": { },
+          "Metadata": [ ],
           "Fields": [
             {
               "SchemaId": 1,
@@ -66,7 +89,7 @@
               "Name": "List Text",
               "DisplayName": "List Text",
               "SortOrder": 2,
-              "Metadata": { }
+              "Metadata": [ ]
             },
             {
               "SchemaId": 1,
@@ -76,7 +99,7 @@
               "Name": "Header Photo",
               "DisplayName": "Header Photo",
               "SortOrder": 1,
-              "Metadata": { }
+              "Metadata": [ ]
             }
           ]
         }
