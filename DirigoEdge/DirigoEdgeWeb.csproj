@@ -511,6 +511,7 @@
     <Content Include="Scss\edge\_membership.scss" />
     <Content Include="Scss\edge\_spinner.scss" />
     <Content Include="Scss\sass\mixins\_media-queries.scss" />
+    <Content Include="Scss\site\_base.scss" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Scripts\adminContentEditor.js" />
@@ -1214,7 +1215,6 @@
     <Content Include="CSS\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Scss\main.scss" />
     <Content Include="Scss\vendor\_normalize.scss" />
-    <Content Include="Scss\global\_spinner.scss" />
     <Content Include="Scss\vendor\_bootstrap.scss" />
     <Content Include="Scss\vendor\_jquery-ui.scss" />
   </ItemGroup>
