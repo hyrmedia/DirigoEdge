@@ -17,4 +17,5 @@ SchemaField.prototype.standardMetadata = [
 ];
 
 SchemaField.prototype.standardValidation = [
+
 ];

@@ -405,16 +405,21 @@
     <Content Include="Areas\Admin\Scripts\jquery\plugins\tagit\jquery.tagit.css" />
     <Content Include="Areas\Admin\Scripts\jquery\plugins\tagit\jquery.tagit.js" />
     <Content Include="Areas\Admin\Scripts\jquery\plugins\zclip\ZeroClipboard.swf" />
+    <Content Include="Areas\Admin\Scripts\lodash\lodash.js" />
     <Content Include="Areas\Admin\Scripts\modernizr-2.6.2.min.js" />
     <Content Include="Areas\Admin\Scripts\schema\field-definitions.js" />
     <Content Include="Areas\Admin\Scripts\schema\field.js" />
+    <Content Include="Areas\Admin\Scripts\schema\helpers.js" />
     <Content Include="Areas\Admin\Scripts\schema\schema.js" />
     <Content Include="Areas\Admin\Scripts\schema\templates\templates.js" />
     <Content Include="Areas\Admin\Scss\modules\_dashboard.scss" />
-    <Content Include="Areas\Admin\Scripts\schema\templates\fields\text.hbs" />
-    <Content Include="Areas\Admin\Scripts\schema\templates\fields\image.hbs" />
+    <Content Include="Areas\Admin\Scripts\schema\templates\builderFields\text.hbs" />
+    <Content Include="Areas\Admin\Scripts\schema\templates\builderFields\image.hbs" />
     <Content Include="Areas\Admin\Scripts\schema\fake.json" />
-    <Content Include="Areas\Admin\Scripts\schema\templates\fields\textarea.hbs" />
+    <Content Include="Areas\Admin\Scripts\schema\templates\builderFields\textarea.hbs" />
+    <Content Include="Areas\Admin\Scripts\schema\templates\builderFields\list.hbs" />
+    <Content Include="Areas\Admin\Scripts\schema\templates\metadata\helpText.hbs" />
+    <Content Include="Areas\Admin\Scripts\schema\templates\metadata\style.hbs" />
     <None Include="Areas\Admin\Scss\modules\_data-tables.scss" />
     <Content Include="Content\Images\edge_logo_head.png" />
     <Content Include="Content\Images\full-width.jpg" />
@@ -457,7 +462,7 @@
     <Content Include="Areas\Admin\Scripts\redirectAdmin.js" />
     <Content Include="Areas\Admin\Scripts\roleAdmin.js" />
     <Content Include="Areas\Admin\Scripts\mediaAdmin.js" />
-    <Content Include="Areas\Admin\Scripts\schema\editor.js" />
+    <Content Include="Areas\Admin\Scripts\schema\builder.js" />
     <Content Include="Areas\Admin\Scripts\sidebar.js" />
     <Content Include="Areas\Admin\Scripts\siteSettings.js" />
     <Content Include="Content\logo.png" />
@@ -516,7 +521,7 @@
     <Content Include="Areas\Admin\Views\Plugins\Index.cshtml" />
     <Content Include="Areas\Admin\Scss\modules\_navbar.scss" />
     <Content Include="Scss\sass\mixins\_media-queries.scss" />
-    <Content Include="Areas\Admin\Scss\modules\_schema-editor.scss" />
+    <Content Include="Areas\Admin\Scss\modules\_schema-builder.scss" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Scripts\adminContentEditor.js" />
@@ -1035,6 +1040,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\OutputCache\" />
+    <Folder Include="Areas\Admin\Scripts\schema\templates\validation\" />
     <Folder Include="Areas\Admin\Scss\client\" />
     <Folder Include="Scripts\ckeditor\plugins\image\images\" />
     <Folder Include="Scss\site\modules\" />
