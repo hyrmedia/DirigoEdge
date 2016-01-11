@@ -7,7 +7,6 @@ var autoprefixer = require('gulp-autoprefixer');
 var rimraf = require('gulp-rimraf');
 var colors = require('colors');
 var livereload = require('gulp-livereload');
-var sassGlob = require('gulp-sass-glob');
 
 gulp.task('sass:dev', function () {
 
@@ -15,7 +14,6 @@ gulp.task('sass:dev', function () {
 
     return gulp.src('scss/*.scss')
         .pipe(sourcemaps.init())
-        .pipe(sassGlob())
         .pipe(sass({
             outputStyle: 'expanded',
             sourceMap: true
@@ -42,7 +40,6 @@ gulp.task('sass:prod', function () {
 
     return gulp.src('scss/*.scss')
 
-        .pipe(sassGlob())
         .pipe(sass({
             outputStyle: 'compressed',
             sourcemap: false
@@ -67,7 +64,6 @@ gulp.task('sass:admin:dev', function () {
 
     return gulp.src('areas/admin/scss/*.scss')
         .pipe(sourcemaps.init())
-        .pipe(sassGlob())
         .pipe(sass({
             outputStyle: 'expanded',
             sourceMap: true
@@ -96,7 +92,6 @@ gulp.task('sass:admin:prod', function () {
 
     return gulp.src('areas/admin/scss/*.scss')
 
-        .pipe(sassGlob())
         .pipe(sass({
             outputStyle: 'compressed',
             sourcemap: false
