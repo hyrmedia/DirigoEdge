@@ -506,6 +506,11 @@
     <Content Include="Scss\edge\_pagebuilder.scss" />
     <Content Include="Areas\Admin\Views\Plugins\Index.cshtml" />
     <Content Include="Areas\Admin\Scss\modules\_navbar.scss" />
+    <Content Include="Scss\edge\_admin.scss" />
+    <Content Include="Scss\edge\_blog.scss" />
+    <Content Include="Scss\edge\_membership.scss" />
+    <Content Include="Scss\edge\_spinner.scss" />
+    <Content Include="Scss\sass\mixins\_media-queries.scss" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Scripts\adminContentEditor.js" />
@@ -1025,7 +1030,7 @@
   <ItemGroup>
     <Folder Include="App_Data\OutputCache\" />
     <Folder Include="Scripts\ckeditor\plugins\image\images\" />
-    <Folder Include="Scss\sass\" />
+    <Folder Include="Scss\site\modules\" />
     <Folder Include="Uploaded\" />
   </ItemGroup>
   <ItemGroup>
@@ -1209,10 +1214,7 @@
     <Content Include="CSS\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Scss\main.scss" />
     <Content Include="Scss\vendor\_normalize.scss" />
-    <Content Include="Scss\modules\_blog.scss" />
     <Content Include="Scss\global\_spinner.scss" />
-    <Content Include="Scss\modules\_admin.scss" />
-    <Content Include="Scss\modules\_membership.scss" />
     <Content Include="Scss\vendor\_bootstrap.scss" />
     <Content Include="Scss\vendor\_jquery-ui.scss" />
   </ItemGroup>

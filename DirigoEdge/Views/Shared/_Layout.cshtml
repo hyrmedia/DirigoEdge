@@ -148,9 +148,6 @@
                 .Add("~/scripts/resetPassword.js")
                 .Add("~/Scripts/Edge/Edge.js")
                 .Add("~/scripts/Edge/ajax-service.js");
-
-            // Some mechanism here so plugins can add references
-            // to scriptBundle before it's rendered
         }
         @Html.Raw(scriptBundle.Render("~/scripts/combined_#.js"))
 
